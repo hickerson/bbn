@@ -1129,7 +1129,7 @@ C----------USER INTERACTION VARIABLES.
       INTEGER lnumb2               !Run parameter for middle loop.
       INTEGER lnumb3               !Run parameter for inner loop.
       INTEGER lnum(3)              !Run parameter end value.
-      INTEGER lchose               !User response (alphanumeric).
+      CHARACTER lchose             !User response (alphanumeric).
 
 C----------FLAG AND LABELS.
       INTEGER itime                !Computation location.

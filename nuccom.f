@@ -207,6 +207,7 @@ C==========================DECLARATION DIVISION=================================
 
 C----------REACTION RATES.
       REAL    f(nrec)              !Forward reaction rate coefficients.
+      REAL    r(nrec)              !Reverse reaction rate coefficients.
 
 C----------EVOLUTION PARAMETERS.
       REAL    t9                   !Temperature (in units of 10**9 K).

@@ -136,10 +136,10 @@ C===========================PROCEDURE DIVISION==================================
 
 C10--------COMPUTE WEAK REACTION RATES (NONDEGENERATE)--------------------------
 
-      IF (xi(1).eq.0.) THEN
-        f(1)  = thm(13)/tau        !Forward rate for weak np reaction.
-        r(1)  = thm(14)/tau        !Reverse rate for weak np reaction.
-      ELSE
+C      IF (xi(1).eq.0.) THEN
+C        f(1)  = thm(13)/tau        !Forward rate for weak np reaction.
+C        r(1)  = thm(14)/tau        !Reverse rate for weak np reaction.
+C      ELSE
 
 C20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 
@@ -170,7 +170,7 @@ C..........EVALUATE THE INTEGRALS NUMERICALLY.
         part4 = xintd(1.,uplim4,func4,iter)
         f(1) = part1 + part2       !Add 2 integrals to get forward rate.
         r(1) = part3 + part4       !Add 2 integrals to get reverse rate.
-      END IF !(xi(1).eq.0.)
+C      END IF !(xi(1).eq.0.)
       RETURN
 
 C----------REFERENCES-----------------------------------------------------------
