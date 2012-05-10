@@ -45,7 +45,7 @@ C----------COMMON AREAS.
       COMMON /compr0/ cy0,ct0,t9i0,t9f0,ytmin0,inc0  !Default comp parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
       COMMON /modpr0/ c0,cosmo0,xi0                  !Default model parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /varpr0/ dt0,eta0                       !Default variationl params.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /ttime/   t,dt,dlt9dt                   !Time variables.

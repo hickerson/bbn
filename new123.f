@@ -49,7 +49,7 @@ C----------COMMON AREAS.
       COMMON /compr0/ cy0,ct0,t9i0,t9f0,ytmin0,inc0  !Default comp parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
       COMMON /modpr0/ c0,cosmo0,xi0                  !Default model parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /varpr0/ dt0,eta0                       !Default variationl params.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /checkcb/  itime                        !Computation location.
@@ -929,7 +929,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /modpr0/ c0,cosmo0,xi0                  !Default model parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /varpr0/ dt0,eta0                       !Default variationl params.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
 
@@ -1093,7 +1093,7 @@ C----------PARAMETERS.
       PARAMETER (knuc=9)           !Total # of nuclides for irun = 3.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b          !Model parameters.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /checkcb/  itime                        !Computation location.
       COMMON /runopt/ irun,isize,jsize               !Run options.
@@ -1404,7 +1404,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /flags/  ltime,is,ip,it,mbad            !Flags, counters.
       COMMON /outdat/ xout,thmout,t9out,tout,dtout,  !Output data.
      |                etaout,hubout

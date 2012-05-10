@@ -91,7 +91,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /rates/  f,r                            !Reaction rates.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /thermcb/  thm,hubcst                     !Dynamic variables.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
