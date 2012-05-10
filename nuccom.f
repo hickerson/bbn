@@ -191,7 +191,7 @@ C----------COMMON AREAS.
       COMMON /evolp2/ dt9,dhv,dphie,dydt(nnuc)       !Evolution parameters.
       COMMON /evolp3/ t90,hv0,phie0,y0               !Evolution parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /ttime/   t,dt,dlt9dt                    !Time variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
@@ -231,6 +231,7 @@ C----------EARLY UNIVERSE MODEL PARAMETERS.
      |                             !c(2) is neutron lifetime (sec).
      |                             !c(3) is number of neutrino species.
       REAL    xi(3)                !Neutrino degeneracy parameters.
+      REAL    b                    !Fierz parameter.
 
 C----------VARIATIONAL PARAMETERS.
       REAL    dt1                  !Initial time step.
@@ -390,7 +391,7 @@ C----------COMMON AREAS.
       COMMON /evolp1/ t9,hv,phie,y                   !Evolution parameters.
       COMMON /evolp2/ dt9,dhv,dphie,dydt             !Evolution parameters.
       COMMON /evolp3/ t90,hv0,phie0,y0               !Evolution parameters.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi(3)     !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi(3),b   !Model parameters.
       COMMON /ttime/   t,dt,dlt9dt                   !Time variables.
       COMMON /thermcb/  thm,hubcst                   !Dynamic variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
@@ -653,7 +654,7 @@ C----------PARAMETER.
 C----------COMMON AREAS.         
       COMMON /evolp1/ t9,hv,phie,y(nnuc)             !Evolution parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /thermcb/  thm,hubcst                   !Dynamic variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
       COMMON /besselcb/ bl1,bl2,bl3,bl4,bl5,         !Eval of function bl(z).
@@ -1011,7 +1012,7 @@ C----------PARAMTER.
       PARAMETER (iter=50)          !Number of gaussian quads.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C----------EXTERNAL FUNCTIONS.
@@ -1089,7 +1090,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1130,7 +1131,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1171,7 +1172,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1212,7 +1213,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1253,7 +1254,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1288,7 +1289,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
