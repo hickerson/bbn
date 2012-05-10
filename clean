@@ -1,0 +1,6 @@
+#! /bin/sh
+
+rm newint.dat
+rm new123.dat
+rm a.out
+ls
