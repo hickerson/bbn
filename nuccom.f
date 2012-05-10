@@ -302,12 +302,13 @@ C30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
           y(2) = 1./(ex(-15.011/t9-xi(1))+1.) !Initial p abundance (Ref 3).
         END IF     
       END IF
-      IF (xi(1).ne.0.) THEN        !Electron neutrino degeneracy.
+C change: set cnorm regardless of the nu_e chem potential
+C      IF (xi(1).ne.0.) THEN        !Electron neutrino degeneracy.
         cnorm = 1.
         tnu   = .00001             !Low temperature.
         CALL rate1(0.00001)        !Find normalization constant at low temp.
         cnorm = 1/tau/f(1)
-      END IF
+C      END IF
       y0(1) = y(1)
       y0(2) = y(2)
 
