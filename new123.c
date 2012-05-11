@@ -266,9 +266,13 @@ static doublereal c_b255 = 10.;
 /* Number of output requests. */
 /* ----------USER RESPONSE VARIABLES. */
 /* Indicates if output file used. */
-/* ===========================PROCEDURE DIVISION================================== */
-/* 10--------OPEN FILES AND PRINT GREETING---------------------------------------- */
+/* declare b */
 /* Selection number. */
+/* ===========================PROCEDURE DIVISION================================== */
+/* set b Fierz term */
+    modpr_1.b = .256f;
+/* 10--------OPEN FILES AND PRINT GREETING---------------------------------------- */
+/* Fierz parameter */
     o__1.oerr = 0;
     o__1.ounit = 2;
     o__1.ofnmlen = 10;
