@@ -131,8 +131,8 @@ C declare b
 
 C===========================PROCEDURE DIVISION==================================
 
-C set b
-      b = 0.00
+C set b Fierz term
+      b = 0.256                    !Fierz parameter
 
 C10--------OPEN FILES AND PRINT GREETING----------------------------------------
 
