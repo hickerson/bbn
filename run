@@ -1,11 +1,14 @@
 #! /bin/sh
 
+cmd=cmds
+
 rm newint.dat
 rm new123.dat
-./b$1 < $2 > 1.tmp
+./b$1 < $cmd > 1.tmp
 tail -n 22 1.tmp > 2.tmp		# grab the last 22 lines. This could change.
 head -n 17 2.tmp > He$1.dat		# we only need 17 lines. This could change.
 rm 1.tmp
 rm 2.tmp
+echo -n "$1\t" >> bHe.dat
 head -n 1 He$1.dat >> bHe.dat	# to be replaced by a for loop at some point
 cp He$1.dat ~/Thesis/
