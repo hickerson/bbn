@@ -2,4 +2,6 @@
 
 rm newint.dat
 rm new123.dat
-./a.out < cmds | tail -N20 > He.dat
+./a.out < cmds > He.tmp
+tail -n 23 He.tmp > He.dat
+rm He.tmp
