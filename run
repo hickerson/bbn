@@ -2,4 +2,4 @@
 
 rm newint.dat
 rm new123.dat
-./a.out
+./a.out < cmds | tail -N20 > He.dat
