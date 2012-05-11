@@ -2,7 +2,7 @@
 
 rm newint.dat
 rm new123.dat
-./b$1 < cmds > 1.tmp
+./b$1 < $2 > 1.tmp
 tail -n 22 1.tmp > 2.tmp
 head -n 17 2.tmp > He$1.dat
 rm 1.tmp
