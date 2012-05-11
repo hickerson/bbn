@@ -126,8 +126,13 @@ C----------OUTPUT FILE STATUS.
 C----------USER RESPONSE VARIABLES.
       INTEGER inum                 !Selection number.
 
+C declare b
+      REAL b
 
 C===========================PROCEDURE DIVISION==================================
+
+C set b
+      b = 0.02
 
 C10--------OPEN FILES AND PRINT GREETING----------------------------------------
 
