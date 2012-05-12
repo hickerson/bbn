@@ -2,6 +2,10 @@
 
 cmd=cmds
 
+perl -pe s/__b_init__/$1/g new123.par > new123.f
+gfortran *.f
+mv a.out b$1
+
 rm newint.dat
 rm new123.dat
 ./b$1 < $cmd > 1.tmp
@@ -10,5 +14,5 @@ head -n 17 2.tmp > He$1.dat		# we only need 17 lines. This could change.
 rm 1.tmp
 rm 2.tmp
 echo -n "$1\t" >> bHe.dat
-head -n 1 He$1.dat >> bHe.dat	# to be replaced by a for loop at some point
+tail -n 1 He$1.dat >> bHe.dat	# to be replaced by a for loop at some point
 cp He$1.dat ~/Thesis/
