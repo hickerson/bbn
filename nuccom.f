@@ -1116,7 +1116,7 @@ C----------LOCAL VARIABLES.
         part2 = 1./(1.+ex(+(x-2.531)*(.511/tnmev)-xi(1)))
 C       func1 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2
 C      IF (x.gt.(2.531) THEN
-        func1 = cnorm*(x+b)*(x-2.531)**2*(x**2-1)**.5*part1*part2
+        func1 = cnorm*(x-b)*(x-2.531)**2*(x**2-1)**.5*part1*part2
 C      ELSE
 C        func1 = cnorm*(x-b)*(x-2.531)**2*(x**2-1)**.5*part1*part2
 C      END IF
@@ -1162,7 +1162,7 @@ C----------LOCAL VARIABLES.
         part2 = 1./(1.+ex(-(x+2.531)*(.511/tnmev)-xi(1)))
 C       func2 = cnorm*(x+b*)*(x+2.531)**2*(x**2-1)**.5*part1*part2
 C      IF (x.gt.(2.531) THEN
-        func2 = cnorm*(x-b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
+        func2 = cnorm*(x+b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
 C      ELSE
 C        func2 = cnorm*(x+b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
 C      END IF
@@ -1207,7 +1207,7 @@ C----------LOCAL VARIABLES.
         part1 = 1./(1.+ex(-.511*x/t9mev))
         part2 = 1./(1.+ex(+(x+2.531)*(.511/tnmev)+xi(1)))
 C       func3 = cnorm*x*(x+2.531)**2*(x**2-1)**.5*part1*part2
-        func3 = cnorm*(x+b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
+        func3 = cnorm*(x-b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
       END IF
       RETURN
       end
@@ -1249,7 +1249,7 @@ C----------LOCAL VARIABLES.
         part1 = 1./(1.+ex(+.511*x/t9mev))
         part2 = 1./(1.+ex(-(x-2.531)*(.511/tnmev)+xi(1)))
 C       func4 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2
-        func4 = cnorm*(X-b*.511)*(x-2.531)**2*(x**2-1)**.5*part1*part2
+        func4 = cnorm*(x+b*.511)*(x-2.531)**2*(x**2-1)**.5*part1*part2
       END IF
       RETURN
       end
