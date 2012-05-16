@@ -1,18 +1,24 @@
 #! /bin/sh
 
-cmd=cmds
+cmd1=cmds1
+cmd2=cmds2
 
 perl -pe s/__b_init__/$1/g new123.par > new123.f
 gfortran *.f
-mv a.out b$1
+cp a.out b$1
 
 rm newint.dat
 rm new123.dat
-./b$1 < $cmd > 1.tmp
-tail -n 22 1.tmp > 2.tmp		# grab the last 22 lines. This could change.
-head -n 17 2.tmp > He$1.dat		# we only need 17 lines. This could change.
-rm 1.tmp
-rm 2.tmp
+./b$1 < $cmd1 > 1.tmp
+./b$1 < $cmd2 > 2.tmp
+tail -n 22 1.tmp > 3.tmp		# grab the last 22 lines. This could change.
+head -n 17 3.tmp > He$1.dat		# we only need 17 lines. This could change.
+tail -n 22 1.tmp > 4.tmp		# grab the last 22 lines. This could change.
+head -n 17 3.tmp > np$1.dat		# we only need 17 lines. This could change.
+mv 1.tmp He.dat
+rm 2.tmp 
+mv 3.tmp np.dat
+rm 4.tmp 
 echo -n "$1\t" >> bHe.dat
 tail -n 1 He$1.dat >> bHe.dat	# to be replaced by a for loop at some point
 cp He$1.dat ~/Thesis/
