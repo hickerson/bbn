@@ -10,14 +10,16 @@ cp a.out b$1
 rm newint.dat
 rm new123.dat
 ./b$1 < $cmd1 > 1.tmp
+rm newint.dat
+rm new123.dat
 ./b$1 < $cmd2 > 2.tmp
 tail -n 22 1.tmp > 3.tmp		# grab the last 22 lines. This could change.
 head -n 17 3.tmp > He$1.dat		# we only need 17 lines. This could change.
-tail -n 22 1.tmp > 4.tmp		# grab the last 22 lines. This could change.
-head -n 17 3.tmp > np$1.dat		# we only need 17 lines. This could change.
+tail -n 22 2.tmp > 4.tmp		# grab the last 22 lines. This could change.
+head -n 17 4.tmp > np$1.dat		# we only need 17 lines. This could change.
 mv 1.tmp He.dat
-rm 2.tmp 
-mv 3.tmp np.dat
+rm 3.tmp 
+mv 2.tmp np.dat
 rm 4.tmp 
 echo -n "$1\t" >> bHe.dat
 tail -n 1 He$1.dat >> bHe.dat	# to be replaced by a for loop at some point
