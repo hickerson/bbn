@@ -4,6 +4,7 @@ cmd1=cmds1
 cmd2=cmds2
 
 perl -pe s/__b_init__/$1/g new123.par > new123.f
+perl -pe s/__tau_init__/$2/g nucrat.par > nucrat.f
 gfortran *.f
 cp a.out b$1
 
@@ -24,3 +25,4 @@ rm 4.tmp
 echo -n "$1\t" >> bHe.dat
 tail -n 1 He$1.dat >> bHe.dat	# to be replaced by a for loop at some point
 cp He$1.dat ~/Thesis/
+cp np$1.dat ~/Thesis/

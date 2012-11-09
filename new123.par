@@ -132,7 +132,7 @@ C declare b
 C===========================PROCEDURE DIVISION==================================
 
 C set b Fierz term
-      b = __b_init__                    !Fierz parameter
+      b = __b_init__                    !Fierz parameter. Extern.
 
 C10--------OPEN FILES AND PRINT GREETING----------------------------------------
 

@@ -981,7 +981,7 @@ C----------DEFAULT COMPUTATION PARAMETERS.
       DATA ytmin0 /1.00e-25/       !Default smallest abundances allowed.
       DATA inc0   /30/             !Default accumulation increment.
 C-----------DEFAULT MODEL PARAMETERS.
-      DATA c0     /1.00,885.7,3.0/ !Default variation of 3 parameters.
+      DATA c0     /1.00,880.1,3.0/ !Default variation of 3 parameters.
       DATA cosmo0 /0.00/           !Default cosmological constant.
       DATA xi0    /0.00,0.00,0.00/ !Default neutrino degeneracy parameter.
 
