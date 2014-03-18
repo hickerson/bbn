@@ -191,7 +191,7 @@ C----------COMMON AREAS.
       COMMON /evolp2/ dt9,dhv,dphie,dydt(nnuc)       !Evolution parameters.
       COMMON /evolp3/ t90,hv0,phie0,y0               !Evolution parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /ttime/   t,dt,dlt9dt                    !Time variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
@@ -207,6 +207,7 @@ C==========================DECLARATION DIVISION=================================
 
 C----------REACTION RATES.
       REAL    f(nrec)              !Forward reaction rate coefficients.
+      REAL    r(nrec)              !Reverse reaction rate coefficients.
 
 C----------EVOLUTION PARAMETERS.
       REAL    t9                   !Temperature (in units of 10**9 K).
@@ -230,6 +231,7 @@ C----------EARLY UNIVERSE MODEL PARAMETERS.
      |                             !c(2) is neutron lifetime (sec).
      |                             !c(3) is number of neutrino species.
       REAL    xi(3)                !Neutrino degeneracy parameters.
+      REAL    b                    !Fierz parameter.
 
 C----------VARIATIONAL PARAMETERS.
       REAL    dt1                  !Initial time step.
@@ -301,12 +303,13 @@ C30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
           y(2) = 1./(ex(-15.011/t9-xi(1))+1.) !Initial p abundance (Ref 3).
         END IF     
       END IF
-      IF (xi(1).ne.0.) THEN        !Electron neutrino degeneracy.
+C change: set cnorm regardless of the nu_e chem potential
+C      IF (xi(1).ne.0.) THEN        !Electron neutrino degeneracy.
         cnorm = 1.
         tnu   = .00001             !Low temperature.
         CALL rate1(0.00001)        !Find normalization constant at low temp.
         cnorm = 1/tau/f(1)
-      END IF
+C      END IF
       y0(1) = y(1)
       y0(2) = y(2)
 
@@ -388,7 +391,7 @@ C----------COMMON AREAS.
       COMMON /evolp1/ t9,hv,phie,y                   !Evolution parameters.
       COMMON /evolp2/ dt9,dhv,dphie,dydt             !Evolution parameters.
       COMMON /evolp3/ t90,hv0,phie0,y0               !Evolution parameters.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi(3)     !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi(3),b   !Model parameters.
       COMMON /ttime/   t,dt,dlt9dt                   !Time variables.
       COMMON /thermcb/  thm,hubcst                   !Dynamic variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
@@ -651,7 +654,7 @@ C----------PARAMETER.
 C----------COMMON AREAS.         
       COMMON /evolp1/ t9,hv,phie,y(nnuc)             !Evolution parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /thermcb/  thm,hubcst                   !Dynamic variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
       COMMON /besselcb/ bl1,bl2,bl3,bl4,bl5,         !Eval of function bl(z).
@@ -1009,7 +1012,7 @@ C----------PARAMTER.
       PARAMETER (iter=50)          !Number of gaussian quads.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C----------EXTERNAL FUNCTIONS.
@@ -1087,7 +1090,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1111,7 +1114,12 @@ C----------LOCAL VARIABLES.
       ELSE
         part1 = 1./(1.+ex(-.511*x/t9mev))
         part2 = 1./(1.+ex(+(x-2.531)*(.511/tnmev)-xi(1)))
-        func1 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2
+C       func1 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2
+C      IF (x.gt.(2.531) THEN
+        func1 = cnorm*(x+b)*(x-2.531)**2*(x**2-1)**.5*part1*part2
+C      ELSE
+C        func1 = cnorm*(x-b)*(x-2.531)**2*(x**2-1)**.5*part1*part2
+C      END IF
       END IF
       RETURN
       end
@@ -1128,7 +1136,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1152,7 +1160,12 @@ C----------LOCAL VARIABLES.
       ELSE
         part1 = 1./(1.+ex(+.511*x/t9mev))
         part2 = 1./(1.+ex(-(x+2.531)*(.511/tnmev)-xi(1)))
-        func2 = cnorm*x*(x+2.531)**2*(x**2-1)**.5*part1*part2
+C       func2 = cnorm*(x+b*)*(x+2.531)**2*(x**2-1)**.5*part1*part2
+C      IF (x.gt.(2.531) THEN
+        func2 = cnorm*(x-b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
+C      ELSE
+C        func2 = cnorm*(x+b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
+C      END IF
       END IF
       RETURN
       end
@@ -1169,7 +1182,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1193,7 +1206,8 @@ C----------LOCAL VARIABLES.
       ELSE
         part1 = 1./(1.+ex(-.511*x/t9mev))
         part2 = 1./(1.+ex(+(x+2.531)*(.511/tnmev)+xi(1)))
-        func3 = cnorm*x*(x+2.531)**2*(x**2-1)**.5*part1*part2
+C       func3 = cnorm*x*(x+2.531)**2*(x**2-1)**.5*part1*part2
+        func3 = cnorm*(x-b)*(x+2.531)**2*(x**2-1)**.5*part1*part2
       END IF
       RETURN
       end
@@ -1210,7 +1224,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1234,7 +1248,8 @@ C----------LOCAL VARIABLES.
       ELSE
         part1 = 1./(1.+ex(+.511*x/t9mev))
         part2 = 1./(1.+ex(-(x-2.531)*(.511/tnmev)+xi(1)))
-        func4 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2
+C       func4 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2
+        func4 = cnorm*(x+b*.511)*(x-2.531)**2*(x**2-1)**.5*part1*part2
       END IF
       RETURN
       end
@@ -1251,7 +1266,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1286,7 +1301,7 @@ C----------REMARKS.
 C     Contains integrands to be integrated.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
 C==========================DECLARATION DIVISION=================================
@@ -1446,9 +1461,9 @@ C-----------COMMON AREAS.
       COMMON /evolp2/ dt9,dhv,dphie,dydt             !Evolution parameters.
       COMMON /evolp3/ t90,hv0,phie0,y0               !Evolution parameters.
       COMMON /ttime/   t,dt,dlt9dt                   !Time varying parameters.
-      COMMON /thermcb/  thm(14),hubcst                 !Dynamic variables.
+      COMMON /thermcb/  thm(14),hubcst               !Dynamic variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
-      COMMON /lncoef/ a,b,yx                         !Linear eqn coefficients.
+      COMMON /lncoef/ a,bkevin,yx                    !Linear eqn coefficients.
       COMMON /flags/  ltime,is,ip,it,mbad            !Flags,counters.
       COMMON /runopt/ irun,isize,jsize               !Run option.
 
@@ -1489,7 +1504,7 @@ C----------ENERGY DENSITIES.
 
 C----------COMPONENTS OF MATRIX EQUATION.
       DOUBLE PRECISION a(nnuc,nnuc)!Relates y(t-dt) to y(t).
-      REAL    b(nnuc)              !Contains y0 in inverse order.
+      REAL    bkevin(nnuc)         !Contains y0 in inverse order.
       REAL    yx(nnuc)             !yy in reverse order.
 
 C----------COUNTERS AND FLAGS.
@@ -1688,7 +1703,7 @@ C40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
           END IF
         END DO
         a(i,i) = 1.d0 + a(i,i)     !Add identity matrix to a-matrix.
-        b(i1)  = y0(i)             !Initial abundances.
+        bkevin(i1)  = y0(i)        !Initial abundances.
       END DO
 
 C50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -1763,7 +1778,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /lncoef/ a,b,y                          !Lin eqn coefficients. 
+      COMMON /lncoef/ a,bkevin,y                     !Lin eqn coefficients. 
       COMMON /flags/  ltime,is,ip,it,mbad            !Flags, counters.
       COMMON /runopt/ irun,isize,jsize               !Run options.
 
@@ -1775,7 +1790,7 @@ C----------COMPUTATION PARAMETER.
 
 C----------MATRIX COEFFICIENTS FOR LINEAR EQUATION.
       DOUBLE PRECISION a(nnuc,nnuc)!Coefficient array.
-      REAL    b(nnuc)              !Right-hand vector w/o manipulation.
+      REAL    bkevin(nnuc)         !Right-hand vector w/o manipulation.
       REAL    y(nnuc)              !Solution vector.
 
 C----------COUNTERS AND FLAGS.
@@ -1808,7 +1823,7 @@ C..........SET COUNTERS TO ZERO.
       mbad = 0                     !No errors yet.
 C..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
       DO i = 1,isize
-        x(i) = b(i)                !Right-hand vector.
+        x(i) = bkevin(i)           !Right-hand vector.
         y(i) = 0.                  !Solution vector.
       END DO
 C..........SAVE MATRIX.
@@ -1871,7 +1886,7 @@ C..........FIND ERROR IN RIGHT-HAND VECTOR.
                   DO k = 1,isize
                     r = r + a0(j,k)*y(k) !Left side with approximate solution.
                   END DO
-                  x(j) = b(j) - r  !Subtract difference from right side.
+                  x(j) = bkevin(j) - r  !Subtract difference from right side.
                 END DO
 C..........OPERATE ON RIGHT-HAND VECTOR.
                 DO j = 1,isize-1

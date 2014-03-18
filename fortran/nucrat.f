@@ -91,7 +91,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /rates/  f,r                            !Reaction rates.
-      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi        !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c(3),cosmo,xi,b      !Model parameters.
       COMMON /thermcb/  thm,hubcst                     !Dynamic variables.
       COMMON /nupar/  t9mev,tnmev,tnu,cnorm,nu,rhonu !Integration parameters.
 
@@ -136,10 +136,10 @@ C===========================PROCEDURE DIVISION==================================
 
 C10--------COMPUTE WEAK REACTION RATES (NONDEGENERATE)--------------------------
 
-      IF (xi(1).eq.0.) THEN
-        f(1)  = thm(13)/tau        !Forward rate for weak np reaction.
-        r(1)  = thm(14)/tau        !Reverse rate for weak np reaction.
-      ELSE
+C      IF (xi(1).eq.0.) THEN
+C        f(1)  = thm(13)/tau        !Forward rate for weak np reaction.
+C        r(1)  = thm(14)/tau        !Reverse rate for weak np reaction.
+C      ELSE
 
 C20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 
@@ -170,7 +170,7 @@ C..........EVALUATE THE INTEGRALS NUMERICALLY.
         part4 = xintd(1.,uplim4,func4,iter)
         f(1) = part1 + part2       !Add 2 integrals to get forward rate.
         r(1) = part3 + part4       !Add 2 integrals to get reverse rate.
-      END IF !(xi(1).eq.0.)
+C      END IF !(xi(1).eq.0.)
       RETURN
 
 C----------REFERENCES-----------------------------------------------------------
@@ -981,7 +981,7 @@ C----------DEFAULT COMPUTATION PARAMETERS.
       DATA ytmin0 /1.00e-25/       !Default smallest abundances allowed.
       DATA inc0   /30/             !Default accumulation increment.
 C-----------DEFAULT MODEL PARAMETERS.
-      DATA c0     /1.00,885.7,3.0/ !Default variation of 3 parameters.
+      DATA c0     /1.00,880.1,3.0/ !Default variation of 3 parameters.
       DATA cosmo0 /0.00/           !Default cosmological constant.
       DATA xi0    /0.00,0.00,0.00/ !Default neutrino degeneracy parameter.
 

@@ -1,0 +1,7 @@
+This is an attempt convert the original fortran BBN code downloaded from
+http://www-thphys.physics.ox.ac.uk/people/SubirSarkar/bbn.html
+and converted to c code and then benchmarked against the old code.
+
+Kevin Peter Hickerson
+
+

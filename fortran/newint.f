@@ -45,13 +45,13 @@ C----------COMMON AREAS.
       COMMON /compr0/ cy0,ct0,t9i0,t9f0,ytmin0,inc0  !Default comp parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
       COMMON /modpr0/ c0,cosmo0,xi0                  !Default model parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
       COMMON /varpr0/ dt0,eta0                       !Default variationl params.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /ttime/   t,dt,dlt9dt                   !Time variables.
       COMMON /thermcb/  thm,hubcst                   !Dynamic variables.
       COMMON /endens/ rhone0,rhob0,rhob,rnb          !Energy densities.
-      COMMON /lncoef/ a,b,yx                         !Linear eqn coefficients.
+      COMMON /lncoef/ a,b_,yx                         !Linear eqn coefficients.
       COMMON /nucdat/ am,zm,dm                       !Nuclide data.
       COMMON /besselcb/ bl1,bl2,bl3,bl4,bl5,           !Eval function bl(z).
      |                bm1,bm2,bm3,bm4,bm5,           !Eval function bm(z).
@@ -132,6 +132,7 @@ C----------EARLY UNIVERSE MODEL PARAMETERS.
      |                             !xi(1) is e neutrino degeneracy parameter.
      |                             !xi(2) is m neutrino degeneracy parameter.
      |                             !xi(3) is t neutrino degeneracy parameter.
+      REAL    b                    !Fierz parameter
 
 C----------DEFAULT VARIATIONAL PARAMETERS.
       REAL    dt0                  !Default initial time step.
@@ -158,7 +159,7 @@ C----------ENERGY DENSITIES.
 
 C----------MATRIX COEFFICIENTS FOR LINEAR EQUATION.
       DOUBLE PRECISION a(nnuc,nnuc)!Relates y(t+dt) to y(t).
-      REAL    b(nnuc)              !Contains y0 in inverse order.
+      REAL    b_(nnuc)              !Contains y0 in inverse order.
       REAL    yx(nnuc)             !yy in reverse order.
 
 C----------NUCLIDE DATA.
