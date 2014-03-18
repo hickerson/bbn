@@ -8,3 +8,9 @@ fable:
 
 noc:
 	rm -rf *.c
+
+install-fable:
+	wget http://cci.lbl.gov/fable_bundles/current/fable_bundle.selfx
+	perl fable_bundle.selfx
+	source fable_build/setpaths.sh
+	fable.cout --example
