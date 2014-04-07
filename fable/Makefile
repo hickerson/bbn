@@ -1,5 +1,6 @@
-FORTRAN=new123.f nuccom.f newint.f nucrat.f
+FABLEFILES=new123.f newint.f nuccom.f nucrat.f
 FABLEFLAGS=--namespace=bbn --no-fem-do-safe --separate-cmn-hpp
+FABLEOPTS=--common-equivalence-simple
 
 all: c
 
@@ -8,7 +9,7 @@ f2c:
 
 fable:
 	. fable_build/setpaths.sh
-	fable.cout $(FORTRAN) $(FABLEFLAGS) > bbn.cpp
+	fable.cout $(FABLEFILES) $(FABLEFLAGS) > bbn.cpp
 	. ./purify_fable.sh
 
 noc:
@@ -18,6 +19,9 @@ install-fable:
 	wget http://cci.lbl.gov/fable_bundles/current/fable_bundle.selfx
 	perl fable_bundle.selfx
 	. ./fable_build/
+
+bbn:
+	g++ -o bbn -Ifable_sources/fable bbn.cpp
 
 comments:
 	--top-procedure=IDENTIFIER
