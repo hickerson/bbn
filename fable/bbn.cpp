@@ -1,6 +1,6 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
-#include "bbn.hpp"
+#include "cmn.hpp"
 
 namespace bbn {
 
@@ -23,6 +23,13 @@ bn(...)
 {
   throw std::runtime_error(
     "Missing function implementation: bn");
+}
+
+void
+qvary(...)
+{
+  throw std::runtime_error(
+    "Missing function implementation: qvary");
 }
 
 //
@@ -582,7 +589,7 @@ setcom(
   //
   //----------COMMON AREAS.
   //Default comp param
-  //omputation parame
+  //Computation parame
   //Default variationl
   //Variational parame
   //
@@ -653,37 +660,37 @@ setcom(
   }
   //Improper input or <RETURN>.
   goto statement_300;
-  //hange time step limiting const 1 se
+  //Change time step limiting const 1 se
   statement_210:
   write(iw, "(' ','Enter value for time step limiting constant 1: ',$)");
   read(ir, star), cy;
   goto statement_400;
-  //hange time step limiting const 2 se
+  //Change time step limiting const 2 se
   statement_220:
   write(iw, "(' ','Enter value for time step limiting constant 2: ',$)");
   read(ir, star), ct;
   goto statement_400;
-  //hange initial time step section.
+  //Change initial time step section.
   statement_230:
   write(iw, "(' ','Enter value for initial time step: ',$)");
   read(ir, star), dt1;
   goto statement_400;
-  //hange initial temperature section.
+  //Change initial temperature section.
   statement_240:
   write(iw, "(' ','Enter value for initial temperature: ',$)");
   read(ir, star), t9i;
   goto statement_400;
-  //hange final temperature section.
+  //Change final temperature section.
   statement_250:
   write(iw, "(' ','Enter value for final temperature: ',$)");
   read(ir, star), t9f;
   goto statement_400;
-  //hange smallest abundances allowed s
+  //Change smallest abundances allowed s
   statement_260:
   write(iw, "(' ','Enter value for smallest abundances allowed: ',$)");
   read(ir, star), ytmin;
   goto statement_400;
-  //hange accumulation increment sectio
+  //Change accumulation increment sectio
   statement_270:
   write(iw, "(' ','Enter value for accumulation increment: ',$)");
   read(ir, star), inc;
@@ -719,11 +726,6 @@ setcom(
   //
 }
 
-struct setmod_save
-{
-  fem::variant_bindings modpr_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -731,32 +733,15 @@ void
 setmod(
   common& cmn)
 {
-  FEM_CMN_SVE(setmod);
   common_read read(cmn);
   common_write write(cmn);
   arr_cref<float> c0(cmn.c0, dimension(3));
   arr_cref<float> xi0(cmn.xi0, dimension(3));
+  arr_ref<float> c(cmn.c, dimension(3));
+  float& cosmo = cmn.cosmo;
+  arr_ref<float> xi(cmn.xi, dimension(3));
   float& eta1 = cmn.eta1;
   //
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  arr_ref<float> c(modpr.bind<float>(), dimension(3));
-  float& cosmo = modpr.bind<float>();
-  arr_ref<float> xi(modpr.bind<float>(), dimension(3));
   const int iw = 6;
   const int ir = 5;
   int inum = 0;
@@ -789,7 +774,7 @@ setmod(
   //c(1) is variation of gravitational c
   //c(2) is neutron lifetime (sec).
   //c(3) is number of neutrino species.
-  //osmological constant.
+  //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
   //----------DEFAULT VARIATIONAL PARAMETERS.
@@ -842,43 +827,43 @@ setmod(
   }
   //Improper input or <RETURN>.
   goto statement_300;
-  //hange gravitational constant sectio
+  //Change gravitational constant sectio
   statement_210:
   write(iw,
     "(' ','Enter value for variation of gravitational ','constant: ',$)");
   read(ir, star), c(1);
   goto statement_400;
-  //hange neutron lifetime section.
+  //Change neutron lifetime section.
   statement_220:
   write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
   read(ir, star), c(2);
   goto statement_400;
-  //hange number of neutrino species se
+  //Change number of neutrino species se
   statement_230:
   write(iw, "(' ','Enter value for number of neutrino species: ',$)");
   read(ir, star), c(3);
   goto statement_400;
-  //hange baryon-to-photon ratio sectio
+  //Change baryon-to-photon ratio sectio
   statement_240:
   write(iw, "(' ','Enter value for baryon-to-photon ratio: ',$)");
   read(ir, star), eta1;
   goto statement_400;
-  //hange cosmological constant section
+  //Change cosmological constant section
   statement_250:
   write(iw, "(' ','Enter value for cosmological constant: ',$)");
   read(ir, star), cosmo;
   goto statement_400;
-  //hange neutrino degeneracy section.
+  //Change neutrino degeneracy section.
   statement_260:
   write(iw, "(' ','Enter value for xi electron: ',$)");
   read(ir, star), xi(1);
   goto statement_400;
-  //hange neutrino degeneracy section.
+  //Change neutrino degeneracy section.
   statement_270:
   write(iw, "(' ','Enter value for xi muon: ',$)");
   read(ir, star), xi(2);
   goto statement_400;
-  //hange neutrino degeneracy section.
+  //Change neutrino degeneracy section.
   statement_280:
   write(iw, "(' ','Enter value for xi tauon: ',$)");
   read(ir, star), xi(3);
@@ -916,16 +901,11 @@ setmod(
 
 struct check_save
 {
-  fem::variant_bindings besselcb_bindings;
-  fem::variant_bindings evolp1_bindings;
-  fem::variant_bindings evolp2_bindings;
-  fem::variant_bindings evolp3_bindings;
   fem::variant_bindings lncoef_bindings;
-  fem::variant_bindings modpr_bindings;
   fem::variant_bindings rates_bindings;
 };
 
-//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder unix f77):
 //     -------------------------------
 //     Programme renamed from nucint.for to newint.f
@@ -949,6 +929,8 @@ check(
 {
   FEM_CMN_SVE(check);
   common_write write(cmn);
+  // COMMON modpr
+  arr_cref<float> c(cmn.c, dimension(3));
   // COMMON flags
   int& it = cmn.it;
   // COMMON checkcb
@@ -961,12 +943,7 @@ check(
   //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  common_variant evolp2(cmn.common_evolp2, sve.evolp2_bindings);
-  common_variant evolp3(cmn.common_evolp3, sve.evolp3_bindings);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
   common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
-  common_variant besselcb(cmn.common_besselcb, sve.besselcb_bindings);
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -975,100 +952,18 @@ check(
       rates.allocate(), f, r;
     }
     {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
-    {
-      mbr<float> dt9;
-      mbr<float> dhv;
-      mbr<float> dphie;
-      mbr<float> dydt(dimension(nnuc));
-      evolp2.allocate(), dt9, dhv, dphie, dydt;
-    }
-    {
-      mbr<float> t90;
-      mbr<float> hv0;
-      mbr<float> phie0;
-      mbr<float> y0(dimension(nnuc));
-      evolp3.allocate(), t90, hv0, phie0, y0;
-    }
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-    {
       mbr<double> a(dimension(nnuc, nnuc));
       mbr<float> b(dimension(nnuc));
       mbr<float> yx(dimension(nnuc));
       lncoef.allocate(), a, b, yx;
     }
-    {
-      mbr<float> bl1;
-      mbr<float> bl2;
-      mbr<float> bl3;
-      mbr<float> bl4;
-      mbr<float> bl5;
-      mbr<float> bm1;
-      mbr<float> bm2;
-      mbr<float> bm3;
-      mbr<float> bm4;
-      mbr<float> bm5;
-      mbr<float> bn1;
-      mbr<float> bn2;
-      mbr<float> bn3;
-      mbr<float> bn4;
-      mbr<float> bn5;
-      besselcb.allocate(), bl1, bl2, bl3, bl4, bl5, bm1, bm2, bm3,
-        bm4, bm5, bn1, bn2, bn3, bn4, bn5;
-    }
   }
   /* arr_cref<float> f( */ rates.bind<float>() /* , dimension(nrec)) */ ;
   /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-  /* float const& t9 */ evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  /* arr_cref<float> y( */ evolp1.bind<float>() /* , dimension(nnuc)) */ ;
-  /* float const& dt9 */ evolp2.bind<float>();
-  /* float const& dhv */ evolp2.bind<float>();
-  /* float const& dphie */ evolp2.bind<float>();
-  /* arr_cref<float> dydt( */ evolp2.bind<float>() /* , dimension(nnuc)) */ ;
-  /* float const& t90 */ evolp3.bind<float>();
-  /* float const& hv0 */ evolp3.bind<float>();
-  /* float const& phie0 */ evolp3.bind<float>();
-  /* arr_cref<float> y0( */ evolp3.bind<float>() /* , dimension(nnuc)) */ ;
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  arr_cref<float> c(modpr.bind<float>(), dimension(3));
-  /* float const& cosmo */ modpr.bind<float>();
-  /* arr_cref<float> xi( */ modpr.bind<float>() /* , dimension(3)) */ ;
   /* arr_cref<double, 2> a( */ lncoef.bind<double>() /* , dimension(nnuc,
     nnuc)) */ ;
   /* arr_cref<float> b( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
   /* arr_cref<float> yx( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
-  /* float const& bl1 */ besselcb.bind<float>();
-  /* float const& bl2 */ besselcb.bind<float>();
-  /* float const& bl3 */ besselcb.bind<float>();
-  /* float const& bl4 */ besselcb.bind<float>();
-  /* float const& bl5 */ besselcb.bind<float>();
-  /* float const& bm1 */ besselcb.bind<float>();
-  /* float const& bm2 */ besselcb.bind<float>();
-  /* float const& bm3 */ besselcb.bind<float>();
-  /* float const& bm4 */ besselcb.bind<float>();
-  /* float const& bm5 */ besselcb.bind<float>();
-  /* float const& bn1 */ besselcb.bind<float>();
-  /* float const& bn2 */ besselcb.bind<float>();
-  /* float const& bn3 */ besselcb.bind<float>();
-  /* float const& bn4 */ besselcb.bind<float>();
-  /* float const& bn5 */ besselcb.bind<float>();
   //
   //----------REMARKS.
   //     This is an interface subroutine,
@@ -1091,7 +986,7 @@ check(
   //Reaction rates.
   //Evolution paramete
   //Default comp param
-  //omputation parame
+  //Computation parame
   //Default model para
   //Model parameters.
   //Default variationl
@@ -1104,9 +999,9 @@ check(
   //Eval function bl
   //Eval function bm(z
   //Eval function bn(z
-  //oefficients K.
+  //Coefficients K.
   //Flags,counters.
-  //omputation locati
+  //Computation locati
   //Output data.
   //Neutrino parameter
   //Run options.
@@ -1133,14 +1028,14 @@ check(
   //----------EVOLUTION PARAMETERS.
   //Temperature of photons (units of 10*
   //Defined by hv = M(atomic)n(baryon)/t
-  //hemical potential of electron.
+  //Chemical potential of electron.
   //Relative number abundances.
   //
   //----------EVOLUTION PARAMETERS (DERIVATIVES).
-  //hange in temperature.
-  //hange in hv.
-  //hange in chemical potential.
-  //hange in relative number abundances
+  //Change in temperature.
+  //Change in hv.
+  //Change in chemical potential.
+  //Change in relative number abundances
   //
   //----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
   //Rel # abundances at end of 1st R-K l
@@ -1173,7 +1068,7 @@ check(
   //c(1) is variation of gravitational c
   //c(2) is neutron half-life (min).
   //c(3) is number of neutrino species.
-  //osmological constant.
+  //Cosmological constant.
   //Neutrino degeneracy parameters.
   //xi(1) is e neutrino degeneracy param
   //xi(2) is m neutrino degeneracy param
@@ -1204,12 +1099,12 @@ check(
   //
   //----------MATRIX COEFFICIENTS FOR LINEAR EQUATION.
   //Relates y(t+dt) to y(t).
-  //ontains y0 in inverse order.
+  //Contains y0 in inverse order.
   //yy in reverse order.
   //
   //----------NUCLIDE DATA.
   //Atomic number of nuclide.
-  //harge of nuclide.
+  //Charge of nuclide.
   //Mass excess of nuclide.
   //
   //----------EVALUATION OF FUNCTIONS bl,bm,bn.
@@ -1320,7 +1215,7 @@ ex(
   //
   //In danger of overflow.
   if (x > 88.029f) {
-    return_value = fem::exp(88.029f);
+    return_value = exp(88.029f);
   }
   else {
     //In danger of underflow.
@@ -1329,7 +1224,7 @@ ex(
       //Value of x in allowable range.
     }
     else {
-      return_value = fem::exp(x);
+      return_value = exp(x);
     }
   }
   return return_value;
@@ -1442,7 +1337,7 @@ knux(
   //     k-nu(z).
   //
   //----------COMMON AREAS.
-  //oefficients K.
+  //Coefficients K.
   //
   //===========================DECLARATION DIVISION================================
   //
@@ -1490,11 +1385,11 @@ knux(
     bi1 = ci1(1);
     bk0 = ck0(1);
     bk1 = ck1(1);
-    FEM_DO(i, 2, 7) {
-      bi0 += ci0(i) * fem::pow(t, (2 * (i - 1)));
-      bi1 += ci1(i) * fem::pow(t, (2 * (i - 1)));
-      bk0 += ck0(i) * fem::pow(y, (2 * (i - 1)));
-      bk1 += ck1(i) * fem::pow(y, (2 * (i - 1)));
+    FEM_DO_SAFE(i, 2, 7) {
+      bi0 += ci0(i) * pow(t, (2 * (i - 1)));
+      bi1 += ci1(i) * pow(t, (2 * (i - 1)));
+      bk0 += ck0(i) * pow(y, (2 * (i - 1)));
+      bk1 += ck1(i) * pow(y, (2 * (i - 1)));
     }
     //..........VALUES FOR k0(z) and k1(z).
     bk0 += -coeff * bi0;
@@ -1504,13 +1399,13 @@ knux(
   else {
     //..........COMPUTE FACTORS.
     y = (2.0f / z);
-    coeff = (ex(-z) / fem::sqrt(z));
+    coeff = (ex(-z) / sqrt(z));
     //..........VALUES FOR k0(z) and k1(z).
     bk0 = c0(1);
     bk1 = c1(1);
-    FEM_DO(i, 2, 7) {
-      bk0 += c0(i) * fem::pow(y, (i - 1));
-      bk1 += c1(i) * fem::pow(y, (i - 1));
+    FEM_DO_SAFE(i, 2, 7) {
+      bk0 += c0(i) * pow(y, (i - 1));
+      bk1 += c1(i) * pow(y, (i - 1));
     }
     bk0 = coeff * bk0;
     bk1 = coeff * bk1;
@@ -1538,11 +1433,6 @@ knux(
   //
 }
 
-struct bessel_save
-{
-  fem::variant_bindings besselcb_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -1551,363 +1441,9 @@ bessel(
   common& cmn,
   float const& z)
 {
-  FEM_CMN_SVE(bessel);
   // COMMON kays
   float& bk2 = cmn.bk2;
   //
-  common_variant besselcb(cmn.common_besselcb, sve.besselcb_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> bl1;
-      mbr<float> blz(dimension(5));
-      mbr<float> bl2;
-      mbr<float> bl3;
-      mbr<float> bl4;
-      mbr<float> bl5;
-      mbr<float> bl2;
-      mbr<float> blz(dimension(5));
-      mbr<float> bl1;
-      mbr<float> bl3;
-      mbr<float> bl4;
-      mbr<float> bl5;
-      mbr<float> bl3;
-      mbr<float> blz(dimension(5));
-      mbr<float> bl1;
-      mbr<float> bl2;
-      mbr<float> bl4;
-      mbr<float> bl5;
-      mbr<float> bl4;
-      mbr<float> blz(dimension(5));
-      mbr<float> bl1;
-      mbr<float> bl2;
-      mbr<float> bl3;
-      mbr<float> bl5;
-      mbr<float> bl5;
-      mbr<float> blz(dimension(5));
-      mbr<float> bl1;
-      mbr<float> bl2;
-      mbr<float> bl3;
-      mbr<float> bl4;
-      mbr<float> bm1;
-      mbr<float> bmz(dimension(5));
-      mbr<float> bm2;
-      mbr<float> bm3;
-      mbr<float> bm4;
-      mbr<float> bm5;
-      mbr<float> bm2;
-      mbr<float> bmz(dimension(5));
-      mbr<float> bm1;
-      mbr<float> bm3;
-      mbr<float> bm4;
-      mbr<float> bm5;
-      mbr<float> bm3;
-      mbr<float> bmz(dimension(5));
-      mbr<float> bm1;
-      mbr<float> bm2;
-      mbr<float> bm4;
-      mbr<float> bm5;
-      mbr<float> bm4;
-      mbr<float> bmz(dimension(5));
-      mbr<float> bm1;
-      mbr<float> bm2;
-      mbr<float> bm3;
-      mbr<float> bm5;
-      mbr<float> bm5;
-      mbr<float> bmz(dimension(5));
-      mbr<float> bm1;
-      mbr<float> bm2;
-      mbr<float> bm3;
-      mbr<float> bm4;
-      mbr<float> bn1;
-      mbr<float> bnz(dimension(5));
-      mbr<float> bn2;
-      mbr<float> bn3;
-      mbr<float> bn4;
-      mbr<float> bn5;
-      mbr<float> bn2;
-      mbr<float> bnz(dimension(5));
-      mbr<float> bn1;
-      mbr<float> bn3;
-      mbr<float> bn4;
-      mbr<float> bn5;
-      mbr<float> bn3;
-      mbr<float> bnz(dimension(5));
-      mbr<float> bn1;
-      mbr<float> bn2;
-      mbr<float> bn4;
-      mbr<float> bn5;
-      mbr<float> bn4;
-      mbr<float> bnz(dimension(5));
-      mbr<float> bn1;
-      mbr<float> bn2;
-      mbr<float> bn3;
-      mbr<float> bn5;
-      mbr<float> bn5;
-      mbr<float> bnz(dimension(5));
-      mbr<float> bn1;
-      mbr<float> bn2;
-      mbr<float> bn3;
-      mbr<float> bn4;
-      besselcb.allocate(),
-        equivalence(bl1, blz, bl2, bl3, bl4, bl5)
-          .align<2>(arr_index(1))
-           .with<1>()
-          .align<2>(arr_index(2))
-           .with<3>()
-          .align<2>(arr_index(3))
-           .with<4>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bl2, blz, bl1, bl3, bl4, bl5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<1>()
-          .align<2>(arr_index(3))
-           .with<4>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bl3, blz, bl1, bl2, bl4, bl5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<1>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bl4, blz, bl1, bl2, bl3, bl5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<5>()
-          .align<2>(arr_index(4))
-           .with<1>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bl5, blz, bl1, bl2, bl3, bl4)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<5>()
-          .align<2>(arr_index(4))
-           .with<6>()
-          .align<2>(arr_index(5))
-           .with<1>(),
-        equivalence(bm1, bmz, bm2, bm3, bm4, bm5)
-          .align<2>(arr_index(1))
-           .with<1>()
-          .align<2>(arr_index(2))
-           .with<3>()
-          .align<2>(arr_index(3))
-           .with<4>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bm2, bmz, bm1, bm3, bm4, bm5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<1>()
-          .align<2>(arr_index(3))
-           .with<4>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bm3, bmz, bm1, bm2, bm4, bm5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<1>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bm4, bmz, bm1, bm2, bm3, bm5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<5>()
-          .align<2>(arr_index(4))
-           .with<1>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bm5, bmz, bm1, bm2, bm3, bm4)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<5>()
-          .align<2>(arr_index(4))
-           .with<6>()
-          .align<2>(arr_index(5))
-           .with<1>(),
-        equivalence(bn1, bnz, bn2, bn3, bn4, bn5)
-          .align<2>(arr_index(1))
-           .with<1>()
-          .align<2>(arr_index(2))
-           .with<3>()
-          .align<2>(arr_index(3))
-           .with<4>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bn2, bnz, bn1, bn3, bn4, bn5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<1>()
-          .align<2>(arr_index(3))
-           .with<4>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bn3, bnz, bn1, bn2, bn4, bn5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<1>()
-          .align<2>(arr_index(4))
-           .with<5>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bn4, bnz, bn1, bn2, bn3, bn5)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<5>()
-          .align<2>(arr_index(4))
-           .with<1>()
-          .align<2>(arr_index(5))
-           .with<6>(),
-        equivalence(bn5, bnz, bn1, bn2, bn3, bn4)
-          .align<2>(arr_index(1))
-           .with<3>()
-          .align<2>(arr_index(2))
-           .with<4>()
-          .align<2>(arr_index(3))
-           .with<5>()
-          .align<2>(arr_index(4))
-           .with<6>()
-          .align<2>(arr_index(5))
-           .with<1>()
-      ;
-    }
-  }
-  /* float& bl1 */ besselcb.bind<float>();
-  arr_ref<float> blz(besselcb.bind<float>(), dimension(5));
-  /* float& bl2 */ besselcb.bind<float>();
-  /* float& bl3 */ besselcb.bind<float>();
-  /* float& bl4 */ besselcb.bind<float>();
-  /* float& bl5 */ besselcb.bind<float>();
-  /* float& bl2 */ besselcb.bind<float>();
-  arr_ref<float> blz(besselcb.bind<float>(), dimension(5));
-  /* float& bl1 */ besselcb.bind<float>();
-  /* float& bl3 */ besselcb.bind<float>();
-  /* float& bl4 */ besselcb.bind<float>();
-  /* float& bl5 */ besselcb.bind<float>();
-  /* float& bl3 */ besselcb.bind<float>();
-  arr_ref<float> blz(besselcb.bind<float>(), dimension(5));
-  /* float& bl1 */ besselcb.bind<float>();
-  /* float& bl2 */ besselcb.bind<float>();
-  /* float& bl4 */ besselcb.bind<float>();
-  /* float& bl5 */ besselcb.bind<float>();
-  /* float& bl4 */ besselcb.bind<float>();
-  arr_ref<float> blz(besselcb.bind<float>(), dimension(5));
-  /* float& bl1 */ besselcb.bind<float>();
-  /* float& bl2 */ besselcb.bind<float>();
-  /* float& bl3 */ besselcb.bind<float>();
-  /* float& bl5 */ besselcb.bind<float>();
-  /* float& bl5 */ besselcb.bind<float>();
-  arr_ref<float> blz(besselcb.bind<float>(), dimension(5));
-  /* float& bl1 */ besselcb.bind<float>();
-  /* float& bl2 */ besselcb.bind<float>();
-  /* float& bl3 */ besselcb.bind<float>();
-  /* float& bl4 */ besselcb.bind<float>();
-  /* float& bm1 */ besselcb.bind<float>();
-  arr_ref<float> bmz(besselcb.bind<float>(), dimension(5));
-  /* float& bm2 */ besselcb.bind<float>();
-  /* float& bm3 */ besselcb.bind<float>();
-  /* float& bm4 */ besselcb.bind<float>();
-  /* float& bm5 */ besselcb.bind<float>();
-  /* float& bm2 */ besselcb.bind<float>();
-  arr_ref<float> bmz(besselcb.bind<float>(), dimension(5));
-  /* float& bm1 */ besselcb.bind<float>();
-  /* float& bm3 */ besselcb.bind<float>();
-  /* float& bm4 */ besselcb.bind<float>();
-  /* float& bm5 */ besselcb.bind<float>();
-  /* float& bm3 */ besselcb.bind<float>();
-  arr_ref<float> bmz(besselcb.bind<float>(), dimension(5));
-  /* float& bm1 */ besselcb.bind<float>();
-  /* float& bm2 */ besselcb.bind<float>();
-  /* float& bm4 */ besselcb.bind<float>();
-  /* float& bm5 */ besselcb.bind<float>();
-  /* float& bm4 */ besselcb.bind<float>();
-  arr_ref<float> bmz(besselcb.bind<float>(), dimension(5));
-  /* float& bm1 */ besselcb.bind<float>();
-  /* float& bm2 */ besselcb.bind<float>();
-  /* float& bm3 */ besselcb.bind<float>();
-  /* float& bm5 */ besselcb.bind<float>();
-  /* float& bm5 */ besselcb.bind<float>();
-  arr_ref<float> bmz(besselcb.bind<float>(), dimension(5));
-  /* float& bm1 */ besselcb.bind<float>();
-  /* float& bm2 */ besselcb.bind<float>();
-  /* float& bm3 */ besselcb.bind<float>();
-  /* float& bm4 */ besselcb.bind<float>();
-  /* float& bn1 */ besselcb.bind<float>();
-  arr_ref<float> bnz(besselcb.bind<float>(), dimension(5));
-  /* float& bn2 */ besselcb.bind<float>();
-  /* float& bn3 */ besselcb.bind<float>();
-  /* float& bn4 */ besselcb.bind<float>();
-  /* float& bn5 */ besselcb.bind<float>();
-  /* float& bn2 */ besselcb.bind<float>();
-  arr_ref<float> bnz(besselcb.bind<float>(), dimension(5));
-  /* float& bn1 */ besselcb.bind<float>();
-  /* float& bn3 */ besselcb.bind<float>();
-  /* float& bn4 */ besselcb.bind<float>();
-  /* float& bn5 */ besselcb.bind<float>();
-  /* float& bn3 */ besselcb.bind<float>();
-  arr_ref<float> bnz(besselcb.bind<float>(), dimension(5));
-  /* float& bn1 */ besselcb.bind<float>();
-  /* float& bn2 */ besselcb.bind<float>();
-  /* float& bn4 */ besselcb.bind<float>();
-  /* float& bn5 */ besselcb.bind<float>();
-  /* float& bn4 */ besselcb.bind<float>();
-  arr_ref<float> bnz(besselcb.bind<float>(), dimension(5));
-  /* float& bn1 */ besselcb.bind<float>();
-  /* float& bn2 */ besselcb.bind<float>();
-  /* float& bn3 */ besselcb.bind<float>();
-  /* float& bn5 */ besselcb.bind<float>();
-  /* float& bn5 */ besselcb.bind<float>();
-  arr_ref<float> bnz(besselcb.bind<float>(), dimension(5));
-  /* float& bn1 */ besselcb.bind<float>();
-  /* float& bn2 */ besselcb.bind<float>();
-  /* float& bn3 */ besselcb.bind<float>();
-  /* float& bn4 */ besselcb.bind<float>();
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] start, therm
@@ -1921,7 +1457,7 @@ bessel(
   //Eval function bl(z
   //Eval function bm(z
   //Eval function bn(z
-  //oefficients K.
+  //Coefficients K.
   //
   //==========================DECLARATION DIVISION=================================
   //
@@ -1937,6 +1473,12 @@ bessel(
   //Multiples of z.
   //
   //----------EQUIVALENCE STATEMENTS.
+  //     EQUIVALENCE (blz(1),bl1),(blz(2),bl2),(blz(3),bl3),(blz(4),bl4),
+  //    |            (blz(5),bl5)
+  //     EQUIVALENCE (bmz(1),bm1),(bmz(2),bm2),(bmz(3),bm3),(bmz(4),bm4),
+  //    |            (bmz(5),bm5)
+  //     EQUIVALENCE (bnz(1),bn1),(bnz(2),bn2),(bnz(3),bn3),(bnz(4),bn4),
+  //    |            (bnz(5),bn5)
   //
   //===========================PROCEDURE DIVISION==================================
   //
@@ -1953,7 +1495,10 @@ bessel(
   //
   int i = 0;
   float r = 0;
-  FEM_DO(i, 1, 5) {
+  arr_1d<5, float> blz(fem::fill0);
+  arr_1d<5, float> bmz(fem::fill0);
+  arr_1d<5, float> bnz(fem::fill0);
+  FEM_DO_SAFE(i, 1, 5) {
     //Multiples of z.
     r = i * z;
     //Get k0(r),k1(r),k2(r),k3(r),k4(r),k(
@@ -1973,7 +1518,7 @@ struct rate0_save
   fem::variant_bindings rates_bindings;
 };
 
-//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder DEC unix f77):
 //     -----------------------------------
 //     COMMON /therm/ -> COMMON /thermcb/
@@ -2059,11 +1604,6 @@ rate0(
   //
 }
 
-struct func1_save
-{
-  fem::variant_bindings modpr_bindings;
-};
-
 typedef float (*func1_function_pointer)(common&, float const&);
 
 //
@@ -2080,26 +1620,9 @@ func1(
   float const& x)
 {
   float return_value = 0;
-  FEM_CMN_SVE(func1);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
+  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -2136,16 +1659,11 @@ func1(
   else {
     part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - xi(1)));
-    return_value = cmn.cnorm * x * fem::pow2((x - 2.531f)) * fem::pow(
-      (fem::pow2(x) - 1), .5f) * part1 * part2;
+    return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
+      (pow2(x) - 1), .5f) * part1 * part2;
   }
   return return_value;
 }
-
-struct func2_save
-{
-  fem::variant_bindings modpr_bindings;
-};
 
 typedef float (*func2_function_pointer)(common&, float const&);
 
@@ -2158,26 +1676,9 @@ func2(
   float const& x)
 {
   float return_value = 0;
-  FEM_CMN_SVE(func2);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
+  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -2214,16 +1715,11 @@ func2(
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - xi(1)));
-    return_value = cmn.cnorm * x * fem::pow2((x + 2.531f)) * fem::pow(
-      (fem::pow2(x) - 1), .5f) * part1 * part2;
+    return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
+      (pow2(x) - 1), .5f) * part1 * part2;
   }
   return return_value;
 }
-
-struct func3_save
-{
-  fem::variant_bindings modpr_bindings;
-};
 
 typedef float (*func3_function_pointer)(common&, float const&);
 
@@ -2236,26 +1732,9 @@ func3(
   float const& x)
 {
   float return_value = 0;
-  FEM_CMN_SVE(func3);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
+  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -2292,16 +1771,11 @@ func3(
   else {
     part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + xi(1)));
-    return_value = cmn.cnorm * x * fem::pow2((x + 2.531f)) * fem::pow(
-      (fem::pow2(x) - 1), .5f) * part1 * part2;
+    return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
+      (pow2(x) - 1), .5f) * part1 * part2;
   }
   return return_value;
 }
-
-struct func4_save
-{
-  fem::variant_bindings modpr_bindings;
-};
 
 typedef float (*func4_function_pointer)(common&, float const&);
 
@@ -2314,26 +1788,9 @@ func4(
   float const& x)
 {
   float return_value = 0;
-  FEM_CMN_SVE(func4);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
+  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -2370,16 +1827,11 @@ func4(
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + xi(1)));
-    return_value = cmn.cnorm * x * fem::pow2((x - 2.531f)) * fem::pow(
-      (fem::pow2(x) - 1), .5f) * part1 * part2;
+    return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
+      (pow2(x) - 1), .5f) * part1 * part2;
   }
   return return_value;
 }
-
-struct func5_save
-{
-  fem::variant_bindings modpr_bindings;
-};
 
 typedef float (*func5_function_pointer)(common&, float const&);
 
@@ -2392,26 +1844,9 @@ func5(
   float const& x)
 {
   float return_value = 0;
-  FEM_CMN_SVE(func5);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
+  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -2440,15 +1875,10 @@ func5(
   //Exponential expression with photon t
   //Exponential expression with neutrino
   //
-  return_value = 1.f / (2 * fem::pow2(3.14159f)) * fem::pow3(x) / (
-    1.f + fem::exp(x / cmn.tnu - xi(cmn.nu)));
+  return_value = 1.f / (2 * pow2(3.14159f)) * pow3(x) / (
+    1.f + exp(x / cmn.tnu - xi(cmn.nu)));
   return return_value;
 }
-
-struct func6_save
-{
-  fem::variant_bindings modpr_bindings;
-};
 
 typedef float (*func6_function_pointer)(common&, float const&);
 
@@ -2461,26 +1891,9 @@ func6(
   float const& x)
 {
   float return_value = 0;
-  FEM_CMN_SVE(func6);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
+  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -2509,8 +1922,8 @@ func6(
   //Exponential expression with photon t
   //Exponential expression with neutrino
   //
-  return_value = 1.f / (2 * fem::pow2(3.14159f)) * fem::pow3(x) / (
-    1.f + fem::exp(x / cmn.tnu + xi(cmn.nu)));
+  return_value = 1.f / (2 * pow2(3.14159f)) * pow3(x) / (
+    1.f + exp(x / cmn.tnu + xi(cmn.nu)));
   return return_value;
 }
 
@@ -2586,7 +1999,7 @@ xintd(
   //
   //----------COMPUTATION VARIABLES.
   //Size of quad interval.
-  //enter of quad interval.
+  //Center of quad interval.
   //Variables of integration.
   //Summation of terms.
   //
@@ -2616,10 +2029,10 @@ xintd(
   int npnt = 0;
   float x = 0;
   float f = 0;
-  FEM_DO(nint, 1, nq) {
-    //enter of interval.
+  FEM_DO_SAFE(nint, 1, nq) {
+    //Center of interval.
     cent = xlow + (fem::ffloat(nint) - 0.5f) * dist;
-    FEM_DO(npnt, 1, np) {
+    FEM_DO_SAFE(npnt, 1, np) {
       //Integration point.
       x = cent + 0.5f * dist * u(npnt);
       //Evaluate function x(1).
@@ -2639,7 +2052,6 @@ xintd(
 
 struct rate1_save
 {
-  fem::variant_bindings modpr_bindings;
   fem::variant_bindings rates_bindings;
 };
 
@@ -2652,6 +2064,9 @@ rate1(
   float const& tph)
 {
   FEM_CMN_SVE(rate1);
+  // COMMON modpr
+  float& tau = cmn.tau;
+  arr_cref<float> xi(cmn.xi, dimension(3));
   // COMMON thermcb
   arr_cref<float> thm(cmn.thm, dimension(14));
   // COMMON nupar
@@ -2660,7 +2075,6 @@ rate1(
   //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -2668,24 +2082,9 @@ rate1(
       mbr<float> r(dimension(nrec));
       rates.allocate(), f, r;
     }
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
-  /* float const& g */ modpr.bind<float>();
-  float const& tau = modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] start, derivs
@@ -2766,9 +2165,9 @@ rate1(
     //
     //20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
     //
-    //onvert photon temp to units of MeV.
+    //Convert photon temp to units of MeV.
     t9mev = tph * .086171f;
-    //onvert neutrino temp to units of Me
+    //Convert neutrino temp to units of Me
     tnmev = cmn.tnu * .086171f;
     //..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
     w(1) = (-(t9mev / .511f) * (-88.722f));
@@ -2820,11 +2219,6 @@ rate1(
 
 struct start_save
 {
-  fem::variant_bindings besselcb_bindings;
-  fem::variant_bindings evolp1_bindings;
-  fem::variant_bindings evolp2_bindings;
-  fem::variant_bindings evolp3_bindings;
-  fem::variant_bindings modpr_bindings;
   fem::variant_bindings rates_bindings;
 };
 
@@ -2836,6 +2230,17 @@ start(
   common& cmn)
 {
   FEM_CMN_SVE(start);
+  // COMMON evolp1
+  float& t9 = cmn.t9;
+  float& hv = cmn.hv;
+  const int nnuc = 26;
+  arr_ref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+  // COMMON evolp3
+  arr_ref<float> y0(cmn.y0, dimension(nnuc));
+  // COMMON modpr
+  float& tau = cmn.tau;
+  arr_cref<float> c(cmn.c, dimension(3));
+  arr_cref<float> xi(cmn.xi, dimension(3));
   // COMMON endens
   float& rhob0 = cmn.rhob0;
   // COMMON nupar
@@ -2844,12 +2249,6 @@ start(
   //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  const int nnuc = 26;
-  common_variant evolp2(cmn.common_evolp2, sve.evolp2_bindings);
-  common_variant evolp3(cmn.common_evolp3, sve.evolp3_bindings);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  common_variant besselcb(cmn.common_besselcb, sve.besselcb_bindings);
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -2857,91 +2256,9 @@ start(
       mbr<float> r;
       rates.allocate(), f, r;
     }
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
-    {
-      mbr<float> dt9;
-      mbr<float> dhv;
-      mbr<float> dphie;
-      mbr<float> dydt(dimension(nnuc));
-      evolp2.allocate(), dt9, dhv, dphie, dydt;
-    }
-    {
-      mbr<float> t90;
-      mbr<float> hv0;
-      mbr<float> phie0;
-      mbr<float> y0(dimension(nnuc));
-      evolp3.allocate(), t90, hv0, phie0, y0;
-    }
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-    {
-      mbr<float> bl1;
-      mbr<float> bl2;
-      mbr<float> bl3;
-      mbr<float> bl4;
-      mbr<float> bl5;
-      mbr<float> bm1;
-      mbr<float> bm2;
-      mbr<float> bm3;
-      mbr<float> bm4;
-      mbr<float> bm5;
-      mbr<float> bn1;
-      mbr<float> bn2;
-      mbr<float> bn3;
-      mbr<float> bn4;
-      mbr<float> bn5;
-      besselcb.allocate(), bl1, bl2, bl3, bl4, bl5, bm1, bm2, bm3,
-        bm4, bm5, bn1, bn2, bn3, bn4, bn5;
-    }
   }
   arr_cref<float> f(rates.bind<float>(), dimension(nrec));
   /* float const& r */ rates.bind<float>();
-  float& t9 = evolp1.bind<float>();
-  float& hv = evolp1.bind<float>();
-  float& phie = evolp1.bind<float>();
-  arr_ref<float> y(evolp1.bind<float>(), dimension(nnuc));
-  /* float const& dt9 */ evolp2.bind<float>();
-  /* float const& dhv */ evolp2.bind<float>();
-  /* float const& dphie */ evolp2.bind<float>();
-  /* arr_cref<float> dydt( */ evolp2.bind<float>() /* , dimension(nnuc)) */ ;
-  /* float const& t90 */ evolp3.bind<float>();
-  /* float const& hv0 */ evolp3.bind<float>();
-  /* float const& phie0 */ evolp3.bind<float>();
-  arr_ref<float> y0(evolp3.bind<float>(), dimension(nnuc));
-  float& g = modpr.bind<float>();
-  float& tau = modpr.bind<float>();
-  float& xnu = modpr.bind<float>();
-  arr_cref<float> c(modpr.bind<float>(), dimension(3));
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
-  float const& bl1 = besselcb.bind<float>();
-  float const& bl2 = besselcb.bind<float>();
-  float const& bl3 = besselcb.bind<float>();
-  float const& bl4 = besselcb.bind<float>();
-  float const& bl5 = besselcb.bind<float>();
-  /* float const& bm1 */ besselcb.bind<float>();
-  /* float const& bm2 */ besselcb.bind<float>();
-  /* float const& bm3 */ besselcb.bind<float>();
-  /* float const& bm4 */ besselcb.bind<float>();
-  /* float const& bm5 */ besselcb.bind<float>();
-  /* float const& bn1 */ besselcb.bind<float>();
-  /* float const& bn2 */ besselcb.bind<float>();
-  /* float const& bn3 */ besselcb.bind<float>();
-  /* float const& bn4 */ besselcb.bind<float>();
-  /* float const& bn5 */ besselcb.bind<float>();
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] driver
@@ -2960,7 +2277,7 @@ start(
   //----------COMMON AREAS.
   //Reaction rates.
   //Evolution paramete
-  //omputation parame
+  //Computation parame
   //Model parameters.
   //Variational parame
   //Time variables.
@@ -2979,7 +2296,7 @@ start(
   //----------EVOLUTION PARAMETERS.
   //Temperature (in units of 10**9 K).
   //Defined by hv = M(atomic)n(baryon)/t
-  //hemical potential of electron.
+  //Chemical potential of electron.
   //Relative number abundances.
   //
   //----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
@@ -3055,19 +2372,19 @@ start(
   tnu = t9;
   //Initial time (Ref 1).
   const float const1 = 0.09615f;
-  cmn.t = 1 / fem::pow2((const1 * t9));
+  cmn.t = 1 / pow2((const1 * t9));
   //Initial time step.
   cmn.dt = cmn.dt1;
   //..........MODEL SETTINGS.
   //Modify gravitational constant.
   const float const2 = 6.6700e-8f;
-  g = const2 * c(1);
-  //onvert n half-life (min) to lifetim
+  cmn.g = const2 * c(1);
+  //Convert n half-life (min) to lifetim
   tau = c(2);
-  //oulomb correction (Ref 2).
+  //Coulomb correction (Ref 2).
   tau = tau / 0.98f;
   //Number of neutrino species.
-  xnu = c(3);
+  cmn.xnu = c(3);
   //
   //30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
   //
@@ -3112,31 +2429,32 @@ start(
   bessel(cmn, z);
   //(Ref 4 but with final eta).
   hv = 3.3683e+4f * cmn.eta1 * 2.75f;
-  //hemical potential of electron (Ref
-  phie = hv * (1.784e-5f * y(2)) / (.5f * fem::pow3(z) * (bl1 - 2.f *
-    bl2 + 3.f * bl3 - 4.f * bl4 + 5.f * bl5));
+  //Chemical potential of electron (Ref
+  cmn.phie = hv * (1.784e-5f * y(2)) / (.5f * pow3(z) * (
+    cmn.bl1 - 2.f * cmn.bl2 + 3.f * cmn.bl3 - 4.f * cmn.bl4 + 5.f *
+    cmn.bl5));
   //Baryon density.
-  rhob0 = hv * fem::pow3(t9);
+  rhob0 = hv * pow3(t9);
   //Nonde
   if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
     //Electron neutrino density (Ref 6).
-    cmn.rhone0 = 7.366f * fem::pow4(t9);
+    cmn.rhone0 = 7.366f * pow4(t9);
   }
   //
   //50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
   //
   //(Ref 7).
-  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * fem::pow(t9,
+  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9,
     1.5f));
   y0(3) = y(3);
   int i = 0;
-  FEM_DO(i, 4, cmn.isize) {
+  FEM_DO_SAFE(i, 4, cmn.isize) {
     //Set rest to minimum abundance.
     y(i) = cmn.ytmin;
     //Init abundances at beginning of iter
     y0(i) = y(i);
   }
-  //ompute weak decay rates.
+  //Compute weak decay rates.
   rate0(cmn);
   //
   //----------REFERENCES-----------------------------------------------------------
@@ -3168,11 +2486,6 @@ start(
   //
 }
 
-struct nudens_save
-{
-  fem::variant_bindings modpr_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -3180,31 +2493,13 @@ void
 nudens(
   common& cmn)
 {
-  FEM_CMN_SVE(nudens);
+  // COMMON modpr
+  arr_cref<float> xi(cmn.xi, dimension(3));
   // COMMON nupar
   float& tnu = cmn.tnu;
   float& rhonu = cmn.rhonu;
   int& nu = cmn.nu;
   //
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] therm
@@ -3247,16 +2542,16 @@ nudens(
   const int iter = 50;
   if (fem::abs(xi(nu)) <= 0.03f) {
     //..........SMALL xi APPROXIMATION.
-    rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((tnu)) * (
-      7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(xi(
-      nu)) + (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(xi(
+    rhonu = 2.f * (pow2(3.14159f) / 30.f) * pow4((tnu)) * (
+      7.f / 8.f + (15.f / (4 * pow2(3.14159f))) * pow2(xi(
+      nu)) + (15.f / (8.f * pow4(3.14159f))) * pow4(xi(
       nu)));
   }
   else {
     if (fem::abs(xi(nu)) >= 30.f) {
       //..........LARGE xi APPROXIMATION.
-      rhonu = (fem::pow4((tnu))) / (8.f * fem::pow2(3.14159f)) *
-        fem::pow4(xi(nu)) * (1 + 12.f * 1.645f / fem::pow2(xi(nu)));
+      rhonu = (pow4((tnu))) / (8.f * pow2(3.14159f)) *
+        pow4(xi(nu)) * (1 + 12.f * 1.645f / pow2(xi(nu)));
     }
     else {
       //..........DO INTEGRATION
@@ -3281,13 +2576,6 @@ nudens(
   //
 }
 
-struct therm_save
-{
-  fem::variant_bindings besselcb_bindings;
-  fem::variant_bindings evolp1_bindings;
-  fem::variant_bindings modpr_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -3295,79 +2583,28 @@ void
 therm(
   common& cmn)
 {
-  FEM_CMN_SVE(therm);
+  // COMMON evolp1
+  float& t9 = cmn.t9;
+  float& phie = cmn.phie;
+  // COMMON modpr
+  float& xnu = cmn.xnu;
+  arr_cref<float> xi(cmn.xi, dimension(3));
   // COMMON thermcb
   arr_ref<float> thm(cmn.thm, dimension(14));
   // COMMON endens
   float& rnb = cmn.rnb;
+  // COMMON besselcb
+  float& bl1 = cmn.bl1;
+  float& bl2 = cmn.bl2;
+  float& bl3 = cmn.bl3;
+  float& bl4 = cmn.bl4;
+  float& bl5 = cmn.bl5;
+  float& bm1 = cmn.bm1;
+  float& bm2 = cmn.bm2;
+  float& bm3 = cmn.bm3;
+  float& bm4 = cmn.bm4;
+  float& bm5 = cmn.bm5;
   //
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  const int nnuc = 26;
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  common_variant besselcb(cmn.common_besselcb, sve.besselcb_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-    {
-      mbr<float> bl1;
-      mbr<float> bl2;
-      mbr<float> bl3;
-      mbr<float> bl4;
-      mbr<float> bl5;
-      mbr<float> bm1;
-      mbr<float> bm2;
-      mbr<float> bm3;
-      mbr<float> bm4;
-      mbr<float> bm5;
-      mbr<float> bn1;
-      mbr<float> bn2;
-      mbr<float> bn3;
-      mbr<float> bn4;
-      mbr<float> bn5;
-      besselcb.allocate(), bl1, bl2, bl3, bl4, bl5, bm1, bm2, bm3,
-        bm4, bm5, bn1, bn2, bn3, bn4, bn5;
-    }
-  }
-  float const& t9 = evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  float const& phie = evolp1.bind<float>();
-  /* arr_cref<float> y( */ evolp1.bind<float>() /* , dimension(nnuc)) */ ;
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  float const& xnu = modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float const& cosmo */ modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
-  float const& bl1 = besselcb.bind<float>();
-  float const& bl2 = besselcb.bind<float>();
-  float const& bl3 = besselcb.bind<float>();
-  float const& bl4 = besselcb.bind<float>();
-  float const& bl5 = besselcb.bind<float>();
-  float const& bm1 = besselcb.bind<float>();
-  float const& bm2 = besselcb.bind<float>();
-  float const& bm3 = besselcb.bind<float>();
-  float const& bm4 = besselcb.bind<float>();
-  float const& bm5 = besselcb.bind<float>();
-  float const& bn1 = besselcb.bind<float>();
-  float const& bn2 = besselcb.bind<float>();
-  float const& bn3 = besselcb.bind<float>();
-  float const& bn4 = besselcb.bind<float>();
-  float const& bn5 = besselcb.bind<float>();
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -3383,7 +2620,7 @@ therm(
   //
   //----------COMMON AREAS.
   //Evolution paramete
-  //omputation parame
+  //Computation parame
   //Model parameters.
   //Dynamic variables.
   //Energy densities.
@@ -3394,7 +2631,7 @@ therm(
   //
   //----------EVOLUTION PARAMETERS.
   //Temperature (in units of 10**9 K).
-  //hemical potential for electron.
+  //Chemical potential for electron.
   //
   //----------COMPUTATION PARAMETERS.
   //Initial temperature (in 10**9 K).
@@ -3431,7 +2668,7 @@ therm(
   //z = m(electron)c**2/k(t9).
   float z = 5.930f / t9;
   //Neutrino temperature.
-  cmn.tnu = (fem::pow((rnb), (1.f / 3.f))) * cmn.t9i;
+  cmn.tnu = (pow((rnb), (1.f / 3.f))) * cmn.t9i;
   //..........FACTORS OF z.
   float z1 = z;
   float z2 = z * z;
@@ -3451,16 +2688,16 @@ therm(
   float sinh4 = 0;
   float sinh5 = 0;
   if (phie <= 17.f) {
-    cosh1 = fem::cosh(phie);
-    cosh2 = fem::cosh(2.f * phie);
-    cosh3 = fem::cosh(3.f * phie);
-    cosh4 = fem::cosh(4.f * phie);
-    cosh5 = fem::cosh(5.f * phie);
-    sinh1 = fem::sinh(phie);
-    sinh2 = fem::sinh(2.f * phie);
-    sinh3 = fem::sinh(3.f * phie);
-    sinh4 = fem::sinh(4.f * phie);
-    sinh5 = fem::sinh(5.f * phie);
+    cosh1 = cosh(phie);
+    cosh2 = cosh(2.f * phie);
+    cosh3 = cosh(3.f * phie);
+    cosh4 = cosh(4.f * phie);
+    cosh5 = cosh(5.f * phie);
+    sinh1 = sinh(phie);
+    sinh2 = sinh(2.f * phie);
+    sinh3 = sinh(3.f * phie);
+    sinh4 = sinh(4.f * phie);
+    sinh5 = sinh(5.f * phie);
   }
   else {
     cosh1 = 0.f;
@@ -3488,8 +2725,9 @@ therm(
   thm(4) = 3206.f * (bm1 * cosh1 - bm2 * cosh2 + bm3 * cosh3 - bm4 *
     cosh4 + bm5 * cosh5);
   //(Ref 5)
-  thm(5) = 3206.f * (z / t9) * (bn1 * cosh1 - 2.f * bn2 * cosh2 +
-    3.f * bn3 * cosh3 - 4.f * bn4 * cosh4 + 5.f * bn5 * cosh5);
+  thm(5) = 3206.f * (z / t9) * (cmn.bn1 * cosh1 - 2.f * cmn.bn2 *
+    cosh2 + 3.f * cmn.bn3 * cosh3 - 4.f * cmn.bn4 * cosh4 + 5.f *
+    cmn.bn5 * cosh5);
   //(Ref 6)
   thm(6) = 3206.f * (bm1 * sinh1 - 2.f * bm2 * sinh2 + 3.f * bm3 *
     sinh3 - 4.f * bm4 * sinh4 + 5.f * bm5 * sinh5);
@@ -3500,14 +2738,14 @@ therm(
   //Nonde
   if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
     //(Ref 8)
-    thm(8) = xnu * cmn.rhone0 * (fem::pow(rnb, (4.f / 3.f)));
+    thm(8) = xnu * cmn.rhone0 * (pow(rnb, (4.f / 3.f)));
     //Include effects of neutrino degenera
   }
   else {
     thm(8) = 0.f;
     //For every neutrino family.
-    FEM_DO(cmn.nu, 1, xnu) {
-      //ompute neutrino energy density.
+    FEM_DO_SAFE(cmn.nu, 1, xnu) {
+      //Compute neutrino energy density.
       nudens(cmn);
       //Have 12.79264 from units ch
       thm(8) += 12.79264f * cmn.rhonu;
@@ -3518,12 +2756,12 @@ therm(
   //(Ref 10
   thm(10) = thm(1) + thm(4) + thm(8) + thm(9);
   //(Ref 11
-  thm(11) = -(fem::pow3(z) / t9) * (sinh1 * (3.f * bl1 - z * bm1) -
+  thm(11) = -(pow3(z) / t9) * (sinh1 * (3.f * bl1 - z * bm1) -
     sinh2 * (3.f * bl2 - 2.f * z * bm2) + sinh3 * (3.f * bl3 - 3.f *
     z * bm3) - sinh4 * (3.f * bl4 - 4.f * z * bm4) + sinh5 * (3.f *
     bl5 - 5.f * z * bm5));
   //(Ref 12
-  thm(12) = fem::pow3(z) * (cosh1 * bl1 - 2.f * cosh2 * bl2 + 3.f *
+  thm(12) = pow3(z) * (cosh1 * bl1 - 2.f * cosh2 * bl2 + 3.f *
     cosh3 * bl3 - 4.f * cosh4 * bl4 + 5.f * cosh5 * bl5);
   if (thm(12) != 0.f) {
     thm(12) = 1.f / thm(12);
@@ -3606,9 +2844,9 @@ eqslin(
   arr_1d<nnuc, double> x(fem::fill0);
   int j = 0;
   arr<double, 2> a0(dimension(nnuc, nnuc), fem::fill0);
-  double cx = fem::double0;
+  double cx = 0;
   int k = 0;
-  double sum = fem::double0;
+  double sum = 0;
   float xdy = 0;
   const float eps = 2.e-4f;
   const int mord = 1;
@@ -3628,7 +2866,7 @@ eqslin(
   //Tolerance for convergence (.ge. 1.e-
   //
   //----------COMMON AREAS.
-  //omputation parame
+  //Computation parame
   //Lin eqn coefficien
   //Flags, counters.
   //Run options.
@@ -3639,7 +2877,7 @@ eqslin(
   //Accumulation increment.
   //
   //----------MATRIX COEFFICIENTS FOR LINEAR EQUATION.
-  //oefficient array.
+  //Coefficient array.
   //Right-hand vector w/o manipulation.
   //Solution vector.
   //
@@ -3650,7 +2888,7 @@ eqslin(
   //Number of nuclides in computation.
   //
   //----------LOCAL MATRICES AND VECTORS.
-  //oefficient array w/o manipulation.
+  //Coefficient array w/o manipulation.
   //Right-hand vector.
   //
   //----------LOCAL COMPUTATION VARIABLES.
@@ -3660,7 +2898,7 @@ eqslin(
   //
   //----------LOCAL COUNTERS.
   //Order of correction.
-  //onvergence monitor.
+  //Convergence monitor.
   //ith nuclide fails to converge.
   //
   //===========================PROCEDURE DIVISION==================================
@@ -3673,7 +2911,7 @@ eqslin(
   //No errors yet.
   mbad = 0;
   //..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
-  FEM_DO(i, 1, isize) {
+  FEM_DO_SAFE(i, 1, isize) {
     //Right-hand vector.
     x(i) = b(i);
     //Solution vector.
@@ -3682,8 +2920,8 @@ eqslin(
   //..........SAVE MATRIX.
   //Monitor convergence.
   if (icnvm == inc) {
-    FEM_DO(i, 1, isize) {
-      FEM_DO(j, 1, isize) {
+    FEM_DO_SAFE(i, 1, isize) {
+      FEM_DO_SAFE(j, 1, isize) {
         //Initial value of coefficient array.
         a0(j, i) = a(j, i);
       }
@@ -3693,33 +2931,30 @@ eqslin(
   //20--------TRIANGULARIZE MATRIX AND SAVE OPERATOR-------------------------------
   //
   //..........CHECK TO SEE THAT THERE ARE NO ZEROES AT PIVOT POINTS.
-  {
-    int fem_do_last = isize - 1;
-    FEM_DO(i, 1, fem_do_last) {
-      //Don't want to divide by zero.
-      if (a(i, i) == 0.e0) {
-        //Position of zero coefficient.
-        mbad = i;
-        //Terminate matrix evaluation.
-        return;
-      }
-      //..........TRIANGULARIZE MATRIX.
-      FEM_DO(j, i + 1, isize) {
-        //Progress diagonally down the column.
-        if (a(j, i) != 0.e0) {
-          //Scaling factor down the column.
-          cx = a(j, i) / a(i, i);
-          //Progress diagonally along row.
-          FEM_DO(k, i + 1, isize) {
-            //Subtract scaled coeff along
-            a(j, k) = a(j, k) - cx * a(i, k);
-          }
-          //Scaled coefficient.
-          a(j, i) = cx;
-          //..........OPERATE ON RIGHT-HAND VECTOR.
-          //Subtract off scaled coefficient.
-          x(j) = x(j) - cx * x(i);
+  FEM_DO_SAFE(i, 1, isize - 1) {
+    //Don't want to divide by zero.
+    if (a(i, i) == 0.e0) {
+      //Position of zero coefficient.
+      mbad = i;
+      //Terminate matrix evaluation.
+      return;
+    }
+    //..........TRIANGULARIZE MATRIX.
+    FEM_DO_SAFE(j, i + 1, isize) {
+      //Progress diagonally down the column.
+      if (a(j, i) != 0.e0) {
+        //Scaling factor down the column.
+        cx = a(j, i) / a(i, i);
+        //Progress diagonally along row.
+        FEM_DO_SAFE(k, i + 1, isize) {
+          //Subtract scaled coeff along
+          a(j, k) = a(j, k) - cx * a(i, k);
         }
+        //Scaled coefficient.
+        a(j, i) = cx;
+        //..........OPERATE ON RIGHT-HAND VECTOR.
+        //Subtract off scaled coefficient.
+        x(j) = x(j) - cx * x(i);
       }
     }
   }
@@ -3733,7 +2968,7 @@ eqslin(
   //From i = penultimate to i = 1.
   FEM_DOSTEP(i, isize - 1, 1, -1) {
     sum = 0.e0;
-    FEM_DO(j, i + 1, isize) {
+    FEM_DO_SAFE(j, i + 1, isize) {
       //Sum up all previous terms.
       sum += a(i, j) * x(j);
     }
@@ -3745,19 +2980,19 @@ eqslin(
   //40--------TESTS AND EXITS------------------------------------------------------
   //
   if (icnvm == inc) {
-    FEM_DO(i, 1, isize) {
+    FEM_DO_SAFE(i, 1, isize) {
       if (y(i) != 0.f) {
         //Relative error.
         xdy = fem::dabs(x(i) / y(i));
         if (xdy > eps) {
-          //ontinue to higher orders.
+          //Continue to higher orders.
           if (nord < mord) {
             nord++;
             //..........FIND ERROR IN RIGHT-HAND VECTOR.
-            FEM_DO(j, 1, isize) {
+            FEM_DO_SAFE(j, 1, isize) {
               //Initialize r.
               r = 0.e0;
-              FEM_DO(k, 1, isize) {
+              FEM_DO_SAFE(k, 1, isize) {
                 //Left side with approximate sol
                 r += a0(j, k) * y(k);
               }
@@ -3765,13 +3000,10 @@ eqslin(
               x(j) = b(j) - r;
             }
             //..........OPERATE ON RIGHT-HAND VECTOR.
-            {
-              int fem_do_last = isize - 1;
-              FEM_DO(j, 1, fem_do_last) {
-                FEM_DO(k, j + 1, isize) {
-                  //Subtract off scaled coef
-                  x(k) = x(k) - a(k, j) * x(j);
-                }
+            FEM_DO_SAFE(j, 1, isize - 1) {
+              FEM_DO_SAFE(k, j + 1, isize) {
+                //Subtract off scaled coef
+                x(k) = x(k) - a(k, j) * x(j);
               }
             }
             //Go for another iteratiion.
@@ -3800,9 +3032,6 @@ eqslin(
 
 struct sol_save
 {
-  fem::variant_bindings evolp1_bindings;
-  fem::variant_bindings evolp2_bindings;
-  fem::variant_bindings evolp3_bindings;
   fem::variant_bindings lncoef_bindings;
   fem::variant_bindings rates_bindings;
   arr<float> si;
@@ -3836,16 +3065,17 @@ sol(
   arr_cref<int> ll(cmn.ll, dimension(nrec));
   arr_cref<float> rev(cmn.rev, dimension(nrec));
   arr_cref<float> q9(cmn.q9, dimension(nrec));
+  float& t9 = cmn.t9;
+  const int nnuc = 26;
+  arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+  arr_ref<float> dydt(cmn.dydt, dimension(nnuc));
+  arr_cref<float> y0(cmn.y0, dimension(nnuc));
   float& dt = cmn.dt;
   float& rhob = cmn.rhob;
   int& mbad = cmn.mbad;
   int& isize = cmn.isize;
   //
-  const int nnuc = 26;
   common_variant rates(cmn.common_rates, sve.rates_bindings);
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  common_variant evolp2(cmn.common_evolp2, sve.evolp2_bindings);
-  common_variant evolp3(cmn.common_evolp3, sve.evolp3_bindings);
   common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
   arr_ref<float> si(sve.si, dimension(11));
   arr_ref<float> sj(sve.sj, dimension(11));
@@ -3859,27 +3089,6 @@ sol(
       rates.allocate(), f, r;
     }
     {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
-    {
-      mbr<float> dt9;
-      mbr<float> dhv;
-      mbr<float> dphie;
-      mbr<float> dydt(dimension(nnuc));
-      evolp2.allocate(), dt9, dhv, dphie, dydt;
-    }
-    {
-      mbr<float> t90;
-      mbr<float> hv0;
-      mbr<float> phie0;
-      mbr<float> y0(dimension(nnuc));
-      evolp3.allocate(), t90, hv0, phie0, y0;
-    }
-    {
       mbr<double> a(dimension(nnuc, nnuc));
       mbr<float> b(dimension(nnuc));
       mbr<float> yx(dimension(nnuc));
@@ -3888,18 +3097,6 @@ sol(
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
-  float const& t9 = evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  arr_cref<float> y(evolp1.bind<float>(), dimension(nnuc));
-  /* float const& dt9 */ evolp2.bind<float>();
-  /* float const& dhv */ evolp2.bind<float>();
-  /* float const& dphie */ evolp2.bind<float>();
-  arr_ref<float> dydt(evolp2.bind<float>(), dimension(nnuc));
-  /* float const& t90 */ evolp3.bind<float>();
-  /* float const& hv0 */ evolp3.bind<float>();
-  /* float const& phie0 */ evolp3.bind<float>();
-  arr_cref<float> y0(evolp3.bind<float>(), dimension(nnuc));
   arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
   arr_ref<float> b(lncoef.bind<float>(), dimension(nnuc));
   arr_cref<float> yx(lncoef.bind<float>(), dimension(nnuc));
@@ -4003,7 +3200,7 @@ sol(
   //Relative number abundances.
   //
   //----------EVOLUTION PARAMETERS (DERIVATIVES).
-  //hange in rel number abundances.
+  //Change in rel number abundances.
   //
   //----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
   //Rel # abund at start of iteration.
@@ -4019,11 +3216,11 @@ sol(
   //
   //----------COMPONENTS OF MATRIX EQUATION.
   //Relates y(t-dt) to y(t).
-  //ontains y0 in inverse order.
+  //Contains y0 in inverse order.
   //yy in reverse order.
   //
   //----------COUNTERS AND FLAGS.
-  //ounts which Runge-Kutta loop.
+  //Counts which Runge-Kutta loop.
   //# time steps after outputting a line
   //Indicates if gaussian elimination fa
   //
@@ -4035,7 +3232,7 @@ sol(
   //----------EVOLUTION EQUATION COEFFICIENTS.
   //Equate to ii,jj,kk,ll.
   //Equate to si,sj,sk,sl.
-  //oefficients of rate equation.
+  //Coefficients of rate equation.
   //
   //----------LOCAL VARIABLES.
   //Abundances at end of iteration.
@@ -4054,14 +3251,14 @@ sol(
   //
   //..........TEMPERATURE FACTORS.
   //t9**(3/2).
-  t932 = fem::pow(t9, 1.5f);
+  t932 = pow(t9, 1.5f);
   //t9**(-3/2).
   t9m32 = 1.f / t932;
   //..........MATRIX SIZE.
   isize1 = isize + 1;
   //..........INITIALIZE A-MATRIX.
-  FEM_DO(i, 1, isize) {
-    FEM_DO(j, 1, isize) {
+  FEM_DO_SAFE(i, 1, isize) {
+    FEM_DO_SAFE(j, 1, isize) {
       //Set a-matrix to zero.
       a(j, i) = 0.e0;
     }
@@ -4069,7 +3266,7 @@ sol(
   //
   //20--------COMPUTE FACTORS FOR THE A-MATRIX-------------------------------------
   //
-  FEM_DO(n, 1, cmn.jsize) {
+  FEM_DO_SAFE(n, 1, cmn.jsize) {
     //..........EQUATE VARIABLES TO ARRAYS.
     //Type of reaction.
     ind = iform(n);
@@ -4267,10 +3464,10 @@ sol(
   //
   //(10**(-5))*(Expansion rate).
   bdln = 1.e-5f * (3.f * cmn.hubcst);
-  FEM_DO(i, 1, isize) {
+  FEM_DO_SAFE(i, 1, isize) {
     //Invert the rows.
     i1 = isize1 - i;
-    FEM_DO(j, 1, isize) {
+    FEM_DO_SAFE(j, 1, isize) {
       //Invert the columns.
       j1 = isize1 - j;
       if (fem::dabs(a(j, i)) < bdln * y0(j1) / y0(i1)) {
@@ -4298,7 +3495,7 @@ sol(
     eqslin(cmn, 0, ierror);
   }
   //..........OBTAIN DERIVATIVE.
-  FEM_DO(i, 1, isize) {
+  FEM_DO_SAFE(i, 1, isize) {
     //Abundance at t+dt.
     yy(i) = yx(isize1 - i);
     //Take derivative.
@@ -4347,7 +3544,6 @@ sol(
 
 struct rate2_save
 {
-  fem::variant_bindings evolp1_bindings;
   fem::variant_bindings rates_bindings;
 };
 
@@ -4359,10 +3555,11 @@ rate2(
   common& cmn)
 {
   FEM_CMN_SVE(rate2);
+  // COMMON evolp1
+  float& t9 = cmn.t9;
+  //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  const int nnuc = 26;
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -4370,20 +3567,9 @@ rate2(
       mbr<float> r(dimension(nrec));
       rates.allocate(), f, r;
     }
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-  float const& t9 = evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  /* arr_cref<float> y( */ evolp1.bind<float>() /* , dimension(nnuc)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -4414,7 +3600,7 @@ rate2(
   //10--------TEMPERATURE FACTORS--------------------------------------------------
   //
   //t9**(1/3)
-  float t913 = fem::pow(t9, (.33333333f));
+  float t913 = pow(t9, (.33333333f));
   //t9**(2/3)
   float t923 = t913 * t913;
   //t9**(4/3)
@@ -4422,7 +3608,7 @@ rate2(
   //t9**(5/3)
   float t953 = t9 * t923;
   //t9**(1/2)
-  float t912 = fem::sqrt(t9);
+  float t912 = sqrt(t9);
   //t9**(3/2)
   float t932 = t9 * t912;
   //t9**(-1)
@@ -4434,42 +3620,42 @@ rate2(
   //For reaction 17.
   float t9a = t9 / (1.0f + 13.076f * t9);
   //t9a**(3/2)
-  float t9a32 = fem::pow(t9a, (1.5f));
+  float t9a32 = pow(t9a, (1.5f));
   //For reaction 18.
   float t9b = t9 / (1.f + 49.18f * t9);
   //t9b**(3/2)
-  float t9b32 = fem::pow(t9b, (1.5f));
+  float t9b32 = pow(t9b, (1.5f));
   //For reaction 22.
   float t9c = 0;
   if (t9 > 10.f) {
     t9c = 1.f;
   }
   else {
-    t9c = t9 / (1.f - 9.69e-2f * t9 + 2.84e-2f * t953 / fem::pow((
+    t9c = t9 / (1.f - 9.69e-2f * t9 + 2.84e-2f * t953 / pow((
       1.f - 9.69e-2f * t9), (2.f / 3.f)));
   }
   //t9c**(1/3)
-  float t9c13 = fem::pow(t9c, (.3333333f));
+  float t9c13 = pow(t9c, (.3333333f));
   //t9c**(5/6)
-  float t9c56 = fem::pow(t9c, (.8333333f));
+  float t9c56 = pow(t9c, (.8333333f));
   //For reaction 24.
   float t9d = t9 / (1.f + 0.759f * t9);
   //t9d**(1/3)
-  float t9d13 = fem::pow(t9d, (.3333333f));
+  float t9d13 = pow(t9d, (.3333333f));
   //t9d**(5/6)
-  float t9d56 = fem::pow(t9d, (.8333333f));
+  float t9d56 = pow(t9d, (.8333333f));
   //For reaction 26.
   float t9e = t9 / (1.f + 0.1378f * t9);
   //t9e**(1/3)
-  float t9e13 = fem::pow(t9e, (.3333333f));
+  float t9e13 = pow(t9e, (.3333333f));
   //t9e**(5/6)
-  float t9e56 = fem::pow(t9e, (.8333333f));
+  float t9e56 = pow(t9e, (.8333333f));
   //For reaction 27.
   float t9f = t9 / (1.f + 0.1071f * t9);
   //t9f**(1/3)
-  float t9f13 = fem::pow(t9f, (.3333333f));
+  float t9f13 = pow(t9f, (.3333333f));
   //t9f**(5/6)
-  float t9f56 = fem::pow(t9f, (.8333333f));
+  float t9f56 = pow(t9f, (.8333333f));
   //
   //20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
   //
@@ -4521,7 +3707,7 @@ rate2(
   //60--------PROTON, ALPHA REACTIONS----------------------------------------------
   //
   //.......Li6(p,a)He3................(Caughlan-Fowler 1988)
-  f(23) = 3.73e+10f * t9m23 * ex(-8.413f / t913 - fem::pow2((t9 /
+  f(23) = 3.73e+10f * t9m23 * ex(-8.413f / t913 - pow2((t9 /
     5.50f))) * (1.f + .050f * t913 - .061f * t923 - .021f * t9 +
     .006f * t943 + .005f * t953) + 1.33e+10f * t9m32 * ex(-17.763f /
     t9) + 1.29e+09f * t9m1 * ex(-21.820f / t9);
@@ -4530,7 +3716,7 @@ rate2(
   f(24) = 1.096e+9f * t9m23 * ex(-8.472f / t913) - 4.830e+8f *
     t9d56 * t9m32 * ex(-8.472f / t9d13) + 1.06e+10f * t9m32 * ex(
     -30.442f / t9) + 1.56e+5f * t9m23 * ex((-8.472f / t913) -
-    fem::pow2((t9 / 1.696f))) * (1.f + .049f * t913 - 2.498f * t923 +
+    pow2((t9 / 1.696f))) * (1.f + .049f * t913 - 2.498f * t923 +
     .860f * t9 + 3.518f * t943 + 3.08f * t953) + 1.55e+6f * t9m32 *
     ex(-4.478f / t9);
   //
@@ -4565,13 +3751,13 @@ rate2(
     t913 + .518f * t923 + .355f * t9 - .010f * t943 - .018f * t953);
   //
   //.......H3(d,n)He4.................(Smith-Kawano-Malaney 1992)
-  f(30) = 1.063e+11f * t9m23 * ex(-4.559f / t913 - fem::pow2((t9 /
+  f(30) = 1.063e+11f * t9m23 * ex(-4.559f / t913 - pow2((t9 /
     .0754f))) * (1.f + .092f * t913 - .375f * t923 - .242f * t9 +
     33.82f * t943 + 55.42f * t953) + 8.047e+8f * t9m23 * ex(
     -0.4857f / t9);
   //
   //.......He3(d,p)He4................(Smith-Kawano-Malaney 1992)
-  f(31) = 5.021e+10f * t9m23 * ex(-7.144f / t913 - fem::pow2((t9 /
+  f(31) = 5.021e+10f * t9m23 * ex(-7.144f / t913 - pow2((t9 /
     .270f))) * (1.f + .058f * t913 + .603f * t923 + .245f * t9 +
     6.97f * t943 + 7.19f * t953) + 5.212e+8f / t912 * ex(-1.762f /
     t9);
@@ -4599,7 +3785,6 @@ rate2(
 
 struct rate3_save
 {
-  fem::variant_bindings evolp1_bindings;
   fem::variant_bindings rates_bindings;
 };
 
@@ -4611,10 +3796,11 @@ rate3(
   common& cmn)
 {
   FEM_CMN_SVE(rate3);
+  // COMMON evolp1
+  float& t9 = cmn.t9;
+  //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  const int nnuc = 26;
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -4622,20 +3808,9 @@ rate3(
       mbr<float> r(dimension(nrec));
       rates.allocate(), f, r;
     }
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-  float const& t9 = evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  /* arr_cref<float> y( */ evolp1.bind<float>() /* , dimension(nnuc)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -4666,7 +3841,7 @@ rate3(
   //10--------TEMPERATURE FACTORS--------------------------------------------------
   //
   //t9**(1/3)
-  float t913 = fem::pow(t9, (.33333333f));
+  float t913 = pow(t9, (.33333333f));
   //t9**(2/3)
   float t923 = t913 * t913;
   //t9**(4/3)
@@ -4674,13 +3849,13 @@ rate3(
   //t9**(5/3)
   float t953 = t9 * t923;
   //t9**(1/2)
-  float t912 = fem::sqrt(t9);
+  float t912 = sqrt(t9);
   //t9**(3/2)
   float t932 = t9 * t912;
   //t9**(1/5)
-  float t915 = fem::pow(t9, (.2f));
+  float t915 = pow(t9, (.2f));
   //t9**(5/4)
-  float t954 = fem::pow(t9, (1.25f));
+  float t954 = pow(t9, (1.25f));
   //t9**(-1)
   float t9m1 = 1.0f / t9;
   //t9**(-2/3)
@@ -4688,7 +3863,7 @@ rate3(
   //t9**(-3/2)
   float t9m32 = 1.0f / t932;
   //t9**(-3/4)
-  float t9m34 = fem::sqrt(t9m32);
+  float t9m34 = sqrt(t9m32);
   //t9**(-1/5)
   float t9m15 = 1.0f / t915;
   //t9**(-5/4)
@@ -4696,9 +3871,9 @@ rate3(
   //For reaction 53.
   float t9a = t9 / (1.f + t9 / 15.1f);
   //t9a**(1/3)
-  float t9a13 = fem::pow(t9a, (.3333333f));
+  float t9a13 = pow(t9a, (.3333333f));
   //t9a**(5/6)
-  float t9a56 = fem::pow(t9a, (.8333333f));
+  float t9a56 = pow(t9a, (.8333333f));
   //
   //20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
   //
@@ -4728,25 +3903,25 @@ rate3(
     ex(-7.306f / t9);
   //
   //.......Be9(p,g)B10................(Caughlan-Fowler 1988)
-  f(41) = 1.33e+7f * t9m23 * ex(-10.359f / t913 - fem::pow2((t9 /
+  f(41) = 1.33e+7f * t9m23 * ex(-10.359f / t913 - pow2((t9 /
     .846f))) * (1.f + .040f * t913 + 1.52f * t923 + .428f * t9 +
     2.15f * t943 + 1.54f * t953) + 9.64e+4f * t9m32 * ex(-3.445f /
     t9) + 2.72e+6f * t9m32 * ex(-10.620f / t9);
   //
   //.......B10(p,g)C11................(Caughlan-Fowler 1988)
-  f(42) = 4.61e+5f * t9m23 * ex(-12.062f / t913 - fem::pow2((t9 /
+  f(42) = 4.61e+5f * t9m23 * ex(-12.062f / t913 - pow2((t9 /
     4.402f))) * (1.f + .035f * t913 + .426f * t923 + .103f * t9 +
     .281f * t943 + .173f * t953) + 1.93e+5f * t9m32 * ex(-12.041f /
     t9) + 1.14e+4f * t9m32 * ex(-16.164f / t9);
   //
   //.......B11(p,g)C12................(Caughlan-Fowler 1988)
-  f(43) = 4.62e+7f * t9m23 * ex(-12.095f / t913 - fem::pow2((t9 /
+  f(43) = 4.62e+7f * t9m23 * ex(-12.095f / t913 - pow2((t9 /
     .239f))) * (1.f + .035f * t913 + 3.00f * t923 + .723f * t9 +
     9.91f * t943 + 6.07f * t953) + 7.89e+3f * t9m32 * ex(-1.733f /
     t9) + 9.68e+4f * t9m15 * ex(-5.617f / t9);
   //
   //.......C11(p,g)N12................(Caughlan-Fowler 1988)
-  f(44) = 4.24e+4f * t9m23 * ex(-13.658f / t913 - fem::pow2((t9 /
+  f(44) = 4.24e+4f * t9m23 * ex(-13.658f / t913 - pow2((t9 /
     1.627f))) * (1.f + .031f * t913 + 3.11f * t923 + .665f * t9 +
     4.61f * t943 + 2.50f * t953) + 8.84e+3f * t9m32 * ex(-7.021f /
     t9);
@@ -4759,13 +3934,13 @@ rate3(
   //70--------PROTON, ALPHA REACTIONS----------------------------------------------
   //
   //.......Be9(p,a)Li6................(Caughlan-Fowler 1988)
-  f(46) = 2.11e+11f * t9m23 * ex(-10.359f / t913 - fem::pow2((t9 /
+  f(46) = 2.11e+11f * t9m23 * ex(-10.359f / t913 - pow2((t9 /
     .520f))) * (1.f + .040f * t913 + 1.09f * t923 + .307f * t9 +
     3.21f * t943 + 2.30f * t953) + 4.51e+8f * t9m1 * ex(-3.046f /
     t9) + 6.70e+8f * t9m34 * ex(-5.160f / t9);
   //
   //.......B10(p,a)Be7................(Caughlan-Fowler 1988)
-  f(47) = 1.26e+11f * t9m23 * ex(-12.062f / t913 - fem::pow2((t9 /
+  f(47) = 1.26e+11f * t9m23 * ex(-12.062f / t913 - pow2((t9 /
     4.402f))) * (1.f + .035f * t913 - .498f * t923 - .121f * t9 +
     .300f * t943 + .184f * t953) + 2.59e+9f * t9m1 * ex(-12.260f /
     t9);
@@ -4776,19 +3951,19 @@ rate3(
   //80--------ALPHA, PHOTON REACTIONS----------------------------------------------
   //
   //.......Li6(a,g)B10................(Caughlan-Fowler 1988)
-  f(49) = 4.06e+6f * t9m23 * ex(-18.790f / t913 - fem::pow2((t9 /
+  f(49) = 4.06e+6f * t9m23 * ex(-18.790f / t913 - pow2((t9 /
     1.326f))) * (1.f + .022f * t913 + 1.54f * t923 + .239f * t9 +
     2.20f * t943 + .869f * t953) + 1.91e+3f * t9m32 * ex(-3.484f /
     t9) + 1.01e+4f * t9m1 * ex(-7.269f / t9);
   //
   //.......Li7(a,g)B11................(Caughlan-Fowler 1988)
-  f(50) = 3.55e+7f * t9m23 * ex(-19.161f / t913 - fem::pow2((t9 /
+  f(50) = 3.55e+7f * t9m23 * ex(-19.161f / t913 - pow2((t9 /
     4.195f))) * (1.f + .022f * t913 + .775f * t923 + .118f * t9 +
     .884f * t943 + .342f * t953) + 3.33e+2f * t9m32 * ex(-2.977f /
     t9) + 4.10e+4f * t9m1 * ex(-6.227f / t9);
   //
   //.......Be7(a,g)C11................(Caughlan-Fowler 1988)
-  f(51) = 8.45e+7f * t9m23 * ex(-23.212f / t913 - fem::pow2((t9 /
+  f(51) = 8.45e+7f * t9m23 * ex(-23.212f / t913 - pow2((t9 /
     4.769f))) * (1.f + .018f * t913 + .488f * t923 + .061f * t9 +
     .296f * t943 + .095f * t953) + 1.25e+4f * t9m32 * ex(-6.510f /
     t9) + 1.29e+5f * t9m54 * ex(-10.039f / t9);
@@ -4804,7 +3979,7 @@ rate3(
   f(53) = 8.62e+13f * t9a56 * t9m32 * ex(-19.461f / t9a13);
   //
   //.......Be9(a,n)C12................(Caughlan-Fowler 1988)
-  f(54) = 4.62e+13f * t9m23 * ex(-23.870f / t913 - fem::pow2((t9 /
+  f(54) = 4.62e+13f * t9m23 * ex(-23.870f / t913 - pow2((t9 /
     .049f))) * (1.f + .017f * t913 + 8.57f * t923 + 1.05f * t9 + 74.51f *
     t943 + 23.15f * t953) + 7.34e-5f * t9m32 * ex(-1.184f / t9) +
     2.27e-1f * t9m32 * ex(-1.834f / t9) + 1.26e+5f * t9m32 * ex(-4.179f /
@@ -4824,27 +3999,27 @@ rate3(
   //120-------THREE PARTICLE REACTIONS---------------------------------------------
   //
   //.......He4(an,g)Be9...............(Caughlan-Fowler 1988)
-  f(58) = (2.59e-6f / ((1.f + .344f * t9) * fem::pow2(t9))) * ex(-1.062f / t9);
+  f(58) = (2.59e-6f / ((1.f + .344f * t9) * pow2(t9))) * ex(-1.062f / t9);
   //
   //.......He4(2a,g)C12...............(Caughlan-Fowler 1988)
   f(59) = 2.79e-8f * t9m32 * t9m32 * ex(-4.4027f / t9) + 1.35e-8f *
     t9m32 * ex(-24.811f / t9);
   //
   //.......Li8(p,na)He4...............(original Wagoner code)
-  f(60) = 8.65e+9f * t9m23 * ex(-8.52f / t913 - fem::pow2((t9 /
+  f(60) = 8.65e+9f * t9m23 * ex(-8.52f / t913 - pow2((t9 /
     2.53f))) + 2.31e+9f * t9m32 * ex(-4.64f / t9);
   //
   //.......B8(n,pa)He4................(original Wagoner code)
   f(61) = 4.02e+8f;
   //
   //.......Be9(p,da)He4...............(Caughlan-Fowler 1988)
-  f(62) = 2.11e+11f * t9m23 * ex(-10.359f / t913 - fem::pow2((t9 /
+  f(62) = 2.11e+11f * t9m23 * ex(-10.359f / t913 - pow2((t9 /
     .520f))) * (1.f + .040f * t913 + 1.09f * t923 + .307f * t9 +
     3.21f * t943 + 2.30f * t953) + 5.79e+8f * t9m1 * ex(-3.046f /
     t9) + 8.50e+8f * t9m34 * ex(-5.800f / t9);
   //
   //.......B11(p,2a)He4...............(Caughlan-Fowler 1988)
-  f(63) = 2.20e+12f * t9m23 * ex(-12.095f / t913 - fem::pow2((t9 /
+  f(63) = 2.20e+12f * t9m23 * ex(-12.095f / t913 - pow2((t9 /
     1.644f))) * (1.f + .034f * t913 + .140f * t923 + .034f * t9 +
     .190f * t943 + .116f * t953) + 4.03e+6f * t9m32 * ex(-1.734f /
     t9) + 6.73e+9f * t9m32 * ex(-6.262f / t9) + 3.88e+9f * t9m1 * ex(
@@ -4863,7 +4038,6 @@ rate3(
 
 struct rate4_save
 {
-  fem::variant_bindings evolp1_bindings;
   fem::variant_bindings rates_bindings;
 };
 
@@ -4875,10 +4049,11 @@ rate4(
   common& cmn)
 {
   FEM_CMN_SVE(rate4);
+  // COMMON evolp1
+  float& t9 = cmn.t9;
+  //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  const int nnuc = 26;
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -4886,20 +4061,9 @@ rate4(
       mbr<float> r(dimension(nrec));
       rates.allocate(), f, r;
     }
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-  float const& t9 = evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  /* arr_cref<float> y( */ evolp1.bind<float>() /* , dimension(nnuc)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -4929,7 +4093,7 @@ rate4(
   //10--------TEMPERATURE FACTORS--------------------------------------------------
   //
   //t9**(1/3)
-  float t913 = fem::pow(t9, (.33333333f));
+  float t913 = pow(t9, (.33333333f));
   //t9**(2/3)
   float t923 = t913 * t913;
   //t9**(4/3)
@@ -4937,15 +4101,15 @@ rate4(
   //t9**(5/3)
   float t953 = t9 * t923;
   //t9**(1/2)
-  float t912 = fem::sqrt(t9);
+  float t912 = sqrt(t9);
   //t9**(3/2)
   float t932 = t9 * t912;
   //t9**(3/5)
-  float t935 = fem::pow(t9, (.6f));
+  float t935 = pow(t9, (.6f));
   //t9**(6/5)
-  float t965 = fem::pow(t9, (1.2f));
+  float t965 = pow(t9, (1.2f));
   //t9**(3/8)
-  float t938 = fem::pow(t9, (.375f));
+  float t938 = pow(t9, (.375f));
   //t9**(1/3)
   float t9m13 = 1.0f / t913;
   //t9**(-2/3)
@@ -4955,19 +4119,19 @@ rate4(
   //t9**(-6/5)
   float t9m65 = 1.0f / t965;
   //For reaction 82.
-  float t9a = t9 / (1.f + 4.78e-2f * t9 + 7.56e-3f * t953 / fem::pow((
+  float t9a = t9 / (1.f + 4.78e-2f * t9 + 7.56e-3f * t953 / pow((
     1.f + 4.78e-2f * t9), (2.f / 3.f)));
   //t9a**(1/3)
-  float t9a13 = fem::pow(t9a, (.33333333f));
+  float t9a13 = pow(t9a, (.33333333f));
   //t9a**(5/6)
-  float t9a56 = fem::pow(t9a, (.83333333f));
+  float t9a56 = pow(t9a, (.83333333f));
   //For reaction 84.
-  float t9b = t9 / (1.f + 7.76e-2f * t9 + 2.64e-2f * t953 / fem::pow((
+  float t9b = t9 / (1.f + 7.76e-2f * t9 + 2.64e-2f * t953 / pow((
     1.f + 7.76e-2f * t9), (2.f / 3.f)));
   //t9b**(1/3)
-  float t9b13 = fem::pow(t9b, (.33333333f));
+  float t9b13 = pow(t9b, (.33333333f));
   //t9b**(5/6)
-  float t9b56 = fem::pow(t9b, (.83333333f));
+  float t9b56 = pow(t9b, (.83333333f));
   //
   //20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
   //
@@ -5000,37 +4164,37 @@ rate4(
   //50--------PROTON, PHOTON REACTIONS---------------------------------------------
   //
   //.......C12(p,g)N13................(Caughlan-Fowler 1988)
-  f(72) = 2.04e+7f * t9m23 * ex(-13.690f / t913 - fem::pow2((t9 /
+  f(72) = 2.04e+7f * t9m23 * ex(-13.690f / t913 - pow2((t9 /
     1.500f))) * (1.f + .030f * t913 + 1.19f * t923 + .254f * t9 +
     2.06f * t943 + 1.12f * t953) + 1.08e+5f * t9m32 * ex(-4.925f /
     t9) + 2.15e+5f * t9m32 * ex(-18.179f / t9);
   //
   //.......C13(p,g)N14................(Caughlan-Fowler 1988)
-  f(73) = 8.01e+7f * t9m23 * ex(-13.717f / t913 - fem::pow2((t9 /
+  f(73) = 8.01e+7f * t9m23 * ex(-13.717f / t913 - pow2((t9 /
     2.000f))) * (1.f + .030f * t913 + .958f * t923 + .204f * t9 +
     1.39f * t943 + .753f * t953) + 1.21e+6f * t9m65 * ex(-5.701f /
     t9);
   //
   //.......C14(p,g)N15................(Caughlan-Fowler 1988)
-  f(74) = 6.80e+6f * t9m23 * ex(-13.741f / t913 - fem::pow2((t9 /
+  f(74) = 6.80e+6f * t9m23 * ex(-13.741f / t913 - pow2((t9 /
     5.721f))) * (1.f + .030f * t913 + .503f * t923 + .107f * t9 +
     .213f * t943 + .115f * t953) + 5.36e+3f * t9m32 * ex(-3.811f /
     t9) + 9.82e+4f * t9m13 * ex(-4.739f / t9);
   //
   //.......N13(p,g)O14................(Caughlan-Fowler 1988)
-  f(75) = 4.04e+7f * t9m23 * ex(-15.202f / t913 - fem::pow2((t9 /
+  f(75) = 4.04e+7f * t9m23 * ex(-15.202f / t913 - pow2((t9 /
     1.191f))) * (1.f + .027f * t913 - .803f * t923 - .154f * t9 +
     5.00f * t943 + 2.44f * t953) + 2.43e+5f * t9m32 * ex(-6.348f /
     t9);
   //
   //.......N14(p,g)O15................(Caughlan-Fowler 1988)
-  f(76) = 4.90e+7f * t9m23 * ex(-15.228f / t913 - fem::pow2((t9 /
+  f(76) = 4.90e+7f * t9m23 * ex(-15.228f / t913 - pow2((t9 /
     3.294f))) * (1.f + .027f * t913 - .778f * t923 - .149f * t9 + .261f *
     t943 + .127f * t953) + 2.37e+3f * t9m32 * ex(-3.011f / t9) +
     2.19e+4f * ex(-12.530f / t9);
   //
   //.......N15(p,g)O16................(Caughlan-Fowler 1988)
-  f(77) = 9.78e+8f * t9m23 * ex(-15.251f / t913 - fem::pow2((t9 /
+  f(77) = 9.78e+8f * t9m23 * ex(-15.251f / t913 - pow2((t9 /
     .450f))) * (1.f + .027f * t913 + .219f * t923 + .042f * t9 +
     6.83f * t943 + 3.32f * t953) + 1.11e+4f * t9m32 * ex(-3.328f /
     t9) + 1.49e+4f * t9m32 * ex(-4.665f / t9) + 3.80e+6f * t9m32 * ex(
@@ -5039,7 +4203,7 @@ rate4(
   //60--------PROTON, ALPHA REACTIONS----------------------------------------------
   //
   //.......N15(p,a)C12................(Caughlan-Fowler 1988)
-  f(78) = 1.08e+12f * t9m23 * ex(-15.251f / t913 - fem::pow2((t9 /
+  f(78) = 1.08e+12f * t9m23 * ex(-15.251f / t913 - pow2((t9 /
     .522f))) * (1.f + .027f * t913 + 2.62f * t923 + .501f * t9 +
     5.36f * t943 + 2.60f * t953) + 1.19e+8f * t9m32 * ex(-3.676f /
     t9) + 5.41e+8f / t912 * ex(-8.926f / t9) + 4.72e+7f * t9m32 * ex(
@@ -5048,10 +4212,10 @@ rate4(
   //70--------ALPHA, PHOTON REACTIONS----------------------------------------------
   //
   //.......C12(a,g)O16................(Caughlan-Fowler 1988)
-  f(79) = 1.04e+8f / fem::pow2(t9) * ex(-32.120f / t913 - fem::pow2((t9 /
-    3.496f))) / fem::pow2((1.f + .0489f * t9m23)) + 1.76e+8f / fem::pow2((
-    t9)) / fem::pow2((1.f + .2654f * t9m23)) * ex(-32.120f / t913) +
-    1.25e+3f * t9m32 * ex(-27.499f / t9) + 1.43e-2f * fem::pow((t9), 5) *
+  f(79) = 1.04e+8f / pow2(t9) * ex(-32.120f / t913 - pow2((t9 /
+    3.496f))) / pow2((1.f + .0489f * t9m23)) + 1.76e+8f / pow2((
+    t9)) / pow2((1.f + .2654f * t9m23)) * ex(-32.120f / t913) +
+    1.25e+3f * t9m32 * ex(-27.499f / t9) + 1.43e-2f * pow((t9), 5) *
     ex(-15.541f / t9);
   //
   //80--------ALPHA, PROTON REACTIONS----------------------------------------------
@@ -5060,7 +4224,7 @@ rate4(
   f(80) = 9.60e+14f * t9m23 * ex(-27.99f / t913);
   //
   //.......B11(a,p)C14................(Caughlan-Fowler 1988)
-  f(81) = 5.37e+11f * t9m23 * ex(-28.234f / t913 - fem::pow2((t9 /
+  f(81) = 5.37e+11f * t9m23 * ex(-28.234f / t913 - pow2((t9 /
     0.347f))) * (1.f + .015f * t913 + 5.575f * t923 + .576f * t9 +
     15.888f * t943 + 4.174f * t953) + 5.44e-3f * t9m32 * ex(-2.827f /
     t9) + 3.36e+2f * t9m32 * ex(-5.178f / t9) + 5.32e+6f / t938 * ex(
@@ -5078,10 +4242,10 @@ rate4(
   //90--------ALPHA, NEUTRON REACTIONS---------------------------------------------
   //
   //.......B10(a,n)N13................(Caughlan-Fowler 1988)
-  f(85) = 1.20e+13f * t9m23 * ex(-27.989f / t913 - fem::pow2((t9 / 9.589f)));
+  f(85) = 1.20e+13f * t9m23 * ex(-27.989f / t913 - pow2((t9 / 9.589f)));
   //
   //.......B11(a,n)N14................(Caughlan-Fowler 1988)
-  f(86) = 6.97e+12f * t9m23 * ex(-28.234f / t913 - fem::pow2((t9 /
+  f(86) = 6.97e+12f * t9m23 * ex(-28.234f / t913 - pow2((t9 /
     0.140f))) * (1.f + .015f * t913 + 8.115f * t923 + .838f * t9 +
     39.804f * t943 + 10.456f * t953) + 1.79e+0f * t9m32 * ex(
     -2.827f / t9) + 1.71e+3f * t9m32 * ex(-5.178f / t9) + 4.49e+6f *
@@ -5091,7 +4255,7 @@ rate4(
   f(87) = 3.04e+15f * t9m23 * ex(-28.45f / t913);
   //
   //.......C13(a,n)O16................(Caughlan-Fowler 1988)
-  f(88) = 6.77e+15f * t9m23 * ex(-32.329f / t913 - fem::pow2((t9 /
+  f(88) = 6.77e+15f * t9m23 * ex(-32.329f / t913 - pow2((t9 /
     1.284f))) * (1.f + .013f * t913 + 2.04f * t923 + .184f * t9) +
     3.82e+5f * t9m32 * ex(-9.373f / t9) + 1.41e+6f * t9m32 * ex(
     -11.873f / t9) + 2.00e+9f * t9m32 * ex(-20.409f / t9) +
@@ -5104,14 +4268,6 @@ rate4(
   //
 }
 
-struct derivs_save
-{
-  fem::variant_bindings evolp1_bindings;
-  fem::variant_bindings evolp2_bindings;
-  fem::variant_bindings evolp3_bindings;
-  fem::variant_bindings modpr_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -5120,69 +4276,18 @@ derivs(
   common& cmn,
   int const& loop)
 {
-  FEM_CMN_SVE(derivs);
+  float& t9 = cmn.t9;
+  float& hv = cmn.hv;
+  const int nnuc = 26;
+  arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+  float& dt9 = cmn.dt9;
+  arr_cref<float> dydt(cmn.dydt, dimension(nnuc));
   float& dlt9dt = cmn.dlt9dt;
   arr_cref<float> thm(cmn.thm, dimension(14));
   float& hubcst = cmn.hubcst;
-  const int nnuc = 26;
   arr_cref<float> zm(cmn.zm, dimension(nnuc));
   arr_cref<float> dm(cmn.dm, dimension(nnuc));
   //
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  common_variant evolp2(cmn.common_evolp2, sve.evolp2_bindings);
-  common_variant evolp3(cmn.common_evolp3, sve.evolp3_bindings);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
-    {
-      mbr<float> dt9;
-      mbr<float> dhv;
-      mbr<float> dphie;
-      mbr<float> dydt(dimension(nnuc));
-      evolp2.allocate(), dt9, dhv, dphie, dydt;
-    }
-    {
-      mbr<float> t90;
-      mbr<float> hv0;
-      mbr<float> phie0;
-      mbr<float> y0(dimension(nnuc));
-      evolp3.allocate(), t90, hv0, phie0, y0;
-    }
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  float const& t9 = evolp1.bind<float>();
-  float const& hv = evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  arr_cref<float> y(evolp1.bind<float>(), dimension(nnuc));
-  float& dt9 = evolp2.bind<float>();
-  float& dhv = evolp2.bind<float>();
-  float& dphie = evolp2.bind<float>();
-  arr_cref<float> dydt(evolp2.bind<float>(), dimension(nnuc));
-  /* float const& t90 */ evolp3.bind<float>();
-  /* float const& hv0 */ evolp3.bind<float>();
-  /* float const& phie0 */ evolp3.bind<float>();
-  /* arr_cref<float> y0( */ evolp3.bind<float>() /* , dimension(nnuc)) */ ;
-  float const& g = modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_cref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  float const& cosmo = modpr.bind<float>();
-  /* arr_cref<float> xi( */ modpr.bind<float>() /* , dimension(3)) */ ;
   const float pi = 3.141593f;
   float sumy = 0;
   float sumzy = 0;
@@ -5226,21 +4331,21 @@ derivs(
   //----------EVOLUTION PARAMETERS.
   //Temperature (in units of 10**9 K).
   //Defined by hv = M(atomic)n(baryon)/t
-  //hemical potential for electron.
+  //Chemical potential for electron.
   //Relative number abundances.
   //
   //----------EVOLUTION PARAMETERS (DERIVATIVES).
-  //hange in temperature.
-  //hange in hv.
-  //hange in chemical potential.
-  //hange in rel number abundances.
+  //Change in temperature.
+  //Change in hv.
+  //Change in chemical potential.
+  //Change in rel number abundances.
   //
   //----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
   //Rel # abund at beginning of iteratio
   //
   //----------MODEL PARAMETERS.
   //Gravitational constant.
-  //osmological constant.
+  //Cosmological constant.
   //
   //----------TIME VARIABLES.
   //(1/t9)*d(t9)/d(t).
@@ -5255,7 +4360,7 @@ derivs(
   //Baryon mass density (ratio to init v
   //
   //----------NUCLIDE DATA.
-  //harge of nuclide.
+  //Charge of nuclide.
   //Mass excess of nuclide.
   //
   //----------COUNTERS AND FLAGS.
@@ -5280,7 +4385,7 @@ derivs(
   //Baryon density and pressure terms.
   //
   //----------LOCAL VARIABLES.
-  //ounts which Runge-Kutta loop.
+  //Counts which Runge-Kutta loop.
   //
   //===========================PROCEDURE DIVISION==================================
   //
@@ -5291,7 +4396,7 @@ derivs(
   //..........VARIOUS THERMODYNAMIC QUANTITIES.
   therm(cmn);
   //Expansion rate.
-  hubcst = fem::sqrt((8.f / 3.f) * pi * g * (thm(10)) + (cosmo / 3.f));
+  hubcst = sqrt((8.f / 3.f) * pi * cmn.g * (thm(10)) + (cmn.cosmo / 3.f));
   //Baryon mass density.
   cmn.rhob = thm(9);
   //..........COMPUTE REACTION RATE COEFFICIENTS.
@@ -5328,7 +4433,7 @@ derivs(
   summdy = 0.f;
   sumzdy = 0.f;
   //..........ACCUMULATE TO GET SUM.
-  FEM_DO(i, 1, cmn.isize) {
+  FEM_DO_SAFE(i, 1, cmn.isize) {
     //Sum of abundance.
     sumy += y(i);
     //Sum of charge*abundance.
@@ -5353,9 +4458,9 @@ derivs(
   dt9 = (3.f * hubcst) / dlndt9;
   dlt9dt = dt9 / t9;
   //(Ref 2)
-  dhv = -hv * ((3.f * hubcst) + 3.f * dlt9dt);
+  cmn.dhv = -hv * ((3.f * hubcst) + 3.f * dlt9dt);
   //(Ref 3)
-  dphie = dphdt9 * dt9 + dphdln * (3.f * hubcst) + dphdzy * sumzdy;
+  cmn.dphie = dphdt9 * dt9 + dphdln * (3.f * hubcst) + dphdzy * sumzdy;
   //
   //----------REFERENCES-----------------------------------------------------------
   //     1)  Kawano, L., 1992, Fermilab preprint FERMILAB-PUB-92/04-A,
@@ -5366,11 +4471,6 @@ derivs(
   //
 }
 
-struct accum_save
-{
-  fem::variant_bindings evolp1_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -5378,11 +4478,12 @@ void
 accum(
   common& cmn)
 {
-  FEM_CMN_SVE(accum);
+  // COMMON evolp1
+  const int nnuc = 26;
+  arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
   // COMMON thermcb
   arr_cref<float> thm(cmn.thm, dimension(14));
   // COMMON nucdat
-  const int nnuc = 26;
   arr_cref<float> am(cmn.am, dimension(nnuc));
   // COMMON flags
   int& it = cmn.it;
@@ -5396,21 +4497,6 @@ accum(
   arr_ref<float> etaout(cmn.etaout, dimension(itmax));
   arr_ref<float> hubout(cmn.hubout, dimension(itmax));
   //
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      evolp1.allocate(), t9, hv, phie, y;
-    }
-  }
-  float const& t9 = evolp1.bind<float>();
-  float const& hv = evolp1.bind<float>();
-  float const& phie = evolp1.bind<float>();
-  arr_cref<float> y(evolp1.bind<float>(), dimension(nnuc));
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] driver
@@ -5426,7 +4512,7 @@ accum(
   //
   //----------COMMON AREAS.
   //Evolution paramete
-  //omputation parame
+  //Computation parame
   //Time variables.
   //Dynamic variables.
   //Nuclide data.
@@ -5439,7 +4525,7 @@ accum(
   //----------EVOLUTION PARAMETERS.
   //Temperature (in units of 10**9 K).
   //Defined by hv = M(atomic)n(baryon)/t
-  //hemical potential for electron.
+  //Chemical potential for electron.
   //Relative number abundances.
   //
   //----------COMPUTATION PARAMETERS.
@@ -5482,7 +4568,7 @@ accum(
   //
   //..........DIVIDE NUMBER FRACTION BY THAT OF PROTON.
   int i = 0;
-  FEM_DO(i, 1, cmn.isize) {
+  FEM_DO_SAFE(i, 1, cmn.isize) {
     xout(it, i) = y(i) / y(2);
   }
   //Exception for proton.
@@ -5497,7 +4583,7 @@ accum(
     24) + xout(it, 25) + xout(it, 26);
   //..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
   //Temperature.
-  t9out(it) = t9;
+  t9out(it) = cmn.t9;
   //Time.
   tout(it) = cmn.t;
   //rho photon.
@@ -5508,14 +4594,14 @@ accum(
   thmout(it, 3) = thm(8);
   //rho baryon.
   thmout(it, 4) = thm(9);
-  //hemical potential.
-  thmout(it, 5) = phie;
+  //Chemical potential.
+  thmout(it, 5) = cmn.phie;
   //rho total.
   thmout(it, 6) = thm(10);
   //Time step.
   dtout(it) = cmn.dt;
   //Baryon to photon ratio.
-  etaout(it) = hv / (3.3683e+4f);
+  etaout(it) = cmn.hv / (3.3683e+4f);
   //Expansion rate.
   hubout(it) = cmn.hubcst;
   //
@@ -5527,14 +4613,7 @@ accum(
   //
 }
 
-struct driver_save
-{
-  fem::variant_bindings evolp1_bindings;
-  fem::variant_bindings evolp2_bindings;
-  fem::variant_bindings evolp3_bindings;
-};
-
-//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder DEC unix f77):
 //     -----------------------------------
 //     COMMON /bessel/ -> COMMON /besselcb/
@@ -5550,7 +4629,9 @@ void
 driver(
   common& cmn)
 {
-  FEM_CMN_SVE(driver);
+  const int nnuc = 26;
+  arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+  arr_cref<float> dydt(cmn.dydt, dimension(nnuc));
   float& ytmin = cmn.ytmin;
   int& inc = cmn.inc;
   float& t = cmn.t;
@@ -5562,71 +4643,16 @@ driver(
   int& itime = static_cast<common_tcheck&>(cmn).itime;
   int& isize = cmn.isize;
   //
-  const int nnuc = 26;
-  const int nvar = 29;
-  common_variant evolp1(cmn.common_evolp1, sve.evolp1_bindings);
-  common_variant evolp2(cmn.common_evolp2, sve.evolp2_bindings);
-  common_variant evolp3(cmn.common_evolp3, sve.evolp3_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> t9;
-      mbr<float> hv;
-      mbr<float> phie;
-      mbr<float> y(dimension(nnuc));
-      mbr<float> v(dimension(nvar));
-      evolp1.allocate(), t9, hv, phie,
-        equivalence(y, v)
-          .align<2>(arr_index(4))
-           .with<1>(arr_index(1))
-      ;
-    }
-    {
-      mbr<float> dt9;
-      mbr<float> dhv;
-      mbr<float> dphie;
-      mbr<float> dydt(dimension(nnuc));
-      mbr<float> dvdt(dimension(nvar));
-      evolp2.allocate(), dt9, dhv, dphie,
-        equivalence(dydt, dvdt)
-          .align<2>(arr_index(4))
-           .with<1>(arr_index(1))
-      ;
-    }
-    {
-      mbr<float> t90;
-      mbr<float> hv0;
-      mbr<float> phie0;
-      mbr<float> y0(dimension(nnuc));
-      mbr<float> v0(dimension(nvar));
-      evolp3.allocate(), t90, hv0, phie0,
-        equivalence(y0, v0)
-          .align<2>(arr_index(4))
-           .with<1>(arr_index(1))
-      ;
-    }
-  }
-  float const& t9 = evolp1.bind<float>();
-  /* float const& hv */ evolp1.bind<float>();
-  /* float const& phie */ evolp1.bind<float>();
-  arr_ref<float> y(evolp1.bind<float>(), dimension(nnuc));
-  arr_ref<float> v(evolp1.bind<float>(), dimension(nvar));
-  /* float const& dt9 */ evolp2.bind<float>();
-  /* float const& dhv */ evolp2.bind<float>();
-  /* float const& dphie */ evolp2.bind<float>();
-  arr_cref<float> dydt(evolp2.bind<float>(), dimension(nnuc));
-  arr_cref<float> dvdt(evolp2.bind<float>(), dimension(nvar));
-  /* float const& t90 */ evolp3.bind<float>();
-  /* float const& hv0 */ evolp3.bind<float>();
-  /* float const& phie0 */ evolp3.bind<float>();
-  /* arr_ref<float> y0( */ evolp3.bind<float>() /* , dimension(nnuc)) */ ;
-  arr_ref<float> v0(evolp3.bind<float>(), dimension(nvar));
   int mvar = 0;
   int loop = 0;
   const float cl = 1.e-16f;
   float dtmin = 0;
   int i = 0;
   float dtl = 0;
+  const int nvar = 29;
+  arr_1d<nvar, float> v(fem::fill0);
+  arr_1d<nvar, float> v0(fem::fill0);
+  arr_1d<nvar, float> dvdt(fem::fill0);
   arr_1d<nvar, float> dvdt0(fem::fill0);
   //
   //----------LINKAGES.
@@ -5643,10 +4669,10 @@ driver(
   //
   //----------COMMON AREAS.
   //Evolution paramete
-  //omputation parame
+  //Computation parame
   //Time variables.
   //Flags,counters.
-  //omputation locat
+  //Computation locat
   //Run options.
   //
   //==========================DECLARATION DIVISION=================================
@@ -5654,11 +4680,11 @@ driver(
   //----------EVOLUTION PARAMETERS.
   //Temperature (in units of 10**9 K).
   //Defined by hv = M(atomic)n(baryon)/t
-  //hemical potential for electron.
+  //Chemical potential for electron.
   //Relative number abundances.
   //
   //----------EVOLUTION PARAMETERS (DERIVATIVES).
-  //hange in rel number abundances.
+  //Change in rel number abundances.
   //
   //----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
   //Rel # abund at beginning of iteratio
@@ -5676,7 +4702,7 @@ driver(
   //(1/t9)*d(t9)/d(t).
   //
   //----------COUNTERS AND FLAGS.
-  //ounts which Runge-Kutta loop.
+  //Counts which Runge-Kutta loop.
   //Indicates termination status.
   //# total time steps for particular ru
   //# time steps after outputting a line
@@ -5699,6 +4725,7 @@ driver(
   //Value of derivatives at original poi
   //
   //----------EQUIVALENCE STATEMENTS.
+  //     EQUIVALENCE (v(4),y(1)),(dvdt(4),dydt(1)),(v0(4),y0(1))
   //
   //===========================PROCEDURE DIVISION==================================
   //
@@ -5721,13 +4748,13 @@ driver(
   derivs(cmn, loop);
   //Time = 1st R-K loop.
   itime = 4;
-  //heck interface subroutine.
+  //Check interface subroutine.
   check(cmn);
   //..........ACCUMULATE.
   //Low temp.
   //Small dt.
   //Enough iterations.
-  if ((t9 <= cmn.t9f) || (dt < fem::abs(cl / dlt9dt)) || (ip == inc)) {
+  if ((cmn.t9 <= cmn.t9f) || (dt < fem::abs(cl / dlt9dt)) || (ip == inc)) {
     accum(cmn);
   }
   //..........POSSIBLY TERMINATE COMPUTATION.
@@ -5748,10 +4775,10 @@ driver(
     //Trial value for minimum time step (R
     dtmin = fem::abs(1.f / dlt9dt) * cmn.ct;
     //Go through all abundance changes.
-    FEM_DO(i, 1, isize) {
+    FEM_DO_SAFE(i, 1, isize) {
       if ((dydt(i) != 0.f) && (y(i) > ytmin)) {
         //(Ref 2).
-        dtl = fem::abs(y(i) / dydt(i)) * cmn.cy * (1.f + fem::pow2((
+        dtl = fem::abs(y(i) / dydt(i)) * cmn.cy * (1.f + pow2((
           fem::alog10(y(i)) / fem::alog10(ytmin))));
         //Find smallest time st
         if (dtl < dtmin) {
@@ -5769,7 +4796,7 @@ driver(
   //Increment time.
   t += dt;
   //..........STORE AND INCREMENT VALUES (Ref 3).
-  FEM_DO(i, 1, mvar) {
+  FEM_DO_SAFE(i, 1, mvar) {
     v0(i) = v(i);
     dvdt0(i) = dvdt(i);
     v(i) = v0(i) + dvdt0(i) * dt;
@@ -5787,10 +4814,10 @@ driver(
   derivs(cmn, loop);
   //Time = 2nd R-K loop.
   itime = 7;
-  //heck interface subroutine.
+  //Check interface subroutine.
   check(cmn);
   //..........INCREMENT VALUES.
-  FEM_DO(i, 1, mvar) {
+  FEM_DO_SAFE(i, 1, mvar) {
     v(i) = v0(i) + .5f * (dvdt(i) + dvdt0(i)) * dt;
     //Set at minimum
     if ((i >= 4) && (v(i) < ytmin)) {
@@ -5812,7 +4839,6 @@ driver(
 
 struct run_save
 {
-  fem::variant_bindings modpr_bindings;
   arr<fem::str<22> > vtype;
 
   run_save() :
@@ -5836,77 +4862,16 @@ run(
   int& isize = cmn.isize;
   int& jsize = cmn.jsize;
   //
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
   str_arr_ref<1> vtype(sve.vtype, dimension(8));
   if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> qvary(dimension(7));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> qvary(dimension(7));
-      mbr<float> c(dimension(3));
-      mbr<float> xi(dimension(3));
-      mbr<float> xi(dimension(3));
-      mbr<float> qvary(dimension(7));
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      modpr.allocate(), g, tau, xnu,
-        equivalence(c, qvary, cosmo, xi)
-          .align<2>(arr_index(1))
-           .with<1>(arr_index(1))
-          .align<2>(arr_index(4))
-           .with<3>()
-          .align<2>(arr_index(5))
-           .with<4>(arr_index(1)),
-        equivalence(cosmo, qvary, c, xi)
-          .align<2>(arr_index(1))
-           .with<3>(arr_index(1))
-          .align<2>(arr_index(4))
-           .with<1>()
-          .align<2>(arr_index(5))
-           .with<4>(arr_index(1)),
-        equivalence(xi, qvary, c, cosmo)
-          .align<2>(arr_index(1))
-           .with<3>(arr_index(1))
-          .align<2>(arr_index(4))
-           .with<4>()
-          .align<2>(arr_index(5))
-           .with<1>(arr_index(1))
-      ;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  /* arr_ref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  arr_ref<float> qvary(modpr.bind<float>(), dimension(7));
-  /* float& cosmo */ modpr.bind<float>();
-  /* arr_ref<float> xi( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float& cosmo */ modpr.bind<float>();
-  arr_ref<float> qvary(modpr.bind<float>(), dimension(7));
-  /* arr_ref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* arr_ref<float> xi( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* arr_ref<float> xi( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  arr_ref<float> qvary(modpr.bind<float>(), dimension(7));
-  /* arr_ref<float> c( */ modpr.bind<float>() /* , dimension(3)) */ ;
-  /* float& cosmo */ modpr.bind<float>();
-  if (is_called_first_time) {
-    {
-      static const char* values[] = {
-        "baryon/photon ratio   ", "gravitational constant",
-          "neutron lifetime      ", "# of neutrino species ",
-          "cosmological constant ", "xi-electron           ",
-          "xi-muon               ", "xi-tauon              "
-      };
-      fem::data_of_type_str(FEM_VALUES_AND_SIZE),
-        vtype;
-    }
+    static const char* values[] = {
+      "baryon/photon ratio   ", "gravitational constant",
+        "neutron lifetime      ", "# of neutrino species ",
+        "cosmological constant ", "xi-electron           ",
+        "xi-muon               ", "xi-tauon              "
+    };
+    fem::data_of_type_str(FEM_VALUES_AND_SIZE),
+      vtype;
   }
   const int iw = 6;
   const int ir = 5;
@@ -5924,7 +4889,7 @@ run(
   arr_1d<3, float> rnum2(fem::fill0);
   arr_1d<3, float> rnum3(fem::fill0);
   arr_1d<3, int> inum(fem::fill0);
-  fem::str<1> lchose = fem::char0;
+  fem::str<1> lchose = 0;
   int l = 0;
   arr_1d<3, int> lnum(fem::fill0);
   int lnumb1 = 0;
@@ -5957,7 +4922,7 @@ run(
   //----------COMMON AREAS.
   //Model parameters.
   //Variational parame
-  //omputation locati
+  //Computation locati
   //Run options.
   //
   //==========================DECLARATION DIVISION=================================
@@ -5967,7 +4932,7 @@ run(
   //c(1) is variation of gravitational c
   //c(2) is neutron lifetime (sec).
   //c(3) is number of neutrino species.
-  //osmological constant.
+  //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
   //----------RUN OPTION.
@@ -5992,13 +4957,14 @@ run(
   //User response (alphanumeric).
   //
   //----------FLAG AND LABELS.
-  //omputation location.
+  //Computation location.
   //Label for quantities being varied.
   //
   //----------EQUIVALENCE VARIABLE.
-  //Array set equal to c, cosmo, and xi.
+  //     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
   //
   //----------EQUIVALENCE STATEMENTS.
+  //     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
   //
   //==============================DATA DIVISION====================================
   //
@@ -6078,12 +5044,12 @@ run(
   statement_220:
   write(iw, format_2200);
   itime = 3;
-  //all interface subr before computati
+  //Call interface subr before computati
   check(cmn);
   //Do nucleosynthesis computation.
   driver(cmn);
   itime = 8;
-  //all interface subr after computatio
+  //Call interface subr after computatio
   check(cmn);
   write(iw, format_2202);
   read(ir, star);
@@ -6104,7 +5070,7 @@ run(
   }
   //No loopings rejected for now.
   knum = 0.f;
-  FEM_DO(i, 1, 3) {
+  FEM_DO_SAFE(i, 1, 3) {
     if (i > jnum) {
       //Initialize initial parameter.
       rnum1(i) = 0.f;
@@ -6189,97 +5155,85 @@ run(
   //Run requested.
   if (jnum != 0) {
     //..........WRITE OUT QUANTITY TO VARY, RUN SPECIFICATIONS.
-    //heck all loopings.
-    {
-      int fem_do_last = jnum + knum;
-      FEM_DO(l, 1, fem_do_last) {
-        //Proper selection was made.
-        if (inum(l) != 0) {
-          //Display run
-          write(iw,
-            "(' ','Run ',a22,/,'    from ',1p,e12.5,' to ',1p,e12.5,"
-            "' in increments of ',1p,e12.5)"),
-            vtype(inum(l)), rnum1(l), rnum2(l), rnum3(l);
-          //..........GET LOGS OF eta VALUES FOR LOGRITHMIC INCREMENTATION.
-          //Work with exponents for eta incre
-          if (inum(l) == 1) {
-            rnum1(l) = fem::log10(rnum1(l));
-            rnum2(l) = fem::log10(rnum2(l));
-          }
+    //Check all loopings.
+    FEM_DO_SAFE(l, 1, jnum + knum) {
+      //Proper selection was made.
+      if (inum(l) != 0) {
+        //Display run
+        write(iw,
+          "(' ','Run ',a22,/,'    from ',1p,e12.5,' to ',1p,e12.5,"
+          "' in increments of ',1p,e12.5)"),
+          vtype(inum(l)), rnum1(l), rnum2(l), rnum3(l);
+        //..........GET LOGS OF eta VALUES FOR LOGRITHMIC INCREMENTATION.
+        //Work with exponents for eta incre
+        if (inum(l) == 1) {
+          rnum1(l) = log10(rnum1(l));
+          rnum2(l) = log10(rnum2(l));
         }
       }
     }
     //..........COMPUTE NUMBER OF RUNS FOR EACH LOOPING.
-    FEM_DO(l, 1, 3) {
+    FEM_DO_SAFE(l, 1, 3) {
       lnum(l) = fem::nint((rnum2(l) - rnum1(l) + rnum3(l)) / rnum3(l));
     }
     //..........DO MULTIPLE RUNS.
     //Inform user of beginning of computat
     write(iw, format_2200);
     //Outer loop.
-    {
-      int fem_do_last = lnum(1) - 1;
-      FEM_DO(lnumb1, 0, fem_do_last) {
-        //Value of param fo
-        rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
-        if ((inum(1) >= 1) && (inum(1) <= 8)) {
-          if (inum(1) == 1) {
+    FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
+      //Value of param fo
+      rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
+      if ((inum(1) >= 1) && (inum(1) <= 8)) {
+        if (inum(1) == 1) {
+          //Vary baryon-to-photon ratio.
+          eta1 = pow(10, rnumb1);
+        }
+        else {
+          //Vary other quantities.
+          qvary(inum(1) - 1) = rnumb1;
+        }
+      }
+      //Middle loop.
+      FEM_DO_SAFE(lnumb2, 0, lnum(2) - 1) {
+        //Value of param
+        rnumb2 = rnum1(2) + fem::ffloat(lnumb2) * rnum3(2);
+        if ((inum(2) >= 1) && (inum(2) <= 8)) {
+          if (inum(2) == 1) {
             //Vary baryon-to-photon ratio.
-            eta1 = fem::pow(10, rnumb1);
+            eta1 = pow(10, rnumb2);
           }
           else {
             //Vary other quantities.
-            qvary(inum(1) - 1) = rnumb1;
+            qvary(inum(2) - 1) = rnumb2;
           }
         }
-        //Middle loop.
-        {
-          int fem_do_last = lnum(2) - 1;
-          FEM_DO(lnumb2, 0, fem_do_last) {
-            //Value of param
-            rnumb2 = rnum1(2) + fem::ffloat(lnumb2) * rnum3(2);
-            if ((inum(2) >= 1) && (inum(2) <= 8)) {
-              if (inum(2) == 1) {
-                //Vary baryon-to-photon ratio.
-                eta1 = fem::pow(10, rnumb2);
-              }
-              else {
-                //Vary other quantities.
-                qvary(inum(2) - 1) = rnumb2;
-              }
+        //Inner loop.
+        FEM_DO_SAFE(lnumb3, 0, lnum(3) - 1) {
+          //Value of para
+          rnumb3 = rnum1(3) + fem::ffloat(lnumb3) * rnum3(3);
+          if ((inum(3) >= 1) && (inum(3) <= 8)) {
+            if (inum(3) == 1) {
+              //Vary baryon-to-photon ratio.
+              eta1 = pow(10, rnumb3);
             }
-            //Inner loop.
-            {
-              int fem_do_last = lnum(3) - 1;
-              FEM_DO(lnumb3, 0, fem_do_last) {
-                //Value of para
-                rnumb3 = rnum1(3) + fem::ffloat(lnumb3) * rnum3(3);
-                if ((inum(3) >= 1) && (inum(3) <= 8)) {
-                  if (inum(3) == 1) {
-                    //Vary baryon-to-photon ratio.
-                    eta1 = fem::pow(10, rnumb3);
-                  }
-                  else {
-                    //Vary other quantities.
-                    qvary(inum(3) - 1) = rnumb3;
-                  }
-                }
-                itime = 3;
-                //heck interface subr before computat
-                check(cmn);
-                //Do nucleosynthesis computation.
-                driver(cmn);
-                itime = 8;
-                //heck interface subroutine after com
-                check(cmn);
-                //lnumb3 = 0,lnum(3)-1
-              }
+            else {
+              //Vary other quantities.
+              qvary(inum(3) - 1) = rnumb3;
             }
-            //lnumb2 = 0,lnum(2)-1
           }
+          itime = 3;
+          //Check interface subr before computat
+          check(cmn);
+          //Do nucleosynthesis computation.
+          driver(cmn);
+          itime = 8;
+          //Check interface subroutine after com
+          check(cmn);
+          //lnumb3 = 0,lnum(3)-1
         }
-        //lnumb1 = 0,lnum(1)-1
+        //lnumb2 = 0,lnum(2)-1
       }
+      //lnumb1 = 0,lnum(1)-1
     }
     //Inform user of completion of computa
     write(iw, format_2202);
@@ -6304,11 +5258,6 @@ run(
   //
 }
 
-struct output_save
-{
-  fem::variant_bindings modpr_bindings;
-};
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -6316,7 +5265,6 @@ void
 output(
   common& cmn)
 {
-  FEM_CMN_SVE(output);
   common_read read(cmn);
   common_write write(cmn);
   float& cy = cmn.cy;
@@ -6324,6 +5272,9 @@ output(
   float& t9i = cmn.t9i;
   float& t9f = cmn.t9f;
   float& ytmin = cmn.ytmin;
+  arr_cref<float> c(cmn.c, dimension(3));
+  float& cosmo = cmn.cosmo;
+  arr_cref<float> xi(cmn.xi, dimension(3));
   int& it = cmn.it;
   const int itmax = 40;
   const int nnuc = 26;
@@ -6336,25 +5287,6 @@ output(
   arr_cref<float> hubout(cmn.hubout, dimension(itmax));
   int& nout = cmn.nout;
   //
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
-  if (is_called_first_time) {
-    using fem::mbr; // member of variant common or equivalence
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
-  }
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  arr_cref<float> c(modpr.bind<float>(), dimension(3));
-  float const& cosmo = modpr.bind<float>();
-  arr_cref<float> xi(modpr.bind<float>(), dimension(3));
   const int iw = 6;
   const int ir = 5;
   int inum = 0;
@@ -6388,7 +5320,7 @@ output(
   //Maximum # of line to be printed.
   //
   //----------COMMON AREAS.
-  //omputation parame
+  //Computation parame
   //Model parameters.
   //Flags, counters.
   //Output data.
@@ -6407,7 +5339,7 @@ output(
   //c(1) is variation of gravitational c
   //c(2) is neutron lifetime (sec).
   //c(3) is number of neutrino species.
-  //osmological constant.
+  //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
   //----------COUNTER.
@@ -6485,11 +5417,11 @@ output(
   write(2,
     "(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
     "'Li6/H',7x,'Li7/H',7x,'Be7/H',6x,'Li8/H&up',/,132('-'))");
-  FEM_DO(j, 1, it) {
+  FEM_DO_SAFE(j, 1, it) {
     {
       write_loop wloop(cmn, 2, "(1p,e10.3,1p,10e12.3)");
       wloop, t9out(j);
-      FEM_DO(i, 1, 10) {
+      FEM_DO_SAFE(i, 1, 10) {
         wloop, xout(j, i);
       }
     }
@@ -6498,11 +5430,11 @@ output(
   write(2,
     "(' ',/,4x,'Temp',9x,'T',10x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',8x,"
     "'phie',9x,'dt',9x,'eta',10x,'H',/,132('-'))");
-  FEM_DO(j, 1, it) {
+  FEM_DO_SAFE(j, 1, it) {
     {
       write_loop wloop(cmn, 2, "(1p,e10.3,9e12.3)");
       wloop, t9out(j), tout(j);
-      FEM_DO(i, 1, 5) {
+      FEM_DO_SAFE(i, 1, 5) {
         wloop, thmout(j, i);
       }
       wloop, dtout(j), etaout(j), hubout(j);
@@ -6559,11 +5491,11 @@ output(
   write(iw,
     "(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,' ',"
     "80('-'))");
-  FEM_DO(j, 1, it) {
+  FEM_DO_SAFE(j, 1, it) {
     {
       write_loop wloop(cmn, iw, format_3106);
       wloop, t9out(j);
-      FEM_DO(i, 3, 6) {
+      FEM_DO_SAFE(i, 3, 6) {
         wloop, xout(j, i);
       }
       wloop, xout(j, 8);
@@ -6583,15 +5515,15 @@ output(
   write(iw,
     "(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,' ',"
     "80('-'))");
-  FEM_DO(j, 1, it) {
+  FEM_DO_SAFE(j, 1, it) {
     {
       write_loop wloop(cmn, iw, format_3106);
       wloop, t9out(j);
-      FEM_DO(i, 1, 2) {
+      FEM_DO_SAFE(i, 1, 2) {
         wloop, xout(j, i);
       }
       wloop, xout(j, 7);
-      FEM_DO(i, 9, 10) {
+      FEM_DO_SAFE(i, 9, 10) {
         wloop, xout(j, i);
       }
     }
@@ -6609,11 +5541,11 @@ output(
   //..........PRINT ENERGY DENSITIES.
   write(iw,
     "(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,' ',80('-'))");
-  FEM_DO(j, 1, it) {
+  FEM_DO_SAFE(j, 1, it) {
     {
       write_loop wloop(cmn, iw, "(1p,e10.3,4e12.3)");
       wloop, t9out(j);
-      FEM_DO(i, 1, 4) {
+      FEM_DO_SAFE(i, 1, 4) {
         wloop, thmout(j, i);
       }
     }
@@ -6631,7 +5563,7 @@ output(
   //..........PRINT THERMODYNAMIC QUANTITIES.
   write(iw,
     "(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,' ',80('-'))");
-  FEM_DO(j, 1, it) {
+  FEM_DO_SAFE(j, 1, it) {
     write(iw, "(1p,e10.3,5e12.3)"), t9out(j), tout(j), thmout(j, 5),
       dtout(j), etaout(j), hubout(j);
   }
@@ -6726,8 +5658,8 @@ blockdata_unnamed(
           0.0f, 0.0f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 1, 11) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 1, 11) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6746,8 +5678,8 @@ blockdata_unnamed(
           65.054f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 12, 22) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 12, 22) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6766,8 +5698,8 @@ blockdata_unnamed(
           175.476f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 23, 33) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 23, 33) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6786,8 +5718,8 @@ blockdata_unnamed(
           2.33f, 6.975f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 34, 44) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 34, 44) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6806,8 +5738,8 @@ blockdata_unnamed(
           50.63f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 45, 55) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 45, 55) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6826,8 +5758,8 @@ blockdata_unnamed(
           3.58f, 94.88f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 56, 66) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 56, 66) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6846,8 +5778,8 @@ blockdata_unnamed(
           26.f, 3.62f, 140.734f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 67, 77) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 67, 77) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6866,8 +5798,8 @@ blockdata_unnamed(
           25.711f
       };
       fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
-      FEM_DO(i, 78, 88) {
-        FEM_DO(j, 1, 8) {
+      FEM_DO_SAFE(i, 78, 88) {
+        FEM_DO_SAFE(j, 1, 8) {
           data, reacpr(i, j);
         }
       }
@@ -6933,7 +5865,7 @@ blockdata_unnamed(
   //
   //----------NUCLIDE DATA.
   //Atomic number of nuclide.
-  //harge of nuclide.
+  //Charge of nuclide.
   //Mass excess of nuclide.
   //
   //==============================DATA DIVISION====================================
@@ -6956,9 +5888,9 @@ blockdata_unnamed(
   //H3->He3
   //Li8->2He4
   //B12->C12
-  //14->N14
+  //C14->N14
   //B8->2He4
-  //11->B11
+  //C11->B11
   //N12->C12
   //N13->C13
   //O14->N14
@@ -6995,13 +5927,13 @@ blockdata_unnamed(
   //Li7(n,g)Li8
   //B10(n,g)B11
   //B11(n,g)B12
-  //11(n,p)B11
+  //C11(n,p)B11
   //B10(n,a)Li7
   //Be7(p,g)B8
   //Be9(p,g)B10
   //B10(p,g)C11
   //B11(p,g)C12
-  //11(p,g)N12
+  //C11(p,g)N12
   //              reac# type n1 n2 n3 n4 rev-coeff q-value
   //              ----  ---- -- -- -- -- --------- -------
   //B12(p,n)C12
@@ -7025,9 +5957,9 @@ blockdata_unnamed(
   //B8(n,pa)He4
   //Be9(p,da)He4
   //B11(p,2a)Be4
-  //11(n,2a)He4
-  //12(n,g)C13
-  //13(n,g)C14
+  //C11(n,2a)He4
+  //C12(n,g)C13
+  //C13(n,g)C14
   //              reac# type n1 n2 n3 n4 rev-coeff q-value
   //              ----  ---- -- -- -- -- --------- -------
   //N14(n,g)N15
@@ -7035,25 +5967,25 @@ blockdata_unnamed(
   //N14(n,p)C14
   //O15(n,p)N15
   //O15(n,a)C12
-  //12(p,g)N13
-  //13(p,g)N14
-  //14(p,g)N15
+  //C12(p,g)N13
+  //C13(p,g)N14
+  //C14(p,g)N15
   //N13(p,g)O14
   //N14(p,g)O15
   //N15(p,g)O16
   //              reac# type n1 n2 n3 n4 rev-coeff q-value
   //              ----  ---- -- -- -- -- --------- -------
   //N15(p,a)C12
-  //12(a,g)O16
+  //C12(a,g)O16
   //B10(a,p)C13
   //B11(a,p)C14
-  //11(a,p)N14
+  //C11(a,p)N14
   //N12(a,p)O15
   //N13(a,p)O16
   //B10(a,n)N13
   //B11(a,n)N14
   //B12(a,n)N15
-  //13(a,n)O16
+  //C13(a,n)O16
   //
   //----------DEFAULT COMPUTATION PARAMETERS.
   //Default time step limiting constant.
@@ -7074,11 +6006,10 @@ blockdata_unnamed(
 
 struct program_new123_save
 {
-  fem::variant_bindings modpr_bindings;
   fem::variant_bindings rates_bindings;
 };
 
-//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+//CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder unix f77):
 //     -------------------------------
 // Programme renamed from nuc123.for to new123.f
@@ -7111,11 +6042,12 @@ program_new123(
   arr_ref<float> q9(cmn.q9, dimension(nrec));
   arr_cref<float> c0(cmn.c0, dimension(3));
   arr_cref<float> xi0(cmn.xi0, dimension(3));
+  arr_ref<float> c(cmn.c, dimension(3));
+  arr_ref<float> xi(cmn.xi, dimension(3));
   int& itime = static_cast<common_checkcb&>(cmn).itime;
   bool& outfile = cmn.outfile;
   //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
-  common_variant modpr(cmn.common_modpr, sve.modpr_bindings);
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -7123,24 +6055,9 @@ program_new123(
       mbr<float> r(dimension(nrec));
       rates.allocate(), f, r;
     }
-    {
-      mbr<float> g;
-      mbr<float> tau;
-      mbr<float> xnu;
-      mbr<float> c(dimension(3));
-      mbr<float> cosmo;
-      mbr<float> xi(dimension(3));
-      modpr.allocate(), g, tau, xnu, c, cosmo, xi;
-    }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
-  /* float const& g */ modpr.bind<float>();
-  /* float const& tau */ modpr.bind<float>();
-  /* float const& xnu */ modpr.bind<float>();
-  arr_ref<float> c(modpr.bind<float>(), dimension(3));
-  float& cosmo = modpr.bind<float>();
-  arr_ref<float> xi(modpr.bind<float>(), dimension(3));
   const int iw = 6;
   int i = 0;
   const int nnuc = 26;
@@ -7181,12 +6098,12 @@ program_new123(
   //Reaction parameter
   //Reaction rates.
   //Default comp param
-  //omputation parame
+  //Computation parame
   //Default model para
   //Model parameters.
   //Default variationl
   //Variational parame
-  //omputation locati
+  //Computation locati
   //Run options.
   //Output option.
   //
@@ -7233,7 +6150,7 @@ program_new123(
   //c(1) is variation of gravitational c
   //c(2) is neutron lifetime (sec).
   //c(3) is number of neutrino species.
-  //osmological constant.
+  //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
   //----------DEFAULT VARIATIONAL PARAMETERS.
@@ -7268,7 +6185,7 @@ program_new123(
     .status("new");
   //Time = beginning of program.
   itime = 1;
-  //heck interface subroutine.
+  //Check interface subroutine.
   check(cmn);
   write(iw,
     "(6(/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU',4x,8('C'),6x,'11',8x,6('2'),6x,"
@@ -7283,7 +6200,7 @@ program_new123(
   //
   //20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
   //
-  FEM_DO(i, 1, nrec) {
+  FEM_DO_SAFE(i, 1, nrec) {
     //..........READ IN REACTION PARAMETERS.
     //Reaction type.
     iform(i) = fem::fint(reacpr(i, 2));
@@ -7336,8 +6253,8 @@ program_new123(
   c(2) = c0(2);
   //Number of neutrino species.
   c(3) = c0(3);
-  //osmological constant.
-  cosmo = cmn.cosmo0;
+  //Cosmological constant.
+  cmn.cosmo = cmn.cosmo0;
   //Electron degeneracy parameter.
   xi(1) = xi0(1);
   //Muon degeneray parameter.
@@ -7394,12 +6311,12 @@ program_new123(
   statement_440:
   //Time = beginning of run section.
   itime = 2;
-  //heck interface subroutine.
+  //Check interface subroutine.
   check(cmn);
   run(cmn);
   //Time = end of run section.
   itime = 9;
-  //heck interface subroutine.
+  //Check interface subroutine.
   check(cmn);
   goto statement_500;
   //Output section.
@@ -7409,7 +6326,7 @@ program_new123(
   //Exit section.
   statement_460:
   if (outfile) {
-    //lose output file.
+    //Close output file.
     cmn.io.close(2)
       .status("keep");
   }
@@ -7420,7 +6337,7 @@ program_new123(
   }
   //Time = end of program.
   itime = 10;
-  //heck interface subroutine.
+  //Check interface subroutine.
   check(cmn);
   FEM_STOP(0);
   //

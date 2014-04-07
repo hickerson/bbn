@@ -80,6 +80,25 @@ struct common_modpr0
   {}
 };
 
+struct common_modpr
+{
+  float g;
+  float tau;
+  float xnu;
+  arr<float> c;
+  float cosmo;
+  arr<float> xi;
+
+  common_modpr() :
+    g(0),
+    tau(0),
+    xnu(0),
+    c(dimension(3), fem::fill0),
+    cosmo(0),
+    xi(dimension(3), fem::fill0)
+  {}
+};
+
 struct common_recpr0
 {
   static const int nrec = 88;
@@ -120,6 +139,69 @@ struct common_recpr
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_recpr::nrec;
+#endif
+
+struct common_evolp1
+{
+  static const int nnuc = 26;
+
+  float t9;
+  float hv;
+  float phie;
+  arr<float> y;
+
+  common_evolp1() :
+    t9(0),
+    hv(0),
+    phie(0),
+    y(dimension(nnuc), fem::fill0)
+  {}
+};
+
+#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
+const int common_evolp1::nnuc;
+#endif
+
+struct common_evolp2
+{
+  static const int nnuc = 26;
+
+  float dt9;
+  float dhv;
+  float dphie;
+  arr<float> dydt;
+
+  common_evolp2() :
+    dt9(0),
+    dhv(0),
+    dphie(0),
+    dydt(dimension(nnuc), fem::fill0)
+  {}
+};
+
+#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
+const int common_evolp2::nnuc;
+#endif
+
+struct common_evolp3
+{
+  static const int nnuc = 26;
+
+  float t90;
+  float hv0;
+  float phie0;
+  arr<float> y0;
+
+  common_evolp3() :
+    t90(0),
+    hv0(0),
+    phie0(0),
+    y0(dimension(nnuc), fem::fill0)
+  {}
+};
+
+#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
+const int common_evolp3::nnuc;
 #endif
 
 struct common_ttime
@@ -179,6 +261,43 @@ struct common_nucdat
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_nucdat::nnuc;
 #endif
+
+struct common_besselcb
+{
+  float bl1;
+  float bl2;
+  float bl3;
+  float bl4;
+  float bl5;
+  float bm1;
+  float bm2;
+  float bm3;
+  float bm4;
+  float bm5;
+  float bn1;
+  float bn2;
+  float bn3;
+  float bn4;
+  float bn5;
+
+  common_besselcb() :
+    bl1(0),
+    bl2(0),
+    bl3(0),
+    bl4(0),
+    bl5(0),
+    bm1(0),
+    bm2(0),
+    bm3(0),
+    bm4(0),
+    bm5(0),
+    bn1(0),
+    bn2(0),
+    bn3(0),
+    bn4(0),
+    bn5(0)
+  {}
+};
 
 struct common_kays
 {
@@ -311,12 +430,17 @@ struct common :
   common_varpr0,
   common_varpr,
   common_modpr0,
+  common_modpr,
   common_recpr0,
   common_recpr,
+  common_evolp1,
+  common_evolp2,
+  common_evolp3,
   common_ttime,
   common_thermcb,
   common_endens,
   common_nucdat,
+  common_besselcb,
   common_kays,
   common_flags,
   common_checkcb,
@@ -326,39 +450,20 @@ struct common :
   common_outopt,
   common_tcheck
 {
-  fem::variant_core common_modpr;
   fem::variant_core common_rates;
-  fem::variant_core common_evolp1;
-  fem::variant_core common_evolp2;
-  fem::variant_core common_evolp3;
   fem::variant_core common_lncoef;
-  fem::variant_core common_besselcb;
-  fem::cmn_sve setmod_sve;
   fem::cmn_sve check_sve;
   fem::cmn_sve knux_sve;
-  fem::cmn_sve bessel_sve;
   fem::cmn_sve rate0_sve;
-  fem::cmn_sve func1_sve;
-  fem::cmn_sve func2_sve;
-  fem::cmn_sve func3_sve;
-  fem::cmn_sve func4_sve;
-  fem::cmn_sve func5_sve;
-  fem::cmn_sve func6_sve;
   fem::cmn_sve xintd_sve;
   fem::cmn_sve rate1_sve;
   fem::cmn_sve start_sve;
-  fem::cmn_sve nudens_sve;
-  fem::cmn_sve therm_sve;
   fem::cmn_sve eqslin_sve;
   fem::cmn_sve sol_sve;
   fem::cmn_sve rate2_sve;
   fem::cmn_sve rate3_sve;
   fem::cmn_sve rate4_sve;
-  fem::cmn_sve derivs_sve;
-  fem::cmn_sve accum_sve;
-  fem::cmn_sve driver_sve;
   fem::cmn_sve run_sve;
-  fem::cmn_sve output_sve;
   fem::cmn_sve blockdata_unnamed_sve;
   fem::cmn_sve program_new123_sve;
 
