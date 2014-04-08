@@ -1319,18 +1319,18 @@ knux(
   //Values k2(z),k3(z),k4(z).
   //
   //-----------EXPANSION COEFFICIENTS.
-  //Expansion coefficients for i0 (z.le.
-  //Expansion coefficients for i1 (z.le.
-  //Expansion coefficients for k0 (z.le.
-  //Expansion coefficients for k1 (z.le.
-  //Expansion coefficients for k0 (z.gt.
-  //Expansion coefficients for k1 (z.gt.
+  //Expansion coefficients for i0 (z.le.2).
+  //Expansion coefficients for i1 (z.le.2).
+  //Expansion coefficients for k0 (z.le.2).
+  //Expansion coefficients for k1 (z.le.2).
+  //Expansion coefficients for k0 (z.gt.2).
+  //Expansion coefficients for k1 (z.gt.2).
   //
   //-----------VARIABLES TO BE EVALUATED.
   //Input variable.
   //Expansion variable = z/2.
   //Expansion variable = z/3.75.
-  //Logrithmic or exponential coefficien
+  //Logarithmic or exponential coefficient
   //
   //==============================DATA DIVISION====================================
   //
@@ -1466,15 +1466,16 @@ bessel(
   //20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
   //
   int i = 0;
+  cyl_bessel_k(0,0);
   arr_1d<5, float> blz(fem::fill0); //TODO change to c array
   arr_1d<5, float> bmz(fem::fill0); //TODO change to c array
   arr_1d<5, float> bnz(fem::fill0); //TODO change to c array
   FEM_DO_SAFE(i, 1, 5) {
     float r = i * z; 							//Multiples of z.
     knux(cmn, r); 								//Get k0(r),k1(r),k2(r),k3(r),k4(r),k(r)
-    cmn.blz(i) = cmn.bk2/r; 					//Put value from function bl into array
-    cmn.bmz(i) = 0.25*(3*cmn.bk3 + cmn.bk1)/r; 	//Put value from function bm into array
-    cmn.bnz(i) = 0.5*(cmn.bk4 + cmn.bk2)/r; 	//Put value from function bn into array
+    blz(i) = cmn.bk2/r; 					//Put value from function bl into array
+    bmz(i) = 0.25*(3*cmn.bk3 + cmn.bk1)/r; 	//Put value from function bm into array
+    bnz(i) = 0.5*(cmn.bk4 + cmn.bk2)/r; 	//Put value from function bn into array
   }
 
   // TODO remove this fix 
@@ -2378,11 +2379,9 @@ start(common& cmn)
   }
   //Electron neutrino degeneracy.
   if (xi(1) != 0.f) {
-    cnorm = 1.f;
-    //Low temperature.
-    tnu = .00001f;
-    //Find normalization constant at low t
-    rate1(cmn, 0.00001f);
+    cnorm = 1.;
+    tnu = .00001f; 				//Low temperature.
+    rate1(cmn, 0.00001f); 		//Find normalization constant at low temperature.
     cnorm = 1 / tau / f(1);
   }
   y0(1) = y(1);
@@ -2390,35 +2389,26 @@ start(common& cmn)
   //
   //40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
   //
-  //Inverse of temperature.
-  float z = 5.930f / t9;
+  float z = 5.930f / t9; 				//Inverse of temperature.
   bessel(cmn, z);
-  //(Ref 4 but with final eta).
-  hv = 3.3683e+4f * cmn.eta1 * 2.75f;
-  //Chemical potential of electron (Ref
-  cmn.phie = hv * (1.784e-5f * y(2)) / (.5f * pow3(z) * (
+  hv = 3.3683e+4f * cmn.eta1 * 2.75f; 	//(Ref 4 but with final eta).
+  cmn.phie = hv * (1.784e-5f * y(2)) / (.5f * pow3(z) * (                // TODO pow3 -> z3
     cmn.bl1 - 2.f * cmn.bl2 + 3.f * cmn.bl3 - 4.f * cmn.bl4 + 5.f *
-    cmn.bl5));
-  //Baryon density.
-  rhob0 = hv * pow3(t9);
+    cmn.bl5)); 							//Chemical potential of electron (Ref 5).
+  rhob0 = hv * pow3(t9); 				//Baryon density.
   //Nonde
   if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
-    //Electron neutrino density (Ref 6).
-    cmn.rhone0 = 7.366f * pow4(t9);
+    cmn.rhone0 = 7.366f * pow4(t9); 	//Electron neutrino density (Ref 6).
   }
   //
   //50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
   //
-  //(Ref 7).
-  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9,
-    1.5f));
+  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); //(Ref 7).
   y0(3) = y(3);
   int i = 0;
   FEM_DO_SAFE(i, 4, cmn.isize) {
-    //Set rest to minimum abundance.
-    y(i) = cmn.ytmin;
-    //Init abundances at beginning of iter
-    y0(i) = y(i);
+    y(i) = cmn.ytmin; 					//Set rest to minimum abundance.
+    y0(i) = y(i); 						//Init abundances at beginning of iter
   }
   //Compute weak decay rates.
   rate0(cmn);

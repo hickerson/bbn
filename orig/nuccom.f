@@ -908,7 +908,7 @@ C-----------VARIABLES TO BE EVALUATED.
       REAL    z                    !Input variable.
       REAL    y                    !Expansion variable = z/2.
       REAL    t                    !Expansion variable = z/3.75.
-      REAL    coeff                !Logrithmic or exponential coefficient.
+      REAL    coeff                !Logarithmic or exponential coefficient.
 
 
 C==============================DATA DIVISION====================================
