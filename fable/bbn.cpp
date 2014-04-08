@@ -6,36 +6,6 @@ namespace bbn {
 
 using namespace fem;
 
-/*
-void
-bl(...)
-{
-  throw std::runtime_error(
-    "Missing function implementation: bl");
-}
-
-void
-bm(...)
-{
-  throw std::runtime_error(
-    "Missing function implementation: bm");
-}
-
-void
-bn(...)
-{
-  throw std::runtime_error(
-    "Missing function implementation: bn");
-}
-
-void
-qvary(...)
-{
-  throw std::runtime_error(
-    "Missing function implementation: qvary");
-}
-*/
-
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -701,9 +671,9 @@ setcom(
   goto statement_400;
   //Reset all to default values section.
   statement_280:
-  //Time step limiting constant on abund
+  //Time step limiting constant on abundance
   cy = cmn.cy0;
-  //Time step limiting constant on tempe
+  //Time step limiting constant on temperature
   ct = cmn.ct0;
   //Time step.
   dt1 = cmn.dt0;
@@ -831,7 +801,7 @@ setmod(
   }
   //Improper input or <RETURN>.
   goto statement_300;
-  //Change gravitational constant sectio
+  //Change gravitational constant section.
   statement_210:
   write(iw,
     "(' ','Enter value for variation of gravitational ','constant: ',$)");
@@ -842,17 +812,17 @@ setmod(
   write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
   read(ir, star), c(2);
   goto statement_400;
-  //Change number of neutrino species se
+  //Change number of neutrino species section.
   statement_230:
   write(iw, "(' ','Enter value for number of neutrino species: ',$)");
   read(ir, star), c(3);
   goto statement_400;
-  //Change baryon-to-photon ratio sectio
+  //Change baryon-to-photon ratio section.
   statement_240:
   write(iw, "(' ','Enter value for baryon-to-photon ratio: ',$)");
   read(ir, star), eta1;
   goto statement_400;
-  //Change cosmological constant section
+  //Change cosmological constant section.
   statement_250:
   write(iw, "(' ','Enter value for cosmological constant: ',$)");
   read(ir, star), cosmo;
@@ -4952,8 +4922,8 @@ run(
   //Run parameter end value.
   //Run parameter increment.
   //Selection number.
-  //Number of loopings to be done.
-  //Number of loopings rejected.
+  //Number of loops to be done.
+  //Number of loops rejected.
   //Run parameter for outer loop.
   //Run parameter for middle loop.
   //Run parameter for inner loop.
@@ -5096,7 +5066,8 @@ run(
         "' 5.  LAMBDA      (LINEAR VARIATION)',/,' ',25x,"
         "' 6.  XI-ELECTRON (LINEAR VARIATION)',/,' ',25x,"
         "' 7.  XI-MUON     (LINEAR VARIATION)',/,' ',25x,"
-        "' 8.  XI-TAUON    (LINEAR VARIATION)',/,' ',25x,' 9.  NO SELECTION',"
+        "' 8.  XI-TAUON    (LINEAR VARIATION)',/,' ',25x,"
+		"' 9.  NO SELECTION',"
         "5(/),' ',25x,' Enter selection (1-9): ',$)");
       read(ir, format_1001), inum(i);
       //No selection ma
