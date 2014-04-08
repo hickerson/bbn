@@ -13,7 +13,7 @@ fable:
 	./purify_fable.sh bbn-fable.cpp cmn.hpp
 
 clean:
-	rm -rf *.o bbn
+	rm -rf *.o bbn *.dat
 
 install-fable:
 	wget http://cci.lbl.gov/fable_bundles/current/fable_bundle.selfx
@@ -21,7 +21,7 @@ install-fable:
 	. ./fable_build/
 
 bbn:
-	g++ -o bbn -Ifable_sources/fable bbn.cpp
+	g++ -g -o bbn -Ifable_sources/fable bbn.cpp
 
 bbn-fable:
 	g++ -o bbn -Ifable_sources/fable bbn-fable.cpp

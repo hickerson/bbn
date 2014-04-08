@@ -5141,7 +5141,7 @@ run(common& cmn)
           "(' ','Run ',a22,/,'    from ',1p,e12.5,' to ',1p,e12.5,"
           "' in increments of ',1p,e12.5)"),
           vtype(inum(l)), rnum1(l), rnum2(l), rnum3(l);
-        //..........GET LOGS OF eta VALUES FOR LOGRITHMIC INCREMENTATION.
+        //..........GET LOGS OF eta VALUES FOR LOGARITHMIC INCREMENTATION.
         //Work with exponents for eta incre
         if (inum(l) == 1) {
           rnum1(l) = log10(rnum1(l));
@@ -5154,10 +5154,10 @@ run(common& cmn)
       lnum(l) = fem::nint((rnum2(l) - rnum1(l) + rnum3(l)) / rnum3(l));
     }
     //..........DO MULTIPLE RUNS.
-    //Inform user of beginning of computat
+    //Inform user of beginning of computation.
     write(iw, format_2200);
     //Outer loop.
-	float qvary[7];
+	double qvary[7];
     FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
       //Value of param fo
       rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
