@@ -1,6 +1,7 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
 #include "bbn.hpp"
+#include <gsl/gsl_sf_bessel.h>
 
 namespace bbn {
 
