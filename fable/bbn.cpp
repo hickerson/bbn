@@ -1030,22 +1030,22 @@ check(
   //Accumulation increment.
   //
   //----------DEFAULT MODEL PARAMETERS.
-  //Default c.
+  //Default constant.
   //Default cosmological constant.
-  //Default neutrino degeneracy paramete
+  //Default neutrino degeneracy parameter.
   //
   //----------EARLY UNIVERSE MODEL PARAMETERS.
   //Gravitational constant.
   //Neutron lifetime (sec).
   //Number of neutrino species.
-  //c(1) is variation of gravitational c
+  //c(1) is variation of gravitational constant.
   //c(2) is neutron half-life (min).
   //c(3) is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
-  //xi(1) is e neutrino degeneracy param
-  //xi(2) is m neutrino degeneracy param
-  //xi(3) is t neutrino degeneracy param
+  //xi(1) is e neutrino degeneracy parameter.
+  //xi(2) is m neutrino degeneracy parameter.
+  //xi(3) is t neutrino degeneracy parameter.
   //
   //----------DEFAULT VARIATIONAL PARAMETERS.
   //Default initial time step.
@@ -1061,14 +1061,14 @@ check(
   //(1/t9)*d(t9)/d(t).
   //
   //----------DYNAMIC VARIABLES.
-  //Thermodynamic variables (energy dens
+  //Thermodynamic variables (energy density).
   //Expansion rate of the universe.
   //
   //----------ENERGY DENSITIES.
-  //Initial electron neutrino energy den
+  //Initial electron neutrino energy density.
   //Initial baryon energy density.
   //Baryon energy density.
-  //Baryon energy density (ratio to init
+  //Baryon energy density (ratio to initi
   //
   //----------MATRIX COEFFICIENTS FOR LINEAR EQUATION.
   //Relates y(t+dt) to y(t).
@@ -1359,10 +1359,12 @@ knux(
     bk0 = ck0(1);
     bk1 = ck1(1);
     FEM_DO_SAFE(i, 2, 7) {
-      bi0 += ci0(i) * pow(t, (2 * (i - 1)));
-      bi1 += ci1(i) * pow(t, (2 * (i - 1)));
-      bk0 += ck0(i) * pow(y, (2 * (i - 1)));
-      bk1 += ck1(i) * pow(y, (2 * (i - 1)));
+      int n = 2 * (i - 1);
+      float p = pow(t,n);
+      bi0 += ci0(i) * p;
+      bi1 += ci1(i) * p;
+      bk0 += ck0(i) * p;
+      bk1 += ck1(i) * p;
     }
     //..........VALUES FOR k0(z) and k1(z).
     bk0 += -coeff * bi0;
