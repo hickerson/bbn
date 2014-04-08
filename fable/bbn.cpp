@@ -5184,7 +5184,7 @@ run(
         }
         //Inner loop.
         FEM_DO_SAFE(lnumb3, 0, lnum(3) - 1) {
-          //Value of para
+          //Value of parameter.
           rnumb3 = rnum1(3) + fem::ffloat(lnumb3) * rnum3(3);
           if ((inum(3) >= 1) && (inum(3) <= 8)) {
             if (inum(3) == 1) {
@@ -5197,12 +5197,12 @@ run(
             }
           }
           itime = 3;
-          //Check interface subr before computat
+          //Check interface subroutine before computation.
           check(cmn);
           //Do nucleosynthesis computation.
           driver(cmn);
           itime = 8;
-          //Check interface subroutine after com
+          //Check interface subroutine after computation.
           check(cmn);
           //lnumb3 = 0,lnum(3)-1
         }
@@ -5210,13 +5210,13 @@ run(
       }
       //lnumb1 = 0,lnum(1)-1
     }
-    //Inform user of completion of computa
+    //Inform user of completion of computation.
     write(iw, format_2202);
-    //(jnum.eq.0)
+    //(jnum == 0)
   }
   else {
     write(iw, "(' ','No selection made - ','Press <RETURN> to continue: ',$)");
-    //(jnum.ne.0)
+    //(jnum != 0)
   }
   read(ir, star);
   goto statement_300;
