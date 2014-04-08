@@ -230,7 +230,7 @@ help(common& cmn)
         "'   parameters that can be varied are th',"
         "'e following:                           ',/,' ',"
         "'    A. Eta                             ',"
-        "'       - Logrithmic variation          ',/,' ',"
+        "'       - Logarithmic variation          ',/,' ',"
         "'    B. Gravitational constant          ',"
         "'       - Linear variation              ',/,' ',"
         "'    C. Neutron lifetime                ',"
@@ -1467,7 +1467,6 @@ bessel(
   //20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
   //
   int i = 0;
-  gsl_sf_bessel_Kn(0,0); 			// Irregular modified cylindrical Bessel functions.
   arr_1d<5, float> blz(fem::fill0); //TODO change to c array
   arr_1d<5, float> bmz(fem::fill0); //TODO change to c array
   arr_1d<5, float> bnz(fem::fill0); //TODO change to c array
@@ -1481,6 +1480,27 @@ bessel(
 
   // TODO remove this fix 
 }
+
+double getBesselL(float r)
+{
+  	float K2r = gsl_sf_bessel_Kn(2,r); 		// Irregular modified cylindrical Bessel functions.
+	return K2r/r;
+}
+
+double getBesselM(float r)
+{
+  	float K3r = gsl_sf_bessel_Kn(3,r); 		// Irregular modified cylindrical Bessel functions.
+  	float K1r = gsl_sf_bessel_Kn(1,r); 		// Irregular modified cylindrical Bessel functions.
+    return 0.25*(3*K3r + K1r)/r; 			// Put value from function bm into array.
+}
+
+double getBesselN(float r)
+{
+  	float K4r = gsl_sf_bessel_Kn(4,r); 		// Irregular modified cylindrical Bessel functions.
+  	float K2r = gsl_sf_bessel_Kn(2,r); 		// Irregular modified cylindrical Bessel functions.
+    return 0.5*(K4r + K2r)/r; 				// Put value from function bn into array.
+}
+
 
 struct rate0_save
 {
@@ -2551,6 +2571,7 @@ therm(
   // COMMON endens
   float& rnb = cmn.rnb;
   // COMMON besselcb
+  /*
   float& bl1 = cmn.bl1;
   float& bl2 = cmn.bl2;
   float& bl3 = cmn.bl3;
@@ -2561,6 +2582,7 @@ therm(
   float& bm3 = cmn.bm3;
   float& bm4 = cmn.bm4;
   float& bm5 = cmn.bm5;
+  */
   //
   //
   //----------LINKAGES.
@@ -2624,6 +2646,21 @@ therm(
   //
   //z = m(electron)c**2/k(t9).
   float z = 5.930f / t9;
+  float bl1 = getBesselL(z);
+  float bl2 = getBesselL(2*z);
+  float bl3 = getBesselL(3*z);
+  float bl4 = getBesselL(4*z);
+  float bl5 = getBesselL(5*z);
+  float bm1 = getBesselM(z);
+  float bm2 = getBesselM(2*z);
+  float bm3 = getBesselM(3*z);
+  float bm4 = getBesselM(4*z);
+  float bm5 = getBesselM(5*z);
+  float bn1 = getBesselN(z);
+  float bn2 = getBesselN(2*z);
+  float bn3 = getBesselN(3*z);
+  float bn4 = getBesselN(4*z);
+  float bn5 = getBesselN(5*z);
   //Neutrino temperature.
   cmn.tnu = (pow((rnb), (1.f / 3.f))) * cmn.t9i;
   //..........FACTORS OF z.
@@ -2646,27 +2683,27 @@ therm(
   float sinh5 = 0;
   if (phie <= 17.f) {
     cosh1 = cosh(phie);
-    cosh2 = cosh(2.f * phie);
-    cosh3 = cosh(3.f * phie);
-    cosh4 = cosh(4.f * phie);
-    cosh5 = cosh(5.f * phie);
+    cosh2 = cosh(2*phie);
+    cosh3 = cosh(3*phie);
+    cosh4 = cosh(4*phie);
+    cosh5 = cosh(5*phie);
     sinh1 = sinh(phie);
-    sinh2 = sinh(2.f * phie);
-    sinh3 = sinh(3.f * phie);
-    sinh4 = sinh(4.f * phie);
-    sinh5 = sinh(5.f * phie);
+    sinh2 = sinh(2*phie);
+    sinh3 = sinh(3*phie);
+    sinh4 = sinh(4*phie);
+    sinh5 = sinh(5*phie);
   }
   else {
-    cosh1 = 0.f;
-    cosh2 = 0.f;
-    cosh3 = 0.f;
-    cosh4 = 0.f;
-    cosh5 = 0.f;
-    sinh1 = 0.f;
-    sinh2 = 0.f;
-    sinh3 = 0.f;
-    sinh4 = 0.f;
-    sinh5 = 0.f;
+    cosh1 = 0;
+    cosh2 = 0;
+    cosh3 = 0;
+    cosh4 = 0;
+    cosh5 = 0;
+    sinh1 = 0;
+    sinh2 = 0;
+    sinh3 = 0;
+    sinh4 = 0;
+    sinh5 = 0;
   }
   bessel(cmn, z);
   //
@@ -2682,9 +2719,9 @@ therm(
   thm(4) = 3206.f * (bm1 * cosh1 - bm2 * cosh2 + bm3 * cosh3 - bm4 *
     cosh4 + bm5 * cosh5);
   //(Ref 5)
-  thm(5) = 3206.f * (z / t9) * (cmn.bn1 * cosh1 - 2.f * cmn.bn2 *
-    cosh2 + 3.f * cmn.bn3 * cosh3 - 4.f * cmn.bn4 * cosh4 + 5.f *
-    cmn.bn5 * cosh5);
+  thm(5) = 3206.f * (z / t9) * (bn1 * cosh1 - 2.f * bn2 *
+    cosh2 + 3.f * bn3 * cosh3 - 4.f * bn4 * cosh4 + 5.f *
+    bn5 * cosh5);
   //(Ref 6)
   thm(6) = 3206.f * (bm1 * sinh1 - 2.f * bm2 * sinh2 + 3.f * bm3 *
     sinh3 - 4.f * bm4 * sinh4 + 5.f * bm5 * sinh5);
