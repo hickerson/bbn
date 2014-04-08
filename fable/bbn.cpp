@@ -4837,10 +4837,14 @@ run(common& cmn)
   str_arr_ref<1> vtype(sve.vtype, dimension(8));
   if (is_called_first_time) {
     static const char* values[] = {
-      "baryon/photon ratio   ", "gravitational constant",
-        "neutron lifetime      ", "# of neutrino species ",
-        "cosmological constant ", "xi-electron           ",
-        "xi-muon               ", "xi-tauon              "
+      	"baryon/photon ratio   ", 
+		"gravitational constant",
+        "neutron lifetime      ", 
+		"# of neutrino species ",
+        "cosmological constant ", 
+		"xi-electron           ",
+        "xi-muon               ", 
+		"xi-tauon              "
     };
     fem::data_of_type_str(FEM_VALUES_AND_SIZE),
       vtype;
@@ -5164,7 +5168,7 @@ run(common& cmn)
         }
         else {
           //Vary other quantities.
-          qvary[inum(1) - 1] = rnumb1;
+          qvary[inum(1) - 2] = rnumb1;
         }
       }
       //Middle loop.
@@ -5178,7 +5182,7 @@ run(common& cmn)
           }
           else {
             //Vary other quantities.
-            qvary[inum(2) - 1] = rnumb2;
+            qvary[inum(2) - 2] = rnumb2;
           }
         }
         //Inner loop.
@@ -5192,7 +5196,7 @@ run(common& cmn)
             }
             else {
               //Vary other quantities.
-              qvary[inum(3) - 1] = rnumb3;
+              qvary[inum(3) - 2] = rnumb3;
             }
           }
           itime = 3;
@@ -5215,11 +5219,13 @@ run(common& cmn)
 	//----------EQUIVALENCE STATEMENTS.
 	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 	//
-	for (int i = 1; i <= 3; i++)
-		c(i) = qvary(i);
-	cosmo = qvary(4);
-	for (int i = 5; i <= 7; i++)
-		xi(i) = qvary(i);
+	cmn.c(1) = qvary[0];
+	cmn.c(2) = qvary[1];
+	cmn.c(3) = qvary[2];
+	cmn.cosmo = qvary[3];
+	cmn.xi(5) = qvary[4];
+	cmn.xi(6) = qvary[5];
+	cmn.xi(7) = qvary[6];
     //Inform user of completion of computation.
     write(iw, format_2202);
     //(jnum == 0)
