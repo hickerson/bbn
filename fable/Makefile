@@ -1,8 +1,9 @@
 FABLEFILES=new123.f newint.f nuccom.f nucrat.f
 FABLEFLAGS=--separate-cmn-hpp --namespace=bbn --no-fem-do-safe
 FABLEOPTS=--common-equivalence-simple
-CFLAGS=-Ifable_sources/fable -I/usr/include/gsl -g
-LDFLAGS=-lgsl -lgslcblas
+FLAGS=-Ifable_sources/fable -I/usr/include/gsl -g
+LIBS=-lgsl -lgslcblas -lm
+SOURCES=bbn.cpp
 
 
 all:
@@ -25,7 +26,9 @@ install-fable:
 
 bbn:
 	rm -f bbn
-	g++ -o bbn $(CFLAGS) $(LDFLAGS) bbn.cpp
+	g++ $(FLAGS) bbn.cpp $(LIBS) -o bbn
+
+
 
 run:
 	rm -f bbn

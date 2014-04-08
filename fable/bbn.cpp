@@ -1467,7 +1467,7 @@ bessel(
   //20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
   //
   int i = 0;
-  //gsl_sf_bessel_Kn(0,0); 			// Irregular modified cylindrical Bessel functions.
+  gsl_sf_bessel_Kn(0,0); 			// Irregular modified cylindrical Bessel functions.
   arr_1d<5, float> blz(fem::fill0); //TODO change to c array
   arr_1d<5, float> bmz(fem::fill0); //TODO change to c array
   arr_1d<5, float> bnz(fem::fill0); //TODO change to c array
