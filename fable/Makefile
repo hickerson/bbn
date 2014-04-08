@@ -22,17 +22,17 @@ install-fable:
 	. ./fable_build/
 
 bbn:
-	rm bbn
+	rm -f bbn
 	g++ -g -o bbn -I$(CLIBS) bbn.cpp
 
 run:
-	rm bbn
+	rm -f bbn
 	g++ -g -o bbn -I$(CLIBS) bbn.cpp
-	rm *.dat
+	rm -f *.dat
 	./bbn
 
 bbn-fable:
-	rm bbn
+	rm -f bbn
 	g++ -o bbn -I$(CLIBS) bbn-fable.cpp
 
 comments:

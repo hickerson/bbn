@@ -4819,6 +4819,31 @@ struct run_save
   {}
 };
 
+// Replaces the equivalence memory sharing used in the original Fortran. 
+// TODO add to class
+// TODO make private
+void qvary(common& cmn, int index, float value)
+{
+	//----------EQUIVALENCE VARIABLE.
+	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
+	//
+	//----------EQUIVALENCE STATEMENTS.
+	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
+	//
+	if (index >= 1 && index <= 3)
+		cmn.c(index) = value;
+	else if (index == 4)
+		cmn.cosmo = value;
+	else if (index >= 5 && index <= 7)
+		cmn.xi(index) = value;
+	else
+	{
+		std::cerr << "index out of bounds." << std::endl;
+		exit(1);
+	}
+}
+
+
 //
 //========================IDENTIFICATION DIVISION================================
 //
@@ -5157,7 +5182,6 @@ run(common& cmn)
     //Inform user of beginning of computation.
     write(iw, format_2200);
     //Outer loop.
-	double qvary[7];
     FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
       //Value of param fo
       rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
@@ -5168,7 +5192,7 @@ run(common& cmn)
         }
         else {
           //Vary other quantities.
-          qvary[inum(1) - 2] = rnumb1;
+		  qvary(cmn, inum(1)-1, rnumb1);
         }
       }
       //Middle loop.
@@ -5182,7 +5206,7 @@ run(common& cmn)
           }
           else {
             //Vary other quantities.
-            qvary[inum(2) - 2] = rnumb2;
+		  	qvary(cmn, inum(2)-1, rnumb2);
           }
         }
         //Inner loop.
@@ -5196,7 +5220,7 @@ run(common& cmn)
             }
             else {
               //Vary other quantities.
-              qvary[inum(3) - 2] = rnumb3;
+		  	  qvary(cmn, inum(3)-1, rnumb3);
             }
           }
           itime = 3;
@@ -5213,19 +5237,6 @@ run(common& cmn)
       }
       //lnumb1 = 0,lnum(1)-1
     }
-	//----------EQUIVALENCE VARIABLE.
-	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
-	//
-	//----------EQUIVALENCE STATEMENTS.
-	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
-	//
-	cmn.c(1) = qvary[0];
-	cmn.c(2) = qvary[1];
-	cmn.c(3) = qvary[2];
-	cmn.cosmo = qvary[3];
-	cmn.xi(5) = qvary[4];
-	cmn.xi(6) = qvary[5];
-	cmn.xi(7) = qvary[6];
     //Inform user of completion of computation.
     write(iw, format_2202);
     //(jnum == 0)
