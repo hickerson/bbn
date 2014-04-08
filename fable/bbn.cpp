@@ -5155,7 +5155,7 @@ run(
     //Inform user of beginning of computat
     write(iw, format_2200);
     //Outer loop.
-	char qvary[10];
+	float qvary[7];
     FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
       //Value of param fo
       rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
