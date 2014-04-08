@@ -897,8 +897,7 @@ struct check_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-check(
-  common& cmn)
+check(common& cmn)
 {
   FEM_CMN_SVE(check);
   common_write write(cmn);
@@ -2201,8 +2200,7 @@ struct start_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-start(
-  common& cmn)
+start(common& cmn)
 {
   FEM_CMN_SVE(start);
   // COMMON evolp1
@@ -4825,8 +4823,7 @@ struct run_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-run(
-  common& cmn)
+run(common& cmn)
 {
   FEM_CMN_SVE(run);
   common_read read(cmn);
@@ -4904,7 +4901,7 @@ run(
   //
   //----------MODEL PARAMETERS.
   //Baryon-to-photon ratio.
-  //c(1) is variation of gravitational c
+  //c(1) is variation of gravitational constant.
   //c(2) is neutron lifetime (sec).
   //c(3) is number of neutrino species.
   //Cosmological constant.
@@ -5250,8 +5247,7 @@ run(
 //========================IDENTIFICATION DIVISION================================
 //
 void
-output(
-  common& cmn)
+output(common& cmn)
 {
   common_read read(cmn);
   common_write write(cmn);
