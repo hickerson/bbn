@@ -1,19 +1,19 @@
 FABLEFILES=new123.f newint.f nuccom.f nucrat.f
-FABLEFLAGS=--namespace=bbn --no-fem-do-safe --separate-cmn-hpp
+FABLEFLAGS=--separate-cmn-hpp --namespace=bbn --no-fem-do-safe
 FABLEOPTS=--common-equivalence-simple
 
-all: c
+all:
 
 f2c:
 	f2c -C++ -I2 -A -s -r -r8 *.f
 
 fable:
 	. fable_build/setpaths.sh
-	fable.cout $(FABLEFILES) $(FABLEFLAGS) > bbn.cpp
-	. ./purify_fable.sh
+	fable.cout $(FABLEFILES) $(FABLEFLAGS) > bbn-fable.cpp
+	./purify_fable.sh bbn-fable.cpp cmn.hpp
 
-noc:
-	rm -rf *.cpp *.hpp
+clean:
+	rm -rf *.o bbn
 
 install-fable:
 	wget http://cci.lbl.gov/fable_bundles/current/fable_bundle.selfx
@@ -22,6 +22,9 @@ install-fable:
 
 bbn:
 	g++ -o bbn -Ifable_sources/fable bbn.cpp
+
+bbn-fable:
+	g++ -o bbn -Ifable_sources/fable bbn-fable.cpp
 
 comments:
 	--top-procedure=IDENTIFIER

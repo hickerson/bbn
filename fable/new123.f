@@ -1136,10 +1136,10 @@ C----------FLAG AND LABELS.
       CHARACTER*22 vtype(8)        !Label for quantities being varied.
 
 C----------EQUIVALENCE VARIABLE.
-      REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
+C     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
 
 C----------EQUIVALENCE STATEMENTS.
-      EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
+C     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 
 
 C==============================DATA DIVISION====================================

@@ -85,7 +85,7 @@ C----------LABELS FOR VARIABLES TO BE TIME EVOLVED.
       REAL    dvdt0(nvar)          !Value of derivatives at original point.
 
 C----------EQUIVALENCE STATEMENTS.
-      EQUIVALENCE (v(4),y(1)),(dvdt(4),dydt(1)),(v0(4),y0(1))
+C     EQUIVALENCE (v(4),y(1)),(dvdt(4),dydt(1)),(v0(4),y0(1))
 
 
 C===========================PROCEDURE DIVISION==================================
@@ -842,12 +842,12 @@ C----------LOCAL VARIABLES.
       REAL    r                    !Multiples of z.
 
 C----------EQUIVALENCE STATEMENTS.
-      EQUIVALENCE (blz(1),bl1),(blz(2),bl2),(blz(3),bl3),(blz(4),bl4),
-     |            (blz(5),bl5)
-      EQUIVALENCE (bmz(1),bm1),(bmz(2),bm2),(bmz(3),bm3),(bmz(4),bm4),
-     |            (bmz(5),bm5)
-      EQUIVALENCE (bnz(1),bn1),(bnz(2),bn2),(bnz(3),bn3),(bnz(4),bn4),
-     |            (bnz(5),bn5)
+C     EQUIVALENCE (blz(1),bl1),(blz(2),bl2),(blz(3),bl3),(blz(4),bl4),
+C    |            (blz(5),bl5)
+C     EQUIVALENCE (bmz(1),bm1),(bmz(2),bm2),(bmz(3),bm3),(bmz(4),bm4),
+C    |            (bmz(5),bm5)
+C     EQUIVALENCE (bnz(1),bn1),(bnz(2),bn2),(bnz(3),bn3),(bnz(4),bn4),
+C    |            (bnz(5),bn5)
 
 
 C===========================PROCEDURE DIVISION==================================

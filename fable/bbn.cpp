@@ -1,9 +1,12 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
-#include "cmn.hpp"
+#include "bbn.hpp"
 
 namespace bbn {
 
+using namespace fem;
+
+/*
 void
 bl(...)
 {
@@ -31,6 +34,7 @@ qvary(...)
   throw std::runtime_error(
     "Missing function implementation: qvary");
 }
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -1485,11 +1489,11 @@ bessel(
   //10--------LOCALLY DEFINED FUNCTIONS--------------------------------------------
   //
   //Function bl.
-  bl(z) = bk2 / z;
+  //bl(z) = bk2 / z;
   //Function bm.
-  bm(z) = 0.25f * (3.f * cmn.bk3 + cmn.bk1) / z;
+  //bm(z) = 0.25f * (3.f * cmn.bk3 + cmn.bk1) / z;
   //Function bn.
-  bn(z) = 0.5f * (cmn.bk4 + bk2) / z;
+  //bn(z) = 0.5f * (cmn.bk4 + bk2) / z;
   //
   //20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
   //
@@ -1501,14 +1505,14 @@ bessel(
   FEM_DO_SAFE(i, 1, 5) {
     //Multiples of z.
     r = i * z;
-    //Get k0(r),k1(r),k2(r),k3(r),k4(r),k(
+    //Get k0(r),k1(r),k2(r),k3(r),k4(r),k(r)
     knux(cmn, r);
-    //Put value from function bl into arra
-    blz(i) = bl(r);
-    //Put value from function bm into arra
-    bmz(i) = bm(r);
-    //Put value from function bn into arra
-    bnz(i) = bn(r);
+    //Put value from function bl into array
+    blz(i) = bk2 / r;
+    //Put value from function bm into array
+    bmz(i) = 0.25f * (3.f * cmn.bk3 + cmn.bk1) / r;
+    //Put value from function bn into array
+    bnz(i) = 0.5f * (cmn.bk4 + bk2) / r;
   }
   //
 }
@@ -4889,7 +4893,7 @@ run(
   arr_1d<3, float> rnum2(fem::fill0);
   arr_1d<3, float> rnum3(fem::fill0);
   arr_1d<3, int> inum(fem::fill0);
-  fem::str<1> lchose = 0;
+  fem::str<1> lchose;
   int l = 0;
   arr_1d<3, int> lnum(fem::fill0);
   int lnumb1 = 0;
@@ -5180,6 +5184,7 @@ run(
     //Inform user of beginning of computat
     write(iw, format_2200);
     //Outer loop.
+	char qvary[10];
     FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
       //Value of param fo
       rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
@@ -5190,7 +5195,7 @@ run(
         }
         else {
           //Vary other quantities.
-          qvary(inum(1) - 1) = rnumb1;
+          qvary[inum(1) - 1] = rnumb1;
         }
       }
       //Middle loop.
@@ -5204,7 +5209,7 @@ run(
           }
           else {
             //Vary other quantities.
-            qvary(inum(2) - 1) = rnumb2;
+            qvary[inum(2) - 1] = rnumb2;
           }
         }
         //Inner loop.
@@ -5218,7 +5223,7 @@ run(
             }
             else {
               //Vary other quantities.
-              qvary(inum(3) - 1) = rnumb3;
+              qvary[inum(3) - 1] = rnumb3;
             }
           }
           itime = 3;
