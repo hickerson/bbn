@@ -831,7 +831,7 @@ C----------EVALUATION OF FUNCTIONS bl,bm,bn.
       REAL    bm1,bm2,bm3,bm4,bm5  !Single variables equivalenced to array bmz.
       REAL    bn1,bn2,bn3,bn4,bn5  !Single variables equivalenced to array bnz.
 
-C----------EVALUATIION OF MODIFIED BESSEL FUNCTIONS.
+C----------EVALUATION OF MODIFIED BESSEL FUNCTIONS.
       REAL    bk0,bk1,bk2,bk3,bk4  !Values k0(r),k1(r),k2(r),k3(r),k4(r).
 
 C----------LOCAL VARIABLES.

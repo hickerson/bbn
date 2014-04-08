@@ -1416,8 +1416,6 @@ bessel(
   float const& z)
 {
   // COMMON kays
-  float& bk2 = cmn.bk2;
-  //
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] start, therm
@@ -1428,9 +1426,9 @@ bessel(
   //     modified Bessel functions.
   //
   //----------COMMON AREAS.
-  //Eval function bl(z
-  //Eval function bm(z
-  //Eval function bn(z
+  //Evaluate function bl(z).
+  //Evaluate function bm(z).
+  //Evaluate function bn(z).
   //Coefficients K.
   //
   //==========================DECLARATION DIVISION=================================
@@ -1438,11 +1436,11 @@ bessel(
   //----------EVALUATION OF FUNCTIONS bl,bm,bn.
   //Single variables equivalenced to arr
   //
-  //----------EVALUATIION OF MODIFIED BESSEL FUNCTIONS.
-  //Values k0(r),k1(r),k2(r),k3(r),k4(r)
+  //----------EVALUATION OF MODIFIED BESSEL FUNCTIONS.
+  //Values k0(r),k1(r),k2(r),k3(r),k4(r).
   //
   //----------LOCAL VARIABLES.
-  //Array containing values from functio
+  //Array containing values from function bl.
   //Defined by z = m(electron)*c**2/k*t9
   //Multiples of z.
   //
@@ -1468,23 +1466,18 @@ bessel(
   //20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
   //
   int i = 0;
-  float r = 0;
-  arr_1d<5, float> blz(fem::fill0);
-  arr_1d<5, float> bmz(fem::fill0);
-  arr_1d<5, float> bnz(fem::fill0);
+  arr_1d<5, float> blz(fem::fill0); //TODO change to c array
+  arr_1d<5, float> bmz(fem::fill0); //TODO change to c array
+  arr_1d<5, float> bnz(fem::fill0); //TODO change to c array
   FEM_DO_SAFE(i, 1, 5) {
-    //Multiples of z.
-    r = i * z;
-    //Get k0(r),k1(r),k2(r),k3(r),k4(r),k(r)
-    knux(cmn, r);
-    //Put value from function bl into array
-    blz(i) = bk2 / r;
-    //Put value from function bm into array
-    bmz(i) = 0.25f * (3.f * cmn.bk3 + cmn.bk1) / r;
-    //Put value from function bn into array
-    bnz(i) = 0.5f * (cmn.bk4 + bk2) / r;
+    float r = i * z; 							//Multiples of z.
+    knux(cmn, r); 								//Get k0(r),k1(r),k2(r),k3(r),k4(r),k(r)
+    cmn.blz(i) = cmn.bk2/r; 					//Put value from function bl into array
+    cmn.bmz(i) = 0.25*(3*cmn.bk3 + cmn.bk1)/r; 	//Put value from function bm into array
+    cmn.bnz(i) = 0.5*(cmn.bk4 + cmn.bk2)/r; 	//Put value from function bn into array
   }
-  //
+
+  // TODO remove this fix 
 }
 
 struct rate0_save
@@ -2729,12 +2722,12 @@ therm(
   //(Ref 10
   thm(10) = thm(1) + thm(4) + thm(8) + thm(9);
   //(Ref 11
-  thm(11) = -(pow3(z) / t9) * (sinh1 * (3.f * bl1 - z * bm1) -
+  thm(11) = -(pow3(z) / t9) * (sinh1 * (3.f * bl1 - z * bm1) - // TODO change to z3
     sinh2 * (3.f * bl2 - 2.f * z * bm2) + sinh3 * (3.f * bl3 - 3.f *
     z * bm3) - sinh4 * (3.f * bl4 - 4.f * z * bm4) + sinh5 * (3.f *
     bl5 - 5.f * z * bm5));
   //(Ref 12
-  thm(12) = pow3(z) * (cosh1 * bl1 - 2.f * cosh2 * bl2 + 3.f *
+  thm(12) = pow3(z) * (cosh1 * bl1 - 2.f * cosh2 * bl2 + 3.f * // TODO change to z3
     cosh3 * bl3 - 4.f * cosh4 * bl4 + 5.f * cosh5 * bl5);
   if (thm(12) != 0.f) {
     thm(12) = 1.f / thm(12);
