@@ -5210,6 +5210,17 @@ run(
       }
       //lnumb1 = 0,lnum(1)-1
     }
+	//----------EQUIVALENCE VARIABLE.
+	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
+	//
+	//----------EQUIVALENCE STATEMENTS.
+	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
+	//
+	for (int i = 1; i <= 3; i++)
+		c(i) = qvary(i);
+	cosmo = qvary(4);
+	for (int i = 5; i <= 7; i++)
+		xi(i) = qvary(i);
     //Inform user of completion of computation.
     write(iw, format_2202);
     //(jnum == 0)
