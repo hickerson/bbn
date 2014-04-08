@@ -10,8 +10,7 @@ using namespace fem;
 //========================IDENTIFICATION DIVISION================================
 //
 void
-help(
-  common& cmn)
+help(common& cmn)
 {
   common_read read(cmn);
   common_write write(cmn);
@@ -958,26 +957,26 @@ check(
   //----------COMMON AREAS.
   //Reaction parameter
   //Reaction rates.
-  //Evolution paramete
-  //Default comp param
-  //Computation parame
+  //Evolution parameter.
+  //Default comp parameter.
+  //Computation parameter.
   //Default model para
   //Model parameters.
-  //Default variationl
-  //Variational parame
+  //Default variational parameter.
+  //Variational parameter.
   //Time variables.
   //Dynamic variables.
   //Energy densities.
-  //Linear eqn coeffic
+  //Linear eqn coefficient
   //Nuclide data.
   //Eval function bl
   //Eval function bm(z
   //Eval function bn(z
   //Coefficients K.
   //Flags,counters.
-  //Computation locati
+  //Computation location.
   //Output data.
-  //Neutrino parameter
+  //Neutrino parameter.
   //Run options.
   //Output option.
   //
