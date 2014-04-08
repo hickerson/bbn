@@ -1,6 +1,7 @@
 FABLEFILES=new123.f newint.f nuccom.f nucrat.f
 FABLEFLAGS=--separate-cmn-hpp --namespace=bbn --no-fem-do-safe
 FABLEOPTS=--common-equivalence-simple
+CLIBS=fable_sources/fable
 
 all:
 
@@ -21,10 +22,18 @@ install-fable:
 	. ./fable_build/
 
 bbn:
-	g++ -g -o bbn -Ifable_sources/fable bbn.cpp
+	rm bbn
+	g++ -g -o bbn -I$(CLIBS) bbn.cpp
+
+run:
+	rm bbn
+	g++ -g -o bbn -I$(CLIBS) bbn.cpp
+	rm *.dat
+	./bbn
 
 bbn-fable:
-	g++ -o bbn -Ifable_sources/fable bbn-fable.cpp
+	rm bbn
+	g++ -o bbn -I$(CLIBS) bbn-fable.cpp
 
 comments:
 	--top-procedure=IDENTIFIER
