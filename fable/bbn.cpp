@@ -1231,6 +1231,7 @@ struct knux_save
 //
 //========================IDENTIFICATION DIVISION================================
 //
+#if 0
 void
 knux(
   common& cmn,
@@ -1408,10 +1409,12 @@ knux(
   //       3) Recursion relation from 1st line of 9.6.26, page 376.
   //
 }
+#endif
 
 //
 //========================IDENTIFICATION DIVISION================================
 //
+#if 0
 void
 bessel(
   common& cmn,
@@ -1481,6 +1484,7 @@ bessel(
 
   // TODO remove this fix 
 }
+#endif
 
 double getBesselL(float r)
 {
@@ -2412,12 +2416,27 @@ start(common& cmn)
   //40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
   //
   float z = 5.930f / t9; 				//Inverse of temperature.
-  bessel(cmn, z);
-  hv = 3.3683e+4f * cmn.eta1 * 2.75f; 	//(Ref 4 but with final eta).
-  cmn.phie = hv * (1.784e-5f * y(2)) / (.5f * pow3(z) * (                // TODO pow3 -> z3
-    cmn.bl1 - 2.f * cmn.bl2 + 3.f * cmn.bl3 - 4.f * cmn.bl4 + 5.f *
-    cmn.bl5)); 							//Chemical potential of electron (Ref 5).
-  rhob0 = hv * pow3(t9); 				//Baryon density.
+  //bessel(cmn, z);
+  float bl1 = getBesselL(z);
+  float bl2 = getBesselL(2*z);
+  float bl3 = getBesselL(3*z);
+  float bl4 = getBesselL(4*z);
+  float bl5 = getBesselL(5*z);
+  float bm1 = getBesselM(z);
+  float bm2 = getBesselM(2*z);
+  float bm3 = getBesselM(3*z);
+  float bm4 = getBesselM(4*z);
+  float bm5 = getBesselM(5*z);
+  float bn1 = getBesselN(z);
+  float bn2 = getBesselN(2*z);
+  float bn3 = getBesselN(3*z);
+  float bn4 = getBesselN(4*z);
+  float bn5 = getBesselN(5*z);
+  hv = 3.3683e+4f * cmn.eta1 * 2.75; 		//(Ref 4 but with final eta).
+  cmn.phie = hv * (1.784e-5f * y(2)) / 
+  	(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
+											//Chemical potential of electron (Ref 5).
+  rhob0 = hv * pow3(t9); 					//Baryon density.
   //Nonde
   if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
     cmn.rhone0 = 7.366f * pow4(t9); 	//Electron neutrino density (Ref 6).
@@ -2666,10 +2685,10 @@ therm(
   cmn.tnu = (pow((rnb), (1.f / 3.f))) * cmn.t9i;
   //..........FACTORS OF z.
   float z1 = z;
-  float z2 = z * z;
-  float z3 = z * z * z;
-  float z4 = z * z * z * z;
-  float z5 = z * z * z * z * z;
+  float z2 = z*z;
+  float z3 = z*z*z;
+  float z4 = z*z*z*z;
+  float z5 = z*z*z*z*z;
   //..........TRIGNOMETRIC FUNCTION VALUES.
   //No chance of overflow.
   float cosh1 = 0;
@@ -2706,7 +2725,7 @@ therm(
     sinh4 = 0;
     sinh5 = 0;
   }
-  bessel(cmn, z);
+  //bessel(cmn, z);
   //
   //20--------COMPUTE THERMODYNAMIC VARIABLES--------------------------------------
   //
