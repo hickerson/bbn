@@ -164,7 +164,7 @@ help(common& cmn)
     "'    B. 18 nuclides, 60 reactions        ',/,' ',"
     "'       nuclides from n to N12           ',/,' ',"
     "'       (63% CPU time, variation = .1%)  ',/,' ',"
-    "'    C.  9 nuclides, 25 reactions        ',/,' ',"
+    "'    C. 9 nuclides, 25 reactions        ',/,' ',"
     "'       nuclides from n to Be7           ',/,' ',"
     "'       (20% CPU time, variation = .5%)  ',4(/),' ',"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
@@ -185,7 +185,8 @@ help(common& cmn)
       "'       file assigned the \"ir\" unit number, one must place the responses to the  ',/,' ',"
       "'       queries of the program.          ',10(/),' ',"
       "'(Enter 1 to continue, <RETURN> to end): ',$)");
-    read(ir, format_1001), inum;
+    read(ir, format_1001), 
+	inum;
     if (inum == 1) {
       write(iw,
         "(/,' ','III. Do multiple runs.          ',/,' ',"
@@ -296,42 +297,24 @@ help(common& cmn)
   if (inum == 1) {
     write(iw,
       "(/,' ','II. Hierarchy of Subroutines.   ',/,' ',"
-      "'    NUC123                       ',"
-      "'     Main program (main menu)    ',/,' ',"
-      "'        HELP                     ',"
-      "'     Help option                 ',/,' ',"
-      "'        SETCOM                   ',"
-      "'     Set computational parameters',/,' ',"
-      "'        SETMOD                   ',"
-      "'     Set model parameters        ',/,' ',"
-      "'        RUN                      ',"
-      "'     Run computation code        ',/,' ',"
-      "'            DRIVER               ',"
-      "'     Main routine (Runge-Kutta loop)    ',/,' ',"
-      "'                START            ',"
-      "'     Initialization routine      ',/,' ',"
-      "'                    RATE0        ',"
-      "'     Computes weak decay rates   ',/,' ',"
-      "'                DERIVS           ',"
-      "'     Computes time derivatives   ',/,' ',"
-      "'                    THERM        ',"
-      "'     Computes energy densities   ',/,' ',"
-      "'                        BESSEL   ',"
-      "'     Gives functions of Kn       ',/,' ',"
-      "'                            KNUX ',"
-      "'     Computes modified Bessel fcn Kn    ',/,' ',"
-      "'                        NUDENS   ',"
-      "'     Computes neutrino energy density   ',/,' ',"
-      "'                    RATE1-4      ',"
-      "'     Computes rates for reactions',/,' ',"
-      "'                    SOL          ',"
-      "'     Builds A matrix for eqn dy/dt = Ay ',/,' ',"
-      "'                        EQSLIN   ',"
-      "'     Solves dy/dt=Ay by gaussian elim   ',/,' ',"
-      "'                ACCUM            ',"
-      "'     Output accumulator          ',/,' ',"
-      "'        OUTPUT                   ',"
-      "'     Allows user to output result',4(/),' ',"
+      "'        NUC123    Main program (main menu)    ',/,' ',"
+      "'        HELP      Help option                 ',/,' ',"
+      "'        SETCOM    Set computational parameters',/,' ',"
+      "'        SETMOD    Set model parameters        ',/,' ',"
+      "'        RUN       Run computation code        ',/,' ',"
+      "'        DRIVER    Main routine (Runge-Kutta loop)    ',/,' ',"
+      "'        START     Initialization routine      ',/,' ',"
+      "'        RATE0     Computes weak decay rates   ',/,' ',"
+      "'        DERIVS    Computes time derivatives   ',/,' ',"
+      "'        THERM     Computes energy densities   ',/,' ',"
+      "'        BESSEL    Gives functions of Kn       ',/,' ',"
+      "'        KNUX      Computes modified Bessel fcn Kn    ',/,' ',"
+      "'        NUDENS    Computes neutrino energy density   ',/,' ',"
+      "'        RATE1-4   Computes rates for reactions',/,' ',"
+      "'        SOL       Builds A matrix for eqn dy/dt = Ay ',/,' ',"
+      "'        EQSLIN    Solves dy/dt=Ay by gaussian elim   ',/,' ',"
+      "'        ACCUM     Output accumulator          ',/,' ',"
+      "'        OUTPUT    Allows user to output result',4(/),' ',"
       "'(Enter <RETURN> to go back to help menu): ',$)");
     read(ir, star);
     goto statement_300;
@@ -346,7 +329,8 @@ help(common& cmn)
   //Using the interface subroutine secti
   statement_260:
   write(iw,
-    "(/,' ',22x,'USING THE INTERFACE SUBROUTINE',/,' ',22x,"
+    "(/,' ',22x,"
+	"'USING THE INTERFACE SUBROUTINE',/,' ',22x,"
     "'----- --- --------- ----------',2(/),' ',"
     "'I. Purpose.                             ',/,' ',"
     "'   The interface subroutine CHECK is designed to be an outlet of the program    ',/,' ',"
@@ -364,7 +348,8 @@ help(common& cmn)
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ','II. Description.                        ',/,' ',"
+      "(/,' ',"
+	  "'II. Description.                        ',/,' ',"
       "'   Subroutine CHECK is an empty subroutine with a large COMMON area, giving the ',/,' ',"
       "'   user ready access to all of the important variables in the computations.  The',/,' ',"
       "'   routine is called from various locations in the main program and the location',/,' ',"
@@ -387,7 +372,8 @@ help(common& cmn)
     read(ir, format_1001), inum;
     if (inum == 1) {
       write(iw,
-        "(/,' ','III. Implementation.                   ',/,' ',"
+        "(/,' ',"
+		"'III. Implementation.                   ',/,' ',"
         "'   The additional program statements are needed in the subroutine CHECK.  If a',/,' ',"
         "'   particular command is to be executed when the computer is at a certain     ',/,' ',"
         "'   location in the program -- say labeled by itime = 8 -- then in CHECK, one  ',/,' ',"
