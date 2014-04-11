@@ -45,11 +45,16 @@ help(common& cmn)
   statement_100:
   //..........DISPLAY MENU.
   write(iw,
-    "(8(/),' ',32x,'HELP SELECTION',/,' ',32x,'---- ---------',/,/,' ',24x,"
-    "'1. INTRODUCTION',/,' ',24x,'2. SETTING UP A RUN',/,' ',24x,"
-    "'3. RUNNING THE PROGRAM',/,' ',24x,'4. OUTPUT OPTIONS',/,' ',24x,"
+    "(8(/),' ',32x,"
+	"'HELP SELECTION',/,' ',32x,"
+	"'---- ---------',/,/,' ',24x,"
+    "'1. INTRODUCTION',/,' ',24x,"
+	"'2. SETTING UP A RUN',/,' ',24x,"
+    "'3. RUNNING THE PROGRAM',/,' ',24x,"
+	"'4. OUTPUT OPTIONS',/,' ',24x,"
     "'5. GENERAL METHOD OF COMPUTATION',/,' ',24x,"
-    "'6. USING THE INTERFACE SUBROUTINE',/,' ',24x,'7. EXIT',7(/),' ',24x,"
+    "'6. USING THE INTERFACE SUBROUTINE',/,' ',24x,"
+	"'7. EXIT',7(/),' ',24x,"
     "'Enter selection (1-7): ',$)");
   //..........READ IN SELECTION NUMBER.
   read(ir, format_1001), inum;
@@ -74,7 +79,9 @@ help(common& cmn)
   //Setting up a run section.
   statement_210:
   write(iw,
-    "(/,' ',31x,'INTRODUCTION',/,' ',31x,'------------',2(/),' ',"
+    "(/,' ',31x,"
+	"'INTRODUCTION',/,' ',31x,"
+	"'------------',2(/),' ',"
     "'Welcome to the wonderful world of primor',"
     "'dial nucleosynthesis.  NUC123 is a      ',/,' ',"
     "'FORTRAN program designed to provide the ',"
@@ -106,57 +113,35 @@ help(common& cmn)
   write(iw,
     "(/,' ',29x,'SETTING UP A RUN',/,' ',29x,'------- -- - ---',2(/),' ',"
     "'I. Setting computation parameters.      ',/,' ',"
-    "'   The accuracy of the computation and t',"
-    "'he relevant temperature region can be   ',/,' ',"
+    "'   The accuracy of the computation and the relevant temperature region can be',/,' ',"
     "'   set by the following parameters:     ',/,' ',"
-    "'    A. Time step limiting constant 1  (d',"
-    "'efault value of 0.03)                    ',/,' ',"
-    "'    B. Time step limiting constant 2  (d',"
-    "'efault value of 0.003)                   ',/,' ',"
-    "'    C. Initial time step  (default value',"
-    "' of 10**-4)                             ',/,' ',"
-    "'    D. Initial temperature  (default val',"
-    "'ue of 10**2)                            ',/,' ',"
-    "'       This is the temperature at the be',"
-    "'ginning of the run in units of 10**9 K  ',/,' ',"
-    "'    E. Final temperature  (default value',"
-    "' of 10**-2)                             ',/,' ',"
-    "'       This is the termination temperatu',"
-    "'re of the run in units of 10**9 K       ',/,' ',"
-    "'    F. Smallest abundances allowed  (def',"
-    "'ault value of 10**-25)                  ',/,' ',"
-    "'       Elemental abundances are not allo',"
-    "'wed to drop below this value            ',/,' ',"
-    "'    G. # of iterations for each accumula',"
-    "'tion  (default value of 300)             ',/,' ',"
-    "'       This is the number of iterations ',"
-    "'before values are put in an output array',6(/),' ',"
+    "'    A. Time step limiting constant 1  (default value of 0.03)',/,' ',"
+    "'    B. Time step limiting constant 2  (default value of 0.003)',/,' ',"
+    "'    C. Initial time step  (default value'," "' of 10**-4)',/,' ',"
+    "'    D. Initial temperature  (default value of 10**2)',/,' ',"
+    "'       This is the temperature at the beginning of the run in units of 10**9 K  ',/,' ',"
+    "'    E. Final temperature  (default value of 10**-2)',/,' ',"
+    "'       This is the termination temperature of the run in units of 10**9 K',/,' ',"
+    "'    F. Smallest abundances allowed  (default value of 10**-25)',/,' ',"
+    "'       Elemental abundances are not allowed to drop below this value',/,' ',"
+    "'    G. # of iterations for each accumulation  (default value of 300)',/,' ',"
+    "'       This is the number of iterations before values are put in an output array',6(/),' ',"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ','II. Setting model parameters.           ',/,' ',"
-      "'   Default values here give what is know',"
-      "'n as the standard model with best guess ',/,' ',"
-      "'   figure on the neutron lifetime of 889',"
-      "'.1 seconds.  Nonstandard scenarios can',/,' ',"
-      "'   be investigated by varying the follow',"
-      "'ing parameters:                         ',/,' ',"
+      "(/,' ','II. Setting model parameters.',/,' ',"
+      "'   Default values here give what is known as the standard model with best guess ',/,' ',"
+      "'   figure on the neutron lifetime of 889.1 seconds.  Nonstandard scenarios can  ',/,' ',"
+      "'   be investigated by varying the following parameters:',/,' ',"
       "'    A. The gravitational constant       ',/,' ',"
-      "'       (The default value of one here gi',"
-      "'ves the usual 6.6720e-8 dyne*cm**2/g**2)',/,' ',"
-      "'    B. Neutron life-time  (default value',"
-      "' of 889.1 seconds)                    ',/,' ',"
-      "'    C. Number of neutrino species  (defa',"
-      "'ult value of 3 light neutrinos)         ',/,' ',"
-      "'    D. Final baryon-to-photon ratio  (se',"
-      "'t to log(eta) = -9.5)                   ',/,' ',"
-      "'    E. Cosmological constant  (default v',"
-      "'alue of 0)                              ',/,' ',"
-      "'    F. Neutrino degeneracy parameters  (',"
-      "'default values all 0)                   ',/,' ',"
-      "'       There are 3 separate parameters f',"
-      "'or the electron, muon, and tau neutrinos',11(/),' ',"
+      "'       (The default value of one here gives the usual 6.6720e-8 dyne*cm**2/g**2)',/,' ',"
+      "'    B. Neutron life-time  (default value of 889.1 seconds)',/,' ',"
+      "'    C. Number of neutrino species  (default value of 3 light neutrinos)         ',/,' ',"
+      "'    D. Final baryon-to-photon ratio  (set to log(eta) = -9.5)                   ',/,' ',"
+      "'    E. Cosmological constant  (default value of 0)                              ',/,' ',"
+      "'    F. Neutrino degeneracy parameters  (default values all 0)                   ',/,' ',"
+      "'       There are 3 separate parameters for the electron, muon, and tau neutrinos',11(/),' ',"
       "'(Enter <RETURN> to go back to help menu): ',$)");
     read(ir, star);
     goto statement_300;
@@ -171,23 +156,18 @@ help(common& cmn)
   //Running the program section.
   statement_230:
   write(iw,
-    "(/,' ',28x,'RUNNING THE PROGRAM',/,' ',28x,'------- --- -------',2(/),"
+    "(/,' ',28x,"
+	"'RUNNING THE PROGRAM',/,' ',28x,"
+	"'------- --- -------',2(/),"
     "' ','I. Setting run speed.                   ',/,' ',"
-    "'   The code can be run at 3 different se',"
-    "'ttings of speed.  The running of the    ',/,' ',"
-    "'   code can be speeded up by reducing th',"
-    "'e number of nuclides and reactions.  The',/,' ',"
-    "'   complete computation takes into accou',"
-    "'nt the following nuclides: n, p, d, t,  ',/,' ',"
-    "'   He3, He4, Li6, Li7, Be7, Li8, B8, Be9',"
-    "',B10, B11, C11, B12, C12, N12, C13, N13,',/,' ',"
+    "'   The code can be run at 3 different settings of speed.  The running of the    ',/,' ',"
+    "'   code can be speeded up by reducing the number of nuclides and reactions.  The',/,' ',"
+    "'   complete computation takes into account the following nuclides: n, p, d, t,  ',/,' ',"
+    "'   He3, He4, Li6, Li7, Be7, Li8, B8, Be9, B10, B11, C11, B12, C12, N12, C13, N13,',/,' ',"
     "'   C14, N14, O14, N15, O15, and O16.    ',/,' ',"
-    "'   The given CPU percentages and abundan',"
-    "'ce variations are with regard to a      ',/,' ',"
-    "'   single run with all default parameter',"
-    "' values.                                ',/,' ',"
-    "'    A. 26 nuclides, 88 reactions (defaul',"
-    "'t)                                      ',/,' ',"
+    "'   The given CPU percentages and abundance variations are with regard to a      ',/,' ',"
+    "'   single run with all default parameter values.                                ',/,' ',"
+    "'    A. 26 nuclides, 88 reactions (default)                                      ',/,' ',"
     "'       nuclides from n to O16           ',/,' ',"
     "'    B. 18 nuclides, 60 reactions        ',/,' ',"
     "'       nuclides from n to N12           ',/,' ',"
@@ -199,37 +179,27 @@ help(common& cmn)
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ','II. Do single run.                      ',/,' ',"
+      "(/,' ',"
+	  "'II. Do single run.                      ',/,' ',"
       "'    A. Interactive.                     ',/,' ',"
-      "'       In an interactive session, the us',"
-      "'er can readily input the computational  ',/,' ',"
-      "'       and model parameters and begin th',"
-      "'e computation process.  The run itself  ',/,' ',"
-      "'       is commenced when option 2, \"GO\",',"
-      "' in the \"RUN\" section is requested.     ',/,/,' ',"
+      "'       In an interactive session, the user can readily input the computational  ',/,' ',"
+      "'       and model parameters and begin the computation process.  The run itself  ',/,' ',"
+      "'       is commenced when option 2, \"GO\", in the \"RUN\" section is requested. ',/,/,' ',"
       "'    B. Batch.                           ',/,' ',"
-      "'       To run the program in a batch mod',"
-      "'e, it must be altered slightly so that  ',/,' ',"
-      "'       the I/O takes place with files in',"
-      "'stead of a terminal.  This is done by   ',/,' ',"
-      "'       setting different values for the ',"
-      "'input and output unit number parameters ',/,' ',"
-      "'       \"ir\" and \"iw\" and assigning them ',"
-      "'to different files in NUC123.  In the   ',/,' ',"
-      "'       file assigned the \"ir\" unit numbe',"
-      "'r, one must place the responses to the  ',/,' ',"
+      "'       To run the program in a batch mode, it must be altered slightly so that  ',/,' ',"
+      "'       the I/O takes place with files instead of a terminal.  This is done by   ',/,' ',"
+      "'       setting different values for the input and output unit number parameters ',/,' ',"
+      "'       \"ir\" and \"iw\" and assigning them to different files in NUC123.  In the   ',/,' ',"
+      "'       file assigned the \"ir\" unit number, one must place the responses to the  ',/,' ',"
       "'       queries of the program.          ',10(/),' ',"
       "'(Enter 1 to continue, <RETURN> to end): ',$)");
     read(ir, format_1001), inum;
     if (inum == 1) {
       write(iw,
-        "(/,' ','III. Do multiple runs.                 ',/,' ',"
-        "'   A wide range of early universe model',"
-        "'s can be covered by doing many runs    ',/,' ',"
-        "'   while one or more parameters are var',"
-        "'ied over a range of interest.  The     ',/,' ',"
-        "'   parameters that can be varied are th',"
-        "'e following:                           ',/,' ',"
+        "(/,' ','III. Do multiple runs.          ',/,' ',"
+        "'   A wide range of early universe models can be covered by doing many runs    ',/,' ',"
+        "'   while one or more parameters are varied over a range of interest.  The     ',/,' ',"
+        "'   parameters that can be varied are the following:                           ',/,' ',"
         "'    A. Eta                             ',"
         "'       - Logarithmic variation          ',/,' ',"
         "'    B. Gravitational constant          ',"
@@ -245,10 +215,8 @@ help(common& cmn)
         "'        1. Electron neutrino           ',/,' ',"
         "'        2. Muon neutrino               ',/,' ',"
         "'        3. Tauon neutrino              ',/,' ',"
-        "'   At most 3 parameters can be varied. ',"
-        "' The first parameter inputted will be  ',/,' ',"
-        "'   will be varied in the outermost loop',"
-        "' and the third parameter inputted will ',/,' ',"
+        "'   At most 3 parameters can be varied.  The first parameter inputted will be  ',/,' ',"
+        "'   will be varied in the outermost loop and the third parameter inputted will ',/,' ',"
         "'   be varied in the innermost loop.    ',7(/),' ',"
         "'(Enter <RETURN> to go back to help menu): ',$)");
       read(ir, star);
@@ -1488,22 +1456,22 @@ bessel(
 
 double getBesselL(float r)
 {
-  	float K2r = gsl_sf_bessel_Kn(2,r); 		// Irregular modified cylindrical Bessel functions.
+  	float K2r = gsl_sf_bessel_Kn(2,r); 			// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
 double getBesselM(float r)
 {
-  	float K3r = gsl_sf_bessel_Kn(3,r); 		// Irregular modified cylindrical Bessel functions.
-  	float K1r = gsl_sf_bessel_Kn(1,r); 		// Irregular modified cylindrical Bessel functions.
-    return 0.25*(3*K3r + K1r)/r; 			// Put value from function bm into array.
+  	const float K3r = gsl_sf_bessel_Kn(3,r); 	// Irregular modified cylindrical Bessel functions.
+  	const float K1r = gsl_sf_bessel_Kn(1,r); 	// Irregular modified cylindrical Bessel functions.
+    return 0.25*(3*K3r + K1r)/r; 				// Put value from function bm into array.
 }
 
 double getBesselN(float r)
 {
-  	float K4r = gsl_sf_bessel_Kn(4,r); 		// Irregular modified cylindrical Bessel functions.
-  	float K2r = gsl_sf_bessel_Kn(2,r); 		// Irregular modified cylindrical Bessel functions.
-    return 0.5*(K4r + K2r)/r; 				// Put value from function bn into array.
+  	const float K4r = gsl_sf_bessel_Kn(4,r); 	// Irregular modified cylindrical Bessel functions.
+  	const float K2r = gsl_sf_bessel_Kn(2,r); 	// Irregular modified cylindrical Bessel functions.
+    return 0.5*(K4r + K2r)/r; 					// Put value from function bn into array.
 }
 
 
@@ -1645,12 +1613,13 @@ func1(
   //Exponential expression with photon t
   //Exponential expression with neutrino
   //
-  float part1 = 0;
+  float part1 = 0; //TODO move down inside loop
   float part2 = 0;
-  if (x <= 0.f) {
-    return_value = 0.f;
+  if (x <= 0) {
+    return_value = 0;
   }
   else {
+	// TODO don't recompute 
     part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - xi(1)));
     return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
@@ -1701,7 +1670,7 @@ func2(
   //Exponential expression with photon t
   //Exponential expression with neutrino
   //
-  float part1 = 0;
+  float part1 = 0; // TODO move down into loop
   float part2 = 0;
   if (x <= 1.f) {
     return_value = 0.f;
@@ -1725,7 +1694,7 @@ func3(
   common& cmn,
   float const& x)
 {
-  float return_value = 0;
+  float return_value = 0; // TODO move inside?
   // COMMON modpr
   arr_cref<float> xi(cmn.xi, dimension(3));
   //
@@ -1817,6 +1786,7 @@ func4(
   float part2 = 0;
   if (x <= 1.f) {
     return_value = 0.f;
+  	return 0;
   }
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
@@ -1825,6 +1795,20 @@ func4(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
   return return_value;
+  // TODO test and uncomment
+  /*
+  if (x <= 1.f) {
+    return_value = 0.f;
+  	return 0;
+  }
+  else {
+	const float me = 0.511;
+	const float K = x - 2.531;
+    const float part1 = 1 + exp(+me * x / cmn.t9mev);
+    const float part2 = 1 + exp(-K*(.511f / cmn.tnmev) + xi(1));
+    return cmn.cnorm * x * K * K * sqrt(x*x - 1) / (part1 * part2);
+  }
+  */
 }
 
 typedef float (*func5_function_pointer)(common&, float const&);
