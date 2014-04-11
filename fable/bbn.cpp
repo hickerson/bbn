@@ -2400,12 +2400,13 @@ start(common& cmn)
   //40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
   //
   float z = 5.930f / t9; 				//Inverse of temperature.
-  //bessel(cmn, z);
+  //bessel(cmn, z); // old call
   float bl1 = getBesselL(z);
   float bl2 = getBesselL(2*z);
   float bl3 = getBesselL(3*z);
   float bl4 = getBesselL(4*z);
   float bl5 = getBesselL(5*z);
+  /*
   float bm1 = getBesselM(z);
   float bm2 = getBesselM(2*z);
   float bm3 = getBesselM(3*z);
@@ -2416,24 +2417,25 @@ start(common& cmn)
   float bn3 = getBesselN(3*z);
   float bn4 = getBesselN(4*z);
   float bn5 = getBesselN(5*z);
-  hv = 3.3683e+4f * cmn.eta1 * 2.75; 		//(Ref 4 but with final eta).
+  */
+  hv = 3.3683e+4f * cmn.eta1 * 2.75; 		/// (Ref 4 but with final eta).
   cmn.phie = hv * (1.784e-5f * y(2)) / 
   	(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
-											//Chemical potential of electron (Ref 5).
-  rhob0 = hv * pow3(t9); 					//Baryon density.
+											/// Chemical potential of electron (Ref 5).
+  rhob0 = hv * pow3(t9); 					/// TODO Baryon density. 
   //Nonde
   if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
-    cmn.rhone0 = 7.366f * pow4(t9); 	//Electron neutrino density (Ref 6).
+    cmn.rhone0 = 7.366f * pow4(t9); 		/// Electron neutrino density (Ref 6).
   }
   //
   //50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
   //
-  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); //(Ref 7).
+  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); /// (Ref 7).
   y0(3) = y(3);
   int i = 0;
   FEM_DO_SAFE(i, 4, cmn.isize) {
-    y(i) = cmn.ytmin; 					//Set rest to minimum abundance.
-    y0(i) = y(i); 						//Init abundances at beginning of iter
+    y(i) = cmn.ytmin; 						/// Set rest to minimum abundance.
+    y0(i) = y(i); 							/// Initialize abundances at beginning of iter
   }
   //Compute weak decay rates.
   rate0(cmn);
