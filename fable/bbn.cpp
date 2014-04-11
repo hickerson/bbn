@@ -45,16 +45,16 @@ help(common& cmn)
   statement_100:
   //..........DISPLAY MENU.
   write(iw,
-    "(8(/),' ',32x,"
-	"'HELP SELECTION',/,' ',32x,"
-	"'---- ---------',/,/,' ',24x,"
-    "'1. INTRODUCTION',/,' ',24x,"
-	"'2. SETTING UP A RUN',/,' ',24x,"
-    "'3. RUNNING THE PROGRAM',/,' ',24x,"
-	"'4. OUTPUT OPTIONS',/,' ',24x,"
-    "'5. GENERAL METHOD OF COMPUTATION',/,' ',24x,"
-    "'6. USING THE INTERFACE SUBROUTINE',/,' ',24x,"
-	"'7. EXIT',7(/),' ',24x,"
+    "(8(/),32x,"
+	"'HELP SELECTION',/,32x,"
+	"'---- ---------',/,/,24x,"
+    "'1. INTRODUCTION',/,24x,"
+	"'2. SETTING UP A RUN',/,24x,"
+    "'3. RUNNING THE PROGRAM',/,24x,"
+	"'4. OUTPUT OPTIONS',/,24x,"
+    "'5. GENERAL METHOD OF COMPUTATION',/,24x,"
+    "'6. USING THE INTERFACE SUBROUTINE',/,24x,"
+	"'7. EXIT',7(/),24x,"
     "'Enter selection (1-7): ',$)");
   //..........READ IN SELECTION NUMBER.
   read(ir, format_1001), inum;
@@ -79,19 +79,19 @@ help(common& cmn)
   //Setting up a run section.
   statement_210:
   write(iw,
-    "(/,' ',31x,"
-	"'INTRODUCTION',/,' ',31x,"
-	"'------------',2(/),' ',"
-    "'Welcome to the wonderful world of primordial nucleosynthesis.  NUC123 is a      ',/,' ',"
-    "'FORTRAN program designed to provide the early universe researcher with the tools',/,' ',"
-    "'necessary for the investigation of primordial nucleosynthesis.  Its menu-driven ',/,' ',"
-    "'interface allows the user to first set computation parameters (such as the time ',/,' ',"
-    "'step) and model parameters (such as the neutron lifetime and number of neutri-  ',/,' ',"
-    "'nos) before doing single runs or multiple runs (in which desired model parame-  ',/,' ',"
-    "'ters are varied over a desired range.)  After the run, the user can utilize the ',/,' ',"
-    "'menu to either produce an output file or to view the most recent run on the     ',/,' ',"
-    "'screen.  The program comes with an empty subroutine CHECK into which the user   ',/,' ',"
-    "'may wish to put additional code to add to the computation in an original manner.',10(/),' ',"
+    "(/,31x,"
+	"'INTRODUCTION',/,31x,"
+	"'------------',2(/),"
+    "'Welcome to the wonderful world of primordial nucleosynthesis.  NUC123 is a      ',/,"
+    "'FORTRAN program designed to provide the early universe researcher with the tools',/,"
+    "'necessary for the investigation of primordial nucleosynthesis.  Its menu-driven ',/,"
+    "'interface allows the user to first set computation parameters (such as the time ',/,"
+    "'step) and model parameters (such as the neutron lifetime and number of neutri-  ',/,"
+    "'nos) before doing single runs or multiple runs (in which desired model parame-  ',/,"
+    "'ters are varied over a desired range.)  After the run, the user can utilize the ',/,"
+    "'menu to either produce an output file or to view the most recent run on the     ',/,"
+    "'screen.  The program comes with an empty subroutine CHECK into which the user   ',/,"
+    "'may wish to put additional code to add to the computation in an original manner.',10(/),"
     "'(Enter <RETURN> to go back to help menu): ',$)");
   read(ir, star);
   goto statement_300;
@@ -101,39 +101,39 @@ help(common& cmn)
   //Setting up a run section.
   statement_220:
   write(iw,
-    "(/,' ',29x,"
-	"'SETTING UP A RUN',/,' ',29x,"
-	"'------- -- - ---',2(/),' ',"
-    "'I. Setting computation parameters.      ',/,' ',"
-    "'   The accuracy of the computation and the relevant temperature region can be',/,' ',"
-    "'   set by the following parameters:     ',/,' ',"
-    "'    A. Time step limiting constant 1  (default value of 0.03)',/,' ',"
-    "'    B. Time step limiting constant 2  (default value of 0.003)',/,' ',"
-    "'    C. Initial time step  (default value'," "' of 10**-4)',/,' ',"
-    "'    D. Initial temperature  (default value of 10**2)',/,' ',"
-    "'       This is the temperature at the beginning of the run in units of 10**9 K  ',/,' ',"
-    "'    E. Final temperature  (default value of 10**-2)',/,' ',"
-    "'       This is the termination temperature of the run in units of 10**9 K',/,' ',"
-    "'    F. Smallest abundances allowed  (default value of 10**-25)',/,' ',"
-    "'       Elemental abundances are not allowed to drop below this value',/,' ',"
-    "'    G. # of iterations for each accumulation  (default value of 300)',/,' ',"
-    "'       This is the number of iterations before values are put in an output array',6(/),' ',"
+    "(/,29x,"
+	"'SETTING UP A RUN',/,29x,"
+	"'------- -- - ---',2(/),"
+    "'I. Setting computation parameters.      ',/,"
+    "'   The accuracy of the computation and the relevant temperature region can be',/,"
+    "'   set by the following parameters:     ',/,"
+    "'    A. Time step limiting constant 1  (default value of 0.03)',/,"
+    "'    B. Time step limiting constant 2  (default value of 0.003)',/,"
+    "'    C. Initial time step  (default value'," "' of 10**-4)',/,"
+    "'    D. Initial temperature  (default value of 10**2)',/,"
+    "'       This is the temperature at the beginning of the run in units of 10**9 K  ',/,"
+    "'    E. Final temperature  (default value of 10**-2)',/,"
+    "'       This is the termination temperature of the run in units of 10**9 K',/,"
+    "'    F. Smallest abundances allowed  (default value of 10**-25)',/,"
+    "'       Elemental abundances are not allowed to drop below this value',/,"
+    "'    G. # of iterations for each accumulation  (default value of 300)',/,"
+    "'       This is the number of iterations before values are put in an output array',6(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ','II. Setting model parameters.',/,' ',"
-      "'   Default values here give what is known as the standard model with best guess ',/,' ',"
-      "'   figure on the neutron lifetime of 889.1 seconds.  Nonstandard scenarios can  ',/,' ',"
-      "'   be investigated by varying the following parameters:',/,' ',"
-      "'    A. The gravitational constant       ',/,' ',"
-      "'       (The default value of one here gives the usual 6.6720e-8 dyne*cm**2/g**2)',/,' ',"
-      "'    B. Neutron life-time  (default value of 889.1 seconds)',/,' ',"
-      "'    C. Number of neutrino species  (default value of 3 light neutrinos)         ',/,' ',"
-      "'    D. Final baryon-to-photon ratio  (set to log(eta) = -9.5)                   ',/,' ',"
-      "'    E. Cosmological constant  (default value of 0)                              ',/,' ',"
-      "'    F. Neutrino degeneracy parameters  (default values all 0)                   ',/,' ',"
-      "'       There are 3 separate parameters for the electron, muon, and tau neutrinos',11(/),' ',"
+      "(/,'II. Setting model parameters.',/,"
+      "'   Default values here give what is known as the standard model with best guess ',/,"
+      "'   figure on the neutron lifetime of 889.1 seconds.  Nonstandard scenarios can  ',/,"
+      "'   be investigated by varying the following parameters:',/,"
+      "'    A. The gravitational constant       ',/,"
+      "'       (The default value of one here gives the usual 6.6720e-8 dyne*cm**2/g**2)',/,"
+      "'    B. Neutron life-time  (default value of 889.1 seconds)',/,"
+      "'    C. Number of neutrino species  (default value of 3 light neutrinos)         ',/,"
+      "'    D. Final baryon-to-photon ratio  (set to log(eta) = -9.5)                   ',/,"
+      "'    E. Cosmological constant  (default value of 0)                              ',/,"
+      "'    F. Neutrino degeneracy parameters  (default values all 0)                   ',/,"
+      "'       There are 3 separate parameters for the electron, muon, and tau neutrinos',11(/),"
       "'(Enter <RETURN> to go back to help menu): ',$)");
     read(ir, star);
     goto statement_300;
@@ -148,69 +148,69 @@ help(common& cmn)
   //Running the program section.
   statement_230:
   write(iw,
-    "(/,' ',28x,"
-	"'RUNNING THE PROGRAM',/,' ',28x,"
+    "(/,28x,"
+	"'RUNNING THE PROGRAM',/,28x,"
 	"'------- --- -------',2(/),"
-    "' ','I. Setting run speed.                   ',/,' ',"
-    "'   The code can be run at 3 different settings of speed.  The running of the    ',/,' ',"
-    "'   code can be speeded up by reducing the number of nuclides and reactions.  The',/,' ',"
-    "'   complete computation takes into account the following nuclides: n, p, d, t,  ',/,' ',"
-    "'   He3, He4, Li6, Li7, Be7, Li8, B8, Be9, B10, B11, C11, B12, C12, N12, C13, N13,',/,' ',"
-    "'   C14, N14, O14, N15, O15, and O16.    ',/,' ',"
-    "'   The given CPU percentages and abundance variations are with regard to a      ',/,' ',"
-    "'   single run with all default parameter values.                                ',/,' ',"
-    "'    A. 26 nuclides, 88 reactions (default)                                      ',/,' ',"
-    "'       nuclides from n to O16           ',/,' ',"
-    "'    B. 18 nuclides, 60 reactions        ',/,' ',"
-    "'       nuclides from n to N12           ',/,' ',"
-    "'       (63% CPU time, variation = .1%)  ',/,' ',"
-    "'    C. 9 nuclides, 25 reactions        ',/,' ',"
-    "'       nuclides from n to Be7           ',/,' ',"
-    "'       (20% CPU time, variation = .5%)  ',4(/),' ',"
+    "' ','I. Setting run speed.                   ',/,"
+    "'   The code can be run at 3 different settings of speed.  The running of the    ',/,"
+    "'   code can be speeded up by reducing the number of nuclides and reactions.  The',/,"
+    "'   complete computation takes into account the following nuclides: n, p, d, t,  ',/,"
+    "'   He3, He4, Li6, Li7, Be7, Li8, B8, Be9, B10, B11, C11, B12, C12, N12, C13, N13,',/,"
+    "'   C14, N14, O14, N15, O15, and O16.    ',/,"
+    "'   The given CPU percentages and abundance variations are with regard to a      ',/,"
+    "'   single run with all default parameter values.                                ',/,"
+    "'    A. 26 nuclides, 88 reactions (default)                                      ',/,"
+    "'       nuclides from n to O16           ',/,"
+    "'    B. 18 nuclides, 60 reactions        ',/,"
+    "'       nuclides from n to N12           ',/,"
+    "'       (63% CPU time, variation = .1%)  ',/,"
+    "'    C. 9 nuclides, 25 reactions        ',/,"
+    "'       nuclides from n to Be7           ',/,"
+    "'       (20% CPU time, variation = .5%)  ',4(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ',"
-	  "'II. Do single run.                      ',/,' ',"
-      "'    A. Interactive.                     ',/,' ',"
-      "'       In an interactive session, the user can readily input the computational  ',/,' ',"
-      "'       and model parameters and begin the computation process.  The run itself  ',/,' ',"
-      "'       is commenced when option 2, \"GO\", in the \"RUN\" section is requested. ',/,/,' ',"
-      "'    B. Batch.                           ',/,' ',"
-      "'       To run the program in a batch mode, it must be altered slightly so that  ',/,' ',"
-      "'       the I/O takes place with files instead of a terminal.  This is done by   ',/,' ',"
-      "'       setting different values for the input and output unit number parameters ',/,' ',"
-      "'       \"ir\" and \"iw\" and assigning them to different files in NUC123.  In the   ',/,' ',"
-      "'       file assigned the \"ir\" unit number, one must place the responses to the  ',/,' ',"
-      "'       queries of the program.          ',10(/),' ',"
+      "(/,"
+	  "'II. Do single run.                      ',/,"
+      "'    A. Interactive.                     ',/,"
+      "'       In an interactive session, the user can readily input the computational  ',/,"
+      "'       and model parameters and begin the computation process.  The run itself  ',/,"
+      "'       is commenced when option 2, \"GO\", in the \"RUN\" section is requested. ',/,/,"
+      "'    B. Batch.                           ',/,"
+      "'       To run the program in a batch mode, it must be altered slightly so that  ',/,"
+      "'       the I/O takes place with files instead of a terminal.  This is done by   ',/,"
+      "'       setting different values for the input and output unit number parameters ',/,"
+      "'       \"ir\" and \"iw\" and assigning them to different files in NUC123.  In the   ',/,"
+      "'       file assigned the \"ir\" unit number, one must place the responses to the  ',/,"
+      "'       queries of the program.          ',10(/),"
       "'(Enter 1 to continue, <RETURN> to end): ',$)");
     read(ir, format_1001), 
 	inum;
     if (inum == 1) {
       write(iw,
-        "(/,' ','III. Do multiple runs.          ',/,' ',"
-        "'   A wide range of early universe models can be covered by doing many runs    ',/,' ',"
-        "'   while one or more parameters are varied over a range of interest.  The     ',/,' ',"
-        "'   parameters that can be varied are the following:                           ',/,' ',"
+        "(/,'III. Do multiple runs.          ',/,"
+        "'   A wide range of early universe models can be covered by doing many runs    ',/,"
+        "'   while one or more parameters are varied over a range of interest.  The     ',/,"
+        "'   parameters that can be varied are the following:                           ',/,"
         "'    A. Eta                             ',"
-        "'       - Logarithmic variation          ',/,' ',"
+        "'       - Logarithmic variation          ',/,"
         "'    B. Gravitational constant          ',"
-        "'       - Linear variation              ',/,' ',"
+        "'       - Linear variation              ',/,"
         "'    C. Neutron lifetime                ',"
-        "'       - Linear variation              ',/,' ',"
+        "'       - Linear variation              ',/,"
         "'    D. Number of neutrino species      ',"
-        "'       - Linear variation              ',/,' ',"
+        "'       - Linear variation              ',/,"
         "'    E. Cosmological constant           ',"
-        "'       - Linear variation              ',/,' ',"
+        "'       - Linear variation              ',/,"
         "'    F. Neutrino degeneracy parameters  ',"
-        "'       - Linear variation              ',/,' ',"
-        "'        1. Electron neutrino           ',/,' ',"
-        "'        2. Muon neutrino               ',/,' ',"
-        "'        3. Tauon neutrino              ',/,' ',"
-        "'   At most 3 parameters can be varied.  The first parameter inputted will be  ',/,' ',"
-        "'   will be varied in the outermost loop and the third parameter inputted will ',/,' ',"
-        "'   be varied in the innermost loop.    ',7(/),' ',"
+        "'       - Linear variation              ',/,"
+        "'        1. Electron neutrino           ',/,"
+        "'        2. Muon neutrino               ',/,"
+        "'        3. Tauon neutrino              ',/,"
+        "'   At most 3 parameters can be varied.  The first parameter inputted will be  ',/,"
+        "'   will be varied in the outermost loop and the third parameter inputted will ',/,"
+        "'   be varied in the innermost loop.    ',7(/),"
         "'(Enter <RETURN> to go back to help menu): ',$)");
       read(ir, star);
       goto statement_300;
@@ -230,38 +230,38 @@ help(common& cmn)
   //Output options section.
   statement_240:
   write(iw,
-    "(/,' ',30x,'OUTPUT OPTIONS',/,' ',30x,'------ -------',2(/),' ',"
-    "'I.  Request output file.                ',/,' ',"
-    "'   After a run, the user can request the program to put the resulting numbers   ',/,' ',"
-    "'   into an output file.  This can be done as many times as desired and all the  ',/,' ',"
-    "'   information will be put in one new file under the name of \"NUC123.DAT.\"  If  ',/,' ',"
-    "'   there is no request during the entire running of the program, this file is   ',/,' ',"
-    "'   not created.  If an output file is requested after a multiple run, only the  ',/,' ',"
-    "'   information from the very last run will be given.  The output file will give ',/,' ',"
-    "'   the computational and model parameters for each run and will contain the     ',/,' ',"
-    "'   following information:               ',/,' ',"
-    "'    A. Temperatures in decreasing order ',/,' ',"
-    "'    B. Abundances for n, p, d, t, He3, He4, Li6, Li7, Be7, and Li8 & up         ',/,' ',"
-    "'       (p and He4 are in mass fraction, the rest in ratios to the p abundance)  ',/,' ',"
-    "'    C. Time, time interval, chemical potential of the electron                  ',/,' ',"
-    "'    D. Energy densities for photons, electrons, electron neutrinos, and baryons ',/,' ',"
-    "'    E. Baryon-to-photon ratio, expansion rate of the universe                   ',5(/),' ',"
+    "(/,30x,'OUTPUT OPTIONS',/,30x,'------ -------',2(/),"
+    "'I.  Request output file.                ',/,"
+    "'   After a run, the user can request the program to put the resulting numbers   ',/,"
+    "'   into an output file.  This can be done as many times as desired and all the  ',/,"
+    "'   information will be put in one new file under the name of \"NUC123.DAT.\"  If  ',/,"
+    "'   there is no request during the entire running of the program, this file is   ',/,"
+    "'   not created.  If an output file is requested after a multiple run, only the  ',/,"
+    "'   information from the very last run will be given.  The output file will give ',/,"
+    "'   the computational and model parameters for each run and will contain the     ',/,"
+    "'   following information:               ',/,"
+    "'    A. Temperatures in decreasing order ',/,"
+    "'    B. Abundances for n, p, d, t, He3, He4, Li6, Li7, Be7, and Li8 & up         ',/,"
+    "'       (p and He4 are in mass fraction, the rest in ratios to the p abundance)  ',/,"
+    "'    C. Time, time interval, chemical potential of the electron                  ',/,"
+    "'    D. Energy densities for photons, electrons, electron neutrinos, and baryons ',/,"
+    "'    E. Baryon-to-photon ratio, expansion rate of the universe                   ',5(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ','II.  Request output on screen.         ',/,' ',"
-      "'   Instead of waiting to print out an output file, the user can immediately   ',/,' ',"
-      "'   access the results of the latest run by requesting the output on the       ',/,' ',"
-      "'   screen.  There are four screens on each of which are displayed the         ',/,' ',"
-      "'   computational and model parameters and the temperature:                    ',/,' ',"
-      "'    A. Abundances for d, t, He3, He4, and Li7                                 ',/,' ',"
-      "'       (He4 in mass fraction, rest as a ratio with the p abundance)           ',/,' ',"
-      "'    B. Abundances for n, p, Li6, Be7, and Li8 & up                            ',/,' ',"
-      "'       (p in mass fraction, rest as a ratio with the p abundance)             ',/,' ',"
-      "'    C. Energy densities for photons, electrons, electron neutrinos, & baryons ',/,' ',"
-      "'    D. Time, time interval, chemical potential of the electron,               ',/,' ',"
-      "'       baryon-to-photon ratio, and expansion rate of the universe             ',11(/),' ',"
+      "(/,'II.  Request output on screen.         ',/,"
+      "'   Instead of waiting to print out an output file, the user can immediately   ',/,"
+      "'   access the results of the latest run by requesting the output on the       ',/,"
+      "'   screen.  There are four screens on each of which are displayed the         ',/,"
+      "'   computational and model parameters and the temperature:                    ',/,"
+      "'    A. Abundances for d, t, He3, He4, and Li7                                 ',/,"
+      "'       (He4 in mass fraction, rest as a ratio with the p abundance)           ',/,"
+      "'    B. Abundances for n, p, Li6, Be7, and Li8 & up                            ',/,"
+      "'       (p in mass fraction, rest as a ratio with the p abundance)             ',/,"
+      "'    C. Energy densities for photons, electrons, electron neutrinos, & baryons ',/,"
+      "'    D. Time, time interval, chemical potential of the electron,               ',/,"
+      "'       baryon-to-photon ratio, and expansion rate of the universe             ',11(/),"
       "'(Enter <RETURN> to go back to help menu): ',$)");
     read(ir, star);
     goto statement_300;
@@ -276,45 +276,45 @@ help(common& cmn)
   //General method of computation sectio
   statement_250:
   write(iw,
-    "(/,' ',22x,'GENERAL METHOD OF COMPUTATION',/,' ',22x,"
-    "'------- ------ -- -----------',2(/),' ',"
-    "'I. Time evolution algorithm.            ',/,' ',"
-    "'   The program utilizes a 2-point Runge-Kutta scheme (located in subroutine     ',/,' ',"
-    "'   DRIVER) to time-evolve the temperature, the quantity hv (the ratio of the    ',/,' ',"
-    "'   baryon density to T**3), the chemical potential of the electron, and the     ',/,' ',"
-    "'   nuclide abundances.  In the 2-point Runge-Kutta routine, a variable v at time',/,' ',"
-    "'   t0 (= v0) is evolved to a time t1 by adding to v0 the average of the         ',/,' ',"
-    "'   derivatives evaluated at t0 and at t1 multiplied by dt:                      ',/,' ',"
-    "'       v1 = v0 + 0.5(dvdt(t0)+dvdt(t1)) ',/,' ',"
-    "'   where dvdt(t1) is gotten by first finding v1'' = v0 + dvdt(t0).  The         ',/,' ',"
-    "'   derivatives of the nuclide abundances are first computed and these are used  ',/,' ',"
-    "'   to find the derivatives of t9, hv, and phie (this is done in subroutine      ',/,' ',"
-    "'   DERIVS).  To compute the time derivatives of the nuclide abundances, a matrix',/,' ',"
-    "'   equation is set up (in subroutine SOL) and is solved (in subroutine EQSLIN)  ',/,' ',"
-    "'   by gaussian elimination utilizing implicit differentiation.                  ',6(/),' ',"
+    "(/,22x,'GENERAL METHOD OF COMPUTATION',/,22x,"
+    "'------- ------ -- -----------',2(/),"
+    "'I. Time evolution algorithm.            ',/,"
+    "'   The program utilizes a 2-point Runge-Kutta scheme (located in subroutine     ',/,"
+    "'   DRIVER) to time-evolve the temperature, the quantity hv (the ratio of the    ',/,"
+    "'   baryon density to T**3), the chemical potential of the electron, and the     ',/,"
+    "'   nuclide abundances.  In the 2-point Runge-Kutta routine, a variable v at time',/,"
+    "'   t0 (= v0) is evolved to a time t1 by adding to v0 the average of the         ',/,"
+    "'   derivatives evaluated at t0 and at t1 multiplied by dt:                      ',/,"
+    "'       v1 = v0 + 0.5(dvdt(t0)+dvdt(t1)) ',/,"
+    "'   where dvdt(t1) is gotten by first finding v1'' = v0 + dvdt(t0).  The         ',/,"
+    "'   derivatives of the nuclide abundances are first computed and these are used  ',/,"
+    "'   to find the derivatives of t9, hv, and phie (this is done in subroutine      ',/,"
+    "'   DERIVS).  To compute the time derivatives of the nuclide abundances, a matrix',/,"
+    "'   equation is set up (in subroutine SOL) and is solved (in subroutine EQSLIN)  ',/,"
+    "'   by gaussian elimination utilizing implicit differentiation.                  ',6(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ','II. Hierarchy of Subroutines.   ',/,' ',"
-      "'        NUC123    Main program (main menu)    ',/,' ',"
-      "'        HELP      Help option                 ',/,' ',"
-      "'        SETCOM    Set computational parameters',/,' ',"
-      "'        SETMOD    Set model parameters        ',/,' ',"
-      "'        RUN       Run computation code        ',/,' ',"
-      "'        DRIVER    Main routine (Runge-Kutta loop)    ',/,' ',"
-      "'        START     Initialization routine      ',/,' ',"
-      "'        RATE0     Computes weak decay rates   ',/,' ',"
-      "'        DERIVS    Computes time derivatives   ',/,' ',"
-      "'        THERM     Computes energy densities   ',/,' ',"
-      "'        BESSEL    Gives functions of Kn       ',/,' ',"
-      "'        KNUX      Computes modified Bessel fcn Kn    ',/,' ',"
-      "'        NUDENS    Computes neutrino energy density   ',/,' ',"
-      "'        RATE1-4   Computes rates for reactions',/,' ',"
-      "'        SOL       Builds A matrix for eqn dy/dt = Ay ',/,' ',"
-      "'        EQSLIN    Solves dy/dt=Ay by gaussian elim   ',/,' ',"
-      "'        ACCUM     Output accumulator          ',/,' ',"
-      "'        OUTPUT    Allows user to output result',4(/),' ',"
+      "(/,'II. Hierarchy of Subroutines.   ',/,"
+      "'        NUC123    Main program (main menu)    ',/,"
+      "'        HELP      Help option                 ',/,"
+      "'        SETCOM    Set computational parameters',/,"
+      "'        SETMOD    Set model parameters        ',/,"
+      "'        RUN       Run computation code        ',/,"
+      "'        DRIVER    Main routine (Runge-Kutta loop)    ',/,"
+      "'        START     Initialization routine      ',/,"
+      "'        RATE0     Computes weak decay rates   ',/,"
+      "'        DERIVS    Computes time derivatives   ',/,"
+      "'        THERM     Computes energy densities   ',/,"
+      "'        BESSEL    Gives functions of Kn       ',/,"
+      "'        KNUX      Computes modified Bessel fcn Kn    ',/,"
+      "'        NUDENS    Computes neutrino energy density   ',/,"
+      "'        RATE1-4   Computes rates for reactions',/,"
+      "'        SOL       Builds A matrix for eqn dy/dt = Ay ',/,"
+      "'        EQSLIN    Solves dy/dt=Ay by gaussian elim   ',/,"
+      "'        ACCUM     Output accumulator          ',/,"
+      "'        OUTPUT    Allows user to output result',4(/),"
       "'(Enter <RETURN> to go back to help menu): ',$)");
     read(ir, star);
     goto statement_300;
@@ -329,58 +329,58 @@ help(common& cmn)
   //Using the interface subroutine secti
   statement_260:
   write(iw,
-    "(/,' ',22x,"
-	"'USING THE INTERFACE SUBROUTINE',/,' ',22x,"
-    "'----- --- --------- ----------',2(/),' ',"
-    "'I. Purpose.                             ',/,' ',"
-    "'   The interface subroutine CHECK is designed to be an outlet of the program    ',/,' ',"
-    "'   into which alterations can be easily plugged.  Programs are normally modified',/,' ',"
-    "'   by searching through the program, identifying the appropriate areas for      ',/,' ',"
-    "'   alterations, and interspersing new commands while deleting some old ones.    ',/,' ',"
-    "'   This process can get tricky unless one actively documents the alterations:   ',/,' ',"
-    "'   one might lose track of all of the modifications and deletions.  Thus, it is ',/,' ',"
-    "'   worthwhile to put most if not all of the necessary changes into one          ',/,' ',"
-    "'   subroutine which is to be called from strategic locations in the main        ',/,' ',"
-    "'   program.  Furthermore, by putting changes into one small subroutine, one need',/,' ',"
-    "'   only to compile the subroutine CHECK each time instead of the entire nucleo- ',/,' ',"
-    "'   synthesis code.                      ',8(/),' ',"
+    "(/,22x,"
+	"'USING THE INTERFACE SUBROUTINE',/,22x,"
+    "'----- --- --------- ----------',2(/),"
+    "'I. Purpose.                             ',/,"
+    "'   The interface subroutine CHECK is designed to be an outlet of the program    ',/,"
+    "'   into which alterations can be easily plugged.  Programs are normally modified',/,"
+    "'   by searching through the program, identifying the appropriate areas for      ',/,"
+    "'   alterations, and interspersing new commands while deleting some old ones.    ',/,"
+    "'   This process can get tricky unless one actively documents the alterations:   ',/,"
+    "'   one might lose track of all of the modifications and deletions.  Thus, it is ',/,"
+    "'   worthwhile to put most if not all of the necessary changes into one          ',/,"
+    "'   subroutine which is to be called from strategic locations in the main        ',/,"
+    "'   program.  Furthermore, by putting changes into one small subroutine, one need',/,"
+    "'   only to compile the subroutine CHECK each time instead of the entire nucleo- ',/,"
+    "'   synthesis code.                      ',8(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,' ',"
-	  "'II. Description.                        ',/,' ',"
-      "'   Subroutine CHECK is an empty subroutine with a large COMMON area, giving the ',/,' ',"
-      "'   user ready access to all of the important variables in the computations.  The',/,' ',"
-      "'   routine is called from various locations in the main program and the location',/,' ',"
-      "'   spot in the program is labeled by the flag \"itime\".  The set call locations  ',/,' ',"
-      "'   are given below:                     ',/,' ',"
-      "'    A. itime = 1 (NUC123, very beginning of program run)                        ',/,' ',"
-      "'       (appropriate for opening files, initializing variables)                  ',/,' ',"
-      "'    B. itime = 2 (NUC123, right before going into the RUN section)              ',/,' ',"
-      "'    C. itime = 3 (RUN, right before going into DRIVER to do the computations)   ',/,' ',"
-      "'    D. itime = 4 (DRIVER, in 1st R-K loop after computing derivatives in DERIVS)',/,' ',"
-      "'    E. itime = 7 (DRIVER, in 2nd R-K loop after computing derivatives in DERIVS)',/,' ',"
-      "'    F. itime = 8 (RUN, right after coming back from DRIVER)                     ',/,' ',"
-      "'    G. itime = 9 (NUC123, right after coming back from the RUN section)         ',/,' ',"
-      "'    H. itime =10 (NUC123, very end of program run)                              ',/,' ',"
-      "'       (appropriate for closing files)  ',/,' ',"
-      "'   The difference between the (2,9) pairing and the (3,8) pairing is that for a ',/,' ',"
-      "'   multiple run, the (3,8) pairing would be called before and after every run   ',/,' ',"
-      "'   but the (2,9) pairing would be called before and after the entire sequence.  ',4(/),' ',"
+      "(/,"
+	  "'II. Description.                        ',/,"
+      "'   Subroutine CHECK is an empty subroutine with a large COMMON area, giving the ',/,"
+      "'   user ready access to all of the important variables in the computations.  The',/,"
+      "'   routine is called from various locations in the main program and the location',/,"
+      "'   spot in the program is labeled by the flag \"itime\".  The set call locations  ',/,"
+      "'   are given below:                     ',/,"
+      "'    A. itime = 1 (NUC123, very beginning of program run)                        ',/,"
+      "'       (appropriate for opening files, initializing variables)                  ',/,"
+      "'    B. itime = 2 (NUC123, right before going into the RUN section)              ',/,"
+      "'    C. itime = 3 (RUN, right before going into DRIVER to do the computations)   ',/,"
+      "'    D. itime = 4 (DRIVER, in 1st R-K loop after computing derivatives in DERIVS)',/,"
+      "'    E. itime = 7 (DRIVER, in 2nd R-K loop after computing derivatives in DERIVS)',/,"
+      "'    F. itime = 8 (RUN, right after coming back from DRIVER)                     ',/,"
+      "'    G. itime = 9 (NUC123, right after coming back from the RUN section)         ',/,"
+      "'    H. itime =10 (NUC123, very end of program run)                              ',/,"
+      "'       (appropriate for closing files)  ',/,"
+      "'   The difference between the (2,9) pairing and the (3,8) pairing is that for a ',/,"
+      "'   multiple run, the (3,8) pairing would be called before and after every run   ',/,"
+      "'   but the (2,9) pairing would be called before and after the entire sequence.  ',4(/),"
       "'(Enter 1 to continue, <RETURN> to end): ',$)");
     read(ir, format_1001), inum;
     if (inum == 1) {
       write(iw,
-        "(/,' ',"
-		"'III. Implementation.                   ',/,' ',"
-        "'   The additional program statements are needed in the subroutine CHECK.  If a',/,' ',"
-        "'   particular command is to be executed when the computer is at a certain     ',/,' ',"
-        "'   location in the program -- say labeled by itime = 8 -- then in CHECK, one  ',/,' ',"
-        "'   must place the command under the statement, IF (itime.eq.8)....  The user  ',/,' ',"
-        "'   is at leisure to place his own location indicators (5,6) and CALL CHECK    ',/,' ',"
-        "'   statements anywhere in the program as long as there is a COMMON /checkcb/    ',/,' ',"
-        "'   statement in the particular subroutine to carry the value of itime along.  ',15(/),' ',"
+        "(/,"
+		"'III. Implementation.                   ',/,"
+        "'   The additional program statements are needed in the subroutine CHECK.  If a',/,"
+        "'   particular command is to be executed when the computer is at a certain     ',/,"
+        "'   location in the program -- say labeled by itime = 8 -- then in CHECK, one  ',/,"
+        "'   must place the command under the statement, IF (itime.eq.8)....  The user  ',/,"
+        "'   is at leisure to place his own location indicators (5,6) and CALL CHECK    ',/,"
+        "'   statements anywhere in the program as long as there is a COMMON /checkcb/    ',/,"
+        "'   statement in the particular subroutine to carry the value of itime along.  ',15(/),"
         "'(Enter <RETURN> to go back to help menu): ',$)");
       read(ir, star);
       goto statement_300;
@@ -481,17 +481,17 @@ setcom(
   statement_100:
   //..........DISPLAY RESET SELECTIONS.
   write(iw,
-    "(8(/),' ',21x,'SET COMPUTATION PARAMETERS SELECTION',/,' ',21x,"
-    "'--- ----------- ---------- ---------',/,/,' ',10x,"
-    "' 1. CHANGE TIME-STEP LIMITING CONSTANT 1  FROM ',f5.3,/,' ',10x,"
-    "' 2. CHANGE TIME-STEP LIMITING CONSTANT 2  FROM ',f5.3,/,' ',10x,"
+    "(8(/),21x,'SET COMPUTATION PARAMETERS SELECTION',/,21x,"
+    "'--- ----------- ---------- ---------',/,/,10x,"
+    "' 1. CHANGE TIME-STEP LIMITING CONSTANT 1  FROM ',f5.3,/,10x,"
+    "' 2. CHANGE TIME-STEP LIMITING CONSTANT 2  FROM ',f5.3,/,10x,"
     "' 3. CHANGE INITIAL TIME-STEP              FROM ',1p,e8.2,' SECONDS',/,"
     "' ',10x,' 4. CHANGE INITIAL TEMPERATURE            FROM ',1p,e8.2,"
-    "' (10**9 K)',/,' ',10x,' 5. CHANGE FINAL TEMPERATURE              FROM ',"
-    "1p,e8.2,' (10**9 K)',/,' ',10x,"
-    "' 6. CHANGE SMALLEST ABUNDANCES ALLOWED    FROM ',1p,e8.2,/,' ',10x,"
+    "' (10**9 K)',/,10x,' 5. CHANGE FINAL TEMPERATURE              FROM ',"
+    "1p,e8.2,' (10**9 K)',/,10x,"
+    "' 6. CHANGE SMALLEST ABUNDANCES ALLOWED    FROM ',1p,e8.2,/,10x,"
     "' 7. CHANGE ACCUMULATION INCREMENT         FROM ',1p,e8.2,' ITERATIONS',"
-    "/,' ',10x,' 8. RESET ALL TO DEFAULT VALUES',/,' ',10x,' 9. EXIT',5(/),"
+    "/,10x,' 8. RESET ALL TO DEFAULT VALUES',/,10x,' 9. EXIT',5(/),"
     "' ',10x,'Enter selection (1-9): ',$)"),
     cy, ct, dt1, t9i, t9f, ytmin, fem::ffloat(inc);
   //..........READ IN SELECTION NUMBER.
@@ -647,17 +647,17 @@ setmod(
   statement_100:
   //..........DISPLAY RESET SELECTIONS.
   write(iw,
-    "(8(/),' ',24x,'SET MODEL PARAMETERS SELECTION',/,' ',24x,"
-    "'--- ----- ---------- ---------',/,/,' ',10x,"
-    "' 1. CHANGE GRAVITATIONAL CONSTANT         FROM ',1p,e10.3,/,' ',10x,"
+    "(8(/),24x,'SET MODEL PARAMETERS SELECTION',/,24x,"
+    "'--- ----- ---------- ---------',/,/,10x,"
+    "' 1. CHANGE GRAVITATIONAL CONSTANT         FROM ',1p,e10.3,/,10x,"
     "' 2. CHANGE NEUTRON LIFETIME               FROM ',1p,e10.3,' SECONDS',/,"
-    "' ',10x,' 3. CHANGE NUMBER OF NEUTRINO SPECIES     FROM ',1p,e10.3,/,' ',"
-    "10x,' 4. CHANGE FINAL BARYON-TO-PHOTON RATIO   FROM ',1p,e10.3,/,' ',10x,"
-    "' 5. CHANGE COSMOLOGICAL CONSTANT          FROM ',1p,e10.3,/,' ',10x,"
-    "' 6. CHANGE XI-ELECTRON                    FROM ',1p,e10.3,/,' ',10x,"
-    "' 7. CHANGE XI-MUON                        FROM ',1p,e10.3,/,' ',10x,"
-    "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,' ',10x,"
-    "' 9. RESET ALL TO DEFAULT VALUES',/,' ',10x,'10. EXIT',4(/),' ',10x,"
+    "' ',10x,' 3. CHANGE NUMBER OF NEUTRINO SPECIES     FROM ',1p,e10.3,/,"
+    "10x,' 4. CHANGE FINAL BARYON-TO-PHOTON RATIO   FROM ',1p,e10.3,/,10x,"
+    "' 5. CHANGE COSMOLOGICAL CONSTANT          FROM ',1p,e10.3,/,10x,"
+    "' 6. CHANGE XI-ELECTRON                    FROM ',1p,e10.3,/,10x,"
+    "' 7. CHANGE XI-MUON                        FROM ',1p,e10.3,/,10x,"
+    "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
+    "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
     "' Enter selection (1-10): ',$)"),
     c(1), c(2), c(3), eta1, cosmo, xi(1), xi(2), xi(3);
   //..........READ IN SELECTION NUMBER.
@@ -1024,7 +1024,7 @@ check(common& cmn)
     xout(it, 6) = xout(it, 6) - 0.0003f;
     // my correction for fitted rates+coarse steps
     //Output N_nu, tau_n, eta, H2, He3, He4, an
-    write(3, "(7(e13.5,' '))"), c(3), c(2), etaout(it), xout(it, 3),
+    write(3, "(7(e13.5))"), c(3), c(2), etaout(it), xout(it, 3),
       xout(it, 5), xout(it, 6), xout(it, 8);
   }
   //
@@ -4916,13 +4916,13 @@ run(common& cmn)
   statement_100:
   //..........DISPLAY RUN SELECTIONS.
   write(iw,
-    "(8(/),' ',32x,"
-	"'RUN SELECTION',/,' ',32x,"
-	"'--- ---------',/,/,' ',27x,"
-    "' 1. SET RUN NETWORK',/,' ',27x,"
-	"' 2. GO',/,' ',27x,"
-    "' 3. DO MULTIPLE RUNS',/,' ',27x,"
-	"' 4. EXIT',10(/),' ',27x,"
+    "(8(/),32x,"
+	"'RUN SELECTION',/,32x,"
+	"'--- ---------',/,/,27x,"
+    "' 1. SET RUN NETWORK',/,27x,"
+	"' 2. GO',/,27x,"
+    "' 3. DO MULTIPLE RUNS',/,27x,"
+	"' 4. EXIT',10(/),27x,"
     "' Enter selection (1-4): ',$)");
   //..........READ IN SELECTION NUMBER.
   read(ir, format_1001), inumb;
@@ -5026,17 +5026,17 @@ run(common& cmn)
     else {
       //..........OBTAIN QUANTITY TO VARY.
       write(iw,
-        "(8(/),' ',30x,'QUANTITY TO VARY',/,' ',30x,'-------- -- ----',/,/,"
-        "' ',25x,' 1.  ETA     (LOGRITHMIC VARIATION)',/,' ',25x,"
-        "' 2.  G           (LINEAR VARIATION)',/,' ',25x,"
-        "' 3.  TAU         (LINEAR VARIATION)',/,' ',25x,"
-        "' 4.  # NEUTRINOS (LINEAR VARIATION)',/,' ',25x,"
-        "' 5.  LAMBDA      (LINEAR VARIATION)',/,' ',25x,"
-        "' 6.  XI-ELECTRON (LINEAR VARIATION)',/,' ',25x,"
-        "' 7.  XI-MUON     (LINEAR VARIATION)',/,' ',25x,"
-        "' 8.  XI-TAUON    (LINEAR VARIATION)',/,' ',25x,"
+        "(8(/),30x,'QUANTITY TO VARY',/,30x,'-------- -- ----',/,/,"
+        "' ',25x,' 1.  ETA     (LOGRITHMIC VARIATION)',/,25x,"
+        "' 2.  G           (LINEAR VARIATION)',/,25x,"
+        "' 3.  TAU         (LINEAR VARIATION)',/,25x,"
+        "' 4.  # NEUTRINOS (LINEAR VARIATION)',/,25x,"
+        "' 5.  LAMBDA      (LINEAR VARIATION)',/,25x,"
+        "' 6.  XI-ELECTRON (LINEAR VARIATION)',/,25x,"
+        "' 7.  XI-MUON     (LINEAR VARIATION)',/,25x,"
+        "' 8.  XI-TAUON    (LINEAR VARIATION)',/,25x,"
 		"' 9.  NO SELECTION',"
-        "5(/),' ',25x,' Enter selection (1-9): ',$)");
+        "5(/),25x,' Enter selection (1-9): ',$)");
       read(ir, format_1001), inum(i);
       //No selection ma
       if ((inum(i) < 1) || (inum(i) > 8)) {
@@ -5236,12 +5236,12 @@ output(common& cmn)
   static const char* format_1001 = "(i1)";
   static const char* format_2014 = "(/,/,/)";
   static const char* format_3100 =
-    "(' ','Computational parameters:',/,' ','   cy = ',f5.3,'/ ct = ',f5.3,"
-    "'/ initial temp = ',1p,e8.2,'/ final temp = ',1p,e8.2,/,' ',"
+    "(' ','Computational parameters:',/,'   cy = ',f5.3,'/ ct = ',f5.3,"
+    "'/ initial temp = ',1p,e8.2,'/ final temp = ',1p,e8.2,/,"
     "'   smallest abundances allowed = ',1p,e8.2)";
   static const char* format_3102 =
-    "(' ','Model parameters:',/,' ','   g = ',f5.2,'/ tau = ',f6.2,"
-    "'/ # nu = ',f5.2,'/ lambda = ',1p,e10.3,/,' ','   xi-e = ',e10.3,"
+    "(' ','Model parameters:',/,'   g = ',f5.2,'/ tau = ',f6.2,"
+    "'/ # nu = ',f5.2,'/ lambda = ',1p,e10.3,/,'   xi-e = ',e10.3,"
     "'/ xi-m = ',e10.3,'/ xi-t = ',e10.3,/)";
   static const char* format_3106 = "(1p,e10.3,1p,5e12.3)";
   static const char* format_3108 = "(' ','Press <RETURN> to continue: ',$)";
@@ -5310,9 +5310,9 @@ output(common& cmn)
   statement_100:
   //..........DISPLAY OUTPUT SELECTIONS.
   write(iw,
-    "(8(/),' ',30x,'OUTPUT SELECTION',/,' ',30x,'------ ---------',/,/,' ',"
-    "25x,' 1. REQUEST OUTPUT FILE',/,' ',25x,' 2. REQUEST OUTPUT ON SCREEN',/,"
-    "' ',25x,' 3. EXIT',11(/),' ',25x,' Enter selection (1-3): ',$)");
+    "(8(/),30x,'OUTPUT SELECTION',/,30x,'------ ---------',/,/,"
+    "25x,' 1. REQUEST OUTPUT FILE',/,25x,' 2. REQUEST OUTPUT ON SCREEN',/,"
+    "' ',25x,' 3. EXIT',11(/),25x,' Enter selection (1-3): ',$)");
   //..........READ IN SELECTION NUMBER.
   read(ir, format_1001), inum;
   //..........BRANCH TO APPROPRIATE SECTION.
@@ -5404,11 +5404,11 @@ output(common& cmn)
   //      END DO
   //..........DISPLAY SCREEN OUTPUT SELECTIONS.
   write(iw,
-    "(8(/),' ',26x,'SCREEN OUTPUT SELECTION',/,' ',26x,"
-    "'------ ------ ---------',/,/,' ',25x,' 1. DISPLAY D,T,HE3,HE4,LI7',/,"
-    "' ',25x,' 2. DISPLAY N,P,LI6,BE7,LI8&UP',/,' ',25x,"
-    "' 3. DISPLAY RHOG,RHOE,RHONE,RHOB',/,' ',25x,"
-    "' 4. DISPLAY T,DT,PHIE,ETA,H',/,' ',25x,' 5. EXIT',9(/),' ',25x,"
+    "(8(/),26x,'SCREEN OUTPUT SELECTION',/,26x,"
+    "'------ ------ ---------',/,/,25x,' 1. DISPLAY D,T,HE3,HE4,LI7',/,"
+    "' ',25x,' 2. DISPLAY N,P,LI6,BE7,LI8&UP',/,25x,"
+    "' 3. DISPLAY RHOG,RHOE,RHONE,RHOB',/,25x,"
+    "' 4. DISPLAY T,DT,PHIE,ETA,H',/,25x,' 5. EXIT',9(/),25x,"
     "' Enter selection (1-5): ',$)");
   //..........READ IN SELECTION NUMBER.
   read(ir, format_1001), inum;
@@ -5430,7 +5430,7 @@ output(common& cmn)
   write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
   //..........PRINT HEADINGS, ABUNDANCES FOR D,T,HE3,HE4,LI7.
   write(iw,
-    "(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,' ',"
+    "(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
     "80('-'))");
   FEM_DO_SAFE(j, 1, it) {
     {
@@ -5454,7 +5454,7 @@ output(common& cmn)
   write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
   //..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
   write(iw,
-    "(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,' ',"
+    "(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
     "80('-'))");
   FEM_DO_SAFE(j, 1, it) {
     {
@@ -5481,7 +5481,7 @@ output(common& cmn)
   write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
   //..........PRINT ENERGY DENSITIES.
   write(iw,
-    "(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,' ',80('-'))");
+    "(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
   FEM_DO_SAFE(j, 1, it) {
     {
       write_loop wloop(cmn, iw, "(1p,e10.3,4e12.3)");
@@ -5503,7 +5503,7 @@ output(common& cmn)
   write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
   //..........PRINT THERMODYNAMIC QUANTITIES.
   write(iw,
-    "(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,' ',80('-'))");
+    "(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
   FEM_DO_SAFE(j, 1, it) {
     write(iw, "(1p,e10.3,5e12.3)"), t9out(j), tout(j), thmout(j, 5),
       dtout(j), etaout(j), hubout(j);
@@ -6136,7 +6136,7 @@ program_new123(
     "10x,'33',/),2(' ',4x,'NN    NNNN  UU',6x,'UU  CC',14x,'11',10x,'22',14x,"
     "'33',/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU  CC',14x,'11',8x,'22',8x,'33',"
     "6x,'33',/),2(' ',4x,'NN',6x,'NN  ',10('U'),4x,8('C'),4x,6('1'),4x,"
-    "10('2'),4x,6('3'),/),/,' ',26x,'MODIFIED APRIL 1994',/,/,/,' ',"
+    "10('2'),4x,6('3'),/),/,26x,'MODIFIED APRIL 1994',/,/,/,"
     "'(Press <RETURN> to continue): ',$)");
   //
   //20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
@@ -6216,15 +6216,15 @@ program_new123(
   statement_300:
   //..........DISPLAY MENU.
   write(iw,
-    "(8(/),' ',32x,"
-	"'MENU SELECTION',/,' ',32x,"
-	"'---- ---------',/,/,' ',24x,"
-    "'1. HELP',/,' ',24x,"
-	"'2. SET COMPUTATION PARAMETERS',/,' ',24x,"
-    "'3. SET MODEL PARAMETERS',/,' ',24x,"
-	"'4. RUN',/,' ',24x,"
-	"'5. OUTPUT',/,' ',24x,"
-	"'6. EXIT',8(/),' ',24x,"
+    "(8(/),32x,"
+	"'MENU SELECTION',/,32x,"
+	"'---- ---------',/,/,24x,"
+    "'1. HELP',/,24x,"
+	"'2. SET COMPUTATION PARAMETERS',/,24x,"
+    "'3. SET MODEL PARAMETERS',/,24x,"
+	"'4. RUN',/,24x,"
+	"'5. OUTPUT',/,24x,"
+	"'6. EXIT',8(/),24x,"
 	"'Enter selection (1-6): ',$)");
   //..........READ IN SELECTION NUMBER.
   read(ir, "(i1)"), inum;
