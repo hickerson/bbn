@@ -4804,8 +4804,8 @@ run(common& cmn)
   int& isize = cmn.isize;
   int& jsize = cmn.jsize;
   //
-  str_arr_ref<1> vtype(sve.vtype, dimension(8));
-  if (is_called_first_time) {
+  //str_arr_ref<1> vtype(sve.vtype, dimension(8));
+  //if (is_called_first_time) {
     static const char* values[] = {
       	"baryon/photon ratio   ", 
 		"gravitational constant",
@@ -4815,10 +4815,10 @@ run(common& cmn)
 		"xi-electron           ",
         "xi-muon               ", 
 		"xi-tauon              "
-    };
-    fem::data_of_type_str(FEM_VALUES_AND_SIZE),
-      vtype;
-  }
+	};
+  //  fem::data_of_type_str(FEM_VALUES_AND_SIZE),
+  //    vtype;
+  //}
   const int iw = 6;
   const int ir = 5;
   int inumb = 0;
