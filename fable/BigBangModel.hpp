@@ -477,6 +477,8 @@ struct common :
   {}
 };
 
+
+
 } // namespace bbn
 
 #endif // GUARD

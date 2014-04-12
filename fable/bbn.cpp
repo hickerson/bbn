@@ -590,12 +590,14 @@ setmod(
 {
   common_read read(cmn);
   common_write write(cmn);
+/*
   arr_cref<float> c0(cmn.c0, dimension(3));
   arr_cref<float> xi0(cmn.xi0, dimension(3));
   arr_ref<float> c(cmn.c, dimension(3));
   float& cosmo = cmn.cosmo;
   arr_ref<float> xi(cmn.xi, dimension(3));
   float& eta1 = cmn.eta1;
+  */
   //
   const int iw = 6;
   const int ir = 5;
@@ -661,7 +663,7 @@ setmod(
     "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
     "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
     "' Enter selection (1-10): ',$)"),
-    c(1), c(2), c(3), eta1, cosmo, xi(1), xi(2), xi(3);
+    cmn.c(1), cmn.c(2), cmn.c(3), cmn.eta1, cmn.cosmo, cmn.xi(1), cmn.xi(2), cmn.xi(3);
   //..........READ IN SELECTION NUMBER.
   read(ir, "(i2)"), inum;
   //
@@ -686,44 +688,44 @@ setmod(
   statement_210:
   write(iw,
     "(' ','Enter value for variation of gravitational ','constant: ',$)");
-  read(ir, star), c(1);
+  read(ir, star), cmn.c(1);
   goto statement_400;
   //Change neutron lifetime section.
   statement_220:
   write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
-  read(ir, star), c(2);
+  read(ir, star), cmn.c(2);
   goto statement_400;
   //Change number of neutrino species section.
   statement_230:
   write(iw, "(' ','Enter value for number of neutrino species: ',$)");
-  read(ir, star), c(3);
+  read(ir, star), cmn.c(3);
   goto statement_400;
   //Change baryon-to-photon ratio section.
   statement_240:
   write(iw, "(' ','Enter value for baryon-to-photon ratio: ',$)");
-  read(ir, star), eta1;
+  read(ir, star), cmn.eta1;
   goto statement_400;
   //Change cosmological constant section.
   statement_250:
   write(iw, "(' ','Enter value for cosmological constant: ',$)");
-  read(ir, star), cosmo;
+  read(ir, star), cmn.cosmo;
   goto statement_400;
   //Change neutrino degeneracy section.
   statement_260:
   write(iw, "(' ','Enter value for xi electron: ',$)");
-  read(ir, star), xi(1);
+  read(ir, star), cmn.xi(1);
   goto statement_400;
   //Change neutrino degeneracy section.
   statement_270:
   write(iw, "(' ','Enter value for xi muon: ',$)");
-  read(ir, star), xi(2);
+  read(ir, star), cmn.xi(2);
   goto statement_400;
   //Change neutrino degeneracy section.
   statement_280:
   write(iw, "(' ','Enter value for xi tauon: ',$)");
-  read(ir, star), xi(3);
-  if ((xi(3) != 0.f) && (c(3) < 3.f)) {
-    c(3) = 3.f;
+  read(ir, star), cmn.xi(3);
+  if ((cmn.xi(3) != 0.f) && (cmn.c(3) < 3.f)) {
+    cmn.c(3) = 3.f;
     write(iw, "(' ','Number of neutrinos set to 3')");
     write(iw, "(' ','Press <RETURN> to continue: ',$)");
     read(ir, star);
@@ -731,14 +733,14 @@ setmod(
   goto statement_400;
   //Reset all to default values section.
   statement_290:
-  c(1) = c0(1);
-  c(2) = c0(2);
-  c(3) = c0(3);
-  cosmo = cmn.cosmo0;
-  xi(1) = xi0(1);
-  xi(2) = xi0(2);
-  xi(3) = xi0(3);
-  eta1 = cmn.eta0;
+  cmn.c(1) = cmn.c0(1);
+  cmn.c(2) = cmn.c0(2);
+  cmn.c(3) = cmn.c0(3);
+  cmn.cosmo = cmn.cosmo0;
+  cmn.xi(1) = cmn.xi0(1);
+  cmn.xi(2) = cmn.xi0(2);
+  cmn.xi(3) = cmn.xi0(3);
+  cmn.eta1 = cmn.eta0;
   write(iw,
     "(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
   read(ir, star);
@@ -1088,6 +1090,7 @@ ex(
   //
 }
 
+/*
 struct knux_save
 {
   arr<float> c0;
@@ -1106,6 +1109,7 @@ struct knux_save
     ck1(dimension(7), fem::fill0)
   {}
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -4367,7 +4371,7 @@ derivs(
   dt9 = (3.f * hubcst) / dlndt9;
   dlt9dt = dt9 / t9;
   //(Ref 2)
-  cmn.dhv = -hv * ((3.f * hubcst) + 3.f * dlt9dt);
+  cmn.dhv = -hv * 3*(hubcst + dlt9dt);
   //(Ref 3)
   cmn.dphie = dphdt9 * dt9 + dphdln * (3.f * hubcst) + dphdzy * sumzdy;
   //
@@ -5755,7 +5759,7 @@ blockdata_unnamed(
         1.00f, 885.7f, 3.0f
       };
       fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
-        c0;
+        cmn.c0;
     }
     cmn.cosmo0 = 0.00f;
     {
@@ -5763,7 +5767,7 @@ blockdata_unnamed(
         0.00f, 0.00f, 0.00f
       };
       fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
-        xi0;
+        cmn.xi0;
     }
     cmn.dt0 = 1.00e-04f;
     cmn.eta0 = 3.162e-10f;
@@ -6188,19 +6192,19 @@ program_new123(
   //Accumulation increment.
   cmn.inc = cmn.inc0;
   //Variation of gravitational constant.
-  c(1) = c0(1);
+  c(1) = cmn.c0(1);
   //Neutron lifetime.
-  c(2) = c0(2);
+  c(2) = cmn.c0(2);
   //Number of neutrino species.
-  c(3) = c0(3);
+  c(3) = cmn.c0(3);
   //Cosmological constant.
   cmn.cosmo = cmn.cosmo0;
   //Electron degeneracy parameter.
-  xi(1) = xi0(1);
+  xi(1) = cmn.xi0(1);
   //Muon degeneray parameter.
-  xi(2) = xi0(2);
+  xi(2) = cmn.xi0(2);
   //Tauon degeneracy parameter.
-  xi(3) = xi0(3);
+  xi(3) = cmn.xi0(3);
   //Initial time step.
   cmn.dt1 = cmn.dt0;
   //Baryon-to-photon ratio.
