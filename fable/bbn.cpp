@@ -484,14 +484,14 @@ setcom(
     "'--- ----------- ---------- ---------',/,/,10x,"
     "' 1. CHANGE TIME-STEP LIMITING CONSTANT 1  FROM ',f5.3,/,10x,"
     "' 2. CHANGE TIME-STEP LIMITING CONSTANT 2  FROM ',f5.3,/,10x,"
-    "' 3. CHANGE INITIAL TIME-STEP              FROM ',1p,e8.2,' SECONDS',/,"
-    "' ',10x,' 4. CHANGE INITIAL TEMPERATURE            FROM ',1p,e8.2,"
-    "' (10**9 K)',/,10x,' 5. CHANGE FINAL TEMPERATURE              FROM ',"
-    "1p,e8.2,' (10**9 K)',/,10x,"
+    "' 3. CHANGE INITIAL TIME-STEP              FROM ',1p,e8.2,' SECONDS',/,10x,"
+	"' 4. CHANGE INITIAL TEMPERATURE            FROM ',1p,e8.2,' (10**9 K)',/,10x,"
+	"' 5. CHANGE FINAL TEMPERATURE              FROM ',1p,e8.2,' (10**9 K)',/,10x,"
     "' 6. CHANGE SMALLEST ABUNDANCES ALLOWED    FROM ',1p,e8.2,/,10x,"
-    "' 7. CHANGE ACCUMULATION INCREMENT         FROM ',1p,e8.2,' ITERATIONS',"
-    "/,10x,' 8. RESET ALL TO DEFAULT VALUES',/,10x,' 9. EXIT',5(/),"
-    "' ',10x,'Enter selection (1-9): ',$)"),
+    "' 7. CHANGE ACCUMULATION INCREMENT         FROM ',1p,e8.2,' ITERATIONS',/,10x,"
+	"' 8. RESET ALL TO DEFAULT VALUES',/,10x,"
+	"' 9. EXIT',5(/),10x,"
+	"'Enter selection (1-9): ',$)"),
     cy, ct, dt1, t9i, t9f, ytmin, fem::ffloat(inc);
   //..........READ IN SELECTION NUMBER.
   read(ir, "(i1)"), inum;
