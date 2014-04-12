@@ -185,8 +185,7 @@ help(common& cmn)
       "'       file assigned the \"ir\" unit number, one must place the responses to the  ',/,"
       "'       queries of the program.          ',10(/),"
       "'(Enter 1 to continue, <RETURN> to end): ',$)");
-    read(ir, format_1001), 
-	inum;
+    read(ir, format_1001), inum;
     if (inum == 1) {
       write(iw,
         "(/,'III. Do multiple runs.          ',/,"
@@ -650,9 +649,9 @@ setmod(
     "(8(/),24x,'SET MODEL PARAMETERS SELECTION',/,24x,"
     "'--- ----- ---------- ---------',/,/,10x,"
     "' 1. CHANGE GRAVITATIONAL CONSTANT         FROM ',1p,e10.3,/,10x,"
-    "' 2. CHANGE NEUTRON LIFETIME               FROM ',1p,e10.3,' SECONDS',/,"
-    "' ',10x,' 3. CHANGE NUMBER OF NEUTRINO SPECIES     FROM ',1p,e10.3,/,"
-    "10x,' 4. CHANGE FINAL BARYON-TO-PHOTON RATIO   FROM ',1p,e10.3,/,10x,"
+    "' 2. CHANGE NEUTRON LIFETIME               FROM ',1p,e10.3,' SECONDS',/,10x,"
+	"' 3. CHANGE NUMBER OF NEUTRINO SPECIES     FROM ',1p,e10.3,/,10x,"
+	"' 4. CHANGE FINAL BARYON-TO-PHOTON RATIO   FROM ',1p,e10.3,/,10x,"
     "' 5. CHANGE COSMOLOGICAL CONSTANT          FROM ',1p,e10.3,/,10x,"
     "' 6. CHANGE XI-ELECTRON                    FROM ',1p,e10.3,/,10x,"
     "' 7. CHANGE XI-MUON                        FROM ',1p,e10.3,/,10x,"
@@ -2277,7 +2276,7 @@ start(common& cmn)
   //
   //Overabundance of antineut
   if ((15.011f / t9 + xi(1)) > 58.f) {
-    //Very little of neutrons.
+ 	//Very little of neutrons.
     y(1) = 1.e-25f;
     //Essentially all protons.
     y(2) = 1.f;
@@ -2292,9 +2291,9 @@ start(common& cmn)
     }
     else {
       //Initial n abundance (Ref
-      y(1) = 1.f / (ex(15.011f / t9 + xi(1)) + 1.f);
+      y(1) = 1 / (ex(15.011f / t9 + xi(1)) + 1);
       //Initial p abundance (Ref
-      y(2) = 1.f / (ex(-15.011f / t9 - xi(1)) + 1.f);
+      y(2) = 1 / (ex(-15.011f / t9 - xi(1)) + 1);
     }
   }
   //Electron neutrino degeneracy.
@@ -2334,7 +2333,7 @@ start(common& cmn)
 											/// Chemical potential of electron (Ref 5).
   rhob0 = hv * pow3(t9); 					/// TODO Baryon density. 
   //Nonde
-  if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
+  if ((xi(1) == 0) && (xi(2) == 0) && (xi(3) == 0)) {
     cmn.rhone0 = 7.366f * pow4(t9); 		/// Electron neutrino density (Ref 6).
   }
   //
@@ -2585,7 +2584,7 @@ therm(
   float z3 = z*z*z;
   float z4 = z*z*z*z;
   float z5 = z*z*z*z*z;
-  //..........TRIGNOMETRIC FUNCTION VALUES.
+  //..........TRIGONOMETRIC FUNCTION VALUES.
   //No chance of overflow.
   float cosh1 = 0;
   float cosh2 = 0;
@@ -2843,7 +2842,7 @@ eqslin(
   //..........CHECK TO SEE THAT THERE ARE NO ZEROES AT PIVOT POINTS.
   FEM_DO_SAFE(i, 1, isize - 1) {
     //Don't want to divide by zero.
-    if (a(i, i) == 0.e0) {
+    if (a(i, i) == 0) {
       //Position of zero coefficient.
       mbad = i;
       //Terminate matrix evaluation.
@@ -2852,7 +2851,7 @@ eqslin(
     //..........TRIANGULARIZE MATRIX.
     FEM_DO_SAFE(j, i + 1, isize) {
       //Progress diagonally down the column.
-      if (a(j, i) != 0.e0) {
+      if (a(j, i) != 0) {
         //Scaling factor down the column.
         cx = a(j, i) / a(i, i);
         //Progress diagonally along row.
