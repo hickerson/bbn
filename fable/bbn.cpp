@@ -193,7 +193,7 @@ help(common& cmn)
         "'   while one or more parameters are varied over a range of interest.  The     ',/,"
         "'   parameters that can be varied are the following:                           ',/,"
         "'    A. Eta                             ',"
-        "'       - Logarithmic variation          ',/,"
+        "'       - Logarithmic variation         ',/,"
         "'    B. Gravitational constant          ',"
         "'       - Linear variation              ',/,"
         "'    C. Neutron lifetime                ',"
@@ -4792,17 +4792,19 @@ void qvary(common& cmn, int index, float value)
 //========================IDENTIFICATION DIVISION================================
 //
 void
-run(common& cmn)
+common::run(common& cmn)
 {
   //FEM_CMN_SVE(run);
   common_read read(cmn);
   common_write write(cmn);
+  /*
   float& eta1 = cmn.eta1;
   //int& itime = static_cast<common_checkcb&>(cmn).itime;
   int& itime = cmn.itime;
   int& irun = cmn.irun;
   int& isize = cmn.isize;
   int& jsize = cmn.jsize;
+  */
   //
   //str_arr_ref<1> vtype(sve.vtype, dimension(8));
   //if (is_called_first_time) {
@@ -5113,7 +5115,8 @@ run(common& cmn)
         write(iw,
           "(' ','Run ',a22,/,'    from ',1p,e12.5,' to ',1p,e12.5,"
           "' in increments of ',1p,e12.5)"),
-          vtype(inum(l)), rnum1(l), rnum2(l), rnum3(l);
+          //vtype(inum(l)), rnum1(l), rnum2(l), rnum3(l);
+          inum(l), rnum1(l), rnum2(l), rnum3(l);
         //..........GET LOGS OF eta VALUES FOR LOGARITHMIC INCREMENTATION.
         //Work with exponents for eta incre
         if (inum(l) == 1) {
