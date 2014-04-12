@@ -275,7 +275,8 @@ help(common& cmn)
   //General method of computation sectio
   statement_250:
   write(iw,
-    "(/,22x,'GENERAL METHOD OF COMPUTATION',/,22x,"
+    "(/,22x,"
+	"'GENERAL METHOD OF COMPUTATION',/,22x,"
     "'------- ------ -- -----------',2(/),"
     "'I. Time evolution algorithm.            ',/,"
     "'   The program utilizes a 2-point Runge-Kutta scheme (located in subroutine     ',/,"
@@ -295,7 +296,8 @@ help(common& cmn)
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
-      "(/,'II. Hierarchy of Subroutines.   ',/,"
+      "(/,"
+	  "'II. Hierarchy of Subroutines.   ',/,"
       "'        NUC123    Main program (main menu)    ',/,"
       "'        HELP      Help option                 ',/,"
       "'        SETCOM    Set computational parameters',/,"
@@ -480,7 +482,8 @@ setcom(
   statement_100:
   //..........DISPLAY RESET SELECTIONS.
   write(iw,
-    "(8(/),21x,'SET COMPUTATION PARAMETERS SELECTION',/,21x,"
+    "(8(/),21x,"
+	"'SET COMPUTATION PARAMETERS SELECTION',/,21x,"
     "'--- ----------- ---------- ---------',/,/,10x,"
     "' 1. CHANGE TIME-STEP LIMITING CONSTANT 1  FROM ',f5.3,/,10x,"
     "' 2. CHANGE TIME-STEP LIMITING CONSTANT 2  FROM ',f5.3,/,10x,"
@@ -620,10 +623,10 @@ setmod(
   //----------DEFAULT MODEL PARAMETERS.
   //Default c.
   //Default cosmological constant.
-  //Default neutrino degeneracy paramete
+  //Default neutrino degeneracy parameter
   //
   //----------EARLY UNIVERSE MODEL PARAMETERS.
-  //c(1) is variation of gravitational c
+  //c(1) is variation of gravitational con
   //c(2) is neutron lifetime (sec).
   //c(3) is number of neutrino species.
   //Cosmological constant.
@@ -633,7 +636,7 @@ setmod(
   //Default eta.
   //
   //----------VARIATIONAL PARAMETERS.
-  //Intial baryon-to-photon ratio.
+  //Initial baryon-to-photon ratio.
   //
   //----------USER RESPONSE VARIABLES.
   //Selection number.
@@ -1008,8 +1011,7 @@ check(common& cmn)
   //
   //Beginning of program.
   if (itime == 1) {
-    cmn.io.open(3, "newint.dat")
-      .status("new");
+    cmn.io.open(3, "newint.dat").status("new");
   }
   //
   //20--------WRITE INTO FILE------------------------------------------------------
@@ -1365,22 +1367,22 @@ bessel(
 
 double getBesselL(float r)
 {
-  	float K2r = gsl_sf_bessel_Kn(2,r); 			// Irregular modified cylindrical Bessel functions.
+  	float K2r = gsl_sf_bessel_Kn(2,r); 		/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
 double getBesselM(float r)
 {
-  	const float K3r = gsl_sf_bessel_Kn(3,r); 	// Irregular modified cylindrical Bessel functions.
-  	const float K1r = gsl_sf_bessel_Kn(1,r); 	// Irregular modified cylindrical Bessel functions.
-    return 0.25*(3*K3r + K1r)/r; 				// Put value from function bm into array.
+  	const float K3r = gsl_sf_bessel_Kn(3,r);/// Irregular modified cylindrical Bessel functions.
+  	const float K1r = gsl_sf_bessel_Kn(1,r);/// Irregular modified cylindrical Bessel functions.
+    return 0.25*(3*K3r + K1r)/r;			/// (Ref ?).
 }
 
 double getBesselN(float r)
 {
-  	const float K4r = gsl_sf_bessel_Kn(4,r); 	// Irregular modified cylindrical Bessel functions.
-  	const float K2r = gsl_sf_bessel_Kn(2,r); 	// Irregular modified cylindrical Bessel functions.
-    return 0.5*(K4r + K2r)/r; 					// Put value from function bn into array.
+  	const float K4r = gsl_sf_bessel_Kn(4,r);/// Irregular modified cylindrical Bessel functions.
+  	const float K2r = gsl_sf_bessel_Kn(2,r);/// Irregular modified cylindrical Bessel functions.
+    return 0.5*(K4r + K2r)/r; 				/// (Ref ?).
 }
 
 
@@ -1524,17 +1526,15 @@ func1(
   //
   float part1 = 0; //TODO move down inside loop
   float part2 = 0;
-  if (x <= 0) {
-    return_value = 0;
-  }
+  if (x <= 0)
+    return 0;
   else {
 	// TODO don't recompute 
-    part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - xi(1)));
-    return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
-      (pow2(x) - 1), .5f) * part1 * part2;
+    part1 = 1 / (1 + ex(-.511f * x / cmn.t9mev));
+    part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - xi(1)));
+    return cmn.cnorm * x * pow2((x - 2.531f)) * pow(
+      (pow2(x) - 1), 0.5) * part1 * part2;
   }
-  return return_value;
 }
 
 typedef float (*func2_function_pointer)(common&, float const&);
