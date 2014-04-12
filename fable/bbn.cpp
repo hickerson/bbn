@@ -586,7 +586,7 @@ common::setcom(common& cmn)
 //========================IDENTIFICATION DIVISION================================
 //
 void
-setmod(
+cmn::setmod(
   common& cmn)
 {
   common_read read(cmn);
@@ -5956,10 +5956,12 @@ blockdata_unnamed(
   //
 }
 
+/*
 struct program_new123_save
 {
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder unix f77):
@@ -5979,8 +5981,8 @@ program_new123(
   char const* argv[])
 {
   common cmn(argc, argv);
-  blockdata_unnamed(cmn);
-  FEM_CMN_SVE(program_new123);
+  //blockdata_unnamed(cmn);
+  //FEM_CMN_SVE(program_new123);
   common_read read(cmn);
   common_write write(cmn);
   const int nrec = 88;
@@ -6000,7 +6002,8 @@ program_new123(
   int& itime = cmn.itime;
   bool& outfile = cmn.outfile;
   //
-  common_variant rates(cmn.common_rates, sve.rates_bindings);
+  //common_variant rates(cmn.common_rates, sve.rates_bindings);
+  /*
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -6011,6 +6014,9 @@ program_new123(
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
+  */ 
+  arr<float> f(dimension(nrec));
+  arr<float> r(dimension(nrec));
   const int iw = 6;
   int i = 0;
   const int nnuc = 26;
@@ -6139,7 +6145,7 @@ program_new123(
   //Time = beginning of program.
   itime = 1;
   //Check interface subroutine.
-  check(cmn);
+  cmn.check(cmn);
   write(iw,
     "(6(/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU',4x,8('C'),6x,'11',8x,6('2'),6x,"
     "6('3'),/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU  CC',12x,'1111',6x,'22',6x,"
@@ -6260,23 +6266,23 @@ program_new123(
   goto statement_500;
   //Set computation parameters section.
   statement_420:
-  setcom(cmn);
+  cmn.setcom(cmn);
   goto statement_500;
   //Set model parameters section.
   statement_430:
-  setmod(cmn);
+  cmn.setmod(cmn);
   goto statement_500;
   //Run section.
   statement_440:
   //Time = beginning of run section.
   itime = 2;
   //Check interface subroutine.
-  check(cmn);
-  run(cmn);
+  cmn.check(cmn);
+  cmn.run(cmn);
   //Time = end of run section.
   itime = 9;
   //Check interface subroutine.
-  check(cmn);
+  cmn.check(cmn);
   goto statement_500;
   //Output section.
   statement_450:
