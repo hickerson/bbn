@@ -426,55 +426,59 @@ struct common_tcheck
 };
 
 struct common :
-  fem::common,
-  common_compr0,
-  common_compr,
-  common_varpr0,
-  common_varpr,
-  common_modpr0,
-  common_modpr,
-  common_recpr0,
-  common_recpr,
-  common_evolp1,
-  common_evolp2,
-  common_evolp3,
-  common_ttime,
-  common_thermcb,
-  common_endens,
-  common_nucdat,
-  //common_besselcb,
-  //common_kays,
-  common_flags,
-  common_checkcb,
-  common_outdat,
-  common_nupar,
-  common_runopt,
-  common_outopt,
-  common_tcheck
+	fem::common,
+	common_compr0,
+	common_compr,
+	common_varpr0,
+	common_varpr,
+	common_modpr0,
+	common_modpr,
+	common_recpr0,
+	common_recpr,
+	common_evolp1,
+	common_evolp2,
+	common_evolp3,
+	common_ttime,
+	common_thermcb,
+	common_endens,
+	common_nucdat,
+	//common_besselcb,
+	//common_kays,
+	common_flags,
+	//common_checkcb,
+	common_outdat,
+	common_nupar,
+	common_runopt,
+	common_outopt,
+	common_tcheck
 {
-  fem::variant_core common_rates;
-  fem::variant_core common_lncoef;
-  fem::cmn_sve check_sve;
-  fem::cmn_sve knux_sve;
-  fem::cmn_sve rate0_sve;
-  fem::cmn_sve xintd_sve;
-  fem::cmn_sve rate1_sve;
-  fem::cmn_sve start_sve;
-  fem::cmn_sve eqslin_sve;
-  fem::cmn_sve sol_sve;
-  fem::cmn_sve rate2_sve;
-  fem::cmn_sve rate3_sve;
-  fem::cmn_sve rate4_sve;
-  fem::cmn_sve run_sve;
-  fem::cmn_sve blockdata_unnamed_sve;
-  fem::cmn_sve program_new123_sve;
+	fem::variant_core common_rates;
+	fem::variant_core common_lncoef;
+	fem::cmn_sve check_sve;
+	fem::cmn_sve knux_sve;
+	fem::cmn_sve rate0_sve;
+	fem::cmn_sve xintd_sve;
+	fem::cmn_sve rate1_sve;
+	fem::cmn_sve start_sve;
+	fem::cmn_sve eqslin_sve;
+	fem::cmn_sve sol_sve;
+	fem::cmn_sve rate2_sve;
+	fem::cmn_sve rate3_sve;
+	fem::cmn_sve rate4_sve;
+	fem::cmn_sve run_sve;
+	fem::cmn_sve blockdata_unnamed_sve;
+	fem::cmn_sve program_new123_sve;
 
-  common(
-    int argc,
-    char const* argv[])
-  :
-    fem::common(argc, argv)
-  {}
+	common(
+	int argc,
+	char const* argv[])
+	:
+	fem::common(argc, argv)
+	{}
+
+	void setcom(common &);
+	void check(common &);
+	void driver(common &);
 };
 
 

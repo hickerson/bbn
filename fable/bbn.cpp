@@ -413,11 +413,11 @@ help(common& cmn)
 //========================IDENTIFICATION DIVISION================================
 //
 void
-setcom(
-  common& cmn)
+common::setcom(common& cmn)
 {
   common_read read(cmn);
   common_write write(cmn);
+  /*
   float& cy = cmn.cy;
   float& ct = cmn.ct;
   float& t9i = cmn.t9i;
@@ -425,6 +425,7 @@ setcom(
   float& ytmin = cmn.ytmin;
   int& inc = cmn.inc;
   float& dt1 = cmn.dt1;
+  */
   //
   const int iw = 6;
   const int ir = 5;
@@ -781,24 +782,25 @@ struct check_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-check(common& cmn)
+common::check(common& cmn)
 {
   FEM_CMN_SVE(check);
   common_write write(cmn);
   // COMMON modpr
-  arr_cref<float> c(cmn.c, dimension(3));
+  //arr_cref<float> c(cmn.c, dimension(3));
   // COMMON flags
-  int& it = cmn.it;
+  //int& it = cmn.it;
   // COMMON checkcb
-  int& itime = static_cast<common_checkcb&>(cmn).itime;
+  //int& itime = static_cast<common_checkcb&>(cmn).itime;
   // COMMON outdat
   const int itmax = 40;
   const int nnuc = 26;
-  arr_ref<float, 2> xout(cmn.xout, dimension(itmax, nnuc));
-  arr_cref<float> etaout(cmn.etaout, dimension(itmax));
-  //
-  common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
+  //arr_ref<float, 2> xout(cmn.xout, dimension(itmax, nnuc));
+  //arr_cref<float> etaout(cmn.etaout, dimension(itmax));
+  //
+  /*
+  common_variant rates(cmn.common_rates, sve.rates_bindings);
   common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
@@ -814,12 +816,12 @@ check(common& cmn)
       lncoef.allocate(), a, b, yx;
     }
   }
-  /* arr_cref<float> f( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-  /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-  /* arr_cref<double, 2> a( */ lncoef.bind<double>() /* , dimension(nnuc,
-    nnuc)) */ ;
-  /* arr_cref<float> b( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
-  /* arr_cref<float> yx( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
+  */
+  //* arr_cref<float> f( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  //* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  //* arr_cref<double, 2> a( */ lncoef.bind<double>() /* , dimension(nnuc, nnuc)) */ ;
+  //* arr_cref<float> b( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
+  //* arr_cref<float> yx( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
   //
   //----------REMARKS.
   //     This is an interface subroutine,
@@ -4539,10 +4541,11 @@ accum(
 //========================IDENTIFICATION DIVISION================================
 //
 void
-driver(
+common::driver(
   common& cmn)
 {
   const int nnuc = 26;
+  /*
   arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
   arr_cref<float> dydt(cmn.dydt, dimension(nnuc));
   float& ytmin = cmn.ytmin;
@@ -4555,6 +4558,7 @@ driver(
   int& ip = cmn.ip;
   int& itime = static_cast<common_tcheck&>(cmn).itime;
   int& isize = cmn.isize;
+  */
   //
   int mvar = 0;
   int loop = 0;
@@ -4790,11 +4794,12 @@ void qvary(common& cmn, int index, float value)
 void
 run(common& cmn)
 {
-  FEM_CMN_SVE(run);
+  //FEM_CMN_SVE(run);
   common_read read(cmn);
   common_write write(cmn);
   float& eta1 = cmn.eta1;
-  int& itime = static_cast<common_checkcb&>(cmn).itime;
+  //int& itime = static_cast<common_checkcb&>(cmn).itime;
+  int& itime = cmn.itime;
   int& irun = cmn.irun;
   int& isize = cmn.isize;
   int& jsize = cmn.jsize;
@@ -5988,7 +5993,8 @@ program_new123(
   arr_cref<float> xi0(cmn.xi0, dimension(3));
   arr_ref<float> c(cmn.c, dimension(3));
   arr_ref<float> xi(cmn.xi, dimension(3));
-  int& itime = static_cast<common_checkcb&>(cmn).itime;
+  //int& itime = static_cast<common_checkcb&>(cmn).itime;
+  int& itime = cmn.itime;
   bool& outfile = cmn.outfile;
   //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
