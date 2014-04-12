@@ -477,6 +477,7 @@ struct common :
 	{}
 
 	void setcom(common &);
+	void setmod(common &);
 	void check(common &);
 	void driver(common &);
 	void run(common &);

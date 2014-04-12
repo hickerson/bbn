@@ -586,7 +586,7 @@ common::setcom(common& cmn)
 //========================IDENTIFICATION DIVISION================================
 //
 void
-cmn::setmod(
+common::setmod(
   common& cmn)
 {
   common_read read(cmn);
@@ -6303,8 +6303,8 @@ program_new123(
   //Time = end of program.
   itime = 10;
   //Check interface subroutine.
-  check(cmn);
-  FEM_STOP(0);
+  cmn.check(cmn);
+  //FEM_STOP(0);
   //
   //50---------GO BACK TO MENU-----------------------------------------------------
   //
