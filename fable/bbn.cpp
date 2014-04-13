@@ -1416,6 +1416,7 @@ rate0(
   //FEM_CMN_SVE(rate0);
   //common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
+  arr<float> f(dimension(nrec));
   /*
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
@@ -1427,7 +1428,7 @@ rate0(
   }
   */
   //arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-  //* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  //arr_cref<float> r( *//* rates.bind<float>() *//* , dimension(nrec)) *//* ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] start
@@ -1962,7 +1963,7 @@ struct rate1_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-rate1(
+common::rate1(
   common& cmn,
   float const& tph)
 {
@@ -2400,7 +2401,7 @@ common::start(common& cmn)
 //========================IDENTIFICATION DIVISION================================
 //
 void
-nudens(
+common::nudens(
   common& cmn)
 {
   // COMMON modpr
@@ -2490,7 +2491,7 @@ nudens(
 //========================IDENTIFICATION DIVISION================================
 //
 void
-therm(
+common::therm(
   common& cmn)
 {
   // COMMON evolp1

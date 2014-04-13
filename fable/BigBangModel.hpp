@@ -470,20 +470,36 @@ struct common :
 	fem::cmn_sve blockdata_unnamed_sve;
 	fem::cmn_sve program_new123_sve;
 */
-	common(
-	int argc,
-	char const* argv[])
-	:
-	fem::common(argc, argv)
-	{}
+	static const int nrec = 88;
+    arr<float> f;
+    arr<float> r;
 
-	//static const int nrec = 88;
+	common(
+		int argc,
+		char const* argv[])
+		:
+		fem::common(argc, argv),
+		f(dimension(nrec)),
+		r(dimension(nrec))
+	{}
 
 	void setcom(common &);
 	void setmod(common &);
 	void check(common &);
 	void driver(common &);
 	void run(common &);
+
+	void therm(common &);
+	void nudens(common &);
+	void start(common &);
+	void rate1(common &);
+
+	float func1( common& cmn, float const& x);
+	float func2( common& cmn, float const& x);
+	float func3( common& cmn, float const& x);
+	float func4( common& cmn, float const& x);
+	float func5( common& cmn, float const& x);
+	float func6( common& cmn, float const& x);
 };
 
 
