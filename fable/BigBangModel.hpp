@@ -493,6 +493,12 @@ struct common :
 	void nudens(common &);
 	void start(common &);
 	void rate1(common &);
+	float xintd(
+			common& cmn,
+			float const&,
+			float const&,
+			void* func,
+			int const&);
 
 	float func1( common& cmn, float const& x);
 	float func2( common& cmn, float const& x);

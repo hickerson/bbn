@@ -1855,7 +1855,8 @@ common::xintd(
   common& cmn,
   float const& xlow,
   float const& xhi,
-  func1_function_pointer func,
+  //func1_function_pointer func,
+  void* func,
   int const& nq)
 {
   float return_value = 0;
