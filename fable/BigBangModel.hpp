@@ -499,15 +499,15 @@ struct common :
 			common& cmn,
 			float const&,
 			float const&,
-  			float(common::* func)(common &, const float&),
+  			float(* func)(common &, const float&),
 			int const&);
 
-	float func1( common& cmn, float const& x);
-	float func2( common& cmn, float const& x);
-	float func3( common& cmn, float const& x);
-	float func4( common& cmn, float const& x);
-	float func5( common& cmn, float const& x);
-	float func6( common& cmn, float const& x);
+	static float func1( common& cmn, float const& x);
+	static float func2( common& cmn, float const& x);
+	static float func3( common& cmn, float const& x);
+	static float func4( common& cmn, float const& x);
+	static float func5( common& cmn, float const& x);
+	static float func6( common& cmn, float const& x);
 };
 
 

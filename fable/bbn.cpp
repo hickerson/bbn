@@ -1856,7 +1856,7 @@ common::xintd(
   float const& xlow,
   float const& xhi,
   //func1_function_pointer func,
-  float(common::* func)(common &, const float&),
+  float(* func)(common &, const float&),
   int const& nq)
 {
   //FEM_CMN_SVE(xintd);
