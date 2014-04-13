@@ -784,7 +784,7 @@ struct check_save
 void
 common::check(common& cmn)
 {
-  FEM_CMN_SVE(check);
+  //FEM_CMN_SVE(check);
   common_write write(cmn);
   // COMMON modpr
   //arr_cref<float> c(cmn.c, dimension(3));
@@ -1409,9 +1409,10 @@ void
 rate0(
   common& cmn)
 {
-  FEM_CMN_SVE(rate0);
-  common_variant rates(cmn.common_rates, sve.rates_bindings);
+  //FEM_CMN_SVE(rate0);
+  //common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
+  /*
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -1420,8 +1421,9 @@ rate0(
       rates.allocate(), f, r;
     }
   }
-  arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-  /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  */
+  //arr_ref<float> f(rates.bind<float>(), dimension(nrec));
+  //* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] start
@@ -1483,7 +1485,7 @@ rate0(
   //
 }
 
-typedef float (*func1_function_pointer)(common&, float const&);
+//typedef float (*func1_function_pointer)(common&, float const&);
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -1543,7 +1545,7 @@ func1(
   }
 }
 
-typedef float (*func2_function_pointer)(common&, float const&);
+//typedef float (*func2_function_pointer)(common&, float const&);
 
 //
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
@@ -1599,7 +1601,7 @@ func2(
   return return_value;
 }
 
-typedef float (*func3_function_pointer)(common&, float const&);
+//typedef float (*func3_function_pointer)(common&, float const&);
 
 //
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
@@ -1655,7 +1657,7 @@ func3(
   return return_value;
 }
 
-typedef float (*func4_function_pointer)(common&, float const&);
+//typedef float (*func4_function_pointer)(common&, float const&);
 
 //
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
@@ -1726,13 +1728,13 @@ func4(
   */
 }
 
-typedef float (*func5_function_pointer)(common&, float const&);
+//typedef float (*func5_function_pointer)(common&, float const&);
 
 //
 //50--------INTEGRAL FOR ENERGY DENSITY OF NEUTRINO------------------------------
 //
 float
-func5(
+common::func5(
   common& cmn,
   float const& x)
 {
@@ -1773,13 +1775,13 @@ func5(
   return return_value;
 }
 
-typedef float (*func6_function_pointer)(common&, float const&);
+//typedef float (*func6_function_pointer)(common&, float const&);
 
 //
 //60--------INTEGRAL FOR ENERGY DENSITY OF ANTINEUTRINO--------------------------
 //
 float
-func6(
+common::func6(
   common& cmn,
   float const& x)
 {
@@ -1820,6 +1822,7 @@ func6(
   return return_value;
 }
 
+/*
 struct xintd_save
 {
   int np;
@@ -1832,6 +1835,7 @@ struct xintd_save
     w(dimension(6), fem::fill0)
   {}
 };
+*/
 
 //
 //----------REFERENCES-----------------------------------------------------------
@@ -1842,7 +1846,7 @@ struct xintd_save
 //========================IDENTIFICATION DIVISION================================
 //
 float
-xintd(
+common::xintd(
   common& cmn,
   float const& xlow,
   float const& xhi,
@@ -1850,7 +1854,7 @@ xintd(
   int const& nq)
 {
   float return_value = 0;
-  FEM_CMN_SVE(xintd);
+  //FEM_CMN_SVE(xintd);
   // SAVE
   int& np = sve.np;
   arr_ref<float> u(sve.u, dimension(6));
@@ -1943,10 +1947,12 @@ xintd(
   //
 }
 
+/*
 struct rate1_save
 {
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
