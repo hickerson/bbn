@@ -471,6 +471,7 @@ struct common :
 	fem::cmn_sve program_new123_sve;
 	*/
 	static const int nrec = 88;
+  	static const int nnuc = 26;
     arr<float> f;
     arr<float> r;
 
@@ -500,6 +501,13 @@ struct common :
 			float const&,
 			float const&,
   			float(* func)(common &, const float&),
+			int const&);
+	void eqslin(
+			common&,
+			int const&,
+			int&);
+	void sol(
+			common&,
 			int const&);
 
 	static float func1( common& cmn, float const& x);

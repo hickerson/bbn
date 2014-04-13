@@ -2136,14 +2136,14 @@ struct start_save
 void
 common::start(common& cmn)
 {
-  FEM_CMN_SVE(start);
+  //FEM_CMN_SVE(start);
   // COMMON evolp1
   float& t9 = cmn.t9;
   float& hv = cmn.hv;
   const int nnuc = 26;
-  arr_ref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+  //arr_ref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
   // COMMON evolp3
-  arr_ref<float> y0(cmn.y0, dimension(nnuc));
+  //arr_ref<float> y0(cmn.y0, dimension(nnuc));
   // COMMON modpr
   float& tau = cmn.tau;
   arr_cref<float> c(cmn.c, dimension(3));
@@ -2154,6 +2154,7 @@ common::start(common& cmn)
   float& tnu = cmn.tnu;
   float& cnorm = cmn.cnorm;
   //
+  /*
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
   if (is_called_first_time) {
@@ -2164,8 +2165,9 @@ common::start(common& cmn)
       rates.allocate(), f, r;
     }
   }
-  arr_cref<float> f(rates.bind<float>(), dimension(nrec));
-  /* float const& r */ rates.bind<float>();
+  */
+  //arr_cref<float> f(rates.bind<float>(), dimension(nrec));
+  ///* float const& r */ rates.bind<float>();
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] driver
@@ -2745,12 +2747,13 @@ struct eqslin_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-eqslin(
+common::eqslin(
   common& cmn,
   int const& icnvm,
   int& ierror)
 {
-  FEM_CMN_SVE(eqslin);
+  //FEM_CMN_SVE(eqslin);
+  /*
   int& inc = cmn.inc;
   int& mbad = cmn.mbad;
   int& isize = cmn.isize;
@@ -2769,6 +2772,7 @@ eqslin(
   arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
   arr_cref<float> b(lncoef.bind<float>(), dimension(nnuc));
   arr_ref<float> y(lncoef.bind<float>(), dimension(nnuc));
+  */
   int nord = 0;
   int i = 0;
   arr_1d<nnuc, double> x(fem::fill0);
@@ -2981,12 +2985,13 @@ struct sol_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-sol(
+common::sol(
   common& cmn,
   int const& loop)
 {
-  FEM_CMN_SVE(sol);
+  //FEM_CMN_SVE(sol);
   common_write write(cmn);
+  /*
   const int nrec = 88;
   arr_cref<int> iform(cmn.iform, dimension(nrec));
   arr_cref<int> ii(cmn.ii, dimension(nrec));
@@ -3027,6 +3032,7 @@ sol(
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
+  */
   arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
   arr_ref<float> b(lncoef.bind<float>(), dimension(nnuc));
   arr_cref<float> yx(lncoef.bind<float>(), dimension(nnuc));
