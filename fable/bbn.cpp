@@ -757,11 +757,13 @@ common::setmod(
   //
 }
 
+/*
 struct check_save
 {
   fem::variant_bindings lncoef_bindings;
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder unix f77):
@@ -1392,10 +1394,12 @@ double getBesselN(float r)
 }
 
 
+/*
 struct rate0_save
 {
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder DEC unix f77):
@@ -1962,7 +1966,7 @@ rate1(
   common& cmn,
   float const& tph)
 {
-  FEM_CMN_SVE(rate1);
+  //FEM_CMN_SVE(rate1);
   // COMMON modpr
   float& tau = cmn.tau;
   arr_cref<float> xi(cmn.xi, dimension(3));
@@ -1972,8 +1976,9 @@ rate1(
   float& t9mev = cmn.t9mev;
   float& tnmev = cmn.tnmev;
   //
-  common_variant rates(cmn.common_rates, sve.rates_bindings);
+  //common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
+  /*
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -1984,6 +1989,7 @@ rate1(
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
+  */
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] start, derivs
@@ -2125,7 +2131,7 @@ struct start_save
 //========================IDENTIFICATION DIVISION================================
 //
 void
-start(common& cmn)
+common::start(common& cmn)
 {
   FEM_CMN_SVE(start);
   // COMMON evolp1

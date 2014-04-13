@@ -452,6 +452,7 @@ struct common :
 	common_outopt,
 	common_tcheck
 {
+	/*
 	fem::variant_core common_rates;
 	fem::variant_core common_lncoef;
 	fem::cmn_sve check_sve;
@@ -468,7 +469,7 @@ struct common :
 	fem::cmn_sve run_sve;
 	fem::cmn_sve blockdata_unnamed_sve;
 	fem::cmn_sve program_new123_sve;
-
+*/
 	common(
 	int argc,
 	char const* argv[])
@@ -476,12 +477,15 @@ struct common :
 	fem::common(argc, argv)
 	{}
 
+	//static const int nrec = 88;
+
 	void setcom(common &);
 	void setmod(common &);
 	void check(common &);
 	void driver(common &);
 	void run(common &);
 };
+
 
 
 
