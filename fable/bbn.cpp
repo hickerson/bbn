@@ -1856,16 +1856,25 @@ common::xintd(
   float const& xlow,
   float const& xhi,
   //func1_function_pointer func,
-  void* func,
+  float(common::* func)(common &, const float&),
   int const& nq)
 {
-  float return_value = 0;
   //FEM_CMN_SVE(xintd);
   // SAVE
-  int& np = sve.np;
-  arr_ref<float> u(sve.u, dimension(6));
-  arr_ref<float> w(sve.w, dimension(6));
   //
+  const int np = 6;
+  static const float u[] = {
+        -.93246951420315f, -.66120938646627f, -.23861918608320f,
+          .23861918608320f, .66120938646627f, .93246951420315f
+      };
+  static const float w[] = {
+	.17132449237917f, .36076157304814f, .46791393457269f,
+	  .46791393457269f, .36076157304814f, .17132449237917f
+  };
+  /*
+  //int& np = sve.np;
+  //arr_ref<float> u(sve.u, dimension(6));
+  //arr_ref<float> w(sve.w, dimension(6));
   if (is_called_first_time) {
     {
       static const float values[] = {
@@ -1883,8 +1892,8 @@ common::xintd(
       fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
         w;
     }
-    np = 6;
   }
+  */
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] rate1, nudens
@@ -1924,33 +1933,25 @@ common::xintd(
   //
   //10--------DO INTEGRATION-------------------------------------------------------
   //
-  float sum = 0.f;
-  //Size of quad interval.
-  float dist = (xhi - xlow) / fem::ffloat(nq);
+  float sum = 0;
   int nint = 0;
-  float cent = 0;
   int npnt = 0;
-  float x = 0;
-  float f = 0;
+  float dist = (xhi - xlow) / fem::ffloat(nq); 				/// Size of quad interval.
   FEM_DO_SAFE(nint, 1, nq) {
-    //Center of interval.
-    cent = xlow + (fem::ffloat(nint) - 0.5f) * dist;
+    float cent = xlow + (fem::ffloat(nint) - 0.5) * dist; 	/// Center of interval.
     FEM_DO_SAFE(npnt, 1, np) {
-      //Integration point.
-      x = cent + 0.5f * dist * u(npnt);
-      //Evaluate function x(1).
-      f = func(cmn, x);
-      //Add up sum.
-      sum += f * w(npnt);
+      //x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
+      float x = cent + 0.5 * dist * u[npnt-1]; 				/// Integration point.
+      float y = func(cmn, x); 								/// Evaluate function x(1).
+      //sum += f * w(npnt); 								/// Add up sum.
+      sum += y * w[npnt-1]; 								/// Add up sum.
     }
   }
   //
   //20--------GET INTEGRAL VALUE---------------------------------------------------
   //
   //Do integral.
-  return_value = sum * dist * 0.5f;
-  return return_value;
-  //
+  return 0.5 * sum * dist;
 }
 
 /*
@@ -2103,10 +2104,10 @@ common::rate1(
       uplim4 = z(2);
     }
     //..........EVALUATE THE INTEGRALS NUMERICALLY.
-    part1 = xintd(cmn, 1.f, uplim1, func1, iter);
-    part2 = xintd(cmn, 1.f, uplim2, func2, iter);
-    part3 = xintd(cmn, 1.f, uplim3, func3, iter);
-    part4 = xintd(cmn, 1.f, uplim4, func4, iter);
+    part1 = xintd(cmn, 1., uplim1, func1, iter);
+    part2 = xintd(cmn, 1., uplim2, func2, iter);
+    part3 = xintd(cmn, 1., uplim3, func3, iter);
+    part4 = xintd(cmn, 1., uplim4, func4, iter);
     //Add 2 integrals to get forward rate.
     f(1) = part1 + part2;
     //Add 2 integrals to get reverse rate.
@@ -2469,12 +2470,12 @@ common::nudens(
       //..........DO INTEGRATION
       uplim1 = (88.029f + xi(nu)) * tnu;
       uplim2 = (88.029f - xi(nu)) * tnu;
-      if (uplim2 <= 0.f) {
-        rhonu = xintd(cmn, 0.f, uplim1, func5, iter);
+      if (uplim2 <= 0.) {
+        rhonu = xintd(cmn, 0, uplim1, func5, iter);
       }
       else {
-        rhonu = xintd(cmn, 0.f, uplim1, func5, iter) + xintd(cmn,
-          0.f, uplim2, func6, iter);
+        rhonu = xintd(cmn, 0, uplim1, func5, iter) 
+			  + xintd(cmn, 0, uplim2, func6, iter);
       }
       //(abs(xi(nu)).ge.30.)
     }

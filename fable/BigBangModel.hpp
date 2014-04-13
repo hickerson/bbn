@@ -469,7 +469,7 @@ struct common :
 	fem::cmn_sve run_sve;
 	fem::cmn_sve blockdata_unnamed_sve;
 	fem::cmn_sve program_new123_sve;
-*/
+	*/
 	static const int nrec = 88;
     arr<float> f;
     arr<float> r;
@@ -492,12 +492,14 @@ struct common :
 	void therm(common &);
 	void nudens(common &);
 	void start(common &);
-	void rate1(common &);
+	void rate1(
+			common &, 
+			float const& );
 	float xintd(
 			common& cmn,
 			float const&,
 			float const&,
-			void* func,
+  			float(common::* func)(common &, const float&),
 			int const&);
 
 	float func1( common& cmn, float const& x);
