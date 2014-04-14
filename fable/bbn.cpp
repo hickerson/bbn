@@ -5588,16 +5588,25 @@ output(common& cmn)
   //
 }
 
+/*
 struct blockdata_unnamed_save
 {
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void
-blockdata_unnamed(
-  common& cmn)
+common::common(
+		int argc,
+		char const* argv[])
+		:
+		fem::common(argc, argv),
+		f(dimension(nrec)),
+		r(dimension(nrec)),
+		a(nrec,nrec),
+		b(nrec,nrec),
+		yx(nrec,nrec)
 {
 	/*
   FEM_CMN_SVE(blockdata_unnamed);
