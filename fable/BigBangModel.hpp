@@ -490,17 +490,7 @@ struct common :
 	boost::numeric::ublas::vector<float> yx;
 	
 	public:
-	common(
-		int argc,
-		char const* argv[])
-		:
-		fem::common(argc, argv),
-		f(dimension(nrec)),
-		r(dimension(nrec)),
-		a(nrec,nrec),
-		b(nrec,nrec),
-		yx(nrec,nrec)
-	{}
+	common( int argc, char const* argv[]);		//TODO don't need those opts for 
 
 	void setcom(common &);
 	void setmod(common &);
