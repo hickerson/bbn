@@ -3,6 +3,7 @@
 //#include "bbn.hpp"
 #include "BigBangModel.hpp"
 #include <gsl/gsl_sf_bessel.h>
+#include <boost/math/special_functions/bessel.hpp>
 
 namespace bbn {
 
@@ -104,19 +105,19 @@ help(common& cmn)
     "(/,29x,"
 	"'SETTING UP A RUN',/,29x,"
 	"'------- -- - ---',2(/),"
-    "'I. Setting computation parameters.      ',/,"
-    "'   The accuracy of the computation and the relevant temperature region can be',/,"
-    "'   set by the following parameters:     ',/,"
-    "'    A. Time step limiting constant 1  (default value of 0.03)',/,"
-    "'    B. Time step limiting constant 2  (default value of 0.003)',/,"
-    "'    C. Initial time step  (default value'," "' of 10**-4)',/,"
-    "'    D. Initial temperature  (default value of 10**2)',/,"
-    "'       This is the temperature at the beginning of the run in units of 10**9 K  ',/,"
-    "'    E. Final temperature  (default value of 10**-2)',/,"
-    "'       This is the termination temperature of the run in units of 10**9 K',/,"
-    "'    F. Smallest abundances allowed  (default value of 10**-25)',/,"
-    "'       Elemental abundances are not allowed to drop below this value',/,"
-    "'    G. # of iterations for each accumulation  (default value of 300)',/,"
+    "'I. Setting computation parameters.      										',/,"
+    "'   The accuracy of the computation and the relevant temperature region can be	',/,"
+    "'   set by the following parameters:     										',/,"
+    "'    A. Time step limiting constant 1  (default value of 0.03)					',/,"
+    "'    B. Time step limiting constant 2  (default value of 0.003)				',/,"
+    "'    C. Initial time step  (default value'," "' of 10**-4)						',/,"
+    "'    D. Initial temperature  (default value of 10**2)							',/,"
+    "'       This is the temperature at the beginning of the run in units of 10**9 K',/,"
+    "'    E. Final temperature  (default value of 10**-2)							',/,"
+    "'       This is the termination temperature of the run in units of 10**9 K		',/,"
+    "'    F. Smallest abundances allowed  (default value of 10**-25)				',/,"
+    "'       Elemental abundances are not allowed to drop below this value			',/,"
+    "'    G. # of iterations for each accumulation  (default value of 300)			',/,"
     "'       This is the number of iterations before values are put in an output array',6(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
@@ -152,38 +153,38 @@ help(common& cmn)
 	"'RUNNING THE PROGRAM',/,28x,"
 	"'------- --- -------',2(/),"
     "' ','I. Setting run speed.                   ',/,"
-    "'   The code can be run at 3 different settings of speed.  The running of the    ',/,"
-    "'   code can be speeded up by reducing the number of nuclides and reactions.  The',/,"
-    "'   complete computation takes into account the following nuclides: n, p, d, t,  ',/,"
-    "'   He3, He4, Li6, Li7, Be7, Li8, B8, Be9, B10, B11, C11, B12, C12, N12, C13, N13,',/,"
-    "'   C14, N14, O14, N15, O15, and O16.    ',/,"
-    "'   The given CPU percentages and abundance variations are with regard to a      ',/,"
-    "'   single run with all default parameter values.                                ',/,"
-    "'    A. 26 nuclides, 88 reactions (default)                                      ',/,"
-    "'       nuclides from n to O16           ',/,"
-    "'    B. 18 nuclides, 60 reactions        ',/,"
-    "'       nuclides from n to N12           ',/,"
-    "'       (63% CPU time, variation = .1%)  ',/,"
-    "'    C. 9 nuclides, 25 reactions        ',/,"
-    "'       nuclides from n to Be7           ',/,"
-    "'       (20% CPU time, variation = .5%)  ',4(/),"
+    "'   The code can be run at 3 different settings of speed.  The running of the    	',/,"
+    "'   code can be speeded up by reducing the number of nuclides and reactions.  The	',/,"
+    "'   complete computation takes into account the following nuclides: n, p, d, t,  	',/,"
+    "'   He3, He4, Li6, Li7, Be7, Li8, B8, Be9, B10, B11, C11, B12, C12, N12, C13, N13,	',/,"
+    "'   C14, N14, O14, N15, O15, and O16.    											',/,"
+    "'   The given CPU percentages and abundance variations are with regard to a      	',/,"
+    "'   single run with all default parameter values.                                	',/,"
+    "'    A. 26 nuclides, 88 reactions (default)                                      	',/,"
+    "'       nuclides from n to O16           											',/,"
+    "'    B. 18 nuclides, 60 reactions        											',/,"
+    "'       nuclides from n to N12           											',/,"
+    "'       (63% CPU time, variation = .1%)  											',/,"
+    "'    C. 9 nuclides, 25 reactions        											',/,"
+    "'       nuclides from n to Be7           											',/,"
+    "'       (20% CPU time, variation = .5%) ',4(/),"
     "'(Enter 1 to continue, <RETURN> to end): ',$)");
   read(ir, format_1001), inum;
   if (inum == 1) {
     write(iw,
       "(/,"
-	  "'II. Do single run.                      ',/,"
-      "'    A. Interactive.                     ',/,"
+	  "'II. Do single run.                      										',/,"
+      "'    A. Interactive.                     										',/,"
       "'       In an interactive session, the user can readily input the computational  ',/,"
       "'       and model parameters and begin the computation process.  The run itself  ',/,"
       "'       is commenced when option 2, \"GO\", in the \"RUN\" section is requested. ',/,/,"
-      "'    B. Batch.                           ',/,"
+      "'    B. Batch.                           										',/,"
       "'       To run the program in a batch mode, it must be altered slightly so that  ',/,"
       "'       the I/O takes place with files instead of a terminal.  This is done by   ',/,"
       "'       setting different values for the input and output unit number parameters ',/,"
       "'       \"ir\" and \"iw\" and assigning them to different files in NUC123.  In the   ',/,"
-      "'       file assigned the \"ir\" unit number, one must place the responses to the  ',/,"
-      "'       queries of the program.          ',10(/),"
+      "'       file assigned the \"ir\" unit number, one must place the responses to the ',/,"
+      "'       queries of the program.          			',10(/),"
       "'(Enter 1 to continue, <RETURN> to end): ',$)");
     read(ir, format_1001), inum;
     if (inum == 1) {
@@ -2738,10 +2739,12 @@ common::therm(
   //
 }
 
+/*
 struct eqslin_save
 {
   fem::variant_bindings lncoef_bindings;
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -2846,10 +2849,8 @@ common::eqslin(
   mbad = 0;
   //..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
   FEM_DO_SAFE(i, 1, isize) {
-    //Right-hand vector.
-    x(i) = b(i);
-    //Solution vector.
-    y(i) = 0.f;
+    x(i) = b(i); 		/// Right-hand vector.
+    y(i) = 0.f; 		/// Solution vector.
   }
   //..........SAVE MATRIX.
   //Monitor convergence.
@@ -2964,6 +2965,7 @@ common::eqslin(
   //
 }
 
+/*
 struct sol_save
 {
   fem::variant_bindings lncoef_bindings;
@@ -2980,6 +2982,7 @@ struct sol_save
     sl(dimension(11), fem::fill0)
   {}
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -3032,7 +3035,6 @@ common::sol(
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
-  */
   arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
   arr_ref<float> b(lncoef.bind<float>(), dimension(nnuc));
   arr_cref<float> yx(lncoef.bind<float>(), dimension(nnuc));
@@ -3066,6 +3068,11 @@ common::sol(
         sl;
     }
   }
+  */
+	const float si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
+	const float sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
+	const float sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
+	const float sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
   float t932 = 0;
   float t9m32 = 0;
   int isize1 = 0;

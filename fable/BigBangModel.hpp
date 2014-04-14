@@ -2,10 +2,14 @@
 #define BBN_CMN_HPP
 
 #include <fem.hpp> // Fortran EMulation library of fable module
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 namespace bbn {
 
 using namespace fem::major_types;
+//using namespace boost::numeric::ublas;
 
 struct common_compr0
 {
@@ -470,18 +474,29 @@ struct common :
 	fem::cmn_sve blockdata_unnamed_sve;
 	fem::cmn_sve program_new123_sve;
 	*/
+
+	private: 
 	static const int nrec = 88;
   	static const int nnuc = 26;
+	//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
+	//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
+	//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
+	//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
+
     arr<float> f;
     arr<float> r;
-
+	boost::numeric::ublas::matrix<float> a;
+	boost::numeric::ublas::vector<float> b;
+	
+	public:
 	common(
 		int argc,
 		char const* argv[])
 		:
 		fem::common(argc, argv),
 		f(dimension(nrec)),
-		r(dimension(nrec))
+		r(dimension(nrec)),
+		a(nrec,nrec)
 	{}
 
 	void setcom(common &);
