@@ -3224,13 +3224,17 @@ common::sol(
     //Reactio
     if ((ind != 0) && (i <= isize) && (l <= isize)) {
       //# of incoming nuclide i.
-      ri = si(ind);
+      //ri = si(ind);
+      ri = si[ind-1];
       //# of incoming nuclide j.
-      rj = sj(ind);
+      //rj = sj(ind);
+      rj = sj[ind-1];
       //# of outgoing nuclide k.
-      rk = sk(ind);
+      //rk = sk(ind);
+      rk = sk[ind-1];
       //# of outgoing nuclide l.
-      rl = sl(ind);
+      //rl = sl(ind);
+      rl = sl[ind-1];
       //..........COMPUTE DIFFERENT REACTION RATES.
       switch (ind) {
         case 1: goto statement_201;
