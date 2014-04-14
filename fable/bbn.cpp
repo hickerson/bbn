@@ -4,6 +4,7 @@
 #include "BigBangModel.hpp"
 #include <gsl/gsl_sf_bessel.h>
 #include <boost/math/special_functions/bessel.hpp>
+#include <boost/math/constants/constants.hpp>
 
 namespace bbn {
 
@@ -3489,20 +3490,23 @@ common::sol(
   //
 }
 
+/*
 struct rate2_save
 {
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
 //
 void
-rate2(
+common::rate2(
   common& cmn)
 {
-  FEM_CMN_SVE(rate2);
+  //FEM_CMN_SVE(rate2);
   // COMMON evolp1
+  /*
   float& t9 = cmn.t9;
   //
   common_variant rates(cmn.common_rates, sve.rates_bindings);
@@ -3516,7 +3520,8 @@ rate2(
     }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-  /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  */
+  //* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -3540,7 +3545,7 @@ rate2(
   //Forward reaction rate coefficients.
   //
   //----------EVOLUTION PARAMETER.
-  //Temperature of photons (units of 10*
+  //Temperature of photons (units of GK)
   //
   //===========================PROCEDURE DIVISION==================================
   //
@@ -3730,18 +3735,21 @@ rate2(
   //
 }
 
+/*
 struct rate3_save
 {
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
 //
 void
-rate3(
+common::rate3(
   common& cmn)
 {
+	/*
   FEM_CMN_SVE(rate3);
   // COMMON evolp1
   float& t9 = cmn.t9;
@@ -3757,7 +3765,8 @@ rate3(
     }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-  /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  */
+  //* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -3983,18 +3992,21 @@ rate3(
   //
 }
 
+/*
 struct rate4_save
 {
   fem::variant_bindings rates_bindings;
 };
+*/
 
 //
 //========================IDENTIFICATION DIVISION================================
 //
 void
-rate4(
+common::rate4(
   common& cmn)
 {
+	/*
   FEM_CMN_SVE(rate4);
   // COMMON evolp1
   float& t9 = cmn.t9;
@@ -4010,7 +4022,8 @@ rate4(
     }
   }
   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-  /* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+  */
+  //* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] derivs
@@ -4219,10 +4232,11 @@ rate4(
 //========================IDENTIFICATION DIVISION================================
 //
 void
-derivs(
+common::derivs(
   common& cmn,
   int const& loop)
 {
+	/*
   float& t9 = cmn.t9;
   float& hv = cmn.hv;
   const int nnuc = 26;
@@ -4234,8 +4248,9 @@ derivs(
   float& hubcst = cmn.hubcst;
   arr_cref<float> zm(cmn.zm, dimension(nnuc));
   arr_cref<float> dm(cmn.dm, dimension(nnuc));
+  */
   //
-  const float pi = 3.141593f;
+  const float pi = boost::math::constants::pi<float>();
   float sumy = 0;
   float sumzy = 0;
   float sumdy = 0;
@@ -5584,6 +5599,7 @@ void
 blockdata_unnamed(
   common& cmn)
 {
+	/*
   FEM_CMN_SVE(blockdata_unnamed);
   // COMMON recpr0
   const int nrec = 88;
@@ -5597,6 +5613,7 @@ blockdata_unnamed(
   arr_ref<float> zm(cmn.zm, dimension(nnuc));
   arr_ref<float> dm(cmn.dm, dimension(nnuc));
   //
+  */
   int i = 0;
   int j = 0;
   if (is_called_first_time) {

@@ -487,6 +487,7 @@ struct common :
     arr<float> r;
 	boost::numeric::ublas::matrix<float> a;
 	boost::numeric::ublas::vector<float> b;
+	boost::numeric::ublas::vector<float> yx;
 	
 	public:
 	common(
@@ -496,7 +497,9 @@ struct common :
 		fem::common(argc, argv),
 		f(dimension(nrec)),
 		r(dimension(nrec)),
-		a(nrec,nrec)
+		a(nrec,nrec),
+		b(nrec,nrec),
+		yx(nrec,nrec)
 	{}
 
 	void setcom(common &);
@@ -508,29 +511,33 @@ struct common :
 	void therm(common &);
 	void nudens(common &);
 	void start(common &);
-	void rate1(
-			common &, 
-			float const& );
+
 	float xintd(
 			common& cmn,
 			float const&,
 			float const&,
   			float(* func)(common &, const float&),
 			int const&);
+
 	void eqslin(
 			common&,
 			int const&,
 			int&);
-	void sol(
-			common&,
-			int const&);
 
-	static float func1( common& cmn, float const& x);
-	static float func2( common& cmn, float const& x);
-	static float func3( common& cmn, float const& x);
-	static float func4( common& cmn, float const& x);
-	static float func5( common& cmn, float const& x);
-	static float func6( common& cmn, float const& x);
+	void sol( common&, int const&);
+	void derivs( common&, int const& );
+
+	static float func1( common&, float const& );
+	static float func2( common&, float const& );
+	static float func3( common&, float const& );
+	static float func4( common&, float const& );
+	static float func5( common&, float const& );
+	static float func6( common&, float const& );
+
+	void rate1( common &, float const& );
+	void rate2( common & );
+	void rate3( common & );
+	void rate4( common & );
 };
 
 
