@@ -4534,9 +4534,10 @@ common::accum(
   }
   //Exception for proton.
   //xout(it, 2) = y(2) * am(2);
-  xout(it, 2) = y(2) * am(2);
+  xout(it, 2) = y(2) * am[1];
   //Exception for helium.
-  xout(it, 6) = y(6) * am(6);
+  //xout(it, 6) = y(6) * am(6);
+  xout(it, 6) = y(6) * am[5];
   //..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
   //Li8 to O16.
   xout(it, 10) += xout(it, 11) + xout(it, 12) + xout(it, 13) + xout(it,
