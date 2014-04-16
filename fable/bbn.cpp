@@ -4437,6 +4437,7 @@ void
 common::accum(
   common& cmn)
 {
+	/*
   // COMMON evolp1
   const int nnuc = 26;
   arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
@@ -4455,6 +4456,7 @@ common::accum(
   arr_ref<float> dtout(cmn.dtout, dimension(itmax));
   arr_ref<float> etaout(cmn.etaout, dimension(itmax));
   arr_ref<float> hubout(cmn.hubout, dimension(itmax));
+  */
   //
   //
   //----------LINKAGES.
@@ -4531,6 +4533,7 @@ common::accum(
     xout(it, i) = y(i) / y(2);
   }
   //Exception for proton.
+  //xout(it, 2) = y(2) * am(2);
   xout(it, 2) = y(2) * am(2);
   //Exception for helium.
   xout(it, 6) = y(6) * am(6);
