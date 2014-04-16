@@ -1505,13 +1505,13 @@ rate0(
 //***************************************************************************
 //
 float
-func1(
+common::func1(
   common& cmn,
   float const& x)
 {
   float return_value = 0;
   // COMMON modpr
-  arr_cref<float> xi(cmn.xi, dimension(3));
+  //arr_cref<float> xi(cmn.xi, dimension(3));
   //
   //
   //----------LINKAGES.
@@ -1560,13 +1560,13 @@ func1(
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //
 float
-func2(
+common::func2(
   common& cmn,
   float const& x)
 {
   float return_value = 0;
   // COMMON modpr
-  arr_cref<float> xi(cmn.xi, dimension(3));
+  //arr_cref<float> xi(cmn.xi, dimension(3));
   //
   //
   //----------LINKAGES.
@@ -1616,13 +1616,13 @@ func2(
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
 float
-func3(
+common::func3(
   common& cmn,
   float const& x)
 {
   float return_value = 0; // TODO move inside?
   // COMMON modpr
-  arr_cref<float> xi(cmn.xi, dimension(3));
+  //arr_cref<float> xi(cmn.xi, dimension(3));
   //
   //
   //----------LINKAGES.
@@ -1672,13 +1672,13 @@ func3(
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
 float
-func4(
+common::func4(
   common& cmn,
   float const& x)
 {
   float return_value = 0;
   // COMMON modpr
-  arr_cref<float> xi(cmn.xi, dimension(3));
+  //arr_cref<float> xi(cmn.xi, dimension(3));
   //
   //
   //----------LINKAGES.
@@ -1749,7 +1749,7 @@ common::func5(
 {
   float return_value = 0;
   // COMMON modpr
-  arr_cref<float> xi(cmn.xi, dimension(3));
+  //arr_cref<float> xi(cmn.xi, dimension(3));
   //
   //
   //----------LINKAGES.
