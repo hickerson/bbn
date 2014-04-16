@@ -475,7 +475,6 @@ struct common :
 	fem::cmn_sve program_new123_sve;
 	*/
 
-	private: 
 	static const int nrec = 88;
   	static const int nnuc = 26;
 	//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
