@@ -1377,20 +1377,20 @@ bessel(
 }
 #endif
 
-double getBesselL(float r)
+float getBesselL(float r)
 {
   	float K2r = gsl_sf_bessel_Kn(2,r); 		/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
-double getBesselM(float r)
+float getBesselM(float r)
 {
   	const float K3r = gsl_sf_bessel_Kn(3,r);/// Irregular modified cylindrical Bessel functions.
   	const float K1r = gsl_sf_bessel_Kn(1,r);/// Irregular modified cylindrical Bessel functions.
     return 0.25*(3*K3r + K1r)/r;			/// (Ref ?).
 }
 
-double getBesselN(float r)
+float getBesselN(float r)
 {
   	const float K4r = gsl_sf_bessel_Kn(4,r);/// Irregular modified cylindrical Bessel functions.
   	const float K2r = gsl_sf_bessel_Kn(2,r);/// Irregular modified cylindrical Bessel functions.
@@ -1504,7 +1504,7 @@ rate0(
 //10--------1ST PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //***************************************************************************
 //
-float
+static float
 common::func1(
   common& cmn,
   float const& x)
@@ -1548,7 +1548,7 @@ common::func1(
   else {
 	// TODO don't recompute 
     part1 = 1 / (1 + ex(-.511f * x / cmn.t9mev));
-    part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - xi(1)));
+    part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - cmn.xi(1)));
     return cmn.cnorm * x * pow2((x - 2.531f)) * pow(
       (pow2(x) - 1), 0.5) * part1 * part2;
   }
@@ -1559,7 +1559,7 @@ common::func1(
 //
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //
-float
+static float
 common::func2(
   common& cmn,
   float const& x)
@@ -1603,7 +1603,7 @@ common::func2(
   }
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - xi(1)));
+    part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi(1)));
     return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
@@ -1615,7 +1615,7 @@ common::func2(
 //
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-float
+static float
 common::func3(
   common& cmn,
   float const& x)
@@ -1659,7 +1659,7 @@ common::func3(
   }
   else {
     part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + xi(1)));
+    part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + cmn.xi(1)));
     return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
@@ -1671,7 +1671,7 @@ common::func3(
 //
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-float
+static float
 common::func4(
   common& cmn,
   float const& x)
@@ -1716,7 +1716,7 @@ common::func4(
   }
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + xi(1)));
+    part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + cmn.xi(1)));
     return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
@@ -1742,7 +1742,7 @@ common::func4(
 //
 //50--------INTEGRAL FOR ENERGY DENSITY OF NEUTRINO------------------------------
 //
-float
+static float
 common::func5(
   common& cmn,
   float const& x)
@@ -1780,7 +1780,7 @@ common::func5(
   //Exponential expression with neutrino
   //
   return_value = 1.f / (2 * pow2(3.14159f)) * pow3(x) / (
-    1.f + exp(x / cmn.tnu - xi(cmn.nu)));
+    1.f + exp(x / cmn.tnu - cmn.xi(cmn.nu)));
   return return_value;
 }
 
@@ -1789,14 +1789,14 @@ common::func5(
 //
 //60--------INTEGRAL FOR ENERGY DENSITY OF ANTINEUTRINO--------------------------
 //
-float
+static float
 common::func6(
   common& cmn,
   float const& x)
 {
   float return_value = 0;
   // COMMON modpr
-  arr_cref<float> xi(cmn.xi, dimension(3));
+  //arr_cref<float> xi(cmn.xi, dimension(3));
   //
   //
   //----------LINKAGES.
@@ -1827,7 +1827,7 @@ common::func6(
   //Exponential expression with neutrino
   //
   return_value = 1.f / (2 * pow2(3.14159f)) * pow3(x) / (
-    1.f + exp(x / cmn.tnu + xi(cmn.nu)));
+    1.f + exp(x / cmn.tnu + cmn.xi(cmn.nu)));
   return return_value;
 }
 
@@ -2769,7 +2769,7 @@ common::eqslin(
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
-      mbr<double> a(dimension(nnuc, nnuc));
+      mbr<float> a(dimension(nnuc, nnuc));
       mbr<float> b(dimension(nnuc));
       mbr<float> y(dimension(nnuc));
       lncoef.allocate(), a, b, y;
@@ -2781,12 +2781,12 @@ common::eqslin(
   */
   int nord = 0;
   int i = 0;
-  arr_1d<nnuc, double> x(fem::fill0);
+  arr_1d<nnuc, float> x(fem::fill0);
   int j = 0;
-  arr<double, 2> a0(dimension(nnuc, nnuc), fem::fill0);
-  double cx = 0;
+  arr<float, 2> a0(dimension(nnuc, nnuc), fem::fill0);
+  float cx = 0;
   int k = 0;
-  double sum = 0;
+  float sum = 0;
   float xdy = 0;
   const float eps = 2.e-4f;
   const int mord = 1;
