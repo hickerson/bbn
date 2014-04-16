@@ -1,7 +1,7 @@
 FABLEFILES=new123.f newint.f nuccom.f nucrat.f
 FABLEFLAGS=--separate-cmn-hpp --namespace=bbn --no-fem-do-safe
 FABLEOPTS=--common-equivalence-simple
-FLAGS=-Ifable_sources/fable -I/usr/include/gsl -g -std=c++11
+FLAGS=-Ifable_sources/fable -I/usr/include/gsl -g -std=c++11 -fpermissive
 LIBS=-lgsl -lgslcblas -lm
 SOURCES=bbn.cpp
 

@@ -1504,7 +1504,7 @@ rate0(
 //10--------1ST PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //***************************************************************************
 //
-static float
+float
 common::func1(
   common& cmn,
   float const& x)
@@ -1559,7 +1559,7 @@ common::func1(
 //
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //
-static float
+float
 common::func2(
   common& cmn,
   float const& x)
@@ -1615,7 +1615,7 @@ common::func2(
 //
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-static float
+float
 common::func3(
   common& cmn,
   float const& x)
@@ -1671,7 +1671,7 @@ common::func3(
 //
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-static float
+float
 common::func4(
   common& cmn,
   float const& x)
@@ -1742,7 +1742,7 @@ common::func4(
 //
 //50--------INTEGRAL FOR ENERGY DENSITY OF NEUTRINO------------------------------
 //
-static float
+float
 common::func5(
   common& cmn,
   float const& x)
@@ -1789,7 +1789,7 @@ common::func5(
 //
 //60--------INTEGRAL FOR ENERGY DENSITY OF ANTINEUTRINO--------------------------
 //
-static float
+float
 common::func6(
   common& cmn,
   float const& x)
