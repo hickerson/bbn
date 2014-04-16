@@ -6488,72 +6488,42 @@ program_new123(
   //
   FEM_DO_SAFE(i, 1, nrec) {
     //..........READ IN REACTION PARAMETERS.
-    //Reaction type.
-    cmn.iform(i) = fem::fint(reacpr(i, 2));
-    //Incoming nuclide type.
-    cmn.ii(i) = fem::fint(reacpr(i, 3));
-    //Incoming nuclide type.
-    cmn.jj(i) = fem::fint(reacpr(i, 4));
-    //Outgoing nuclide type.
-    cmn.kk(i) = fem::fint(reacpr(i, 5));
-    //Outgoing nuclide type.
-    cmn.ll(i) = fem::fint(reacpr(i, 6));
-    //Reverse reaction coefficient.
-    cmn.rev(i) = reacpr(i, 7);
-    //Energy released.
-    cmn.q9(i) = reacpr(i, 8);
+    cmn.iform(i) = cmn.reacpr(i, 2); 			/// Reaction type.
+    cmn.ii(i) = cmn.reacpr(i, 3); 				/// Incoming nuclide type.
+    cmn.jj(i) = cmn.reacpr(i, 4); 				/// Incoming nuclide type.
+    cmn.kk(i) = cmn.reacpr(i, 5); 				/// Outgoing nuclide type.
+    cmn.ll(i) = cmn.reacpr(i, 6); 				/// Outgoing nuclide type.
+    cmn.rev(i) = cmn.reacpr(i, 7); 				/// Reverse reaction coefficient.
+    cmn.q9(i) = cmn.reacpr(i, 8); 				/// Energy released.
     //..........INITIALIZE REACTION RATES.
-    //Forward rate coeff.
-    cmn.f(i) = 0.f;
-    //Reverse rate coeff.
-    cmn.r(i) = 0.f;
+    cmn.f(i) = 0; 							/// Forward rate coeff.
+    cmn.r(i) = 0; 							/// Reverse rate coeff.
     //..........SET RUN OPTIONS TO DEFAULT.
   }
-  //Do full run.
-  cmn.irun = 1;
-  //Use all 26 nuclides.
-  cmn.isize = cmn.nnuc;
-  //Use all 88 reactions.
-  cmn.jsize = cmn.nrec;
+  cmn.irun = 1; 							/// Do full run.
+  cmn.isize = cmn.nnuc; 					/// Use all 26 nuclides.
+  cmn.jsize = cmn.nrec; 					/// Use all 88 reactions.
   //..........SET OUTPUT OPTION TO DEFAULT.
-  //No output requests.
-  cmn.nout = 0;
-  //Output file not used.
-  outfile = false;
+  cmn.nout = 0; 							/// No output requests.
+  outfile = false; 							/// Output file not used.
   //..........SET VALUES TO DEFAULT.
-  //Time step limiting constant on abund
-  cmn.cy = cmn.cy0;
-  //Time step limiting constant on tempe
-  cmn.ct = cmn.ct0;
-  //Initial temperature.
-  cmn.t9i = cmn.t9i0;
-  //Final temperature.
-  cmn.t9f = cmn.t9f0;
-  //Smallest abundances allowed.
-  cmn.ytmin = cmn.ytmin0;
-  //Accumulation increment.
-  cmn.inc = cmn.inc0;
-  //Variation of gravitational constant.
-  c(1) = cmn.c0(1);
-  //Neutron lifetime.
-  c(2) = cmn.c0(2);
-  //Number of neutrino species.
-  c(3) = cmn.c0(3);
-  //Cosmological constant.
-  cmn.cosmo = cmn.cosmo0;
-  //Electron degeneracy parameter.
-  xi(1) = cmn.xi0(1);
-  //Muon degeneray parameter.
-  xi(2) = cmn.xi0(2);
-  //Tauon degeneracy parameter.
-  xi(3) = cmn.xi0(3);
-  //Initial time step.
-  cmn.dt1 = cmn.dt0;
-  //Baryon-to-photon ratio.
-  cmn.eta1 = cmn.eta0;
+  cmn.cy = cmn.cy0; 						/// Time step limiting constant on abund
+  cmn.ct = cmn.ct0; 						/// Time step limiting constant on tempe
+  cmn.t9i = cmn.t9i0; 						/// Initial temperature.
+  cmn.t9f = cmn.t9f0; 						/// Final temperature.
+  cmn.ytmin = cmn.ytmin0; 					/// Smallest abundances allowed.
+  cmn.inc = cmn.inc0; 						/// Accumulation increment.
+  c(1) = cmn.c0(1); 						/// Variation of gravitational constant.
+  c(2) = cmn.c0(2); 						/// Neutron lifetime.
+  c(3) = cmn.c0(3); 						/// Number of neutrino species.
+  cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
+  xi(1) = cmn.xi0(1); 						/// Electron degeneracy parameter.
+  xi(2) = cmn.xi0(2); 						/// Muon degeneray parameter.
+  xi(3) = cmn.xi0(3); 						/// Tauon degeneracy parameter.
+  cmn.dt1 = cmn.dt0; 						/// Initial time step.
+  cmn.eta1 = cmn.eta0; 						/// Baryon-to-photon ratio.
   //..........ACCEPT RETURN TO CONTINUE.
-  //Pause.
-  read(ir, star);
+  read(ir, star); 							/// Pause.
   //
   //30--------PRINT MENU AND AWAIT RESPONSE----------------------------------------
   //
