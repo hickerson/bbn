@@ -6486,15 +6486,24 @@ program_new123(
   //
   //20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
   //
-  FEM_DO_SAFE(i, 1, nrec) {
+  FEM_DO_SAFE(i, 1, cmn.nrec) {
     //..........READ IN REACTION PARAMETERS.
-    cmn.iform(i) = cmn.reacpr(i, 2); 			/// Reaction type.
-    cmn.ii(i) = cmn.reacpr(i, 3); 				/// Incoming nuclide type.
-    cmn.jj(i) = cmn.reacpr(i, 4); 				/// Incoming nuclide type.
-    cmn.kk(i) = cmn.reacpr(i, 5); 				/// Outgoing nuclide type.
-    cmn.ll(i) = cmn.reacpr(i, 6); 				/// Outgoing nuclide type.
-    cmn.rev(i) = cmn.reacpr(i, 7); 				/// Reverse reaction coefficient.
-    cmn.q9(i) = cmn.reacpr(i, 8); 				/// Energy released.
+	/*
+    cmn.iform(i) = cmn.reacpr(i, 2); 		/// Reaction type.
+    cmn.ii(i) = cmn.reacpr(i, 3); 			/// Incoming nuclide type.
+    cmn.jj(i) = cmn.reacpr(i, 4); 			/// Incoming nuclide type.
+    cmn.kk(i) = cmn.reacpr(i, 5); 			/// Outgoing nuclide type.
+    cmn.ll(i) = cmn.reacpr(i, 6); 			/// Outgoing nuclide type.
+    cmn.rev(i) = cmn.reacpr(i, 7); 			/// Reverse reaction coefficient.
+    cmn.q9(i) = cmn.reacpr(i, 8); 			/// Energy released.
+	*/
+    cmn.iform(i) = cmn.reacpr[i-1][2-1]; 		/// Reaction type.
+    cmn.ii(i) = cmn.reacpr[i-1][3-1]; 			/// Incoming nuclide type.
+    cmn.jj(i) = cmn.reacpr[i-1][4-1]; 			/// Incoming nuclide type.
+    cmn.kk(i) = cmn.reacpr[i-1][5-1]; 			/// Outgoing nuclide type.
+    cmn.ll(i) = cmn.reacpr[i-1][6-1]; 			/// Outgoing nuclide type.
+    cmn.rev(i) = cmn.reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
+    cmn.q9(i) = cmn.reacpr[i-1][8-1]; 			/// Energy released.
     //..........INITIALIZE REACTION RATES.
     cmn.f(i) = 0; 							/// Forward rate coeff.
     cmn.r(i) = 0; 							/// Reverse rate coeff.
@@ -6505,21 +6514,21 @@ program_new123(
   cmn.jsize = cmn.nrec; 					/// Use all 88 reactions.
   //..........SET OUTPUT OPTION TO DEFAULT.
   cmn.nout = 0; 							/// No output requests.
-  outfile = false; 							/// Output file not used.
+  cmn.outfile = false; 						/// Output file not used.
   //..........SET VALUES TO DEFAULT.
-  cmn.cy = cmn.cy0; 						/// Time step limiting constant on abund
-  cmn.ct = cmn.ct0; 						/// Time step limiting constant on tempe
+  cmn.cy = cmn.cy0; 						/// Time step limiting constant on abundance.
+  cmn.ct = cmn.ct0; 						/// Time step limiting constant on temperature.
   cmn.t9i = cmn.t9i0; 						/// Initial temperature.
   cmn.t9f = cmn.t9f0; 						/// Final temperature.
   cmn.ytmin = cmn.ytmin0; 					/// Smallest abundances allowed.
   cmn.inc = cmn.inc0; 						/// Accumulation increment.
-  c(1) = cmn.c0(1); 						/// Variation of gravitational constant.
-  c(2) = cmn.c0(2); 						/// Neutron lifetime.
-  c(3) = cmn.c0(3); 						/// Number of neutrino species.
+  cmn.c(1) = cmn.c0(1); 					/// Variation of gravitational constant.
+  cmn.c(2) = cmn.c0(2); 					/// Neutron lifetime.
+  cmn.c(3) = cmn.c0(3); 					/// Number of neutrino species.
   cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
-  xi(1) = cmn.xi0(1); 						/// Electron degeneracy parameter.
-  xi(2) = cmn.xi0(2); 						/// Muon degeneray parameter.
-  xi(3) = cmn.xi0(3); 						/// Tauon degeneracy parameter.
+  cmn.xi(1) = cmn.xi0(1); 					/// Electron degeneracy parameter.
+  cmn.xi(2) = cmn.xi0(2); 					/// Muon degeneracy parameter.
+  cmn.xi(3) = cmn.xi0(3); 					/// Tau degeneracy parameter.
   cmn.dt1 = cmn.dt0; 						/// Initial time step.
   cmn.eta1 = cmn.eta0; 						/// Baryon-to-photon ratio.
   //..........ACCEPT RETURN TO CONTINUE.
@@ -6572,12 +6581,12 @@ program_new123(
   //Run section.
   statement_440:
   //Time = beginning of run section.
-  itime = 2;
+  cmn.itime = 2;
   //Check interface subroutine.
   cmn.check(cmn);
   cmn.run(cmn);
   //Time = end of run section.
-  itime = 9;
+  cmn.itime = 9;
   //Check interface subroutine.
   cmn.check(cmn);
   goto statement_500;
@@ -6587,18 +6596,16 @@ program_new123(
   goto statement_500;
   //Exit section.
   statement_460:
-  if (outfile) {
+  if (cmn.outfile) {
     //Close output file.
-    cmn.io.close(2)
-      .status("keep");
+    cmn.io.close(2).status("keep");
   }
   else {
     //File not used - dispose.
-    cmn.io.close(2)
-      .status("delete");
+    cmn.io.close(2).status("delete");
   }
   //Time = end of program.
-  itime = 10;
+  cmn.itime = 10;
   //Check interface subroutine.
   cmn.check(cmn);
   //FEM_STOP(0);
