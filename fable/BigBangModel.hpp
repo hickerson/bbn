@@ -482,6 +482,10 @@ struct common :
 	//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 	//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
+	static const float am[nnuc];
+	static const float zm[nnuc];
+	static const float dm[nnuc];
+	static const float reacpr[nrec][8];
 
     arr<float> f;
     arr<float> r;
@@ -516,6 +520,7 @@ struct common :
 
 	void sol( common&, int const&);
 	void derivs( common&, int const& );
+	void accum( common& );
 
 	static float func1( common&, float const& );
 	static float func2( common&, float const& );
