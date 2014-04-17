@@ -488,9 +488,14 @@ struct common :
 
     arr<float> f;
     arr<float> r;
+	arr<float,float> a;
+	arr<float> b;
+	arr<float> yx;
+	/*
 	boost::numeric::ublas::matrix<float> a;
 	boost::numeric::ublas::vector<float> b;
 	boost::numeric::ublas::vector<float> yx;
+	*/
 	
 	public:
 	common( int argc, char const* argv[]);		//TODO don't need those opts for 
