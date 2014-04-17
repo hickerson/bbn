@@ -2860,7 +2860,7 @@ common::eqslin(
     FEM_DO_SAFE(i, 1, isize) {
       FEM_DO_SAFE(j, 1, isize) {
         //Initial value of coefficient array.
-        a0(j, i) = a(j, i);
+        a0[j][i] = a[j][i];
       }
     }
   }
@@ -2870,7 +2870,7 @@ common::eqslin(
   //..........CHECK TO SEE THAT THERE ARE NO ZEROES AT PIVOT POINTS.
   FEM_DO_SAFE(i, 1, isize - 1) {
     //Don't want to divide by zero.
-    if (a(i, i) == 0) {
+    if (a[i][i] == 0) {
       //Position of zero coefficient.
       mbad = i;
       //Terminate matrix evaluation.
@@ -2879,16 +2879,16 @@ common::eqslin(
     //..........TRIANGULARIZE MATRIX.
     FEM_DO_SAFE(j, i + 1, isize) {
       //Progress diagonally down the column.
-      if (a(j, i) != 0) {
+      if (a[j][i] != 0) {
         //Scaling factor down the column.
-        cx = a(j, i) / a(i, i);
+        cx = a[j][i] / a[i][i];
         //Progress diagonally along row.
         FEM_DO_SAFE(k, i + 1, isize) {
           //Subtract scaled coeff along
-          a(j, k) = a(j, k) - cx * a(i, k);
+          a[j][k] = a[j][k] - cx * a[i][k];
         }
         //Scaled coefficient.
-        a(j, i) = cx;
+        a[j][i] = cx;
         //..........OPERATE ON RIGHT-HAND VECTOR.
         //Subtract off scaled coefficient.
         x(j) = x(j) - cx * x(i);
@@ -2899,19 +2899,15 @@ common::eqslin(
   //30--------DO BACK SUBSTITUTION-------------------------------------------------
   //
   statement_300:
-  //Solution for ultimate positi
-  x(isize) = x(isize) / a(isize, isize);
+  x(isize) = x(isize) / a[isize][isize]; 	/// Solution for ultimate position.
   y(isize) += x(isize);
-  //From i = penultimate to i = 1.
-  FEM_DOSTEP(i, isize - 1, 1, -1) {
+  FEM_DOSTEP(i, isize - 1, 1, -1) { 		/// From i = penultimate to i = 1.
     sum = 0.e0;
     FEM_DO_SAFE(j, i + 1, isize) {
-      //Sum up all previous terms.
-      sum += a(i, j) * x(j);
+      sum += a[i][j] * x(j); 				/// Sum up all previous terms.
     }
-    x(i) = (x(i) - sum) / a(i, i);
-    //Add difference to initial value.
-    y(i) += x(i);
+    x(i) = (x(i) - sum) / a[i][i];
+    y(i) += x(i); 							/// Add difference to initial value.
   }
   //
   //40--------TESTS AND EXITS------------------------------------------------------
@@ -2919,19 +2915,15 @@ common::eqslin(
   if (icnvm == inc) {
     FEM_DO_SAFE(i, 1, isize) {
       if (y(i) != 0.f) {
-        //Relative error.
-        xdy = fem::dabs(x(i) / y(i));
+        xdy = fem::dabs(x(i) / y(i)); 		/// Relative error.
         if (xdy > eps) {
-          //Continue to higher orders.
-          if (nord < mord) {
+          if (nord < mord) { 				/// Continue to higher orders.
             nord++;
             //..........FIND ERROR IN RIGHT-HAND VECTOR.
             FEM_DO_SAFE(j, 1, isize) {
-              //Initialize r.
-              r = 0.e0;
+              r = 0.e0; 					/// Initialize r.
               FEM_DO_SAFE(k, 1, isize) {
-                //Left side with approximate sol
-                r += a0(j, k) * y(k);
+                r += a0[j][k] * y(k); 		/// Left side with approximate sol
               }
               //Subtract difference from right side.
               x(j) = b[j] - r;
@@ -2940,7 +2932,7 @@ common::eqslin(
             FEM_DO_SAFE(j, 1, isize - 1) {
               FEM_DO_SAFE(k, j + 1, isize) {
                 //Subtract off scaled coef
-                x(k) = x(k) - a(k, j) * x(j);
+                x(k) = x(k) - a[k][j] * x(j);
               }
             }
             //Go for another iteratiion.
@@ -3371,40 +3363,40 @@ common::sol(
       l = isize1 - l;
       //..........FILL I NUCLIDE COLUMN.
       if (j <= isize) {
-        a(j, i) += rj * ci;
+        a[j][i] += rj * ci;
       }
       if (k <= isize) {
-        a(k, i) = a(k, i) - rk * ci;
+        a[k][i] = a[k][i] - rk * ci;
       }
-      a(i, i) += ri * ci;
-      a(l, i) = a(l, i) - rl * ci;
+      a[i][i] += ri * ci;
+      a[l][i] = a[l][i] - rl * ci;
       //..........FILL J NUCLIDE COLUMN.
       if (j <= isize) {
-        a(j, j) += rj * cj;
+        a[j][j] += rj * cj;
         if (k <= isize) {
-          a(k, j) = a(k, j) - rk * cj;
+          a[k][j] = a[k][j] - rk * cj;
         }
-        a(i, j) += ri * cj;
-        a(l, j) = a(l, j) - rl * cj;
+        a[i][j] += ri * cj;
+        a[l][j] = a[l][j] - rl * cj;
       }
       //..........FILL K NUCLIDE COLUMN.
       if (k <= isize) {
         if (j <= isize) {
-          a(j, k) = a(j, k) - rj * ck;
+          a[j][k] = a[j][k] - rj * ck;
         }
-        a(k, k) += rk * ck;
-        a(i, k) = a(i, k) - ri * ck;
-        a(l, k) += rl * ck;
+        a[k][k] += rk * ck;
+        a[i][k] = a[i][k] - ri * ck;
+        a[l][k] += rl * ck;
       }
       //..........FILL L NUCLIDE COLUMN.
       if (j <= isize) {
-        a(j, l) = a(j, l) - rj * cl;
+        a[j][l] = a[j][l] - rj * cl;
       }
       if (k <= isize) {
-        a(k, l) += rk * cl;
+        a[k][l] += rk * cl;
       }
-      a(i, l) = a(i, l) - ri * cl;
-      a(l, l) += rl * cl;
+      a[i][l] = a[i][l] - ri * cl;
+      a[l][l] += rl * cl;
       //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
     }
     //n = 1,jsize
@@ -3420,17 +3412,17 @@ common::sol(
     FEM_DO_SAFE(j, 1, isize) {
       //Invert the columns.
       j1 = isize1 - j;
-      if (fem::dabs(a(j, i)) < bdln * y0(j1) / y0(i1)) {
+      if (abs(a[j][i]) < bdln * y0(j1) / y0(i1)) {
         //Set 0 if tiny.
-        a(j, i) = 0.e0;
+        a[j][i] = 0.e0;
       }
       else {
         //Bring dt over to other side.
-        a(j, i) = a(j, i) * dt;
+        a[j][i] = a[j][i] * dt;
       }
     }
     //Add identity matrix to a-matrix.
-    a(i, i) += 1.e0;
+    a[i][i] += 1.e0;
     //Initial abundances.
     b[i1] = y0(i);
   }
