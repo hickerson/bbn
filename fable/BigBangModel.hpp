@@ -486,11 +486,17 @@ struct common :
 	static const float dm[nnuc];
 	static const float reacpr[nrec][8];
 
-    arr<float> f;
-    arr<float> r;
-	arr<float,float> a;
-	arr<float> b;
-	arr<float> yx;
+    //arr<float> f;
+    //arr<float> r;
+	//arr<float,float> a;
+	//arr<float> b;
+	//arr<float> yx;
+	float f[nrec];
+	float r[nrec];
+	float a[nrec][nrec];
+	float b[nrec];
+	float yx[nrec];
+
 	/*
 	boost::numeric::ublas::matrix<float> a;
 	boost::numeric::ublas::vector<float> b;
