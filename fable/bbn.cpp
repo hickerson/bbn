@@ -1973,7 +1973,8 @@ common::rate1(
   common& cmn,
   float const& tph)
 {
-  //FEM_CMN_SVE(rate1);
+/*
+  FEM_CMN_SVE(rate1);
   // COMMON modpr
   float& tau = cmn.tau;
   arr_cref<float> xi(cmn.xi, dimension(3));
@@ -1985,7 +1986,6 @@ common::rate1(
   //
   //common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
-  /*
   if (is_called_first_time) {
     using fem::mbr; // member of variant common or equivalence
     {
@@ -2140,14 +2140,15 @@ struct start_save
 void
 common::start(common& cmn)
 {
-  //FEM_CMN_SVE(start);
+/*
+  FEM_CMN_SVE(start);
   // COMMON evolp1
   float& t9 = cmn.t9;
   float& hv = cmn.hv;
   const int nnuc = 26;
-  //arr_ref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+  arr_ref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
   // COMMON evolp3
-  //arr_ref<float> y0(cmn.y0, dimension(nnuc));
+  arr_ref<float> y0(cmn.y0, dimension(nnuc));
   // COMMON modpr
   float& tau = cmn.tau;
   arr_cref<float> c(cmn.c, dimension(3));
@@ -2158,7 +2159,6 @@ common::start(common& cmn)
   float& tnu = cmn.tnu;
   float& cnorm = cmn.cnorm;
   //
-  /*
   common_variant rates(cmn.common_rates, sve.rates_bindings);
   const int nrec = 88;
   if (is_called_first_time) {
@@ -2412,12 +2412,14 @@ void
 common::nudens(
   common& cmn)
 {
+	/*
   // COMMON modpr
   arr_cref<float> xi(cmn.xi, dimension(3));
   // COMMON nupar
   float& tnu = cmn.tnu;
   float& rhonu = cmn.rhonu;
   int& nu = cmn.nu;
+  */
   //
   //
   //----------LINKAGES.
@@ -2502,6 +2504,7 @@ void
 common::therm(
   common& cmn)
 {
+  /*
   // COMMON evolp1
   float& t9 = cmn.t9;
   float& phie = cmn.phie;
@@ -2513,7 +2516,6 @@ common::therm(
   // COMMON endens
   float& rnb = cmn.rnb;
   // COMMON besselcb
-  /*
   float& bl1 = cmn.bl1;
   float& bl2 = cmn.bl2;
   float& bl3 = cmn.bl3;
@@ -4802,6 +4804,7 @@ common::driver(
   //
 }
 
+/*
 struct run_save
 {
   arr<fem::str<22> > vtype;
@@ -4810,6 +4813,7 @@ struct run_save
     vtype(dimension(8), fem::fill0)
   {}
 };
+*/
 
 // Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
@@ -4856,7 +4860,7 @@ common::run(common& cmn)
   //
   //str_arr_ref<1> vtype(sve.vtype, dimension(8));
   //if (is_called_first_time) {
-    static const char* values[] = {
+    static const char* vtype[] = {
       	"baryon/photon ratio   ", 
 		"gravitational constant",
         "neutron lifetime      ", 
@@ -5164,7 +5168,7 @@ common::run(common& cmn)
           "(' ','Run ',a22,/,'    from ',1p,e12.5,' to ',1p,e12.5,"
           "' in increments of ',1p,e12.5)"),
           //vtype(inum(l)), rnum1(l), rnum2(l), rnum3(l);
-          inum(l), rnum1(l), rnum2(l), rnum3(l);
+          vtype[inum(l)-1], rnum1(l), rnum2(l), rnum3(l);
         //..........GET LOGS OF eta VALUES FOR LOGARITHMIC INCREMENTATION.
         //Work with exponents for eta incre
         if (inum(l) == 1) {
