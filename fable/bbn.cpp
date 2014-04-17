@@ -2851,7 +2851,7 @@ common::eqslin(
   mbad = 0;
   //..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
   FEM_DO_SAFE(i, 1, isize) {
-    x(i) = b(i); 		/// Right-hand vector.
+    x(i) = b[i]; 		/// Right-hand vector.
     y(i) = 0.f; 		/// Solution vector.
   }
   //..........SAVE MATRIX.
@@ -2934,7 +2934,7 @@ common::eqslin(
                 r += a0(j, k) * y(k);
               }
               //Subtract difference from right side.
-              x(j) = b(j) - r;
+              x(j) = b[j] - r;
             }
             //..........OPERATE ON RIGHT-HAND VECTOR.
             FEM_DO_SAFE(j, 1, isize - 1) {
@@ -3432,7 +3432,7 @@ common::sol(
     //Add identity matrix to a-matrix.
     a(i, i) += 1.e0;
     //Initial abundances.
-    b(i1) = y0(i);
+    b[i1] = y0(i);
   }
   //
   //50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -5601,13 +5601,13 @@ struct blockdata_unnamed_save
 common::common(
 		int argc,
 		char const* argv[])
-		:
-		fem::common(argc, argv),
-		f(dimension(nrec)),
-		r(dimension(nrec)),
-		a(nrec,nrec),
-		b(nrec,nrec),
-		yx(nrec,nrec)
+		//:
+		//fem::common(argc, argv),
+		//f(dimension(nrec)),
+		//r(dimension(nrec)),
+		//a(nrec,nrec),
+		//b(nrec,nrec),
+		//yx(nrec,nrec)
 {
 	/*
   FEM_CMN_SVE(blockdata_unnamed);
