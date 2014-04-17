@@ -2069,9 +2069,9 @@ common::rate1(
   float part4 = 0;
   if (xi(1) == 0.f) {
     //f(1) = thm(13) / tau; 	/// Forward rate for weak np reaction.
-    f[0] = thm(13) / tau; 	/// Forward rate for weak np reaction.
+    f[1] = thm(13) / tau; 	/// Forward rate for weak np reaction.
     //r(1) = thm(14) / tau; 	/// Reverse rate for weak np reaction.
-    r[0] = thm(14) / tau; 	/// Reverse rate for weak np reaction.
+    r[1] = thm(14) / tau; 	/// Reverse rate for weak np reaction.
   }
   else {
     //
@@ -2113,9 +2113,9 @@ common::rate1(
     part3 = xintd(cmn, 1., uplim3, func3, iter);
     part4 = xintd(cmn, 1., uplim4, func4, iter);
     //f(1) = part1 + part2; 		/// Add 2 integrals to get forward rate.
-    f[0] = part1 + part2; 		/// Add 2 integrals to get forward rate.
+    f[1] = part1 + part2; 		/// Add 2 integrals to get forward rate.
     //r(1) = part3 + part4; 		/// Add 2 integrals to get reverse rate.
-    r[0] = part3 + part4; 		/// Add 2 integrals to get reverse rate.
+    r[1] = part3 + part4; 		/// Add 2 integrals to get reverse rate.
     //(xi(1).eq.0.)
   }
   //
@@ -2325,7 +2325,7 @@ common::start(common& cmn)
     tnu = .00001f; 				/// Low temperature.
     rate1(cmn, 0.00001f); 		/// Find normalization constant at low temperature.
     //cnorm = 1 / tau / f(1);
-    cnorm = 1 / tau / f[0];
+    cnorm = 1 / tau / f[1];
   }
   y0(1) = y(1);
   y0(2) = y(2);
@@ -3254,109 +3254,109 @@ common::sol(
       }
       statement_201: 			/// 1-0-0-1 configuration.
       //ci = f(n); 				/// (Ref 1).
-      ci = f[n-1]; 				/// (Ref 1).
+      ci = f[n]; 				/// (Ref 1).
       cj = 0.f;
       ck = 0.f;
       //cl = r(n);
-      cl = r[n-1];
+      cl = r[n];
       goto statement_212;
       statement_202: 			/// 1-1-0-1 configuration.
       //r(n) = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f(n); 	/// (Ref 2).
-      r[n-1] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n-1]; 	/// (Ref 2).
+      r[n] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n]; 	/// (Ref 2).
       //f(n) = rhob * f(n);
-      f[n-1] = rhob * f[n-1];
+      f[n] = rhob * f[n];
       //ci = y(j) * f(n) / 2.f;
-      ci = y(j) * [n-1]) / 2.f;
+      ci = y(j) * [n]) / 2.f;
       //cj = y(i) * f(n) / 2.f;
-      cj = y(i) * f[n-1] / 2.f;
+      cj = y(i) * f[n] / 2.f;
       ck = 0;
       //cl = r(n);
-      cl = r[n-1];
+      cl = r[n];
       goto statement_212;
       statement_203: /// 1-1-1-1 configuration.
-      f[n-1] = rhob * f[n-1]; /// (Ref 3).
-      r[n-1] = rev(n) * ex(-q9(n) / t9) * f[n-1];
-      ci = y(j) * f[n-1] / 2.f;
-      cj = y(i) * f[n-1] / 2.f;
-      ck = y(l) * r[n-1] / 2.f;
-      cl = y(k) * r[n-1] / 2.f;
+      f[n] = rhob * f[n]; /// (Ref 3).
+      r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
+      ci = y(j) * f[n] / 2.f;
+      cj = y(i) * f[n] / 2.f;
+      ck = y(l) * r[n] / 2.f;
+      cl = y(k) * r[n] / 2.f;
       goto statement_212;
       //1-0-0-2 configuration.
       statement_204:
-      ci = f[n-1];
+      ci = f[n];
       cj = 0.f;
       ck = 0.f;
-      cl = y(l) * r[n-1] / 2.f;
+      cl = y(l) * r[n] / 2.f;
       goto statement_212;
       //1-1-0-2 configuration.
       statement_205:
-      f[n-1] = rhob * f[n-1];
+      f[n] = rhob * f[n];
       //(Ref 3).
-      r[n-1] = rev(n) * ex(-q9(n) / t9) * f[n-1];
-      ci = y(j) * f[n-1] / 2.f;
-      cj = y(i) * f[n-1] / 2.f;
+      r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
+      ci = y(j) * f[n] / 2.f;
+      cj = y(i) * f[n] / 2.f;
       ck = 0.f;
-      cl = y(l) * r[n-1] / 2.f;
+      cl = y(l) * r[n] / 2.f;
       goto statement_212;
       //2-0-1-1 configuration.
       statement_206:
-      f[n-1] = rhob * f[n-1];
+      f[n] = rhob * f[n];
       //(Ref 3).
-      r[n-1] = rev(n) * ex(-q9(n) / t9) * f[n-1];
-      ci = y(i) * f[n-1] / 2.f;
+      r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
+      ci = y(i) * f[n] / 2.f;
       cj = 0.f;
-      ck = y(l) * r[n-1] / 2.f;
-      cl = y(k) * r[n-1] / 2.f;
+      ck = y(l) * r[n] / 2.f;
+      cl = y(k) * r[n] / 2.f;
       goto statement_212;
       //3-0-0-1 configuration.
       statement_207:
       //(Ref 4).
-      r[n-1] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n-1];
-      f[n-1] = rhob * rhob * f[n-1];
-      ci = y(i) * y(i) * f[n-1] / 6.f;
+      r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
+      f[n] = rhob * rhob * f[n];
+      ci = y(i) * y(i) * f[n] / 6.f;
       cj = 0.f;
       ck = 0.f;
-      cl = r[n-1];
+      cl = r[n];
       goto statement_212;
       //2-1-0-1 configuration.
       statement_208:
       //(Ref 4).
-      r[n-1] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n-1];
-      f[n-1] = rhob * rhob * f[n-1];
-      ci = y(j) * y(i) * f[n-1] / 3.f;
-      cj = y(i) * y(i) * f[n-1] / 6.f;
+      r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
+      f[n] = rhob * rhob * f[n];
+      ci = y(j) * y(i) * f[n] / 3.f;
+      cj = y(i) * y(i) * f[n] / 6.f;
       ck = 0.f;
-      cl = r[n-1];
+      cl = r[n];
       goto statement_212;
       //1-1-1-2 configuration.
       statement_209:
-      f[n-1] = rhob * f[n-1];
+      f[n] = rhob * f[n];
       //(Ref 5)
-      r[n-1] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n-1];
-      ci = y(j) * f[n-1] / 2.f;
-      cj = y(i) * f[n-1] / 2.f;
-      ck = y(l) * y(l) * r[n-1] / 6.f;
-      cl = y(k) * y(l) * r[n-1] / 3.f;
+      r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+      ci = y(j) * f[n] / 2.f;
+      cj = y(i) * f[n] / 2.f;
+      ck = y(l) * y(l) * r[n] / 6.f;
+      cl = y(k) * y(l) * r[n] / 3.f;
       goto statement_212;
       //1-1-0-3 configuration.
       statement_210:
-      f[n-1] = rhob * f[n-1];
+      f[n] = rhob * f[n];
       //(Ref 5)
-      r[n-1] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n-1];
-      ci = y(j) * f[n-1] / 2.f;
-      cj = y(i) * f[n-1] / 2.f;
+      r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+      ci = y(j) * f[n] / 2.f;
+      cj = y(i) * f[n] / 2.f;
       ck = 0.f;
-      cl = y(l) * y(l) * r[n-1] / 6.f;
+      cl = y(l) * y(l) * r[n] / 6.f;
       goto statement_212;
       //2-0-2-1 configuration.
       statement_211:
-      f[n-1] = rhob * f[n-1];
+      f[n] = rhob * f[n];
       //(Ref 5)
-      r[n-1] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n-1];
-      ci = y(i) * f[n-1] / 2.f;
+      r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+      ci = y(i) * f[n] / 2.f;
       cj = 0.f;
-      ck = y(l) * y(k) * r[n-1] / 3.f;
-      cl = y(k) * y(k) * r[n-1] / 6.f;
+      ck = y(l) * y(k) * r[n] / 3.f;
+      cl = y(k) * y(k) * r[n] / 6.f;
       statement_212:
       //
       //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
