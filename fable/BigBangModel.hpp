@@ -101,9 +101,9 @@ struct common_modpr
     g(0),
     tau(0),
     xnu(0),
-    c(dimension(3), fem::fill0),
-    cosmo(0),
-    xi(dimension(3), fem::fill0)
+    //c(dimension(3), fem::fill0),
+    cosmo(0)//,
+    //xi(dimension(3), fem::fill0)
   {}
 };
 
