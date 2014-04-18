@@ -3415,7 +3415,7 @@ common::sol(
     FEM_DO_SAFE(j, 1, isize) {
       //Invert the columns.
       j1 = isize1 - j;
-      if (abs(a[j][i]) < bdln * y0(j1) / y0(i1)) {
+      if (abs(a[j][i]) < bdln * y0[j1] / y0[i1]) {
         //Set 0 if tiny.
         a[j][i] = 0.e0;
       }
