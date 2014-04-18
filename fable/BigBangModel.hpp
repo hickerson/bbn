@@ -182,13 +182,14 @@ struct common_evolp2
   float dt9;
   float dhv;
   float dphie;
-  arr<float> dydt;
+  //arr<float> dydt;
+  float dydt[nnuc+1];
 
   common_evolp2() :
     dt9(0),
     dhv(0),
-    dphie(0),
-    dydt(dimension(nnuc), fem::fill0)
+    dphie(0)//,
+    //dydt(dimension(nnuc), fem::fill0)
   {}
 };
 

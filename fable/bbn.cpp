@@ -633,8 +633,8 @@ common::setmod(
   //Default neutrino degeneracy parameter
   //
   //----------EARLY UNIVERSE MODEL PARAMETERS.
-  //c(1) is variation of gravitational con
-  //c(2) is neutron lifetime (sec).
+  //c[1] is variation of gravitational con
+  //c[2] is neutron lifetime (sec).
   //c(3) is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
@@ -929,13 +929,13 @@ common::check(common& cmn)
   //Gravitational constant.
   //Neutron lifetime (sec).
   //Number of neutrino species.
-  //c(1) is variation of gravitational constant.
-  //c(2) is neutron half-life (min).
+  //c[1] is variation of gravitational constant.
+  //c[2] is neutron half-life (min).
   //c(3) is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
-  //xi(1) is e neutrino degeneracy parameter.
-  //xi(2) is m neutrino degeneracy parameter.
+  //xi[1] is e neutrino degeneracy parameter.
+  //xi[2] is m neutrino degeneracy parameter.
   //xi(3) is t neutrino degeneracy parameter.
   //
   //----------DEFAULT VARIATIONAL PARAMETERS.
@@ -2032,8 +2032,8 @@ common::rate1(
   //----------EARLY UNIVERSE MODEL PARAMETERS.
   //Neutron lifetime.
   //Neutrino degeneracy parameters.
-  //xi(1) is e neutrino degeneracy param
-  //xi(2) is m neutrino degeneracy param
+  //xi[1] is e neutrino degeneracy param
+  //xi[2] is m neutrino degeneracy param
   //xi(3) is t neutrino degeneracy param
   //
   //----------DYNAMIC VARIABLES.
@@ -2230,8 +2230,8 @@ common::start(common& cmn)
   //Gravitational constant.
   //Neutron lifetime.
   //Number of neutrino species.
-  //c(1) is variation of grav. constant.
-  //c(2) is neutron lifetime (sec).
+  //c[1] is variation of grav. constant.
+  //c[2] is neutron lifetime (sec).
   //c(3) is number of neutrino species.
   //Neutrino degeneracy parameters.
   //
@@ -3092,7 +3092,8 @@ common::sol(
   int i1 = 0;
   int j1 = 0;
   int ierror = 0;
-  arr_1d<nnuc, float> yy(fem::fill0);
+  //arr_1d<nnuc, float> yy(fem::fill0);
+  float yy[nnuc+1];
   const int iw = 6;
   //
   //----------LINKAGES.
@@ -4523,11 +4524,11 @@ common::accum(
   //..........DIVIDE NUMBER FRACTION BY THAT OF PROTON.
   int i = 0;
   FEM_DO_SAFE(i, 1, cmn.isize) {
-    xout(it, i) = y[i] / y(2);
+    xout(it, i) = y[i] / y[2];
   }
   //Exception for proton.
   //xout(it, 2) = y(2) * am(2);
-  xout(it, 2) = y(2) * am[1];
+  xout(it, 2) = y[2] * am[1];
   //Exception for helium.
   //xout(it, 6) = y(6) * am(6);
   xout(it, 6) = y(6) * am[5];
@@ -4921,8 +4922,8 @@ common::run(common& cmn)
   //----------MODEL PARAMETERS.
   //Baryon-to-photon ratio.
   //c(1) is variation of gravitational constant.
-  //c(2) is neutron lifetime (sec).
-  //c(3) is number of neutrino species.
+  //c[2] is neutron lifetime (sec).
+  //c[3] is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
@@ -5333,9 +5334,9 @@ common::output(common& cmn)
   //Smallest abundances allowed.
   //
   //----------EARLY UNIVERSE MODEL PARAMETERS.
-  //c(1) is variation of gravitational c
-  //c(2) is neutron lifetime (sec).
-  //c(3) is number of neutrino species.
+  //c[1] is variation of gravitational c
+  //c[2] is neutron lifetime (sec).
+  //c[3] is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
@@ -5409,7 +5410,7 @@ common::output(common& cmn)
     "(' Model parameters:',/,'   g = ',f5.2,'/  tau = ',f6.2,'/  # nu = ',"
     "f5.2,'/  lambda = ',1p,e10.3,'/  xi-e = ',e10.3,'/  xi-m = ',e10.3,"
     "'/  xi-t = ',e10.3,/)"),
-    c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
+    c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
   //..........PRINT HEADINGS, ABUNDANCES FOR NEUTRON TO LI8.
   write(2,
     "(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
@@ -5483,7 +5484,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
+  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
   //..........PRINT HEADINGS, ABUNDANCES FOR D,T,HE3,HE4,LI7.
   write(iw,
     "(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
@@ -5507,7 +5508,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
+  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
   //..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
   write(iw,
     "(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
@@ -5534,7 +5535,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
+  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
   //..........PRINT ENERGY DENSITIES.
   write(iw,
     "(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
@@ -5556,7 +5557,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
+  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
   //..........PRINT THERMODYNAMIC QUANTITIES.
   write(iw,
     "(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
@@ -6127,9 +6128,9 @@ common::common(
   //Default accumulation increment.
   //
   //----------DEFAULT MODEL PARAMETERS.
-  //c0(1) is default variation of grav c
-  //c0(2) is default neutron half-life.
-  //c0(3) is default number of neutrinos
+  //c0[1] is default variation of grav c
+  //c0[2] is default neutron half-life.
+  //c0[3] is default number of neutrinos
   //Default cosmological constant.
   //Default neutrino degeneracy paramete
   //
@@ -6430,9 +6431,9 @@ program_new123(
   //Default neutrino degeneracy paramete
   //
   //----------EARLY UNIVERSE MODEL PARAMETERS.
-  //c(1) is variation of gravitational c
-  //c(2) is neutron lifetime (sec).
-  //c(3) is number of neutrino species.
+  //c[1] is variation of gravitational c
+  //c[2] is neutron lifetime (sec).
+  //c[3] is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
@@ -6519,12 +6520,12 @@ program_new123(
   cmn.t9f = cmn.t9f0; 						/// Final temperature.
   cmn.ytmin = cmn.ytmin0; 					/// Smallest abundances allowed.
   cmn.inc = cmn.inc0; 						/// Accumulation increment.
-  cmn.c(1) = cmn.c0(1); 					/// Variation of gravitational constant.
-  cmn.c(2) = cmn.c0(2); 					/// Neutron lifetime.
+  cmn.c[1] = cmn.c0[1]; 					/// Variation of gravitational constant.
+  cmn.c[2] = cmn.c0[2]; 					/// Neutron lifetime.
   cmn.c[2] = cmn.c0[2]; 					/// Number of neutrino species.
   cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
-  cmn.xi(1) = cmn.xi0(1); 					/// Electron degeneracy parameter.
-  cmn.xi(2) = cmn.xi0(2); 					/// Muon degeneracy parameter.
+  cmn.xi[1] = cmn.xi0[1]; 					/// Electron degeneracy parameter.
+  cmn.xi[2] = cmn.xi0[2]; 					/// Muon degeneracy parameter.
   cmn.xi[2] = cmn.xi0[2]; 					/// Tau degeneracy parameter.
   cmn.dt1 = cmn.dt0; 						/// Initial time step.
   cmn.eta1 = cmn.eta0; 						/// Baryon-to-photon ratio.
