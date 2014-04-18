@@ -539,6 +539,7 @@ struct common :
 	static float func5( common&, float const& );
 	static float func6( common&, float const& );
 
+	void rate0( common & );
 	void rate1( common &, float const& );
 	void rate2( common & );
 	void rate3( common & );

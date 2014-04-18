@@ -3258,7 +3258,7 @@ common::sol(
       //f(n) = rhob * f(n);
       f[n] = rhob * f[n];
       //ci = y(j) * f(n) / 2.f;
-      ci = y(j) * [n]) / 2.f;
+      ci = y(j) * f[n] / 2.f;
       //cj = y(i) * f(n) / 2.f;
       cj = y(i) * f[n] / 2.f;
       ck = 0;
@@ -3877,7 +3877,7 @@ common::rate3(
   //60--------PROTON, NEUTRON REACTIONS--------------------------------------------
   //
   //.......B12(p,n)C12................(Wagoner 1969)
-  f[45) = 4.02e+11f * t9m23 * ex(-12.12f / t913);
+  f[45] = 4.02e+11f * t9m23 * ex(-12.12f / t913);
   //
   //70--------PROTON, ALPHA REACTIONS----------------------------------------------
   //
@@ -6497,8 +6497,8 @@ program_new123(
     cmn.rev(i) = cmn.reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
     cmn.q9(i) = cmn.reacpr[i-1][8-1]; 			/// Energy released.
     //..........INITIALIZE REACTION RATES.
-    cmn.f[i) = 0; 							/// Forward rate coeff.
-    cmn.r(i) = 0; 							/// Reverse rate coeff.
+    cmn.f[i] = 0; 							/// Forward rate coeff.
+    cmn.r[i] = 0; 							/// Reverse rate coeff.
     //..........SET RUN OPTIONS TO DEFAULT.
   }
   cmn.irun = 1; 							/// Do full run.
