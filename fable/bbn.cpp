@@ -2319,10 +2319,8 @@ common::start(common& cmn)
       y[2] = 1.e-25f; 			/// Very little of protons.
     }
     else {
-      //Initial n abundance (Ref
-      y[1] = 1 / (ex(15.011f / t9 + xi[1]) + 1);
-      //Initial p abundance (Ref
-      y[2] = 1 / (ex(-15.011f / t9 - xi[1]) + 1);
+      y[1] = 1 / (ex(15.011f / t9 + xi[1]) + 1); 	/// Initial n abundance (Ref
+      y[2] = 1 / (ex(-15.011f / t9 - xi[1]) + 1); 	/// Initial p abundance (Ref
     }
   }
   //Electron neutrino degeneracy.
@@ -2373,8 +2371,8 @@ common::start(common& cmn)
   y0[2] = y[2];
   int i = 0;
   FEM_DO_SAFE(i, 4, cmn.isize) {
-    y(i) = cmn.ytmin; 						/// Set rest to minimum abundance.
-    y0(i) = y(i); 							/// Initialize abundances at beginning of iter
+    y[i] = cmn.ytmin; 						/// Set rest to minimum abundance.
+    y0[i] = y[i]; 							/// Initialize abundances at beginning of iter
   }
   //Compute weak decay rates.
   rate0(cmn);

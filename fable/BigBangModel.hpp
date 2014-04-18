@@ -149,9 +149,11 @@ struct common_recpr
 };
 */
 
+/*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_recpr::nrec;
 #endif
+*/
 
 struct common_evolp1
 {
@@ -160,13 +162,14 @@ struct common_evolp1
   float t9;
   float hv;
   float phie;
-  arr<float> y;
+  //arr<float> y;
+  float y[nnuc+1];
 
   common_evolp1() :
     t9(0),
     hv(0),
-    phie(0),
-    y(dimension(nnuc), fem::fill0)
+    phie(0)//,
+    //y(dimension(nnuc), fem::fill0)
   {}
 };
 
@@ -202,13 +205,14 @@ struct common_evolp3
   float t90;
   float hv0;
   float phie0;
-  arr<float> y0;
+  //arr<float> y0;
+  float y0[nnuc+1];
 
   common_evolp3() :
     t90(0),
     hv0(0),
-    phie0(0),
-    y0(dimension(nnuc), fem::fill0)
+    phie0(0)//,
+    //y0(dimension(nnuc), fem::fill0)
   {}
 };
 
