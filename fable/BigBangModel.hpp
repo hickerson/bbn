@@ -73,14 +73,16 @@ struct common_varpr
 
 struct common_modpr0
 {
-  arr<float> c0;
+  //arr<float> c0;
+  float c0[3+1];
   float cosmo0;
-  arr<float> xi0;
+  //arr<float> xi0;
+  float xi0[3+1];
 
   common_modpr0() :
-    c0(dimension(3), fem::fill0),
-    cosmo0(0),
-    xi0(dimension(3), fem::fill0)
+    //c0(dimension(3), fem::fill0),
+    cosmo0(0)//,
+    //xi0(dimension(3), fem::fill0)
   {}
 };
 
@@ -89,9 +91,11 @@ struct common_modpr
   float g;
   float tau;
   float xnu;
-  arr<float> c;
+  //arr<float> c;
+  float c[3+1];
   float cosmo;
-  arr<float> xi;
+  //arr<float> xi;
+  float xi[3+1];
 
   common_modpr() :
     g(0),
@@ -103,6 +107,7 @@ struct common_modpr
   {}
 };
 
+/*
 struct common_recpr0
 {
   static const int nrec = 88;
@@ -117,6 +122,7 @@ struct common_recpr0
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_recpr0::nrec;
 #endif
+*/
 
 struct common_recpr
 {
@@ -437,8 +443,8 @@ struct common :
 	common_varpr,
 	common_modpr0,
 	common_modpr,
-	common_recpr0,
-	common_recpr,
+	//common_recpr0,
+	//common_recpr,
 	common_evolp1,
 	common_evolp2,
 	common_evolp3,
