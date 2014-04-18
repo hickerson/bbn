@@ -2783,7 +2783,8 @@ common::eqslin(
   */
   int nord = 0;
   int i = 0;
-  arr_1d<nnuc, float> x(fem::fill0);
+  //arr_1d<nnuc, float> x(fem::fill0);
+  float x[nnuc+1];
   int j = 0;
   //arr<float, 2> a0(dimension(nnuc, nnuc), fem::fill0);
   float a0[nnuc+1][nnuc+1];			// TODO fix to zero indexing.
@@ -2894,7 +2895,7 @@ common::eqslin(
         a[j][i] = cx;
         //..........OPERATE ON RIGHT-HAND VECTOR.
         //Subtract off scaled coefficient.
-        x[j] = x[j] - cx * x(i);
+        x[j] = x[j] - cx * x[i];
       }
     }
   }
@@ -2926,7 +2927,7 @@ common::eqslin(
             FEM_DO_SAFE(j, 1, isize) {
               r = 0.e0; 					/// Initialize r.
               FEM_DO_SAFE(k, 1, isize) {
-                r += a0[j][k] * y(k); 		/// Left side with approximate sol
+                r += a0[j][k] * y[k]; 		/// Left side with approximate sol
               }
               //Subtract difference from right side.
               x[j] = b[j] - r;
@@ -2935,7 +2936,7 @@ common::eqslin(
             FEM_DO_SAFE(j, 1, isize - 1) {
               FEM_DO_SAFE(k, j + 1, isize) {
                 //Subtract off scaled coef
-                x(k) = x(k) - a[k][j] * x[j];
+                x[k] = x[k] - a[k][j] * x[j];
               }
             }
             //Go for another iteratiion.
