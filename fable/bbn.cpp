@@ -3438,7 +3438,7 @@ common::sol(
   }
   //..........OBTAIN DERIVATIVE.
   FEM_DO_SAFE(i, 1, isize) {
-    yy(i) = yx(isize1 - i); 				/// Abundance at t+dt.
+    yy(i) = yx[isize1 - i]; 				/// Abundance at t+dt.
     dydt(i) = (yy(i) - y0(i)) / dt; 		/// Take derivative.
   }
   //
