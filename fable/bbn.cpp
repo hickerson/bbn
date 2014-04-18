@@ -1043,7 +1043,7 @@ common::check(common& cmn)
   //
   //End of program.
   if (itime == 10) {
-    cmn.io.close[2];
+    cmn.io.close(2);
   }
   //
   //----------REFERENCES-----------------------------------------------------------
@@ -1780,7 +1780,7 @@ common::func5(
   //Exponential expression with neutrino
   //
   return_value = 1.f / (2 * pow2(3.14159f)) * pow3(x) / (
-    1.f + exp(x / cmn.tnu - cmn.xi(cmn.nu)));
+    1.f + exp(x / cmn.tnu - cmn.xi[cmn.nu]));
   return return_value;
 }
 
@@ -1827,7 +1827,7 @@ common::func6(
   //Exponential expression with neutrino
   //
   return_value = 1.f / (2 * pow2(3.14159f)) * pow3(x) / (
-    1.f + exp(x / cmn.tnu + cmn.xi(cmn.nu)));
+    1.f + exp(x / cmn.tnu + cmn.xi[cmn.nu]));
   return return_value;
 }
 
@@ -2464,18 +2464,17 @@ common::nudens(
   float uplim1 = 0;
   float uplim2 = 0;
   const int iter = 50;
-  if (fem::abs(xi(nu)) <= 0.03f) {
+  if (abs(xi[nu]) <= 0.03f) {
     //..........SMALL xi APPROXIMATION.
-    rhonu = 2.f * (pow2(3.14159f) / 30.f) * pow4((tnu)) * (
-      7.f / 8.f + (15.f / (4 * pow2(3.14159f))) * pow2(xi(
-      nu)) + (15.f / (8.f * pow4(3.14159f))) * pow4(xi(
-      nu)));
+    rhonu = 2.f * (pow2(3.14159f) / 30.f) * pow4((tnu))
+      * (7.f / 8.f + (15.f / (4 * pow2(3.14159f))) * pow2(xi[nu]) 
+	  + (15.f / (8.f * pow4(3.14159f))) * pow4(xir[nu]));
   }
   else {
-    if (fem::abs(xi(nu)) >= 30.f) {
+    if (abs(xi[nu]) >= 30.f) {
       //..........LARGE xi APPROXIMATION.
       rhonu = (pow4((tnu))) / (8.f * pow2(3.14159f)) *
-        pow4(xi(nu)) * (1 + 12.f * 1.645f / pow2(xi(nu)));
+        pow4(xi[nu]) * (1 + 12.f * 1.645f / pow2(xi[nu]));
     }
     else {
       //..........DO INTEGRATION
@@ -2677,7 +2676,7 @@ common::therm(
     bl3 * cosh3 / (3.f * z) - bl4 * cosh4 / (4.f * z) + bl5 * cosh5 /
     (5.f * z));
   //Nonde
-  if ((xi[1] == 0.f) && (xi(2) == 0.f) && (xi[2] == 0)) {
+  if ((xi[1] == 0.f) && (xi[2] == 0.f) && (xi[2] == 0)) {
     //(Ref 8)
     thm(8) = xnu * cmn.rhone0 * (pow(rnb, (4.f / 3.f)));
     //Include effects of neutrino degenera
@@ -4825,7 +4824,7 @@ void qvary(common& cmn, int index, float value)
 	else if (index == 4)
 		cmn.cosmo = value;
 	else if (index >= 5 && index <= 7)
-		cmn.xi(index) = value;
+		cmn.xi[index] = value;
 	else
 	{
 		std::cerr << "index out of bounds." << std::endl;
@@ -5261,10 +5260,11 @@ common::run(common& cmn)
 //========================IDENTIFICATION DIVISION================================
 //
 void
-output(common& cmn)
+common::output(common& cmn)
 {
   common_read read(cmn);
   common_write write(cmn);
+  /*
   float& cy = cmn.cy;
   float& ct = cmn.ct;
   float& t9i = cmn.t9i;
@@ -5284,6 +5284,7 @@ output(common& cmn)
   arr_cref<float> etaout(cmn.etaout, dimension(itmax));
   arr_cref<float> hubout(cmn.hubout, dimension(itmax));
   int& nout = cmn.nout;
+  */
   //
   const int iw = 6;
   const int ir = 5;
