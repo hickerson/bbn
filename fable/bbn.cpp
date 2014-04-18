@@ -668,7 +668,7 @@ common::setmod(
     "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
     "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
     "' Enter selection (1-10): ',$)"),
-    cmn.c(1), cmn.c(2), cmn.c(3), cmn.eta1, cmn.cosmo, cmn.xi(1), cmn.xi(2), cmn.xi(3);
+    cmn.c[1], cmn.c[2], cmn.c[3], cmn.eta1, cmn.cosmo, cmn.xi[1], cmn.xi[2], cmn.xi[3];
   //..........READ IN SELECTION NUMBER.
   read(ir, "(i2)"), inum;
   //
@@ -693,17 +693,17 @@ common::setmod(
   statement_210:
   write(iw,
     "(' ','Enter value for variation of gravitational ','constant: ',$)");
-  read(ir, star), cmn.c(1);
+  read(ir, star), cmn.c[1];
   goto statement_400;
   //Change neutron lifetime section.
   statement_220:
   write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
-  read(ir, star), cmn.c(2);
+  read(ir, star), cmn.c[2];
   goto statement_400;
   //Change number of neutrino species section.
   statement_230:
   write(iw, "(' ','Enter value for number of neutrino species: ',$)");
-  read(ir, star), cmn.c(3);
+  read(ir, star), cmn.c[2];
   goto statement_400;
   //Change baryon-to-photon ratio section.
   statement_240:
@@ -718,19 +718,19 @@ common::setmod(
   //Change neutrino degeneracy section.
   statement_260:
   write(iw, "(' ','Enter value for xi electron: ',$)");
-  read(ir, star), cmn.xi(1);
+  read(ir, star), cmn.xi[1];
   goto statement_400;
   //Change neutrino degeneracy section.
   statement_270:
   write(iw, "(' ','Enter value for xi muon: ',$)");
-  read(ir, star), cmn.xi(2);
+  read(ir, star), cmn.xi[2];
   goto statement_400;
   //Change neutrino degeneracy section.
   statement_280:
   write(iw, "(' ','Enter value for xi tauon: ',$)");
-  read(ir, star), cmn.xi(3);
-  if ((cmn.xi(3) != 0.f) && (cmn.c(3) < 3.f)) {
-    cmn.c(3) = 3.f;
+  read(ir, star), cmn.xi[2];
+  if ((cmn.xi[2] != 0.f) && (cmn.c[2] < 3.f)) {
+    cmn.c[2] = 3.f;
     write(iw, "(' ','Number of neutrinos set to 3')");
     write(iw, "(' ','Press <RETURN> to continue: ',$)");
     read(ir, star);
@@ -738,13 +738,13 @@ common::setmod(
   goto statement_400;
   //Reset all to default values section.
   statement_290:
-  cmn.c(1) = cmn.c0(1);
-  cmn.c(2) = cmn.c0(2);
-  cmn.c(3) = cmn.c0(3);
+  cmn.c[1] = cmn.c0[1];
+  cmn.c[2] = cmn.c0[2];
+  cmn.c[2] = cmn.c0[2];
   cmn.cosmo = cmn.cosmo0;
-  cmn.xi(1) = cmn.xi0(1);
-  cmn.xi(2) = cmn.xi0(2);
-  cmn.xi(3) = cmn.xi0(3);
+  cmn.xi[1] = cmn.xi0[1];
+  cmn.xi[2] = cmn.xi0[2];
+  cmn.xi[2] = cmn.xi0[2];
   cmn.eta1 = cmn.eta0;
   write(iw,
     "(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
@@ -1035,7 +1035,7 @@ common::check(common& cmn)
     xout(it, 6) = xout(it, 6) - 0.0003f;
     // my correction for fitted rates+coarse steps
     //Output N_nu, tau_n, eta, H2, He3, He4, an
-    write(3, "(7(e13.5))"), c(3), c(2), etaout(it), xout(it, 3),
+    write(3, "(7(e13.5))"), c[2], c[2], etaout(it), xout(it, 3),
       xout(it, 5), xout(it, 6), xout(it, 8);
   }
   //
@@ -1043,7 +1043,7 @@ common::check(common& cmn)
   //
   //End of program.
   if (itime == 10) {
-    cmn.io.close(3);
+    cmn.io.close[2];
   }
   //
   //----------REFERENCES-----------------------------------------------------------
@@ -1247,10 +1247,10 @@ knux(
     y = (z / 2);
     coeff = fem::alog(y);
     //..........VALUES FOR i0(z) and i1(z).
-    bi0 = ci0(1);
-    bi1 = ci1(1);
-    bk0 = ck0(1);
-    bk1 = ck1(1);
+    bi0 = ci0[1];
+    bi1 = ci1[1];
+    bk0 = ck0[1];
+    bk1 = ck1[1];
     FEM_DO_SAFE(i, 2, 7) {
       int n = 2 * (i - 1);
       float p = pow(t,n);
@@ -1269,8 +1269,8 @@ knux(
     y = (2.0f / z);
     coeff = (ex(-z) / sqrt(z));
     //..........VALUES FOR k0(z) and k1(z).
-    bk0 = c0(1);
-    bk1 = c1(1);
+    bk0 = c0[1];
+    bk1 = c1[1];
     FEM_DO_SAFE(i, 2, 7) {
       bk0 += c0(i) * pow(y, (i - 1));
       bk1 += c1(i) * pow(y, (i - 1));
@@ -1548,7 +1548,7 @@ common::func1(
   else {
 	// TODO don't recompute 
     part1 = 1 / (1 + ex(-.511f * x / cmn.t9mev));
-    part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - cmn.xi(1)));
+    part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
     return cmn.cnorm * x * pow2((x - 2.531f)) * pow(
       (pow2(x) - 1), 0.5) * part1 * part2;
   }
@@ -1603,7 +1603,7 @@ common::func2(
   }
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi(1)));
+    part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
     return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
@@ -1659,7 +1659,7 @@ common::func3(
   }
   else {
     part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + cmn.xi(1)));
+    part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + cmn.xi[1]));
     return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
@@ -1716,7 +1716,7 @@ common::func4(
   }
   else {
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
-    part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + cmn.xi(1)));
+    part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + cmn.xi[1]));
     return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
       (pow2(x) - 1), .5f) * part1 * part2;
   }
@@ -1731,7 +1731,7 @@ common::func4(
 	const float me = 0.511;
 	const float K = x - 2.531;
     const float part1 = 1 + exp(+me * x / cmn.t9mev);
-    const float part2 = 1 + exp(-K*(.511f / cmn.tnmev) + xi(1));
+    const float part2 = 1 + exp(-K*(.511f / cmn.tnmev) + xi[1]);
     return cmn.cnorm * x * K * K * sqrt(x*x - 1) / (part1 * part2);
   }
   */
@@ -2073,7 +2073,7 @@ common::rate1(
   float part2 = 0;
   float part3 = 0;
   float part4 = 0;
-  if (xi(1) == 0) {
+  if (xi[1] == 0) {
     //f(1) = thm(13) / tau; 	/// Forward rate for weak np reaction.
     f[1] = thm(13) / tau; 	/// Forward rate for weak np reaction.
     //r(1) = thm(14) / tau; 	/// Reverse rate for weak np reaction.
@@ -2089,13 +2089,13 @@ common::rate1(
     tnmev = cmn.tnu * .086171f;
     //..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
     w[1] = (-(t9mev / .511f) * (-88.722f));
-    w[2] = ((tnmev / .511f) * (88.029f + xi(1)) + 2.531f);
+    w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
     x[1] = ((t9mev / .511f) * (88.029f));
-    x[2] = (-(tnmev / .511f) * (-88.722f + xi(1)) - 2.531f);
+    x[2] = (-(tnmev / .511f) * (-88.722f + xi[1]) - 2.531f);
     y[1] = (-(t9mev / .511f) * (-88.722f));
-    y[2] = ((tnmev / .511f) * (88.029f - xi(1)) - 2.531f);
+    y[2] = ((tnmev / .511f) * (88.029f - xi[1]) - 2.531f);
     z[1] = ((t9mev / .511f) * (88.029f));
-    z[2] = (-(tnmev / .511f) * (-88.722f - xi(1)) + 2.531f);
+    z[2] = (-(tnmev / .511f) * (-88.722f - xi[1]) + 2.531f);
     //..........COMPARE LIMITS AND TAKE LARGER OF THE TWO.
     uplim1 = fem::abs(w[1]);
     uplim2 = fem::abs(x[1]);
@@ -2297,44 +2297,44 @@ common::start(common& cmn)
   //..........MODEL SETTINGS.
   //Modify gravitational constant.
   const float const2 = 6.6700e-8f;
-  cmn.g = const2 * c(1);
+  cmn.g = const2 * c[1];
   //Convert n half-life (min) to lifetim
-  tau = c(2);
+  tau = c[2];
   //Coulomb correction (Ref 2).
   tau = tau / 0.98f;
   //Number of neutrino species.
-  cmn.xnu = c(3);
+  cmn.xnu = c[2];
   //
   //30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
   //
   //Overabundance of antineut
-  if ((15.011f / t9 + xi(1)) > 58.f) {
-    y(1) = 1.e-25f; 			/// Very little of neutrons.
-    y(2) = 1.f; 				/// Essentially all protons.
+  if ((15.011f / t9 + xi[1]) > 58.f) {
+    y[1] = 1.e-25f; 			/// Very little of neutrons.
+    y[2] = 1.f; 				/// Essentially all protons.
   }
   else {
     //Overabundance of neutrino
-    if ((15.011f / t9 + xi(1)) <  - 58.f) {
-      y(1) = 1.f; 				/// Essentially all neutrons.
-      y(2) = 1.e-25f; 			/// Very little of protons.
+    if ((15.011f / t9 + xi[1]) <  - 58.f) {
+      y[1] = 1.f; 				/// Essentially all neutrons.
+      y[2] = 1.e-25f; 			/// Very little of protons.
     }
     else {
       //Initial n abundance (Ref
-      y(1) = 1 / (ex(15.011f / t9 + xi(1)) + 1);
+      y[1] = 1 / (ex(15.011f / t9 + xi[1]) + 1);
       //Initial p abundance (Ref
-      y(2) = 1 / (ex(-15.011f / t9 - xi(1)) + 1);
+      y[2] = 1 / (ex(-15.011f / t9 - xi[1]) + 1);
     }
   }
   //Electron neutrino degeneracy.
-  if (xi(1) != 0.f) {
+  if (xi[1] != 0.f) {
     cnorm = 1.;
     tnu = .00001f; 				/// Low temperature.
     rate1(cmn, 0.00001f); 		/// Find normalization constant at low temperature.
     //cnorm = 1 / tau / f(1);
     cnorm = 1 / tau / f[1];
   }
-  y0(1) = y(1);
-  y0(2) = y(2);
+  y0[1] = y[1];
+  y0[2] = y[2];
   //
   //40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
   //
@@ -2358,19 +2358,19 @@ common::start(common& cmn)
   float bn5 = getBesselN(5*z);
   */
   hv = 3.3683e+4f * cmn.eta1 * 2.75; 		/// (Ref 4 but with final eta).
-  cmn.phie = hv * (1.784e-5f * y(2)) / 
+  cmn.phie = hv * (1.784e-5f * y[2]) / 
   	(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
 											/// Chemical potential of electron (Ref 5).
   rhob0 = hv * pow3(t9); 					/// TODO Baryon density. 
   //Nonde
-  if ((xi(1) == 0) && (xi(2) == 0) && (xi(3) == 0)) {
+  if ((xi[1] == 0) && (xi[2] == 0) && (xi[2] == 0)) {
     cmn.rhone0 = 7.366f * pow4(t9); 		/// Electron neutrino density (Ref 6).
   }
   //
   //50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
   //
-  y(3) = y(1) * y(2) * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); /// (Ref 7).
-  y0(3) = y(3);
+  y[2] = y[1] * y[2] * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); /// (Ref 7).
+  y0[2] = y[2];
   int i = 0;
   FEM_DO_SAFE(i, 4, cmn.isize) {
     y(i) = cmn.ytmin; 						/// Set rest to minimum abundance.
@@ -2677,7 +2677,7 @@ common::therm(
     bl3 * cosh3 / (3.f * z) - bl4 * cosh4 / (4.f * z) + bl5 * cosh5 /
     (5.f * z));
   //Nonde
-  if ((xi(1) == 0.f) && (xi(2) == 0.f) && (xi(3) == 0)) {
+  if ((xi[1] == 0.f) && (xi(2) == 0.f) && (xi[2] == 0)) {
     //(Ref 8)
     thm(8) = xnu * cmn.rhone0 * (pow(rnb, (4.f / 3.f)));
     //Include effects of neutrino degenera
@@ -5410,7 +5410,7 @@ output(common& cmn)
     "(' Model parameters:',/,'   g = ',f5.2,'/  tau = ',f6.2,'/  # nu = ',"
     "f5.2,'/  lambda = ',1p,e10.3,'/  xi-e = ',e10.3,'/  xi-m = ',e10.3,"
     "'/  xi-t = ',e10.3,/)"),
-    c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
+    c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
   //..........PRINT HEADINGS, ABUNDANCES FOR NEUTRON TO LI8.
   write(2,
     "(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
@@ -5484,7 +5484,7 @@ output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
+  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
   //..........PRINT HEADINGS, ABUNDANCES FOR D,T,HE3,HE4,LI7.
   write(iw,
     "(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
@@ -5508,7 +5508,7 @@ output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
+  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
   //..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
   write(iw,
     "(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
@@ -5535,7 +5535,7 @@ output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
+  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
   //..........PRINT ENERGY DENSITIES.
   write(iw,
     "(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
@@ -5557,7 +5557,7 @@ output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c(1), c(2), c(3), cosmo, xi(1), xi(2), xi(3);
+  write(iw, format_3102), c(1), c(2), c[2], cosmo, xi(1), xi(2), xi[2];
   //..........PRINT THERMODYNAMIC QUANTITIES.
   write(iw,
     "(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
@@ -6522,11 +6522,11 @@ program_new123(
   cmn.inc = cmn.inc0; 						/// Accumulation increment.
   cmn.c(1) = cmn.c0(1); 					/// Variation of gravitational constant.
   cmn.c(2) = cmn.c0(2); 					/// Neutron lifetime.
-  cmn.c(3) = cmn.c0(3); 					/// Number of neutrino species.
+  cmn.c[2] = cmn.c0[2]; 					/// Number of neutrino species.
   cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
   cmn.xi(1) = cmn.xi0(1); 					/// Electron degeneracy parameter.
   cmn.xi(2) = cmn.xi0(2); 					/// Muon degeneracy parameter.
-  cmn.xi(3) = cmn.xi0(3); 					/// Tau degeneracy parameter.
+  cmn.xi[2] = cmn.xi0[2]; 					/// Tau degeneracy parameter.
   cmn.dt1 = cmn.dt0; 						/// Initial time step.
   cmn.eta1 = cmn.eta0; 						/// Baryon-to-photon ratio.
   //..........ACCEPT RETURN TO CONTINUE.
