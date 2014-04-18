@@ -124,7 +124,6 @@ const int common_recpr0::nrec;
 #endif
 */
 
-/*
 struct common_recpr
 {
   static const int nrec = 88;
@@ -147,7 +146,6 @@ struct common_recpr
     q9(dimension(nrec), fem::fill0)
   {}
 };
-*/
 
 /*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
@@ -450,7 +448,7 @@ struct common :
 	common_modpr0,
 	common_modpr,
 	//common_recpr0,
-	//common_recpr,
+	common_recpr,
 	common_evolp1,
 	common_evolp2,
 	common_evolp3,

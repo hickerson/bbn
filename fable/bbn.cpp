@@ -2939,7 +2939,7 @@ common::eqslin(
                 x[k] = x[k] - a[k][j] * x[j];
               }
             }
-            //Go for another iteratiion.
+            //Go for another iteration.
             goto statement_300;
           }
           else {
@@ -3281,7 +3281,7 @@ common::sol(
       ci = f[n];
       cj = 0.f;
       ck = 0.f;
-      cl = y(l) * r[n] / 2.f;
+      cl = y[l] * r[n] / 2.f;
       goto statement_212;
       //1-1-0-2 configuration.
       statement_205:
@@ -3291,7 +3291,7 @@ common::sol(
       ci = y[j] * f[n] / 2.f;
       cj = y[i] * f[n] / 2.f;
       ck = 0.f;
-      cl = y(l) * r[n] / 2.f;
+      cl = y[l] * r[n] / 2.f;
       goto statement_212;
       //2-0-1-1 configuration.
       statement_206:
@@ -3300,8 +3300,8 @@ common::sol(
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
       ci = y[i] * f[n] / 2.f;
       cj = 0.f;
-      ck = y(l) * r[n] / 2.f;
-      cl = y(k) * r[n] / 2.f;
+      ck = y[l] * r[n] / 2.f;
+      cl = y[k] * r[n] / 2.f;
       goto statement_212;
       //3-0-0-1 configuration.
       statement_207:
@@ -3330,8 +3330,8 @@ common::sol(
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
       ci = y[j] * f[n] / 2.f;
       cj = y[i] * f[n] / 2.f;
-      ck = y(l) * y(l) * r[n] / 6.f;
-      cl = y(k) * y(l) * r[n] / 3.f;
+      ck = y[l] * y[l] * r[n] / 6.f;
+      cl = y[k] * y[l] * r[n] / 3.f;
       goto statement_212;
       //1-1-0-3 configuration.
       statement_210:
@@ -3341,7 +3341,7 @@ common::sol(
       ci = y[j] * f[n] / 2.f;
       cj = y[i] * f[n] / 2.f;
       ck = 0.f;
-      cl = y(l) * y(l) * r[n] / 6.f;
+      cl = y[l] * y[l] * r[n] / 6.f;
       goto statement_212;
       //2-0-2-1 configuration.
       statement_211:
@@ -3350,8 +3350,8 @@ common::sol(
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
       ci = y[i] * f[n] / 2.f;
       cj = 0.f;
-      ck = y(l) * y(k) * r[n] / 3.f;
-      cl = y(k) * y(k) * r[n] / 6.f;
+      ck = y[l] * y[k] * r[n] / 3.f;
+      cl = y[k] * y[k] * r[n] / 6.f;
       statement_212:
       //
       //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
