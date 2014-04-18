@@ -4531,7 +4531,7 @@ common::accum(
   xout(it, 2) = y[2] * am[1];
   //Exception for helium.
   //xout(it, 6) = y(6) * am(6);
-  xout(it, 6) = y(6) * am[5];
+  xout(it, 6) = y[6] * am[5];
   //..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
   //Li8 to O16.
   xout(it, 10) += xout(it, 11) + xout(it, 12) + xout(it, 13) + xout(it,
@@ -6590,7 +6590,7 @@ program_new123(
   goto statement_500;
   //Output section.
   statement_450:
-  output(cmn);
+  cmn.output(cmn);
   goto statement_500;
   //Exit section.
   statement_460:
