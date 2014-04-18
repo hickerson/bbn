@@ -2060,10 +2060,10 @@ common::rate1(
   //arr_1d<2, float> x(fem::fill0);
   //arr_1d<2, float> y(fem::fill0);
   //arr_1d<2, float> z(fem::fill0);
-  float w[2+1];
-  float x[2+1];
-  float y[2+1];
-  float z[2+1];
+  float _w[2+1];
+  float _x[2+1];
+  float _y[2+1];
+  float _z[2+1];
   float uplim1 = 0;
   float uplim2 = 0;
   float uplim3 = 0;
@@ -2088,30 +2088,30 @@ common::rate1(
     //Convert neutrino temp to units of Me
     tnmev = cmn.tnu * .086171f;
     //..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
-    w[1] = (-(t9mev / .511f) * (-88.722f));
-    w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
-    x[1] = ((t9mev / .511f) * (88.029f));
-    x[2] = (-(tnmev / .511f) * (-88.722f + xi[1]) - 2.531f);
-    y[1] = (-(t9mev / .511f) * (-88.722f));
-    y[2] = ((tnmev / .511f) * (88.029f - xi[1]) - 2.531f);
-    z[1] = ((t9mev / .511f) * (88.029f));
-    z[2] = (-(tnmev / .511f) * (-88.722f - xi[1]) + 2.531f);
+    _w[1] = (-(t9mev / .511f) * (-88.722f));
+    _w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
+    _x[1] = ((t9mev / .511f) * (88.029f));
+    _x[2] = (-(tnmev / .511f) * (-88.722f + xi[1]) - 2.531f);
+    _y[1] = (-(t9mev / .511f) * (-88.722f));
+    _y[2] = ((tnmev / .511f) * (88.029f - xi[1]) - 2.531f);
+    _z[1] = ((t9mev / .511f) * (88.029f));
+    _z[2] = (-(tnmev / .511f) * (-88.722f - xi[1]) + 2.531f);
     //..........COMPARE LIMITS AND TAKE LARGER OF THE TWO.
-    uplim1 = fem::abs(w[1]);
-    uplim2 = fem::abs(x[1]);
-    uplim3 = fem::abs(y[1]);
-    uplim4 = fem::abs(z[1]);
-    if (uplim1 < abs(w[2])) {
-      uplim1 = w[2];
+    uplim1 = abs(_w[1]);
+    uplim2 = abs(_x[1]);
+    uplim3 = abs(_y[1]);
+    uplim4 = abs(_z[1]);
+    if (uplim1 < abs(_w[2])) {
+      uplim1 = _w[2];
     }
-    if (uplim2 < abs(x[2])) {
-      uplim2 = x[2];
+    if (uplim2 < abs(_x[2])) {
+      uplim2 = _x[2];
     }
-    if (uplim3 < abs(y[2])) {
-      uplim3 = y[2];
+    if (uplim3 < abs(_y[2])) {
+      uplim3 = _y[2];
     }
-    if (uplim4 < abs(z[2])) {
-      uplim4 = z[2];
+    if (uplim4 < abs(_z[2])) {
+      uplim4 = _z[2];
     }
     //..........EVALUATE THE INTEGRALS NUMERICALLY.
     part1 = xintd(cmn, 1., uplim1, func1, iter);

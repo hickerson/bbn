@@ -124,6 +124,7 @@ const int common_recpr0::nrec;
 #endif
 */
 
+/*
 struct common_recpr
 {
   static const int nrec = 88;
@@ -146,6 +147,7 @@ struct common_recpr
     q9(dimension(nrec), fem::fill0)
   {}
 };
+*/
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_recpr::nrec;
@@ -537,6 +539,7 @@ struct common :
 	void sol( common&, int const&);
 	void derivs( common&, int const& );
 	void accum( common& );
+	void output( common& );
 
 	static float func1( common&, float const& );
 	static float func2( common&, float const& );
