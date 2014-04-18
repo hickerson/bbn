@@ -4756,12 +4756,12 @@ common::driver(
   t += dt;
   //..........STORE AND INCREMENT VALUES (Ref 3).
   FEM_DO_SAFE(i, 1, mvar) {
-    v0[i] = v[i];
-    dvdt0[i] = dvdt[i];
-    v[i] = v0[i] + dvdt0[i] * dt;
+    v0(i) = v(i);
+    dvdt0(i) = dvdt(i);
+    v(i) = v0(i) + dvdt0(i) * dt;
     //Set at minimum
-    if ((i >= 4) && (v[i] < ytmin)) {
-      v[i] = ytmin;
+    if ((i >= 4) && (v(i) < ytmin)) {
+      v(i) = ytmin;
     }
   }
   //
@@ -4777,10 +4777,10 @@ common::driver(
   check(cmn);
   //..........INCREMENT VALUES.
   FEM_DO_SAFE(i, 1, mvar) {
-    v[i] = v0[i] + .5f * (dvdt[i] + dvdt0[i]) * dt;
+    v(i) = v0(i) + .5f * (dvdt(i) + dvdt0(i)) * dt;
     //Set at minimum
-    if ((i >= 4) && (v[i] < ytmin)) {
-      v[i] = ytmin;
+    if ((i >= 4) && (v(i) < ytmin)) {
+      v(i) = ytmin;
     }
   }
   goto statement_200;
@@ -4819,7 +4819,7 @@ void qvary(common& cmn, int index, float value)
 	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 	//
 	if (index >= 1 && index <= 3)
-		cmn.c(index) = value;
+		cmn.c[index] = value;
 	else if (index == 4)
 		cmn.cosmo = value;
 	else if (index >= 5 && index <= 7)
