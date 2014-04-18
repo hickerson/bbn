@@ -2466,7 +2466,7 @@ common::nudens(
     //..........SMALL xi APPROXIMATION.
     rhonu = 2.f * (pow2(3.14159f) / 30.f) * pow4((tnu))
       * (7.f / 8.f + (15.f / (4 * pow2(3.14159f))) * pow2(xi[nu]) 
-	  + (15.f / (8.f * pow4(3.14159f))) * pow4(xir[nu]));
+	  + (15.f / (8.f * pow4(3.14159f))) * pow4(xi[nu]));
   }
   else {
     if (abs(xi[nu]) >= 30.f) {
@@ -2476,8 +2476,8 @@ common::nudens(
     }
     else {
       //..........DO INTEGRATION
-      uplim1 = (88.029f + xi(nu)) * tnu;
-      uplim2 = (88.029f - xi(nu)) * tnu;
+      uplim1 = (88.029f + xi[nu]) * tnu;
+      uplim2 = (88.029f - xi[nu]) * tnu;
       if (uplim2 <= 0.) {
         rhonu = xintd(cmn, 0, uplim1, func5, iter);
       }
@@ -2855,16 +2855,15 @@ common::eqslin(
   mbad = 0;
   //..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
   FEM_DO_SAFE(i, 1, isize) {
-    x(i) = b[i]; 		/// Right-hand vector.
-    y(i) = 0.f; 		/// Solution vector.
+    x[i] = b[i]; 		/// Right-hand vector.
+    y[i] = 0; 			/// Solution vector.
   }
   //..........SAVE MATRIX.
   //Monitor convergence.
   if (icnvm == inc) {
     FEM_DO_SAFE(i, 1, isize) {
       FEM_DO_SAFE(j, 1, isize) {
-        //Initial value of coefficient array.
-        a0[j][i] = a[j][i];
+        a0[j][i] = a[j][i]; 	/// Initial value of coefficient array.
       }
     }
   }
@@ -2895,7 +2894,7 @@ common::eqslin(
         a[j][i] = cx;
         //..........OPERATE ON RIGHT-HAND VECTOR.
         //Subtract off scaled coefficient.
-        x(j) = x(j) - cx * x(i);
+        x[j] = x[j] - cx * x(i);
       }
     }
   }
@@ -2903,23 +2902,23 @@ common::eqslin(
   //30--------DO BACK SUBSTITUTION-------------------------------------------------
   //
   statement_300:
-  x(isize) = x(isize) / a[isize][isize]; 	/// Solution for ultimate position.
-  y(isize) += x(isize);
+  x[isize] = x[isize] / a[isize][isize]; 	/// Solution for ultimate position.
+  y[isize] += x[isize];
   FEM_DOSTEP(i, isize - 1, 1, -1) { 		/// From i = penultimate to i = 1.
     sum = 0.e0;
     FEM_DO_SAFE(j, i + 1, isize) {
-      sum += a[i][j] * x(j); 				/// Sum up all previous terms.
+      sum += a[i][j] * x[j]; 				/// Sum up all previous terms.
     }
-    x(i) = (x(i) - sum) / a[i][i];
-    y(i) += x(i); 							/// Add difference to initial value.
+    x[i] = (x[i] - sum) / a[i][i];
+    y[i] += x[i]; 							/// Add difference to initial value.
   }
   //
   //40--------TESTS AND EXITS------------------------------------------------------
   //
   if (icnvm == inc) {
     FEM_DO_SAFE(i, 1, isize) {
-      if (y(i) != 0.f) {
-        xdy = fem::dabs(x(i) / y(i)); 		/// Relative error.
+      if (y[i] != 0.f) {
+        xdy = fem::dabs(x[i] / y[i]); 		/// Relative error.
         if (xdy > eps) {
           if (nord < mord) { 				/// Continue to higher orders.
             nord++;
@@ -2930,13 +2929,13 @@ common::eqslin(
                 r += a0[j][k] * y(k); 		/// Left side with approximate sol
               }
               //Subtract difference from right side.
-              x(j) = b[j] - r;
+              x[j] = b[j] - r;
             }
             //..........OPERATE ON RIGHT-HAND VECTOR.
             FEM_DO_SAFE(j, 1, isize - 1) {
               FEM_DO_SAFE(k, j + 1, isize) {
                 //Subtract off scaled coef
-                x(k) = x(k) - a[k][j] * x(j);
+                x(k) = x(k) - a[k][j] * x[j];
               }
             }
             //Go for another iteratiion.
@@ -3261,9 +3260,9 @@ common::sol(
       //f(n) = rhob * f(n);
       f[n] = rhob * f[n];
       //ci = y(j) * f(n) / 2.f;
-      ci = y(j) * f[n] / 2.f;
+      ci = y[j] * f[n] / 2.f;
       //cj = y(i) * f(n) / 2.f;
-      cj = y(i) * f[n] / 2.f;
+      cj = y[i] * f[n] / 2.f;
       ck = 0;
       //cl = r(n);
       cl = r[n];
@@ -3271,10 +3270,10 @@ common::sol(
       statement_203: /// 1-1-1-1 configuration.
       f[n] = rhob * f[n]; /// (Ref 3).
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y(j) * f[n] / 2.f;
-      cj = y(i) * f[n] / 2.f;
-      ck = y(l) * r[n] / 2.f;
-      cl = y(k) * r[n] / 2.f;
+      ci = y[j] * f[n] / 2.f;
+      cj = y[i] * f[n] / 2.f;
+      ck = y[l] * r[n] / 2.f;
+      cl = y[k] * r[n] / 2.f;
       goto statement_212;
       //1-0-0-2 configuration.
       statement_204:
@@ -3288,8 +3287,8 @@ common::sol(
       f[n] = rhob * f[n];
       //(Ref 3).
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y(j) * f[n] / 2.f;
-      cj = y(i) * f[n] / 2.f;
+      ci = y[j] * f[n] / 2.f;
+      cj = y[i] * f[n] / 2.f;
       ck = 0.f;
       cl = y(l) * r[n] / 2.f;
       goto statement_212;
@@ -3298,7 +3297,7 @@ common::sol(
       f[n] = rhob * f[n];
       //(Ref 3).
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y(i) * f[n] / 2.f;
+      ci = y[i] * f[n] / 2.f;
       cj = 0.f;
       ck = y(l) * r[n] / 2.f;
       cl = y(k) * r[n] / 2.f;
@@ -3308,7 +3307,7 @@ common::sol(
       //(Ref 4).
       r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
       f[n] = rhob * rhob * f[n];
-      ci = y(i) * y(i) * f[n] / 6.f;
+      ci = y[i] * y[i] * f[n] / 6.f;
       cj = 0.f;
       ck = 0.f;
       cl = r[n];
@@ -3318,8 +3317,8 @@ common::sol(
       //(Ref 4).
       r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
       f[n] = rhob * rhob * f[n];
-      ci = y(j) * y(i) * f[n] / 3.f;
-      cj = y(i) * y(i) * f[n] / 6.f;
+      ci = y[j] * y[i] * f[n] / 3.f;
+      cj = y[i] * y[i] * f[n] / 6.f;
       ck = 0.f;
       cl = r[n];
       goto statement_212;
@@ -3328,8 +3327,8 @@ common::sol(
       f[n] = rhob * f[n];
       //(Ref 5)
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y(j) * f[n] / 2.f;
-      cj = y(i) * f[n] / 2.f;
+      ci = y[j] * f[n] / 2.f;
+      cj = y[i] * f[n] / 2.f;
       ck = y(l) * y(l) * r[n] / 6.f;
       cl = y(k) * y(l) * r[n] / 3.f;
       goto statement_212;
@@ -3338,8 +3337,8 @@ common::sol(
       f[n] = rhob * f[n];
       //(Ref 5)
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y(j) * f[n] / 2.f;
-      cj = y(i) * f[n] / 2.f;
+      ci = y[j] * f[n] / 2.f;
+      cj = y[i] * f[n] / 2.f;
       ck = 0.f;
       cl = y(l) * y(l) * r[n] / 6.f;
       goto statement_212;
@@ -3348,7 +3347,7 @@ common::sol(
       f[n] = rhob * f[n];
       //(Ref 5)
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y(i) * f[n] / 2.f;
+      ci = y[i] * f[n] / 2.f;
       cj = 0.f;
       ck = y(l) * y(k) * r[n] / 3.f;
       cl = y(k) * y(k) * r[n] / 6.f;
@@ -3427,7 +3426,7 @@ common::sol(
     //Add identity matrix to a-matrix.
     a[i][i] += 1.e0;
     //Initial abundances.
-    b[i1] = y0(i);
+    b[i1] = y0[i];
   }
   //
   //50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -3441,8 +3440,8 @@ common::sol(
   }
   //..........OBTAIN DERIVATIVE.
   FEM_DO_SAFE(i, 1, isize) {
-    yy(i) = yx[isize1 - i]; 				/// Abundance at t+dt.
-    dydt(i) = (yy(i) - y0(i)) / dt; 		/// Take derivative.
+    yy[i] = yx[isize1 - i]; 				/// Abundance at t+dt.
+    dydt[i] = (yy[i] - y0[i]) / dt; 		/// Take derivative.
   }
   //
   //60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -4391,11 +4390,11 @@ common::derivs(
   sumzdy = 0.f;
   //..........ACCUMULATE TO GET SUM.
   FEM_DO_SAFE(i, 1, cmn.isize) {
-    sumy += y(i); 					/// Sum of abundance.
-    sumzy += zm[i-1] * y(i); 			/// Sum of charge*abundance.
-    sumdy += dydt(i); 				/// Sum of abundance flow.
-    summdy += dm[i-1] * dydt(i); 		/// Sum of (mass excess)*(abundanc
-    sumzdy += zm[i-1] * dydt(i); 		/// Sum of (charge)*(abundance flo
+    sumy += y[i]; 					/// Sum of abundance.
+    sumzy += zm[i] * y[i]; 			/// Sum of charge*abundance.
+    sumdy += dydt[i]; 				/// Sum of abundance flow.
+    summdy += dm[i] * dydt[i]; 		/// Sum of (mass excess)*(abundanc
+    sumzdy += zm[i] * dydt[i]; 		/// Sum of (charge)*(abundance flo
   }
   //..........CHANGES IN TEMPERATURE, hv, AND CHEMICAL POTENTIAL.
   dphdt9 = thm(12) * (-1.070e-4f * hv * sumzy / t9 - thm(11));
@@ -4523,7 +4522,7 @@ common::accum(
   //..........DIVIDE NUMBER FRACTION BY THAT OF PROTON.
   int i = 0;
   FEM_DO_SAFE(i, 1, cmn.isize) {
-    xout(it, i) = y(i) / y(2);
+    xout(it, i) = y[i] / y(2);
   }
   //Exception for proton.
   //xout(it, 2) = y(2) * am(2);
@@ -4734,10 +4733,10 @@ common::driver(
     dtmin = fem::abs(1.f / dlt9dt) * cmn.ct;
     //Go through all abundance changes.
     FEM_DO_SAFE(i, 1, isize) {
-      if ((dydt(i) != 0.f) && (y(i) > ytmin)) {
+      if ((dydt[i] != 0.f) && (y[i] > ytmin)) {
         //(Ref 2).
-        dtl = fem::abs(y(i) / dydt(i)) * cmn.cy * (1.f + pow2((
-          fem::alog10(y(i)) / fem::alog10(ytmin))));
+        dtl = fem::abs(y[i] / dydt[i]) * cmn.cy * (1.f + pow2((
+          fem::alog10(y[i]) / fem::alog10(ytmin))));
         //Find smallest time st
         if (dtl < dtmin) {
           dtmin = dtl;
@@ -4755,12 +4754,12 @@ common::driver(
   t += dt;
   //..........STORE AND INCREMENT VALUES (Ref 3).
   FEM_DO_SAFE(i, 1, mvar) {
-    v0(i) = v(i);
-    dvdt0(i) = dvdt(i);
-    v(i) = v0(i) + dvdt0(i) * dt;
+    v0[i] = v[i];
+    dvdt0[i] = dvdt[i];
+    v[i] = v0[i] + dvdt0[i] * dt;
     //Set at minimum
-    if ((i >= 4) && (v(i) < ytmin)) {
-      v(i) = ytmin;
+    if ((i >= 4) && (v[i] < ytmin)) {
+      v[i] = ytmin;
     }
   }
   //
@@ -4776,10 +4775,10 @@ common::driver(
   check(cmn);
   //..........INCREMENT VALUES.
   FEM_DO_SAFE(i, 1, mvar) {
-    v(i) = v0(i) + .5f * (dvdt(i) + dvdt0(i)) * dt;
+    v[i] = v0[i] + .5f * (dvdt[i] + dvdt0[i]) * dt;
     //Set at minimum
-    if ((i >= 4) && (v(i) < ytmin)) {
-      v(i) = ytmin;
+    if ((i >= 4) && (v[i] < ytmin)) {
+      v[i] = ytmin;
     }
   }
   goto statement_200;
