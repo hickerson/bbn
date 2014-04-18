@@ -1868,11 +1868,13 @@ common::xintd(
   //
   const int np = 6;
   static const float u[] = {
+		0,
         -.93246951420315f, -.66120938646627f, -.23861918608320f,
-          .23861918608320f, .66120938646627f, .93246951420315f
+		.23861918608320f, .66120938646627f, .93246951420315f
       };
   static const float w[] = {
-	.17132449237917f, .36076157304814f, .46791393457269f,
+	  0,
+	  .17132449237917f, .36076157304814f, .46791393457269f,
 	  .46791393457269f, .36076157304814f, .17132449237917f
   };
   /*
@@ -1945,10 +1947,10 @@ common::xintd(
     float cent = xlow + (fem::ffloat(nint) - 0.5) * dist; 	/// Center of interval.
     FEM_DO_SAFE(npnt, 1, np) {
       //x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
-      float x = cent + 0.5 * dist * u[npnt-1]; 				/// Integration point.
+      float x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
       float y = func(cmn, x); 								/// Evaluate function x(1).
       //sum += f * w(npnt); 								/// Add up sum.
-      sum += y * w[npnt-1]; 								/// Add up sum.
+      sum += y * w[npnt]; 								/// Add up sum.
     }
   }
   //
