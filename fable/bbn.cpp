@@ -2056,10 +2056,14 @@ common::rate1(
   //
   //10--------COMPUTE WEAK REACTION RATES (NONDEGENERATE)--------------------------
   //
-  arr_1d<2, float> w(fem::fill0);
-  arr_1d<2, float> x(fem::fill0);
-  arr_1d<2, float> y(fem::fill0);
-  arr_1d<2, float> z(fem::fill0);
+  //arr_1d<2, float> w(fem::fill0);
+  //arr_1d<2, float> x(fem::fill0);
+  //arr_1d<2, float> y(fem::fill0);
+  //arr_1d<2, float> z(fem::fill0);
+  float w[2+1];
+  float x[2+1];
+  float y[2+1];
+  float z[2+1];
   float uplim1 = 0;
   float uplim2 = 0;
   float uplim3 = 0;
@@ -2069,7 +2073,7 @@ common::rate1(
   float part2 = 0;
   float part3 = 0;
   float part4 = 0;
-  if (xi(1) == 0.f) {
+  if (xi(1) == 0) {
     //f(1) = thm(13) / tau; 	/// Forward rate for weak np reaction.
     f[1] = thm(13) / tau; 	/// Forward rate for weak np reaction.
     //r(1) = thm(14) / tau; 	/// Reverse rate for weak np reaction.
@@ -2084,30 +2088,30 @@ common::rate1(
     //Convert neutrino temp to units of Me
     tnmev = cmn.tnu * .086171f;
     //..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
-    w(1) = (-(t9mev / .511f) * (-88.722f));
-    w(2) = ((tnmev / .511f) * (88.029f + xi(1)) + 2.531f);
-    x(1) = ((t9mev / .511f) * (88.029f));
-    x(2) = (-(tnmev / .511f) * (-88.722f + xi(1)) - 2.531f);
-    y(1) = (-(t9mev / .511f) * (-88.722f));
-    y(2) = ((tnmev / .511f) * (88.029f - xi(1)) - 2.531f);
-    z(1) = ((t9mev / .511f) * (88.029f));
-    z(2) = (-(tnmev / .511f) * (-88.722f - xi(1)) + 2.531f);
+    w[1] = (-(t9mev / .511f) * (-88.722f));
+    w[2] = ((tnmev / .511f) * (88.029f + xi(1)) + 2.531f);
+    x[1] = ((t9mev / .511f) * (88.029f));
+    x[2] = (-(tnmev / .511f) * (-88.722f + xi(1)) - 2.531f);
+    y[1] = (-(t9mev / .511f) * (-88.722f));
+    y[2] = ((tnmev / .511f) * (88.029f - xi(1)) - 2.531f);
+    z[1] = ((t9mev / .511f) * (88.029f));
+    z[2] = (-(tnmev / .511f) * (-88.722f - xi(1)) + 2.531f);
     //..........COMPARE LIMITS AND TAKE LARGER OF THE TWO.
-    uplim1 = fem::abs(w(1));
-    uplim2 = fem::abs(x(1));
-    uplim3 = fem::abs(y(1));
-    uplim4 = fem::abs(z(1));
-    if (uplim1 < fem::abs(w(2))) {
-      uplim1 = w(2);
+    uplim1 = fem::abs(w[1]);
+    uplim2 = fem::abs(x[1]);
+    uplim3 = fem::abs(y[1]);
+    uplim4 = fem::abs(z[1]);
+    if (uplim1 < abs(w[2])) {
+      uplim1 = w[2];
     }
-    if (uplim2 < fem::abs(x(2))) {
-      uplim2 = x(2);
+    if (uplim2 < abs(x[2])) {
+      uplim2 = x[2];
     }
-    if (uplim3 < fem::abs(y(2))) {
-      uplim3 = y(2);
+    if (uplim3 < abs(y[2])) {
+      uplim3 = y[2];
     }
-    if (uplim4 < fem::abs(z(2))) {
-      uplim4 = z(2);
+    if (uplim4 < abs(z[2])) {
+      uplim4 = z[2];
     }
     //..........EVALUATE THE INTEGRALS NUMERICALLY.
     part1 = xintd(cmn, 1., uplim1, func1, iter);
