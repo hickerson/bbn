@@ -4609,10 +4609,22 @@ common::driver(
   int i = 0;
   float dtl = 0;
   const int nvar = 29;
+  /*
   arr_1d<nvar, float> v(fem::fill0);
   arr_1d<nvar, float> v0(fem::fill0);
   arr_1d<nvar, float> dvdt(fem::fill0);
   arr_1d<nvar, float> dvdt0(fem::fill0);
+  */
+  float v[nvar+1];
+  float v0[nvar+1];
+  float dvdt[nvar+1];
+  float dvdt0[nvar+1];
+  FEM_DO_SAFE(i, 1, nvar) {
+	  v[i] = 0;
+	  v0[i] = 0;
+	  dvdt[i] = 0;
+	  dvdt0[i] = 0;
+  }
   //
   //----------LINKAGES.
   //     CALLED BY - [subroutine] run
@@ -4713,7 +4725,8 @@ common::driver(
   //Low temp.
   //Small dt.
   //Enough iterations.
-  if ((cmn.t9 <= cmn.t9f) || (dt < fem::abs(cl / dlt9dt)) || (ip == inc)) {
+  //if ((cmn.t9 <= cmn.t9f) || (dt < abs(cl / dlt9dt)) || (ip == inc)) {
+  if ((t9 <= t9f) || (dt < abs(cl / dlt9dt)) || (ip == inc)) {
     accum(cmn);
   }
   //..........POSSIBLY TERMINATE COMPUTATION.
@@ -4732,15 +4745,13 @@ common::driver(
   //Adjust time step after 3 iterations.
   if (is > 3) {
     //Trial value for minimum time step (R
-    dtmin = fem::abs(1.f / dlt9dt) * cmn.ct;
+    dtmin = abs(1. / dlt9dt) * ct;
     //Go through all abundance changes.
     FEM_DO_SAFE(i, 1, isize) {
-      if ((dydt[i] != 0.f) && (y[i] > ytmin)) {
-        //(Ref 2).
-        dtl = fem::abs(y[i] / dydt[i]) * cmn.cy * (1.f + pow2((
-          fem::alog10(y[i]) / fem::alog10(ytmin))));
-        //Find smallest time st
-        if (dtl < dtmin) {
+      if ((dydt[i] != 0) && (y[i] > ytmin)) {
+        dtl = abs(y[i] / dydt[i]) * cy 
+			* (1.f + pow2(( fem::alog10(y[i]) / fem::alog10(ytmin))));  /// (Ref 2).
+        if (dtl < dtmin) { 												/// Find smallest time st
           dtmin = dtl;
         }
       }
@@ -4749,12 +4760,11 @@ common::driver(
     if (dtmin > 1.5f * dt) {
       dtmin = 1.5f * dt;
     }
-    //Set new time step.
-    dt = dtmin;
+    dt = dtmin; 					/// Set new time step.
   }
-  //Increment time.
-  t += dt;
+  t += dt; 							/// Increment time.
   //..........STORE AND INCREMENT VALUES (Ref 3).
+  /*
   FEM_DO_SAFE(i, 1, mvar) {
     v0(i) = v(i);
     dvdt0(i) = dvdt(i);
@@ -4762,6 +4772,16 @@ common::driver(
     //Set at minimum
     if ((i >= 4) && (v(i) < ytmin)) {
       v(i) = ytmin;
+    }
+  }
+  */
+  FEM_DO_SAFE(i, 1, mvar) {
+    v0[i] = v[i];
+    dvdt0[i] = dvdt[i];
+    v[i] = v0[i] + dvdt0[i] * dt;
+    //Set at minimum
+    if ((i >= 4) && (v[i] < ytmin)) {
+      v[i] = ytmin;
     }
   }
   //
@@ -4777,10 +4797,10 @@ common::driver(
   check(cmn);
   //..........INCREMENT VALUES.
   FEM_DO_SAFE(i, 1, mvar) {
-    v(i) = v0(i) + .5f * (dvdt(i) + dvdt0(i)) * dt;
+    v[i] = v0[i] + .5f * (dvdt[i] + dvdt0[i]) * dt;
     //Set at minimum
-    if ((i >= 4) && (v(i) < ytmin)) {
-      v(i) = ytmin;
+    if ((i >= 4) && (v[i] < ytmin)) {
+      v[i] = ytmin;
     }
   }
   goto statement_200;
