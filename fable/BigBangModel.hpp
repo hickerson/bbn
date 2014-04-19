@@ -73,17 +73,22 @@ struct common_varpr
 
 struct common_modpr0
 {
-  //arr<float> c0;
-  float c0[3+1];
-  float cosmo0;
-  //arr<float> xi0;
-  float xi0[3+1];
+	//arr<float> c0;
+	float c0[3+1];
+	float cosmo0;
+	//arr<float> xi0;
+	float xi0[3+1];
 
-  common_modpr0() :
-    //c0(dimension(3), fem::fill0),
-    cosmo0(0)//,
-    //xi0(dimension(3), fem::fill0)
-  {}
+	common_modpr0() :
+	//c0(dimension(3), fem::fill0),
+	cosmo0(0)//,
+	//xi0(dimension(3), fem::fill0)
+	{
+		for (int i = 0; i < 3+1; i++) {
+			c0[i] = 0;
+			xi0[i] = 0;
+		}
+	}
 };
 
 struct common_modpr
@@ -514,6 +519,8 @@ struct common :
 	boost::numeric::ublas::vector<float> yx;
 	*/
 	
+	void qvary(common&, int, float);
+
 	public:
 	common( int argc, char const* argv[]);		//TODO don't need those opts for 
 

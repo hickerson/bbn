@@ -936,7 +936,7 @@ common::check(common& cmn)
   //Neutrino degeneracy parameters.
   //xi[1] is e neutrino degeneracy parameter.
   //xi[2] is m neutrino degeneracy parameter.
-  //xi(3) is t neutrino degeneracy parameter.
+  //xi[3] is t neutrino degeneracy parameter.
   //
   //----------DEFAULT VARIATIONAL PARAMETERS.
   //Default initial time step.
@@ -1661,7 +1661,7 @@ common::func3(
     part1 = 1.f / (1.f + ex(-.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + cmn.xi[1]));
     return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
-      (pow2(x) - 1), .5f) * part1 * part2;
+      (pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
   }
   return return_value;
 }
@@ -1718,7 +1718,7 @@ common::func4(
     part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
     part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + cmn.xi[1]));
     return_value = cmn.cnorm * x * pow2((x - 2.531f)) * pow(
-      (pow2(x) - 1), .5f) * part1 * part2;
+      (pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
   }
   return return_value;
   // TODO test and uncomment
@@ -2034,7 +2034,7 @@ common::rate1(
   //Neutrino degeneracy parameters.
   //xi[1] is e neutrino degeneracy param
   //xi[2] is m neutrino degeneracy param
-  //xi(3) is t neutrino degeneracy param
+  //xi[3] is t neutrino degeneracy param
   //
   //----------DYNAMIC VARIABLES.
   //Thermodynamic variables (energy dens
@@ -4814,7 +4814,7 @@ struct run_save
 // Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
 // TODO make private
-void qvary(common& cmn, int index, float value)
+void common::qvary(common& cmn, int index, float value)
 {
 	//----------EQUIVALENCE VARIABLE.
 	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
@@ -4823,11 +4823,11 @@ void qvary(common& cmn, int index, float value)
 	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 	//
 	if (index >= 1 && index <= 3)
-		cmn.c[index] = value;
+		c[index] = value;
 	else if (index == 4)
-		cmn.cosmo = value;
+		cosmo = value;
 	else if (index >= 5 && index <= 7)
-		cmn.xi[index] = value;
+		xi[index] = value;
 	else
 	{
 		std::cerr << "index out of bounds." << std::endl;
