@@ -6075,7 +6075,7 @@ common::common(
     const float t9f0 = 1.00e-02f;
     const float ytmin0 = 1.00e-25f;
     const float inc0 = 30;
-    const float c0[] = { 1.00f, 885.7f, 3.0f };
+    const float c0[] = { NOT_USED, 1.00f, 885.7f, 3.0f };
 	/*
     {
       static const float values[] = {
@@ -6086,7 +6086,7 @@ common::common(
     }
 	*/
     const float cosmo0 = 0.00f;
-	const float xi0[] = {0,0,0};
+	const float xi0[] = {NOT_USED,0,0,0};
 	/*
     {
       static const float values[] = {
@@ -6098,6 +6098,13 @@ common::common(
 	*/
     dt0 = 1.00e-04f;
     eta0 = 3.162e-10f;
+	for (int i = 0; i < nrec+1; i++)
+		for (int j = 0; j < nrec+1; j++)
+			if (i == 0 or j == 0)
+				a[i][j] = NOT_USED;
+			else
+				a[i][j] = 0;
+
   // } if called for first time
   //
   //----------PARAMETERS.

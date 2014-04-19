@@ -11,6 +11,8 @@ namespace bbn {
 using namespace fem::major_types;
 //using namespace boost::numeric::ublas;
 
+static const float NOT_USED = -5555555.5555555;
+
 struct common_compr0
 {
   float cy0;
