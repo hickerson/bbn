@@ -204,20 +204,23 @@ const int common_evolp2::nnuc;
 
 struct common_evolp3
 {
-  static const int nnuc = 26;
+	static const int nnuc = 26;
 
-  float t90;
-  float hv0;
-  float phie0;
-  //arr<float> y0;
-  float y0[nnuc+1];
+	float t90;
+	float hv0;
+	float phie0;
+	//arr<float> y0;
+	float y0[nnuc+1];
 
-  common_evolp3() :
-    t90(0),
-    hv0(0),
-    phie0(0)//,
-    //y0(dimension(nnuc), fem::fill0)
-  {}
+	common_evolp3() :
+	t90(0),
+	hv0(0),
+	phie0(0)//,
+	//y0(dimension(nnuc), fem::fill0)
+	{
+		for (int i = 0; i < nnuc+1; i++)
+			y0[i] = 0;
+	}
 };
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN

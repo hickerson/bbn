@@ -2890,7 +2890,7 @@ common::eqslin(
   x[isize] = x[isize] / a[isize][isize]; 	/// Solution for ultimate position.
   y[isize] += x[isize];
   FEM_DOSTEP(i, isize - 1, 1, -1) { 		/// From i = penultimate to i = 1.
-    sum = 0.e0;
+    sum = 0;
     FEM_DO_SAFE(j, i + 1, isize) {
       sum += a[i][j] * x[j]; 				/// Sum up all previous terms.
     }
@@ -2909,7 +2909,7 @@ common::eqslin(
             nord++;
             //..........FIND ERROR IN RIGHT-HAND VECTOR.
             FEM_DO_SAFE(j, 1, isize) {
-              r = 0.e0; 					/// Initialize r.
+              r = 0; 						/// Initialize r.
               FEM_DO_SAFE(k, 1, isize) {
                 r += a0[j][k] * y[k]; 		/// Left side with approximate sol
               }
@@ -3235,8 +3235,8 @@ common::sol(
       statement_201: 			/// 1-0-0-1 configuration.
       //ci = f(n); 				/// (Ref 1).
       ci = f[n]; 				/// (Ref 1).
-      cj = 0.f;
-      ck = 0.f;
+      cj = 0;
+      ck = 0;
       //cl = r(n);
       cl = r[n];
       goto statement_212;
@@ -3245,10 +3245,10 @@ common::sol(
       r[n] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n]; 	/// (Ref 2).
       //f(n) = rhob * f(n);
       f[n] = rhob * f[n];
-      //ci = y(j) * f(n) / 2.f;
-      ci = y[j] * f[n] / 2.f;
-      //cj = y(i) * f(n) / 2.f;
-      cj = y[i] * f[n] / 2.f;
+      //ci = y(j) * f(n) / 2.;
+      ci = y[j] * f[n] / 2.;
+      //cj = y(i) * f(n) / 2.;
+      cj = y[i] * f[n] / 2.;
       ck = 0;
       //cl = r(n);
       cl = r[n];
@@ -3256,46 +3256,46 @@ common::sol(
       statement_203: /// 1-1-1-1 configuration.
       f[n] = rhob * f[n]; /// (Ref 3).
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.f;
-      cj = y[i] * f[n] / 2.f;
-      ck = y[l] * r[n] / 2.f;
-      cl = y[k] * r[n] / 2.f;
+      ci = y[j] * f[n] / 2.;
+      cj = y[i] * f[n] / 2.;
+      ck = y[l] * r[n] / 2.;
+      cl = y[k] * r[n] / 2.;
       goto statement_212;
       //1-0-0-2 configuration.
       statement_204:
       ci = f[n];
-      cj = 0.f;
-      ck = 0.f;
-      cl = y[l] * r[n] / 2.f;
+      cj = 0.;
+      ck = 0.;
+      cl = y[l] * r[n] / 2.;
       goto statement_212;
       //1-1-0-2 configuration.
       statement_205:
       f[n] = rhob * f[n];
       //(Ref 3).
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.f;
-      cj = y[i] * f[n] / 2.f;
-      ck = 0.f;
-      cl = y[l] * r[n] / 2.f;
+      ci = y[j] * f[n] / 2.;
+      cj = y[i] * f[n] / 2.;
+      ck = 0.;
+      cl = y[l] * r[n] / 2.;
       goto statement_212;
       //2-0-1-1 configuration.
       statement_206:
       f[n] = rhob * f[n];
       //(Ref 3).
       r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y[i] * f[n] / 2.f;
-      cj = 0.f;
-      ck = y[l] * r[n] / 2.f;
-      cl = y[k] * r[n] / 2.f;
+      ci = y[i] * f[n] / 2.;
+      cj = 0.;
+      ck = y[l] * r[n] / 2.;
+      cl = y[k] * r[n] / 2.;
       goto statement_212;
       //3-0-0-1 configuration.
       statement_207:
       //(Ref 4).
       r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
       f[n] = rhob * rhob * f[n];
-      ci = y[i] * y[i] * f[n] / 6.f;
-      cj = 0.f;
-      ck = 0.f;
+      ci = y[i] * y[i] * f[n] / 6.;
+      cj = 0.;
+      ck = 0.;
       cl = r[n];
       goto statement_212;
       //2-1-0-1 configuration.
@@ -3303,9 +3303,9 @@ common::sol(
       //(Ref 4).
       r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
       f[n] = rhob * rhob * f[n];
-      ci = y[j] * y[i] * f[n] / 3.f;
-      cj = y[i] * y[i] * f[n] / 6.f;
-      ck = 0.f;
+      ci = y[j] * y[i] * f[n] / 3.;
+      cj = y[i] * y[i] * f[n] / 6.;
+      ck = 0.;
       cl = r[n];
       goto statement_212;
       //1-1-1-2 configuration.
@@ -3313,30 +3313,30 @@ common::sol(
       f[n] = rhob * f[n];
       //(Ref 5)
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.f;
-      cj = y[i] * f[n] / 2.f;
-      ck = y[l] * y[l] * r[n] / 6.f;
-      cl = y[k] * y[l] * r[n] / 3.f;
+      ci = y[j] * f[n] / 2.;
+      cj = y[i] * f[n] / 2.;
+      ck = y[l] * y[l] * r[n] / 6.;
+      cl = y[k] * y[l] * r[n] / 3.;
       goto statement_212;
       //1-1-0-3 configuration.
       statement_210:
       f[n] = rhob * f[n];
       //(Ref 5)
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.f;
-      cj = y[i] * f[n] / 2.f;
-      ck = 0.f;
-      cl = y[l] * y[l] * r[n] / 6.f;
+      ci = y[j] * f[n] / 2.;
+      cj = y[i] * f[n] / 2.;
+      ck = 0.;
+      cl = y[l] * y[l] * r[n] / 6.;
       goto statement_212;
       //2-0-2-1 configuration.
       statement_211:
       f[n] = rhob * f[n];
       //(Ref 5)
       r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y[i] * f[n] / 2.f;
-      cj = 0.f;
-      ck = y[l] * y[k] * r[n] / 3.f;
-      cl = y[k] * y[k] * r[n] / 6.f;
+      ci = y[i] * f[n] / 2.;
+      cj = 0.;
+      ck = y[l] * y[k] * r[n] / 3.;
+      cl = y[k] * y[k] * r[n] / 6.;
       statement_212:
       //
       //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
@@ -3393,7 +3393,7 @@ common::sol(
   //40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
   //
   //(10**(-5))*(Expansion rate).
-  bdln = 1.e-5f * (3.f * cmn.hubcst);
+  bdln = 1.e-5f * (3. * cmn.hubcst);
   FEM_DO_SAFE(i, 1, isize) {
     //Invert the rows.
     i1 = isize1 - i;
@@ -3402,7 +3402,7 @@ common::sol(
       j1 = isize1 - j;
       if (abs(a[j][i]) < bdln * y0[j1] / y0[i1]) {
         //Set 0 if tiny.
-        a[j][i] = 0.e0;
+        a[j][i] = 0;
       }
       else {
         //Bring dt over to other side.
@@ -3410,7 +3410,7 @@ common::sol(
       }
     }
     //Add identity matrix to a-matrix.
-    a[i][i] += 1.e0;
+    a[i][i] += 1;
     //Initial abundances.
     b[i1] = y0[i];
   }
@@ -3554,36 +3554,36 @@ common::rate2(
   //t9a**(3/2)
   float t9a32 = pow(t9a, (1.5f));
   //For reaction 18.
-  float t9b = t9 / (1.f + 49.18f * t9);
+  float t9b = t9 / (1. + 49.18f * t9);
   //t9b**(3/2)
   float t9b32 = pow(t9b, (1.5f));
   //For reaction 22.
   float t9c = 0;
-  if (t9 > 10.f) {
-    t9c = 1.f;
+  if (t9 > 10.) {
+    t9c = 1.;
   }
   else {
-    t9c = t9 / (1.f - 9.69e-2f * t9 + 2.84e-2f * t953 / pow((
-      1.f - 9.69e-2f * t9), (2.f / 3.f)));
+    t9c = t9 / (1. - 9.69e-2f * t9 + 2.84e-2f * t953 / 
+		pow(1.f - 9.69e-2f * t9, (2.f / 3.f)));
   }
   //t9c**(1/3)
   float t9c13 = pow(t9c, (.3333333f));
   //t9c**(5/6)
   float t9c56 = pow(t9c, (.8333333f));
   //For reaction 24.
-  float t9d = t9 / (1.f + 0.759f * t9);
+  float t9d = t9 / (1. + 0.759f * t9);
   //t9d**(1/3)
   float t9d13 = pow(t9d, (.3333333f));
   //t9d**(5/6)
   float t9d56 = pow(t9d, (.8333333f));
   //For reaction 26.
-  float t9e = t9 / (1.f + 0.1378f * t9);
+  float t9e = t9 / (1. + 0.1378f * t9);
   //t9e**(1/3)
   float t9e13 = pow(t9e, (.3333333f));
   //t9e**(5/6)
   float t9e56 = pow(t9e, (.8333333f));
   //For reaction 27.
-  float t9f = t9 / (1.f + 0.1071f * t9);
+  float t9f = t9 / (1. + 0.1071f * t9);
   //t9f**(1/3)
   float t9f13 = pow(t9f, (.3333333f));
   //t9f**(5/6)
@@ -3592,14 +3592,14 @@ common::rate2(
   //20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
   //
   //.......H(n,g)H2...................(Smith-Kawano-Malaney 1992)
-  f[12] = 4.742e+4f * (1.f - .8504f * t912 + .4895f * t9 - .09623f *
+  f[12] = 4.742e+4f * (1. - .8504f * t912 + .4895f * t9 - .09623f *
     t932 + 8.471e-3f * t9 * t9 - 2.80e-4f * t9 * t932);
   //
   //.......H2(n,g)H3..................(Wagoner 1969)
-  f[13] = 6.62e+1f * (1.f + 18.9f * t9);
+  f[13] = 6.62e+1f * (1. + 18.9f * t9);
   //
   //.......He3(n,g)He4................(Wagoner 1969)
-  f[14] = 6.62e+0f * (1.f + 905.f * t9);
+  f[14] = 6.62e+0f * (1. + 905. * t9);
   //
   //.......Li6(n,g)Li7................(Malaney-Fowler 1989)
   f[15] = 5.10e+3f;
@@ -3607,30 +3607,30 @@ common::rate2(
   //30--------NEUTRON, PROTON REACTIONS--------------------------------------------
   //
   //.......He3(n,p)H3.................(Smith-Kawano-Malaney 1992)
-  f[16] = 7.21e+8f * (1.f - .508f * t912 + .228f * t9);
+  f[16] = 7.21e+8f * (1. - .508f * t912 + .228f * t9);
   //
   //.......Be7(n,p)Li7................(Smith-Kawano-Malaney 1992)
-  f[17] = 2.675e+9f * (1.f - .560f * t912 + .179f * t9 - .0283f *
+  f[17] = 2.675e+9f * (1. - .560f * t912 + .179f * t9 - .0283f *
     t932 + 2.214e-3f * t9 * t9 - 6.851e-5f * t9 * t932) + 9.391e+8f *
     t9a32 * t9m32 + 4.467e+7f * t9m32 * ex(-0.07486f / t9);
   //
   //40--------NEUTRON, ALPHA REACTIONS---------------------------------------------
   //
   //.......Li6(n,a)H3.................(Caughlan-Fowler 1988)
-  f[18] = 2.54e+9f * t9m32 * ex(-2.39f / t9) + 1.68e+8f * (1.f -
+  f[18] = 2.54e+9f * t9m32 * ex(-2.39f / t9) + 1.68e+8f * (1. -
     .261f * t9b32 / t932);
   //
   //.......Be7(n,a)He4................(Wagoner 1969)
-  f[19] = 2.05e+4f * (1.f + 3760.f * t9);
+  f[19] = 2.05e+4f * (1. + 3760. * t9);
   //
   //50--------PROTON, PHOTON REACTIONS---------------------------------------------
   //
   //.......H2(p,g)He3.................(Smith-Kawano-Malaney 1992)
-  f[20] = 2.65e+3f * t9m23 * ex(-3.720f / t913) * (1.f + .112f *
+  f[20] = 2.65e+3f * t9m23 * ex(-3.720f / t913) * (1. + .112f *
     t913 + 1.99f * t923 + 1.56f * t9 + .162f * t943 + .324f * t953);
   //
   //.......H3(p,g)He4.................(Caughlan-Fowler 1988)
-  f[21] = 2.20e+4f * t9m23 * ex(-3.869f / t913) * (1.f + .108f *
+  f[21] = 2.20e+4f * t9m23 * ex(-3.869f / t913) * (1. + .108f *
     t913 + 1.68f * t923 + 1.26f * t9 + .551f * t943 + 1.06f * t953);
   //
   //.......Li6(p,g)Be7................(Caughlan-Fowler 1988)
@@ -3640,7 +3640,7 @@ common::rate2(
   //
   //.......Li6(p,a)He3................(Caughlan-Fowler 1988)
   f[23] = 3.73e+10f * t9m23 * ex(-8.413f / t913 - pow2((t9 /
-    5.50f))) * (1.f + .050f * t913 - .061f * t923 - .021f * t9 +
+    5.50f))) * (1. + .050f * t913 - .061f * t923 - .021f * t9 +
     .006f * t943 + .005f * t953) + 1.33e+10f * t9m32 * ex(-17.763f /
     t9) + 1.29e+09f * t9m1 * ex(-21.820f / t9);
   //
@@ -3648,25 +3648,25 @@ common::rate2(
   f[24] = 1.096e+9f * t9m23 * ex(-8.472f / t913) - 4.830e+8f *
     t9d56 * t9m32 * ex(-8.472f / t9d13) + 1.06e+10f * t9m32 * ex(
     -30.442f / t9) + 1.56e+5f * t9m23 * ex((-8.472f / t913) -
-    pow2((t9 / 1.696f))) * (1.f + .049f * t913 - 2.498f * t923 +
+    pow2((t9 / 1.696f))) * (1. + .049f * t913 - 2.498f * t923 +
     .860f * t9 + 3.518f * t943 + 3.08f * t953) + 1.55e+6f * t9m32 *
     ex(-4.478f / t9);
   //
   //70--------ALPHA, PHOTON REACTIONS----------------------------------------------
   //
   //.......H2(a,g)Li6.................(Caughlan-Fowler 1988)
-  f[25] = 3.01e+01f * t9m23 * ex(-7.423f / t913) * (1.f + .056f *
+  f[25] = 3.01e+01f * t9m23 * ex(-7.423f / t913) * (1. + .056f *
     t913 - 4.85f * t923 + 8.85f * t9 - .585f * t943 - .584f * t953) +
     8.55e+1f * t9m32 * ex(-8.228f / t9);
   //
   //.......H3(a,g)Li7.................(Smith-Kawano-Malaney 1992)
-  f[26] = 3.032e+5f * t9m23 * ex(-8.090f / t913) * (1.f + .0516f *
+  f[26] = 3.032e+5f * t9m23 * ex(-8.090f / t913) * (1. + .0516f *
     t913 + .0229f * t923 + 8.28e-3f * t9 - 3.28e-4f * t943 -
     3.01e-4f * t953) + 5.109e+5f * t9e56 * t9m32 * ex(-8.068f /
     t9e13);
   //
   //.......He3(a,g)Be7................(Smith-Kawano-Malaney 1992)
-  f[27] = 4.817e+6f * t9m23 * ex(-14.964f / t913) * (1.f + .0325f *
+  f[27] = 4.817e+6f * t9m23 * ex(-14.964f / t913) * (1. + .0325f *
     t913 - 1.04e-3f * t923 - 2.37e-4f * t9 - 8.11e-5f * t943 -
     4.69e-5f * t953) + 5.938e+6f * t9f56 * t9m32 * ex(-12.859f /
     t9f13);
@@ -3674,30 +3674,30 @@ common::rate2(
   //80--------DEUTERIUM, NEUTRON AND DEUTERIUM, PROTON REACTIONS-------------------
   //
   //.......H2(d,n)He3.................(Smith-Kawano-Malaney 1992)
-  f[28] = 3.95e+8f * t9m23 * ex(-4.259f / t913) * (1.f + .098f *
+  f[28] = 3.95e+8f * t9m23 * ex(-4.259f / t913) * (1. + .098f *
     t913 + .765f * t923 + .525f * t9 + 9.61e-3f * t943 + .0167f *
     t953);
   //
   //.......H2(d,p)H3..................(Smith-Kawano-Malaney 1992)
-  f[29] = 4.17e+8f * t9m23 * ex(-4.258f / t913) * (1.f + .098f *
+  f[29] = 4.17e+8f * t9m23 * ex(-4.258f / t913) * (1. + .098f *
     t913 + .518f * t923 + .355f * t9 - .010f * t943 - .018f * t953);
   //
   //.......H3(d,n)He4.................(Smith-Kawano-Malaney 1992)
   f[30] = 1.063e+11f * t9m23 * ex(-4.559f / t913 - pow2((t9 /
-    .0754f))) * (1.f + .092f * t913 - .375f * t923 - .242f * t9 +
+    .0754f))) * (1. + .092f * t913 - .375f * t923 - .242f * t9 +
     33.82f * t943 + 55.42f * t953) + 8.047e+8f * t9m23 * ex(
     -0.4857f / t9);
   //
   //.......He3(d,p)He4................(Smith-Kawano-Malaney 1992)
   f[31] = 5.021e+10f * t9m23 * ex(-7.144f / t913 - pow2((t9 /
-    .270f))) * (1.f + .058f * t913 + .603f * t923 + .245f * t9 +
+    .270f))) * (1. + .058f * t913 + .603f * t923 + .245f * t9 +
     6.97f * t943 + 7.19f * t953) + 5.212e+8f / t912 * ex(-1.762f /
     t9);
   //
   //90--------THREE PARTICLE REACTIONS---------------------------------------------
   //
   //.......He3(He3,2p)He4.............(Caughlan-Fowler 1988)
-  f[32] = 6.04e+10f * t9m23 * ex(-12.276f / t913) * (1.f + .034f *
+  f[32] = 6.04e+10f * t9m23 * ex(-12.276f / t913) * (1. + .034f *
     t913 - .522f * t923 - .124f * t9 + .353f * t943 + .213f * t953);
   //
   //.......Li7(d,na)He4...............(Caughlan-Fowler 1988)
@@ -3805,7 +3805,7 @@ common::rate3(
   //t9**(-5/4)
   float t9m54 = 1.0f / t954;
   //For reaction 53.
-  float t9a = t9 / (1.f + t9 / 15.1f);
+  float t9a = t9 / (1. + t9 / 15.1f);
   //t9a**(1/3)
   float t9a13 = pow(t9a, (.3333333f));
   //t9a**(5/6)
@@ -3825,7 +3825,7 @@ common::rate3(
   //30--------NEUTRON, PROTON REACTIONS--------------------------------------------
   //
   //.......C11(n,p)B11................(Caughlan-Fowler 1988)
-  f[38] = 1.69e+8f * (1.f - .048f * t912 + .010f * t9);
+  f[38] = 1.69e+8f * (1. - .048f * t912 + .010f * t9);
   //
   //40--------NEUTRON, ALPHA REACTIONS---------------------------------------------
   //
@@ -3840,25 +3840,25 @@ common::rate3(
   //
   //.......Be9(p,g)B10................(Caughlan-Fowler 1988)
   f[41] = 1.33e+7f * t9m23 * ex(-10.359f / t913 - pow2((t9 /
-    .846f))) * (1.f + .040f * t913 + 1.52f * t923 + .428f * t9 +
+    .846f))) * (1. + .040f * t913 + 1.52f * t923 + .428f * t9 +
     2.15f * t943 + 1.54f * t953) + 9.64e+4f * t9m32 * ex(-3.445f /
     t9) + 2.72e+6f * t9m32 * ex(-10.620f / t9);
   //
   //.......B10(p,g)C11................(Caughlan-Fowler 1988)
   f[42] = 4.61e+5f * t9m23 * ex(-12.062f / t913 - pow2((t9 /
-    4.402f))) * (1.f + .035f * t913 + .426f * t923 + .103f * t9 +
+    4.402f))) * (1. + .035f * t913 + .426f * t923 + .103f * t9 +
     .281f * t943 + .173f * t953) + 1.93e+5f * t9m32 * ex(-12.041f /
     t9) + 1.14e+4f * t9m32 * ex(-16.164f / t9);
   //
   //.......B11(p,g)C12................(Caughlan-Fowler 1988)
   f[43] = 4.62e+7f * t9m23 * ex(-12.095f / t913 - pow2((t9 /
-    .239f))) * (1.f + .035f * t913 + 3.00f * t923 + .723f * t9 +
+    .239f))) * (1. + .035f * t913 + 3.00f * t923 + .723f * t9 +
     9.91f * t943 + 6.07f * t953) + 7.89e+3f * t9m32 * ex(-1.733f /
     t9) + 9.68e+4f * t9m15 * ex(-5.617f / t9);
   //
   //.......C11(p,g)N12................(Caughlan-Fowler 1988)
   f[44] = 4.24e+4f * t9m23 * ex(-13.658f / t913 - pow2((t9 /
-    1.627f))) * (1.f + .031f * t913 + 3.11f * t923 + .665f * t9 +
+    1.627f))) * (1. + .031f * t913 + 3.11f * t923 + .665f * t9 +
     4.61f * t943 + 2.50f * t953) + 8.84e+3f * t9m32 * ex(-7.021f /
     t9);
   //
@@ -3871,13 +3871,13 @@ common::rate3(
   //
   //.......Be9(p,a)Li6................(Caughlan-Fowler 1988)
   f[46] = 2.11e+11f * t9m23 * ex(-10.359f / t913 - pow2((t9 /
-    .520f))) * (1.f + .040f * t913 + 1.09f * t923 + .307f * t9 +
+    .520f))) * (1. + .040f * t913 + 1.09f * t923 + .307f * t9 +
     3.21f * t943 + 2.30f * t953) + 4.51e+8f * t9m1 * ex(-3.046f /
     t9) + 6.70e+8f * t9m34 * ex(-5.160f / t9);
   //
   //.......B10(p,a)Be7................(Caughlan-Fowler 1988)
   f[47] = 1.26e+11f * t9m23 * ex(-12.062f / t913 - pow2((t9 /
-    4.402f))) * (1.f + .035f * t913 - .498f * t923 - .121f * t9 +
+    4.402f))) * (1. + .035f * t913 - .498f * t923 - .121f * t9 +
     .300f * t943 + .184f * t953) + 2.59e+9f * t9m1 * ex(-12.260f /
     t9);
   //
@@ -3888,19 +3888,19 @@ common::rate3(
   //
   //.......Li6(a,g)B10................(Caughlan-Fowler 1988)
   f[49] = 4.06e+6f * t9m23 * ex(-18.790f / t913 - pow2((t9 /
-    1.326f))) * (1.f + .022f * t913 + 1.54f * t923 + .239f * t9 +
+    1.326f))) * (1. + .022f * t913 + 1.54f * t923 + .239f * t9 +
     2.20f * t943 + .869f * t953) + 1.91e+3f * t9m32 * ex(-3.484f /
     t9) + 1.01e+4f * t9m1 * ex(-7.269f / t9);
   //
   //.......Li7(a,g)B11................(Caughlan-Fowler 1988)
   f[50] = 3.55e+7f * t9m23 * ex(-19.161f / t913 - pow2((t9 /
-    4.195f))) * (1.f + .022f * t913 + .775f * t923 + .118f * t9 +
+    4.195f))) * (1. + .022f * t913 + .775f * t923 + .118f * t9 +
     .884f * t943 + .342f * t953) + 3.33e+2f * t9m32 * ex(-2.977f /
     t9) + 4.10e+4f * t9m1 * ex(-6.227f / t9);
   //
   //.......Be7(a,g)C11................(Caughlan-Fowler 1988)
   f[51] = 8.45e+7f * t9m23 * ex(-23.212f / t913 - pow2((t9 /
-    4.769f))) * (1.f + .018f * t913 + .488f * t923 + .061f * t9 +
+    4.769f))) * (1. + .018f * t913 + .488f * t923 + .061f * t9 +
     .296f * t943 + .095f * t953) + 1.25e+4f * t9m32 * ex(-6.510f /
     t9) + 1.29e+5f * t9m54 * ex(-10.039f / t9);
   //
@@ -3916,7 +3916,7 @@ common::rate3(
   //
   //.......Be9(a,n)C12................(Caughlan-Fowler 1988)
   f[54] = 4.62e+13f * t9m23 * ex(-23.870f / t913 - pow2((t9 /
-    .049f))) * (1.f + .017f * t913 + 8.57f * t923 + 1.05f * t9 + 74.51f *
+    .049f))) * (1. + .017f * t913 + 8.57f * t923 + 1.05f * t9 + 74.51f *
     t943 + 23.15f * t953) + 7.34e-5f * t9m32 * ex(-1.184f / t9) +
     2.27e-1f * t9m32 * ex(-1.834f / t9) + 1.26e+5f * t9m32 * ex(-4.179f /
     t9) + 2.40e+8f * ex(-12.732f / t9);
@@ -3935,7 +3935,7 @@ common::rate3(
   //120-------THREE PARTICLE REACTIONS---------------------------------------------
   //
   //.......He4(an,g)Be9...............(Caughlan-Fowler 1988)
-  f[58] = (2.59e-6f / ((1.f + .344f * t9) * pow2(t9))) * ex(-1.062f / t9);
+  f[58] = (2.59e-6f / ((1. + .344f * t9) * pow2(t9))) * ex(-1.062f / t9);
   //
   //.......He4(2a,g)C12...............(Caughlan-Fowler 1988)
   f[59] = 2.79e-8f * t9m32 * t9m32 * ex(-4.4027f / t9) + 1.35e-8f *
@@ -3950,13 +3950,13 @@ common::rate3(
   //
   //.......Be9(p,da)He4...............(Caughlan-Fowler 1988)
   f[62] = 2.11e+11f * t9m23 * ex(-10.359f / t913 - pow2((t9 /
-    .520f))) * (1.f + .040f * t913 + 1.09f * t923 + .307f * t9 +
+    .520f))) * (1. + .040f * t913 + 1.09f * t923 + .307f * t9 +
     3.21f * t943 + 2.30f * t953) + 5.79e+8f * t9m1 * ex(-3.046f /
     t9) + 8.50e+8f * t9m34 * ex(-5.800f / t9);
   //
   //.......B11(p,2a)He4...............(Caughlan-Fowler 1988)
   f[63] = 2.20e+12f * t9m23 * ex(-12.095f / t913 - pow2((t9 /
-    1.644f))) * (1.f + .034f * t913 + .140f * t923 + .034f * t9 +
+    1.644f))) * (1. + .034f * t913 + .140f * t923 + .034f * t9 +
     .190f * t943 + .116f * t953) + 4.03e+6f * t9m32 * ex(-1.734f /
     t9) + 6.73e+9f * t9m32 * ex(-6.262f / t9) + 3.88e+9f * t9m1 * ex(
     -14.154f / t9);
@@ -4059,14 +4059,14 @@ common::rate4(
   //t9**(-6/5)
   float t9m65 = 1.0f / t965;
   //For reaction 82.
-  float t9a = t9 / (1.f + 4.78e-2f * t9 + 7.56e-3f * t953 / pow((
+  float t9a = t9 / (1. + 4.78e-2f * t9 + 7.56e-3f * t953 / pow((
     1.f + 4.78e-2f * t9), (2.f / 3.f)));
   //t9a**(1/3)
   float t9a13 = pow(t9a, (.33333333f));
   //t9a**(5/6)
   float t9a56 = pow(t9a, (.83333333f));
   //For reaction 84.
-  float t9b = t9 / (1.f + 7.76e-2f * t9 + 2.64e-2f * t953 / pow((
+  float t9b = t9 / (1. + 7.76e-2f * t9 + 2.64e-2f * t953 / pow((
     1.f + 7.76e-2f * t9), (2.f / 3.f)));
   //t9b**(1/3)
   float t9b13 = pow(t9b, (.33333333f));
@@ -4087,7 +4087,7 @@ common::rate4(
   //30--------NEUTRON, PROTON REACTIONS--------------------------------------------
   //
   //.......N13(n,p)C13................(Caughlan-Fowler 1988)
-  f[68] = 1.88e+8f * (1.f - .167f * t912 + .037f * t9);
+  f[68] = 1.88e+8f * (1. - .167f * t912 + .037f * t9);
   //
   //.......N14(n,p)C14................(Caughlan-Fowler 1988)
   f[69] = 2.39e+5f * (1.f + .361f * t912 + .502f * t9) + 1.112e+8f /
