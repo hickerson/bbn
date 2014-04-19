@@ -1027,17 +1027,12 @@ common::check(common& cmn)
   //
   //20--------WRITE INTO FILE------------------------------------------------------
   //
-  //Right after a run.
-  if (itime == 8) {
-    //Add beryllium to lithium.
-    xout(it, 8) += xout(it, 9);
-    //Add tritium to helium-3.
-    xout(it, 5) += xout(it, 4);
-    xout(it, 6) = xout(it, 6) - 0.0003f;
-    // my correction for fitted rates+coarse steps
-    //Output N_nu, tau_n, eta, H2, He3, He4, an
-    write(3, "(7(e13.5))"), c[2], c[2], etaout(it), xout(it, 3),
-      xout(it, 5), xout(it, 6), xout(it, 8);
+  if (itime == 8) { 						/// Right after a run.
+    xout(it,8) += xout(it,9); 				/// Add beryllium to lithium.
+    xout(it,5) += xout(it,4); 				/// Add tritium to helium-3.
+    xout(it,6) = xout(it,6) - 0.0003f; 		/// my correction for fitted rates+coarse steps
+    write(3, "(7(e13.5))"), c[3], c[2], etaout(it), xout(it, 3),
+      xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
   }
   //
   //30--------CLOSE FILE-----------------------------------------------------------
