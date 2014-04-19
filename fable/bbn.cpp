@@ -2230,7 +2230,7 @@ common::start(common& cmn)
   //Gravitational constant.
   //Neutron lifetime.
   //Number of neutrino species.
-  //c[1] is variation of grav. constant.
+  //c[1] is variation of gravitational constant.
   //c[2] is neutron lifetime (sec).
   //c(3) is number of neutrino species.
   //Neutrino degeneracy parameters.
@@ -2271,60 +2271,44 @@ common::start(common& cmn)
   //
   //10--------INITIALIZE FLAGS AND COUNTERS----------------------------------------
   //
-  //No output yet.
-  cmn.ltime = 0;
-  //First iteration coming up.
-  cmn.is = 1;
-  //Set to maximum allowed # of iteratio
-  cmn.ip = cmn.inc;
-  //No accumulation yet.
-  cmn.it = 0;
-  //No computational errors.
-  cmn.mbad = 0;
+  ltime = 0; 						/// No output yet.
+  is = 1; 							/// First iteration coming up.
+  ip = cmn.inc; 					/// Set to maximum allowed # of iterations.
+  it = 0; 							/// No accumulation yet.
+  mbad = 0; 						/// No computational errors.
   //
   //20--------SETTINGS-------------------------------------------------------------
   //
   //..........COMPUTATIONAL SETTINGS.
-  //Initial temperature.
-  t9 = cmn.t9i;
-  //Initial neutrino temperature.
-  tnu = t9;
-  //Initial time (Ref 1).
-  const float const1 = 0.09615f;
-  cmn.t = 1 / pow2((const1 * t9));
-  //Initial time step.
-  cmn.dt = cmn.dt1;
+  t9 = t9i; 						/// Initial temperature.
+  tnu = t9; 						/// Initial neutrino temperature.
+  const float const1 = 0.09615f; 	/// Initial time (Ref 1).
+  t = 1 / pow2((const1 * t9));
+  dt = cmn.dt1; 					/// Initial time step.
   //..........MODEL SETTINGS.
-  //Modify gravitational constant.
-  const float const2 = 6.6700e-8f;
-  cmn.g = const2 * c[1];
-  //Convert n half-life (min) to lifetim
-  tau = c[2];
-  //Coulomb correction (Ref 2).
-  tau = tau / 0.98f;
-  //Number of neutrino species.
-  cmn.xnu = c[2];
+  const float const2 = 6.6700e-8f; 	/// Modify gravitational constant.
+  g = const2 * c[1];
+  tau = c[2]; 						/// Convert n half-life (min) to lifetime (secs).
+  tau = tau / 0.98f; 				/// Coulomb correction (Ref 2). TODO check this!
+  xnu = c[2]; 						/// Number of neutrino species.
   //
   //30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
   //
-  //Overabundance of antineut
-  if ((15.011f / t9 + xi[1]) > 58.f) {
-    y[1] = 1.e-25f; 			/// Very little of neutrons.
-    y[2] = 1.f; 				/// Essentially all protons.
+  if ((15.011f / t9 + xi[1]) > 58.f) { 		/// Overabundance of anti-neutrinos.
+    y[1] = 1.e-25f; 						/// Very little of neutrons.
+    y[2] = 1.f; 							/// Essentially all protons.
   }
   else {
-    //Overabundance of neutrino
-    if ((15.011f / t9 + xi[1]) <  - 58.f) {
-      y[1] = 1.f; 				/// Essentially all neutrons.
-      y[2] = 1.e-25f; 			/// Very little of protons.
+    if ((15.011f / t9 + xi[1]) <  - 58.f) { /// Overabundance of neutrinos.
+      y[1] = 1.f; 							/// Essentially all neutrons.
+      y[2] = 1.e-25f; 						/// Very little of protons.
     }
     else {
-      y[1] = 1 / (ex(15.011f / t9 + xi[1]) + 1); 	/// Initial n abundance (Ref
-      y[2] = 1 / (ex(-15.011f / t9 - xi[1]) + 1); 	/// Initial p abundance (Ref
+      y[1] = 1/(ex(15.011/t9 + xi[1]) + 1); /// Initial n abundance (Ref
+      y[2] = 1/(ex(-15.011/t9 - xi[1]) + 1);/// Initial p abundance (Ref
     }
   }
-  //Electron neutrino degeneracy.
-  if (xi[1] != 0.f) {
+  if (xi[1] != 0) { 			/// Electron neutrino degeneracy.
     cnorm = 1.;
     tnu = .00001f; 				/// Low temperature.
     rate1(cmn, 0.00001f); 		/// Find normalization constant at low temperature.
