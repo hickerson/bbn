@@ -3395,24 +3395,16 @@ common::sol(
   //(10**(-5))*(Expansion rate).
   bdln = 1.e-5f * (3. * cmn.hubcst);
   FEM_DO_SAFE(i, 1, isize) {
-    //Invert the rows.
-    i1 = isize1 - i;
+    i1 = isize1 - i; 							/// Invert the rows.
     FEM_DO_SAFE(j, 1, isize) {
-      //Invert the columns.
-      j1 = isize1 - j;
-      if (abs(a[j][i]) < bdln * y0[j1] / y0[i1]) {
-        //Set 0 if tiny.
-        a[j][i] = 0;
-      }
-      else {
-        //Bring dt over to other side.
-        a[j][i] = a[j][i] * dt;
-      }
+      j1 = isize1 - j; 							/// Invert the columns.
+      if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
+        a[j][i] = 0; 							/// Set 0 if tiny.
+      else
+        a[j][i] = a[j][i] * dt; 				/// Bring dt over to other side.
     }
-    //Add identity matrix to a-matrix.
-    a[i][i] += 1;
-    //Initial abundances.
-    b[i1] = y0[i];
+    a[i][i] += 1; 								/// Add identity matrix to a-matrix.
+    b[i1] = y0[i]; 								/// Initial abundances.
   }
   //
   //50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -3426,8 +3418,8 @@ common::sol(
   }
   //..........OBTAIN DERIVATIVE.
   FEM_DO_SAFE(i, 1, isize) {
-    yy[i] = yx[isize1 - i]; 				/// Abundance at t+dt.
-    dydt[i] = (yy[i] - y0[i]) / dt; 		/// Take derivative.
+    yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
+    dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
   }
   //
   //60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
