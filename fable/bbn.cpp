@@ -9,6 +9,7 @@
 namespace bbn {
 
 using namespace fem;
+//using namespace std;
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -3055,411 +3056,411 @@ common::sol(
 	const float sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	const float sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 	const float sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
-  float t932 = 0;
-  float t9m32 = 0;
-  int isize1 = 0;
-  int i = 0;
-  int j = 0;
-  int n = 0;
-  int ind = 0;
-  int k = 0;
-  int l = 0;
-  float ri = 0;
-  float rj = 0;
-  float rk = 0;
-  float rl = 0;
-  float ci = 0;
-  float cj = 0;
-  float ck = 0;
-  float cl = 0;
-  float bdln = 0;
-  int i1 = 0;
-  int j1 = 0;
-  int ierror = 0;
-  //arr_1d<nnuc, float> yy(fem::fill0);
-  float yy[nnuc+1];
-  const int iw = 6;
-  //
-  //----------LINKAGES.
-  //     CALLED BY - [subroutine] derivs
-  //     CALLS     - [subroutine] eqslin
-  //               - [function] ex
-  //
-  //----------REMARKS.
-  //     Computes reverse strong and electromagnetic reaction rates.
-  //     Fills and solves matrix equation for dydt(i).
-  //
-  //----------PARAMETERS.
-  //Input unit number.
-  //Output unit number.
-  //Number of nuclear reactions.
-  //Number of nuclides in calculation.
-  //
-  //-----------COMMON AREAS.
-  //Reaction parameter
-  //Reaction rates.
-  //Evolution paramete
-  //Time varying param
-  //Dynamic variable
-  //Energy densities.
-  //Linear eqn coeffic
-  //Flags,counters.
-  //Run option.
-  //
-  //==========================DECLARATION DIVISION=================================
-  //
-  //----------REACTION PARAMETERS.
-  //Reaction code number (1-88).
-  //Incoming nuclide type (1-26).
-  //Incoming light nuclide type (1-6).
-  //Outgoing light nuclide type (1-6).
-  //Outgoing nuclide type (1-26).
-  //Reverse reaction coefficient.
-  //Energy released in reaction.
-  //
-  //----------REACTION RATES.
-  //Forward reaction rate coefficients.
-  //Reverse reaction rate coefficients.
-  //
-  //----------EVOLUTION PARAMETERS.
-  //Temperature (in units of 10**9 K).
-  //Relative number abundances.
-  //
-  //----------EVOLUTION PARAMETERS (DERIVATIVES).
-  //Change in rel number abundances.
-  //
-  //----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
-  //Rel # abund at start of iteration.
-  //
-  //----------TIME VARIABLES.
-  //Time step.
-  //
-  //----------DYNAMIC VARIABLES.
-  //Expansion rate.
-  //
-  //----------ENERGY DENSITIES.
-  //Baryon mass density.
-  //
-  //----------COMPONENTS OF MATRIX EQUATION.
-  //Relates y(t-dt) to y(t).
-  //Contains y0 in inverse order.
-  //yy in reverse order.
-  //
-  //----------COUNTERS AND FLAGS.
-  //Counts which Runge-Kutta loop.
-  //# time steps after outputting a line
-  //Indicates if gaussian elimination fa
-  //
-  //----------RUN OPTIONS.
-  //Number of nuclides in computation.
-  //Equals isize + 1.
-  //Number of reactions in computation.
-  //
-  //----------EVOLUTION EQUATION COEFFICIENTS.
-  //Equate to ii,jj,kk,ll.
-  //Equate to si,sj,sk,sl.
-  //Coefficients of rate equation.
-  //
-  //----------LOCAL VARIABLES.
-  //Abundances at end of iteration.
-  //# of nuclide i,j,k,l
-  //(10**(-5))*volume expansion rate.
-  //Equate to iform.
-  //Element which does not converge.
-  //
-  //==============================DATA DIVISION====================================
-  //
-  //----------NUMBER OF NUCLIDES IN REACTION TYPES 1-11.
-  //
-  //===========================PROCEDURE DIVISION==================================
-  //
-  //10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
-  //
-  //..........TEMPERATURE FACTORS.
-  //t9**(3/2).
-  t932 = pow(t9, 1.5);
-  //t9**(-3/2).
-  t9m32 = 1. / t932;
-  //..........MATRIX SIZE.
-  isize1 = isize + 1;
-  //..........INITIALIZE A-MATRIX.
-  FEM_DO_SAFE(i, 1, isize) {
-    FEM_DO_SAFE(j, 1, isize) {
-      a[j][i] = 0; 								/// Set a-matrix to zero.
-    }
-  }
-  //
-  //20--------COMPUTE FACTORS FOR THE A-MATRIX-------------------------------------
-  //
-  FEM_DO_SAFE(n, 1, cmn.jsize) {
-    //..........EQUATE VARIABLES TO ARRAYS.
-    //Type of reaction.
-    ind = iform(n);
-    //ID # of incoming nuclide i.
-    i = ii(n);
-    //ID # of incoming nuclide j.
-    j = jj(n);
-    //ID # of outgoing nuclide k.
-    k = kk(n);
-    //ID # of outgoing nuclide l.
-    l = ll(n);
-    //Reactio
-    if ((ind != 0) && (i <= isize) && (l <= isize)) {
-      //# of incoming nuclide i.
-      //ri = si(ind);
-      ri = si[ind-1];
-      //# of incoming nuclide j.
-      //rj = sj(ind);
-      rj = sj[ind-1];
-      //# of outgoing nuclide k.
-      //rk = sk(ind);
-      rk = sk[ind-1];
-      //# of outgoing nuclide l.
-      //rl = sl(ind);
-      rl = sl[ind-1];
-      //..........COMPUTE DIFFERENT REACTION RATES.
-      switch (ind) {
-        case 1: goto statement_201;
-        case 2: goto statement_202;
-        case 3: goto statement_203;
-        case 4: goto statement_204;
-        case 5: goto statement_205;
-        case 6: goto statement_206;
-        case 7: goto statement_207;
-        case 8: goto statement_208;
-        case 9: goto statement_209;
-        case 10: goto statement_210;
-        case 11: goto statement_211;
-        default: break;
-      }
-      statement_201: 			/// 1-0-0-1 configuration.
-      //ci = f(n); 				/// (Ref 1).
-      ci = f[n]; 				/// (Ref 1).
-      cj = 0;
-      ck = 0;
-      //cl = r(n);
-      cl = r[n];
-      goto statement_212;
-      statement_202: 			/// 1-1-0-1 configuration.
-      //r(n) = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f(n); 	/// (Ref 2).
-      r[n] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n]; 	/// (Ref 2).
-      //f(n) = rhob * f(n);
-      f[n] = rhob * f[n];
-      //ci = y(j) * f(n) / 2.;
-      ci = y[j] * f[n] / 2.;
-      //cj = y(i) * f(n) / 2.;
-      cj = y[i] * f[n] / 2.;
-      ck = 0;
-      //cl = r(n);
-      cl = r[n];
-      goto statement_212;
-      statement_203: /// 1-1-1-1 configuration.
-      f[n] = rhob * f[n]; /// (Ref 3).
-      r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.;
-      cj = y[i] * f[n] / 2.;
-      ck = y[l] * r[n] / 2.;
-      cl = y[k] * r[n] / 2.;
-      goto statement_212;
-      //1-0-0-2 configuration.
-      statement_204:
-      ci = f[n];
-      cj = 0.;
-      ck = 0.;
-      cl = y[l] * r[n] / 2.;
-      goto statement_212;
-      //1-1-0-2 configuration.
-      statement_205:
-      f[n] = rhob * f[n];
-      //(Ref 3).
-      r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.;
-      cj = y[i] * f[n] / 2.;
-      ck = 0.;
-      cl = y[l] * r[n] / 2.;
-      goto statement_212;
-      //2-0-1-1 configuration.
-      statement_206:
-      f[n] = rhob * f[n];
-      //(Ref 3).
-      r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-      ci = y[i] * f[n] / 2.;
-      cj = 0.;
-      ck = y[l] * r[n] / 2.;
-      cl = y[k] * r[n] / 2.;
-      goto statement_212;
-      //3-0-0-1 configuration.
-      statement_207:
-      //(Ref 4).
-      r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
-      f[n] = rhob * rhob * f[n];
-      ci = y[i] * y[i] * f[n] / 6.;
-      cj = 0.;
-      ck = 0.;
-      cl = r[n];
-      goto statement_212;
-      //2-1-0-1 configuration.
-      statement_208:
-      //(Ref 4).
-      r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
-      f[n] = rhob * rhob * f[n];
-      ci = y[j] * y[i] * f[n] / 3.;
-      cj = y[i] * y[i] * f[n] / 6.;
-      ck = 0.;
-      cl = r[n];
-      goto statement_212;
-      //1-1-1-2 configuration.
-      statement_209:
-      f[n] = rhob * f[n];
-      //(Ref 5)
-      r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.;
-      cj = y[i] * f[n] / 2.;
-      ck = y[l] * y[l] * r[n] / 6.;
-      cl = y[k] * y[l] * r[n] / 3.;
-      goto statement_212;
-      //1-1-0-3 configuration.
-      statement_210:
-      f[n] = rhob * f[n];
-      //(Ref 5)
-      r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y[j] * f[n] / 2.;
-      cj = y[i] * f[n] / 2.;
-      ck = 0.;
-      cl = y[l] * y[l] * r[n] / 6.;
-      goto statement_212;
-      //2-0-2-1 configuration.
-      statement_211:
-      f[n] = rhob * f[n];
-      //(Ref 5)
-      r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-      ci = y[i] * f[n] / 2.;
-      cj = 0.;
-      ck = y[l] * y[k] * r[n] / 3.;
-      cl = y[k] * y[k] * r[n] / 6.;
-      statement_212:
-      //
-      //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
-      //
-      //Invert i index.
-      i = isize1 - i;
-      //Invert j index.
-      j = isize1 - j;
-      //Invert k index.
-      k = isize1 - k;
-      //Invert l index.
-      l = isize1 - l;
-      //..........FILL I NUCLIDE COLUMN.
-      if (j <= isize) {
-        a[j][i] += rj * ci;
-      }
-      if (k <= isize) {
-        a[k][i] = a[k][i] - rk * ci;
-      }
-      a[i][i] += ri * ci;
-      a[l][i] = a[l][i] - rl * ci;
-      //..........FILL J NUCLIDE COLUMN.
-      if (j <= isize) {
-        a[j][j] += rj * cj;
-        if (k <= isize) {
-          a[k][j] = a[k][j] - rk * cj;
-        }
-        a[i][j] += ri * cj;
-        a[l][j] = a[l][j] - rl * cj;
-      }
-      //..........FILL K NUCLIDE COLUMN.
-      if (k <= isize) {
-        if (j <= isize) {
-          a[j][k] = a[j][k] - rj * ck;
-        }
-        a[k][k] += rk * ck;
-        a[i][k] = a[i][k] - ri * ck;
-        a[l][k] += rl * ck;
-      }
-      //..........FILL L NUCLIDE COLUMN.
-      if (j <= isize) {
-        a[j][l] = a[j][l] - rj * cl;
-      }
-      if (k <= isize) {
-        a[k][l] += rk * cl;
-      }
-      a[i][l] = a[i][l] - ri * cl;
-      a[l][l] += rl * cl;
-      //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
-    }
-    //n = 1,jsize
-  }
-  //
-  //40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
-  //
-  //(10**(-5))*(Expansion rate).
-  bdln = 1.e-5f * (3. * cmn.hubcst);
-  FEM_DO_SAFE(i, 1, isize) {
-    i1 = isize1 - i; 							/// Invert the rows.
-    FEM_DO_SAFE(j, 1, isize) {
-      j1 = isize1 - j; 							/// Invert the columns.
-      if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
-        a[j][i] = 0; 							/// Set 0 if tiny.
-      else
-        a[j][i] = a[j][i] * dt; 				/// Bring dt over to other side.
-    }
-    a[i][i] += 1; 								/// Add identity matrix to a-matrix.
-    b[i1] = y0[i]; 								/// Initial abundances.
-  }
-  //
-  //50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
-  //
-  //..........SET MONITOR FLAG AND SOLVE BY GAUSSIAN ELIMINATION.
-  if (loop == 1) {
-    eqslin(cmn, cmn.ip, ierror);
-  }
-  else {
-    eqslin(cmn, 0, ierror);
-  }
-  //..........OBTAIN DERIVATIVE.
-  FEM_DO_SAFE(i, 1, isize) {
-    yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
-    dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
-  }
-  //
-  //60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
-  //
-  //Problem in gaussian elimination.
-  if (mbad != 0) {
-    //Error message.
-    if (mbad ==  - 1) {
-      write(iw, "(' ','** y(',i2,') fails to converge **')"), ierror;
-    }
-    //Error message.
-    if (mbad >= 1) {
-      write(iw, "(' ','** ',i2,' th diagonal term equals zero **')"), mbad;
-    }
-  }
-  //
-  //----------REFERENCES-----------------------------------------------------------
-  //     1) The coefficients are given in general as:
-  //             ci = ri*(y(j)**rj)*(y(i)**(ri-1)*f(n)/
-  //                  ((ri+rj)*fac(ri)*fac(rj))
-  //             cj = rj*(y(i)**ri)*(y(j)**(rj-1)*f(n)/
-  //                  ((ri+rj)*fac(ri)*fac(rj))
-  //             ck = rk*(y(l)**rl)*(y(k)**(rk-1)*f(n)/
-  //                  ((rk+rl)*fac(rk)*fac(rl))
-  //             cl = rl*(y(k)**rk)*(y(l)**(rl-1)*f(n)/
-  //                  ((rk+rl)*fac(rk)*fac(rl))
-  //        in which fac(x) is the factorial of x.
-  //     2) Form of reverse rate given in
-  //        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
-  //          tables 1B, 4B, 7B.
-  //     3) Form of reverse rate given in
-  //        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
-  //          tables 2B, 3B, 5B, 6B, 8B, 9B, 10B.
-  //     4) Form of reverse rate given in
-  //        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
-  //          table 11B.
-  //     5) Form of reverse rate given in
-  //        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
-  //          tables 12B, 13B.
-  //
+	float t932 = 0;
+	float t9m32 = 0;
+	int isize1 = 0;
+	int i = 0;
+	int j = 0;
+	int n = 0;
+	int ind = 0;
+	int k = 0;
+	int l = 0;
+	float ri = 0;
+	float rj = 0;
+	float rk = 0;
+	float rl = 0;
+	float ci = 0;
+	float cj = 0;
+	float ck = 0;
+	float cl = 0;
+	float bdln = 0;
+	int ierror = 0;
+	//arr_1d<nnuc, float> yy(fem::fill0);
+	float yy[nnuc+1];
+	const int iw = 6;
+	//
+	//----------LINKAGES.
+	//     CALLED BY - [subroutine] derivs
+	//     CALLS     - [subroutine] eqslin
+	//               - [function] ex
+	//
+	//----------REMARKS.
+	//     Computes reverse strong and electromagnetic reaction rates.
+	//     Fills and solves matrix equation for dydt(i).
+	//
+	//----------PARAMETERS.
+	//Input unit number.
+	//Output unit number.
+	//Number of nuclear reactions.
+	//Number of nuclides in calculation.
+	//
+	//-----------COMMON AREAS.
+	//Reaction parameter
+	//Reaction rates.
+	//Evolution paramete
+	//Time varying param
+	//Dynamic variable
+	//Energy densities.
+	//Linear eqn coeffic
+	//Flags,counters.
+	//Run option.
+	//
+	//==========================DECLARATION DIVISION=================================
+	//
+	//----------REACTION PARAMETERS.
+	//Reaction code number (1-88).
+	//Incoming nuclide type (1-26).
+	//Incoming light nuclide type (1-6).
+	//Outgoing light nuclide type (1-6).
+	//Outgoing nuclide type (1-26).
+	//Reverse reaction coefficient.
+	//Energy released in reaction.
+	//
+	//----------REACTION RATES.
+	//Forward reaction rate coefficients.
+	//Reverse reaction rate coefficients.
+	//
+	//----------EVOLUTION PARAMETERS.
+	//Temperature (in units of 10**9 K).
+	//Relative number abundances.
+	//
+	//----------EVOLUTION PARAMETERS (DERIVATIVES).
+	//Change in rel number abundances.
+	//
+	//----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
+	//Rel # abund at start of iteration.
+	//
+	//----------TIME VARIABLES.
+	//Time step.
+	//
+	//----------DYNAMIC VARIABLES.
+	//Expansion rate.
+	//
+	//----------ENERGY DENSITIES.
+	//Baryon mass density.
+	//
+	//----------COMPONENTS OF MATRIX EQUATION.
+	//Relates y(t-dt) to y(t).
+	//Contains y0 in inverse order.
+	//yy in reverse order.
+	//
+	//----------COUNTERS AND FLAGS.
+	//Counts which Runge-Kutta loop.
+	//# time steps after outputting a line
+	//Indicates if gaussian elimination fa
+	//
+	//----------RUN OPTIONS.
+	//Number of nuclides in computation.
+	//Equals isize + 1.
+	//Number of reactions in computation.
+	//
+	//----------EVOLUTION EQUATION COEFFICIENTS.
+	//Equate to ii,jj,kk,ll.
+	//Equate to si,sj,sk,sl.
+	//Coefficients of rate equation.
+	//
+	//----------LOCAL VARIABLES.
+	//Abundances at end of iteration.
+	//# of nuclide i,j,k,l
+	//(10**(-5))*volume expansion rate.
+	//Equate to iform.
+	//Element which does not converge.
+	//
+	//==============================DATA DIVISION====================================
+	//
+	//----------NUMBER OF NUCLIDES IN REACTION TYPES 1-11.
+	//
+	//===========================PROCEDURE DIVISION==================================
+	//
+	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
+	//
+	//..........TEMPERATURE FACTORS.
+	//t9**(3/2).
+	t932 = pow(t9, 1.5);
+	//t9**(-3/2).
+	t9m32 = 1. / t932;
+	//..........MATRIX SIZE.
+	isize1 = isize + 1;
+	//..........INITIALIZE A-MATRIX.
+	FEM_DO_SAFE(i, 1, isize) {
+		FEM_DO_SAFE(j, 1, isize) {
+			a[j][i] = 0; 				/// Set a-matrix to zero.
+		}
+	}
+	//
+	//20--------COMPUTE FACTORS FOR THE A-MATRIX-------------------------------------
+	//
+	FEM_DO_SAFE(n, 1, cmn.jsize) {
+	//..........EQUATE VARIABLES TO ARRAYS.
+	ind = iform(n);
+	//Type of reaction.
+	i = ii(n); 							/// ID # of incoming nuclide i.
+	j = jj(n); 							/// ID # of incoming nuclide j.
+	k = kk(n); 							/// ID # of outgoing nuclide k.
+	l = ll(n); 							/// ID # of outgoing nuclide l.
+	//Reactio
+	if ((ind != 0) && (i <= isize) && (l <= isize)) {
+	  //# of incoming nuclide i.
+	  ri = si[ind];
+	  //ri = si(ind);
+	  //# of incoming nuclide j.
+	  //rj = sj(ind);
+	  rj = sj[ind];
+	  //# of outgoing nuclide k.
+	  //rk = sk(ind);
+	  rk = sk[ind];
+	  //# of outgoing nuclide l.
+	  //rl = sl(ind);
+	  rl = sl[ind];
+	  //..........COMPUTE DIFFERENT REACTION RATES.
+	  switch (ind) {
+		case 1: goto statement_201;
+		case 2: goto statement_202;
+		case 3: goto statement_203;
+		case 4: goto statement_204;
+		case 5: goto statement_205;
+		case 6: goto statement_206;
+		case 7: goto statement_207;
+		case 8: goto statement_208;
+		case 9: goto statement_209;
+		case 10: goto statement_210;
+		case 11: goto statement_211;
+		default: break;
+	  }
+	  //configuration1001:
+	  statement_201: 			/// 1-0-0-1 configuration.
+	  //ci = f(n); 				/// (Ref 1).
+	  ci = f[n]; 				/// (Ref 1).
+	  cj = 0;
+	  ck = 0;
+	  //cl = r(n);
+	  cl = r[n];
+	  goto statement_212;
+	  statement_202: 			/// 1-1-0-1 configuration.
+	  //r(n) = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f(n); 	/// (Ref 2).
+	  r[n] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n]; 	/// (Ref 2).
+	  //f(n) = rhob * f(n);
+	  f[n] = rhob * f[n];
+	  //ci = y(j) * f(n) / 2.;
+	  ci = y[j] * f[n] / 2.;
+	  //cj = y(i) * f(n) / 2.;
+	  cj = y[i] * f[n] / 2.;
+	  ck = 0;
+	  //cl = r(n);
+	  cl = r[n];
+	  goto statement_212;
+	  statement_203: 				/// 1-1-1-1 configuration.
+	  f[n] = rhob * f[n]; 			/// (Ref 3).
+	  r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
+	  ci = y[j] * f[n] / 2.;
+	  cj = y[i] * f[n] / 2.;
+	  ck = y[l] * r[n] / 2.;
+	  cl = y[k] * r[n] / 2.;
+	  goto statement_212;
+	  statement_204: 				/// 1-0-0-2 configuration.
+	  ci = f[n];
+	  cj = 0.;
+	  ck = 0.;
+	  cl = y[l] * r[n] / 2.;
+	  goto statement_212;
+	  statement_205: 				/// 1-1-0-2 configuration.
+	  f[n] = rhob * f[n];
+	  r[n] = rev(n) * ex(-q9(n) / t9) * f[n]; 	/// (Ref 3).
+	  ci = y[j] * f[n] / 2.;
+	  cj = y[i] * f[n] / 2.;
+	  ck = 0.;
+	  cl = y[l] * r[n] / 2.;
+	  goto statement_212;
+	  statement_206: 				/// 2-0-1-1 configuration.
+	  f[n] = rhob * f[n];
+	  r[n] = rev(n) * ex(-q9(n) / t9) * f[n]; 	/// (Ref 3).
+	  ci = y[i] * f[n] / 2.;
+	  cj = 0.;
+	  ck = y[l] * r[n] / 2.;
+	  cl = y[k] * r[n] / 2.;
+	  goto statement_212;
+	  //3-0-0-1 configuration.
+	  statement_207:
+	  //(Ref 4).
+	  r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
+	  f[n] = rhob * rhob * f[n];
+	  ci = y[i] * y[i] * f[n] / 6.;
+	  cj = 0.;
+	  ck = 0.;
+	  cl = r[n];
+	  goto statement_212;
+	  //2-1-0-1 configuration.
+	  statement_208:
+	  //(Ref 4).
+	  r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
+	  f[n] = rhob * rhob * f[n];
+	  ci = y[j] * y[i] * f[n] / 3.;
+	  cj = y[i] * y[i] * f[n] / 6.;
+	  ck = 0.;
+	  cl = r[n];
+	  goto statement_212;
+	  //1-1-1-2 configuration.
+	  statement_209:
+	  f[n] = rhob * f[n];
+	  //(Ref 5)
+	  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+	  ci = y[j] * f[n] / 2.;
+	  cj = y[i] * f[n] / 2.;
+	  ck = y[l] * y[l] * r[n] / 6.;
+	  cl = y[k] * y[l] * r[n] / 3.;
+	  goto statement_212;
+	  //1-1-0-3 configuration.
+	  statement_210:
+	  f[n] = rhob * f[n];
+	  //(Ref 5)
+	  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+	  ci = y[j] * f[n] / 2.;
+	  cj = y[i] * f[n] / 2.;
+	  ck = 0.;
+	  cl = y[l] * y[l] * r[n] / 6.;
+	  goto statement_212;
+	  //2-0-2-1 configuration.
+	  statement_211:
+	  f[n] = rhob * f[n];
+	  //(Ref 5)
+	  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+	  ci = y[i] * f[n] / 2.;
+	  cj = 0.;
+	  ck = y[l] * y[k] * r[n] / 3.;
+	  cl = y[k] * y[k] * r[n] / 6.;
+	  statement_212:
+	  //
+	  //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
+	  //
+	  i = isize1 - i; 				/// Invert i index.
+	  j = isize1 - j; 				/// Invert j index.
+	  k = isize1 - k; 				/// Invert k index.
+	  l = isize1 - l; 				/// Invert l index.
+	  //..........FILL I NUCLIDE COLUMN.
+	  if (j <= isize) {
+		a[j][i] += rj * ci;
+	  }
+	  if (k <= isize) {
+		//a[k][i] = a[k][i] - rk * ci;
+		a[k][i] -= rk * ci;
+	  }
+	  a[i][i] += ri * ci;
+	  //a[l][i] = a[l][i] - rl * ci;
+	  a[l][i] -= rl * ci;
+	  //..........FILL J NUCLIDE COLUMN.
+	  if (j <= isize) {
+		a[j][j] += rj * cj;
+		if (k <= isize) {
+		  //a[k][j] = a[k][j] - rk * cj;
+		  a[k][j] -= rk * cj;
+		}
+		a[i][j] += ri * cj;
+		//a[l][j] = a[l][j] - rl * cj;
+		a[l][j] -= rl * cj;
+	  }
+	  //..........FILL K NUCLIDE COLUMN.
+	  if (k <= isize) {
+		if (j <= isize) {
+		  //a[j][k] = a[j][k] - rj * ck;
+		  a[j][k] -= rj * ck;
+		}
+		a[k][k] += rk * ck;
+		//a[i][k] = a[i][k] - ri * ck;
+		a[i][k] -= ri * ck;
+		a[l][k] += rl * ck;
+	  }
+	  //..........FILL L NUCLIDE COLUMN.
+	  if (j <= isize) {
+		//a[j][l] = a[j][l] - rj * cl;
+		a[j][l] -= rj * cl;
+	  }
+	  if (k <= isize) {
+		a[k][l] += rk * cl;
+	  }
+	  //a[i][l] = a[i][l] - ri * cl;
+	  a[i][l] -= ri * cl;
+	  a[l][l] += rl * cl;
+	  //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
+	}
+	//n = 1,jsize
+	}
+	//
+	//40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
+	//
+	//(10**(-5))*(Expansion rate).
+	bdln = 1.e-5f * (3. * hubcst);
+	FEM_DO_SAFE(i, 1, isize) {
+		int i1 = isize1 - i; 						/// Invert the rows.
+		FEM_DO_SAFE(j, 1, isize) {
+		  int j1 = isize1 - j; 						/// Invert the columns.
+		  std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
+		  if (y0[i1] == NOT_USED) exit(0);
+		  if (y0[j1] == NOT_USED) exit(0);
+		  if (a[j][i] == NOT_USED) exit(0);
+
+		  if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
+			a[j][i] = 0; 							/// Set 0 if tiny.
+		  else
+			//a[j][i] = a[j][i] * dt; 				/// Bring dt over to other side.
+			a[j][i] *= dt; 							/// Bring dt over to other side.
+		}
+		a[i][i] += 1; 								/// Add identity matrix to a-matrix.
+		b[i1] = y0[i]; 								/// Initial abundances.
+	}
+	//
+	//50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
+	//
+	//..........SET MONITOR FLAG AND SOLVE BY GAUSSIAN ELIMINATION.
+	if (loop == 1) {
+	eqslin(cmn, cmn.ip, ierror);
+	}
+	else {
+	eqslin(cmn, 0, ierror);
+	}
+	//..........OBTAIN DERIVATIVE.
+	FEM_DO_SAFE(i, 1, isize) {
+	yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
+	dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
+	}
+	//
+	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
+	//
+	//Problem in gaussian elimination.
+	if (mbad != 0) {
+	//Error message.
+	if (mbad ==  - 1) {
+	  write(iw, "(' ','** y(',i2,') fails to converge **')"), ierror;
+	}
+	//Error message.
+	if (mbad >= 1) {
+	  write(iw, "(' ','** ',i2,' th diagonal term equals zero **')"), mbad;
+	}
+	}
+	//
+	//----------REFERENCES-----------------------------------------------------------
+	//     1) The coefficients are given in general as:
+	//             ci = ri*(y(j)**rj)*(y(i)**(ri-1)*f(n)/
+	//                  ((ri+rj)*fac(ri)*fac(rj))
+	//             cj = rj*(y(i)**ri)*(y(j)**(rj-1)*f(n)/
+	//                  ((ri+rj)*fac(ri)*fac(rj))
+	//             ck = rk*(y(l)**rl)*(y(k)**(rk-1)*f(n)/
+	//                  ((rk+rl)*fac(rk)*fac(rl))
+	//             cl = rl*(y(k)**rk)*(y(l)**(rl-1)*f(n)/
+	//                  ((rk+rl)*fac(rk)*fac(rl))
+	//        in which fac(x) is the factorial of x.
+	//     2) Form of reverse rate given in
+	//        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
+	//          tables 1B, 4B, 7B.
+	//     3) Form of reverse rate given in
+	//        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
+	//          tables 2B, 3B, 5B, 6B, 8B, 9B, 10B.
+	//     4) Form of reverse rate given in
+	//        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
+	//          table 11B.
+	//     5) Form of reverse rate given in
+	//        Wagoner, R.V.,1969, Ap. J. Suppl. No. 162, 18, 247,
+	//          tables 12B, 13B.
+	//
 }
 
 /*
