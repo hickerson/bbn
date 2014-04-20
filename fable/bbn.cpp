@@ -3372,7 +3372,7 @@ statement_212:
 	FEM_DO_SAFE(i, 1, isize) {
 		//yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
-		dydt[i] = (y[iszie1-i] - y0[i]) / dt; 		/// Take derivative.
+		dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
