@@ -1213,8 +1213,8 @@ knux(
   //Expansion coefficients for i1 (z.le.2).
   //Expansion coefficients for k0 (z.le.2).
   //Expansion coefficients for k1 (z.le.2).
-  //Expansion coefficients for k0 (z.gt.2).
-  //Expansion coefficients for k1 (z.gt.2).
+  //Expansion coefficients for k0 (z > 2).
+  //Expansion coefficients for k1 (z > 2).
   //
   //-----------VARIABLES TO BE EVALUATED.
   //Input variable.
@@ -3176,199 +3176,188 @@ common::sol(
 	//20--------COMPUTE FACTORS FOR THE A-MATRIX-------------------------------------
 	//
 	FEM_DO_SAFE(n, 1, cmn.jsize) {
-	//..........EQUATE VARIABLES TO ARRAYS.
-	ind = iform(n);
-	//Type of reaction.
-	i = ii(n); 							/// ID # of incoming nuclide i.
-	j = jj(n); 							/// ID # of incoming nuclide j.
-	k = kk(n); 							/// ID # of outgoing nuclide k.
-	l = ll(n); 							/// ID # of outgoing nuclide l.
-	//Reactio
-	if ((ind != 0) && (i <= isize) && (l <= isize)) {
-	  //# of incoming nuclide i.
-	  ri = si[ind];
-	  //ri = si(ind);
-	  //# of incoming nuclide j.
-	  //rj = sj(ind);
-	  rj = sj[ind];
-	  //# of outgoing nuclide k.
-	  //rk = sk(ind);
-	  rk = sk[ind];
-	  //# of outgoing nuclide l.
-	  //rl = sl(ind);
-	  rl = sl[ind];
-	  //..........COMPUTE DIFFERENT REACTION RATES.
-	  switch (ind) {
-		case 1: goto statement_201;
-		case 2: goto statement_202;
-		case 3: goto statement_203;
-		case 4: goto statement_204;
-		case 5: goto statement_205;
-		case 6: goto statement_206;
-		case 7: goto statement_207;
-		case 8: goto statement_208;
-		case 9: goto statement_209;
-		case 10: goto statement_210;
-		case 11: goto statement_211;
-		default: break;
-	  }
-	  //configuration1001:
-	  statement_201: 			/// 1-0-0-1 configuration.
-	  //ci = f(n); 				/// (Ref 1).
-	  ci = f[n]; 				/// (Ref 1).
-	  cj = 0;
-	  ck = 0;
-	  //cl = r(n);
-	  cl = r[n];
-	  goto statement_212;
-	  statement_202: 			/// 1-1-0-1 configuration.
-	  //r(n) = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f(n); 	/// (Ref 2).
-	  r[n] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n]; 	/// (Ref 2).
-	  //f(n) = rhob * f(n);
-	  f[n] = rhob * f[n];
-	  //ci = y(j) * f(n) / 2.;
-	  ci = y[j] * f[n] / 2.;
-	  //cj = y(i) * f(n) / 2.;
-	  cj = y[i] * f[n] / 2.;
-	  ck = 0;
-	  //cl = r(n);
-	  cl = r[n];
-	  goto statement_212;
-	  statement_203: 				/// 1-1-1-1 configuration.
-	  f[n] = rhob * f[n]; 			/// (Ref 3).
-	  r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
-	  ci = y[j] * f[n] / 2.;
-	  cj = y[i] * f[n] / 2.;
-	  ck = y[l] * r[n] / 2.;
-	  cl = y[k] * r[n] / 2.;
-	  goto statement_212;
-	  statement_204: 				/// 1-0-0-2 configuration.
-	  ci = f[n];
-	  cj = 0.;
-	  ck = 0.;
-	  cl = y[l] * r[n] / 2.;
-	  goto statement_212;
-	  statement_205: 				/// 1-1-0-2 configuration.
-	  f[n] = rhob * f[n];
-	  r[n] = rev(n) * ex(-q9(n) / t9) * f[n]; 	/// (Ref 3).
-	  ci = y[j] * f[n] / 2.;
-	  cj = y[i] * f[n] / 2.;
-	  ck = 0.;
-	  cl = y[l] * r[n] / 2.;
-	  goto statement_212;
-	  statement_206: 				/// 2-0-1-1 configuration.
-	  f[n] = rhob * f[n];
-	  r[n] = rev(n) * ex(-q9(n) / t9) * f[n]; 	/// (Ref 3).
-	  ci = y[i] * f[n] / 2.;
-	  cj = 0.;
-	  ck = y[l] * r[n] / 2.;
-	  cl = y[k] * r[n] / 2.;
-	  goto statement_212;
-	  //3-0-0-1 configuration.
-	  statement_207:
-	  //(Ref 4).
-	  r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
-	  f[n] = rhob * rhob * f[n];
-	  ci = y[i] * y[i] * f[n] / 6.;
-	  cj = 0.;
-	  ck = 0.;
-	  cl = r[n];
-	  goto statement_212;
-	  //2-1-0-1 configuration.
-	  statement_208:
-	  //(Ref 4).
-	  r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
-	  f[n] = rhob * rhob * f[n];
-	  ci = y[j] * y[i] * f[n] / 3.;
-	  cj = y[i] * y[i] * f[n] / 6.;
-	  ck = 0.;
-	  cl = r[n];
-	  goto statement_212;
-	  //1-1-1-2 configuration.
-	  statement_209:
-	  f[n] = rhob * f[n];
-	  //(Ref 5)
-	  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-	  ci = y[j] * f[n] / 2.;
-	  cj = y[i] * f[n] / 2.;
-	  ck = y[l] * y[l] * r[n] / 6.;
-	  cl = y[k] * y[l] * r[n] / 3.;
-	  goto statement_212;
-	  //1-1-0-3 configuration.
-	  statement_210:
-	  f[n] = rhob * f[n];
-	  //(Ref 5)
-	  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-	  ci = y[j] * f[n] / 2.;
-	  cj = y[i] * f[n] / 2.;
-	  ck = 0.;
-	  cl = y[l] * y[l] * r[n] / 6.;
-	  goto statement_212;
-	  //2-0-2-1 configuration.
-	  statement_211:
-	  f[n] = rhob * f[n];
-	  //(Ref 5)
-	  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
-	  ci = y[i] * f[n] / 2.;
-	  cj = 0.;
-	  ck = y[l] * y[k] * r[n] / 3.;
-	  cl = y[k] * y[k] * r[n] / 6.;
-	  statement_212:
-	  //
-	  //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
-	  //
-	  i = isize1 - i; 				/// Invert i index.
-	  j = isize1 - j; 				/// Invert j index.
-	  k = isize1 - k; 				/// Invert k index.
-	  l = isize1 - l; 				/// Invert l index.
-	  //..........FILL I NUCLIDE COLUMN.
-	  if (j <= isize) {
-		a[j][i] += rj * ci;
-	  }
-	  if (k <= isize) {
-		//a[k][i] = a[k][i] - rk * ci;
-		a[k][i] -= rk * ci;
-	  }
-	  a[i][i] += ri * ci;
-	  //a[l][i] = a[l][i] - rl * ci;
-	  a[l][i] -= rl * ci;
-	  //..........FILL J NUCLIDE COLUMN.
-	  if (j <= isize) {
-		a[j][j] += rj * cj;
-		if (k <= isize) {
-		  //a[k][j] = a[k][j] - rk * cj;
-		  a[k][j] -= rk * cj;
-		}
-		a[i][j] += ri * cj;
-		//a[l][j] = a[l][j] - rl * cj;
-		a[l][j] -= rl * cj;
-	  }
-	  //..........FILL K NUCLIDE COLUMN.
-	  if (k <= isize) {
-		if (j <= isize) {
-		  //a[j][k] = a[j][k] - rj * ck;
-		  a[j][k] -= rj * ck;
-		}
-		a[k][k] += rk * ck;
-		//a[i][k] = a[i][k] - ri * ck;
-		a[i][k] -= ri * ck;
-		a[l][k] += rl * ck;
-	  }
-	  //..........FILL L NUCLIDE COLUMN.
-	  if (j <= isize) {
-		//a[j][l] = a[j][l] - rj * cl;
-		a[j][l] -= rj * cl;
-	  }
-	  if (k <= isize) {
-		a[k][l] += rk * cl;
-	  }
-	  //a[i][l] = a[i][l] - ri * cl;
-	  a[i][l] -= ri * cl;
-	  a[l][l] += rl * cl;
-	  //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
-	}
-	//n = 1,jsize
-	}
+		//..........EQUATE VARIABLES TO ARRAYS.
+		ind = iform(n); 					/// Type of reaction.
+		i = ii(n); 							/// ID # of incoming nuclide i.
+		j = jj(n); 							/// ID # of incoming nuclide j.
+		k = kk(n); 							/// ID # of outgoing nuclide k.
+		l = ll(n); 							/// ID # of outgoing nuclide l.
+		//Reactio
+		if ((ind != 0) && (i <= isize) && (l <= isize)) {
+		  ri = si[ind]; 					/// # of incoming nuclide i.
+		  rj = sj[ind]; 					/// # of incoming nuclide j.
+		  rk = sk[ind]; 					/// # of outgoing nuclide k.
+		  rl = sl[ind]; 					/// # of outgoing nuclide l.
+		  //..........COMPUTE DIFFERENT REACTION RATES.
+		  switch (ind) {
+			case 1: goto statement_201;
+			case 2: goto statement_202;
+			case 3: goto statement_203;
+			case 4: goto statement_204;
+			case 5: goto statement_205;
+			case 6: goto statement_206;
+			case 7: goto statement_207;
+			case 8: goto statement_208;
+			case 9: goto statement_209;
+			case 10: goto statement_210;
+			case 11: goto statement_211;
+			default: break;
+		  }
+		  //configuration1001:
+		  statement_201: 			/// 1-0-0-1 configuration.
+		  //ci = f(n); 				/// (Ref 1).
+		  ci = f[n]; 				/// (Ref 1).
+		  cj = 0;
+		  ck = 0;
+		  //cl = r(n);
+		  cl = r[n];
+		  goto statement_212;
+		  statement_202: 			/// 1-1-0-1 configuration.
+		  //r(n) = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f(n); 	/// (Ref 2).
+		  r[n] = rev(n) * 1.e+10f * t932 * ex(-q9(n) / t9) * f[n]; 	/// (Ref 2).
+		  //f(n) = rhob * f(n);
+		  f[n] = rhob * f[n];
+		  //ci = y(j) * f(n) / 2.;
+		  ci = y[j] * f[n] / 2.;
+		  //cj = y(i) * f(n) / 2.;
+		  cj = y[i] * f[n] / 2.;
+		  ck = 0;
+		  //cl = r(n);
+		  cl = r[n];
+		  goto statement_212;
+		  statement_203: 				/// 1-1-1-1 configuration.
+		  f[n] = rhob * f[n]; 			/// (Ref 3).
+		  r[n] = rev(n) * ex(-q9(n) / t9) * f[n];
+		  ci = y[j] * f[n] / 2.;
+		  cj = y[i] * f[n] / 2.;
+		  ck = y[l] * r[n] / 2.;
+		  cl = y[k] * r[n] / 2.;
+		  goto statement_212;
+		  statement_204: 				/// 1-0-0-2 configuration.
+		  ci = f[n];
+		  cj = 0.;
+		  ck = 0.;
+		  cl = y[l] * r[n] / 2.;
+		  goto statement_212;
+		  statement_205: 				/// 1-1-0-2 configuration.
+		  f[n] = rhob * f[n];
+		  r[n] = rev(n) * ex(-q9(n) / t9) * f[n]; 	/// (Ref 3).
+		  ci = y[j] * f[n] / 2.;
+		  cj = y[i] * f[n] / 2.;
+		  ck = 0.;
+		  cl = y[l] * r[n] / 2.;
+		  goto statement_212;
+		  statement_206: 				/// 2-0-1-1 configuration.
+		  f[n] = rhob * f[n];
+		  r[n] = rev(n) * ex(-q9(n) / t9) * f[n]; 	/// (Ref 3).
+		  ci = y[i] * f[n] / 2.;
+		  cj = 0.;
+		  ck = y[l] * r[n] / 2.;
+		  cl = y[k] * r[n] / 2.;
+		  goto statement_212;
+		  //3-0-0-1 configuration.
+		  statement_207:
+		  //(Ref 4).
+		  r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
+		  f[n] = rhob * rhob * f[n];
+		  ci = y[i] * y[i] * f[n] / 6.;
+		  cj = 0.;
+		  ck = 0.;
+		  cl = r[n];
+		  goto statement_212;
+		  //2-1-0-1 configuration.
+		  statement_208:
+		  //(Ref 4).
+		  r[n] = rev(n) * 1.e+20f * t932 * t932 * ex(-q9(n) / t9) * f[n];
+		  f[n] = rhob * rhob * f[n];
+		  ci = y[j] * y[i] * f[n] / 3.;
+		  cj = y[i] * y[i] * f[n] / 6.;
+		  ck = 0.;
+		  cl = r[n];
+		  goto statement_212;
+		  //1-1-1-2 configuration.
+		  statement_209:
+		  f[n] = rhob * f[n];
+		  //(Ref 5)
+		  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+		  ci = y[j] * f[n] / 2.;
+		  cj = y[i] * f[n] / 2.;
+		  ck = y[l] * y[l] * r[n] / 6.;
+		  cl = y[k] * y[l] * r[n] / 3.;
+		  goto statement_212;
+		  //1-1-0-3 configuration.
+		  statement_210:
+		  f[n] = rhob * f[n];
+		  //(Ref 5)
+		  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+		  ci = y[j] * f[n] / 2.;
+		  cj = y[i] * f[n] / 2.;
+		  ck = 0.;
+		  cl = y[l] * y[l] * r[n] / 6.;
+		  goto statement_212;
+		  //2-0-2-1 configuration.
+		  statement_211:
+		  f[n] = rhob * f[n];
+		  //(Ref 5)
+		  r[n] = rev(n) * 1.e-10f * t9m32 * rhob * ex(-q9(n) / t9) * f[n];
+		  ci = y[i] * f[n] / 2.;
+		  cj = 0.;
+		  ck = y[l] * y[k] * r[n] / 3.;
+		  cl = y[k] * y[k] * r[n] / 6.;
+		  statement_212:
+		  //
+		  //30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
+		  //
+		  i = isize1 - i; 				/// Invert i index.
+		  j = isize1 - j; 				/// Invert j index.
+		  k = isize1 - k; 				/// Invert k index.
+		  l = isize1 - l; 				/// Invert l index.
+		  //..........FILL I NUCLIDE COLUMN.
+		  if (j <= isize) {
+			a[j][i] += rj * ci;
+		  }
+		  if (k <= isize) {
+			//a[k][i] = a[k][i] - rk * ci;
+			a[k][i] -= rk * ci;
+		  }
+		  a[i][i] += ri * ci;
+		  //a[l][i] = a[l][i] - rl * ci;
+		  a[l][i] -= rl * ci;
+		  //..........FILL J NUCLIDE COLUMN.
+		  if (j <= isize) {
+			a[j][j] += rj * cj;
+			if (k <= isize) {
+			  //a[k][j] = a[k][j] - rk * cj;
+			  a[k][j] -= rk * cj;
+			}
+			a[i][j] += ri * cj;
+			//a[l][j] = a[l][j] - rl * cj;
+			a[l][j] -= rl * cj;
+		  }
+		  //..........FILL K NUCLIDE COLUMN.
+		  if (k <= isize) {
+			if (j <= isize) {
+			  //a[j][k] = a[j][k] - rj * ck;
+			  a[j][k] -= rj * ck;
+			}
+			a[k][k] += rk * ck;
+			//a[i][k] = a[i][k] - ri * ck;
+			a[i][k] -= ri * ck;
+			a[l][k] += rl * ck;
+		  }
+		  //..........FILL L NUCLIDE COLUMN.
+		  if (j <= isize) {
+			//a[j][l] = a[j][l] - rj * cl;
+			a[j][l] -= rj * cl;
+		  }
+		  if (k <= isize) {
+			a[k][l] += rk * cl;
+		  }
+		  //a[i][l] = a[i][l] - ri * cl;
+		  a[i][l] -= ri * cl;
+		  a[l][l] += rl * cl;
+		} //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
+	} //n = 1,jsize
 	//
 	//40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
 	//
@@ -5119,12 +5108,9 @@ common::run(common& cmn)
         read(ir, "(a1)"), lchose;
         if ((lchose != "Y") && (lchose != "y")) {
           goto statement_231;
-        }
-        //((inum(i).lt.1).or.(inum(i).gt.8))
-      }
-      //(i.gt.jnum)
-    }
-    //i = 1,3
+        } //((inum(i) < 1) or (inum(i) > 8))
+      } //(i > jnum)
+    } //i = 1,3
   }
   //Number of valid loops.
   jnum = jnum - knum;
