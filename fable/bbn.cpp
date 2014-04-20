@@ -5429,14 +5429,12 @@ statement_310:
 			"(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
 			"80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
-		{
-			write_loop wloop(cmn, iw, format_3106);
-			wloop, t9out(j);
-			FEM_DO_SAFE(i, 3, 6) {
-				wloop, xout(j, i);
-			}
-			wloop, xout(j, 8);
+		write_loop wloop(cmn, iw, format_3106);
+		wloop, t9out(j);
+		FEM_DO_SAFE(i, 3, 6) {
+			wloop, xout(j, i);
 		}
+		wloop, xout(j, 8);
 	}
 	write(iw, format_2014);
 	write(iw, format_3108);
