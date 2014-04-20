@@ -86,6 +86,7 @@ struct common_modpr0
 	cosmo0(0)//,
 	//xi0(dimension(3), fem::fill0)
 	{
+		std::cout << "Calling the common_modpr0 constructor.\n";
 		for (int i = 0; i < 3+1; i++) {
 			c0[i] = 0;
 			xi0[i] = 0;
@@ -505,6 +506,8 @@ struct common :
 	//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 	//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
+
+	// TODO put in a subclass.
 	static const float am[nnuc+1];
 	static const float zm[nnuc+1];
 	static const float dm[nnuc+1];
@@ -517,6 +520,8 @@ struct common :
 	//arr<float> yx;
 	float f[nrec+1];
 	float r[nrec+1];
+
+	// TODO put in a subclass.
 	float a[nnuc+1][nnuc+1];
 	float b[nnuc+1];
 	float yx[nnuc+1];
@@ -578,21 +583,21 @@ struct common :
 
 
 const float common::am[26+1] = {
-		0,
+		NOT_USED,
 		1.f, 1.f, 2.f, 3.f, 3.f, 4.f, 6.f, 7.f, 7.f, 8.f, 8.f, 9.f,
 		10.f, 11.f, 11.f, 12.f, 12.f, 12.f, 13.f, 13.f, 14.f, 14.f,
 		14.f, 15.f, 15.f, 16.f
 	};
 
 const float common::zm[26+1] = {
-		0,
+		NOT_USED,
 		0.f, 1.f, 1.f, 1.f, 2.f, 2.f, 3.f, 3.f, 4.f, 3.f, 5.f, 4.f,
 		5.f, 5.f, 6.f, 5.f, 6.f, 7.f, 6.f, 7.f, 6.f, 7.f, 8.f, 7.f,
 		8.f, 8.f
 	};
 
 const float common::dm[26+1] = {
-		0,
+		NOT_USED,
 		.008665f, .007825f, .014102f, .016050f, .016030f, .002603f,
 		.015125f, .016004f, .016929f, .022487f, .024609f, .012186f,
 		.012939f, .009305f, .011432f, .014354f, .000000f, .018641f,

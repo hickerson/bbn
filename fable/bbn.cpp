@@ -636,7 +636,7 @@ common::setmod(
   //----------EARLY UNIVERSE MODEL PARAMETERS.
   //c[1] is variation of gravitational con
   //c[2] is neutron lifetime (sec).
-  //c(3) is number of neutrino species.
+  //c[3] is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
   //
@@ -669,7 +669,7 @@ common::setmod(
     "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
     "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
     "' Enter selection (1-10): ',$)"),
-    cmn.c[1], cmn.c[2], cmn.c[3], cmn.eta1, cmn.cosmo, cmn.xi[1], cmn.xi[2], cmn.xi[3];
+    c[1], c[2], c[3], eta1, cosmo, xi[1], xi[2], xi[3];
   //..........READ IN SELECTION NUMBER.
   read(ir, "(i2)"), inum;
   //
@@ -704,7 +704,7 @@ common::setmod(
   //Change number of neutrino species section.
   statement_230:
   write(iw, "(' ','Enter value for number of neutrino species: ',$)");
-  read(ir, star), cmn.c[2];
+  read(ir, star), cmn.c[3];
   goto statement_400;
   //Change baryon-to-photon ratio section.
   statement_240:
@@ -729,9 +729,9 @@ common::setmod(
   //Change neutrino degeneracy section.
   statement_280:
   write(iw, "(' ','Enter value for xi tauon: ',$)");
-  read(ir, star), cmn.xi[2];
-  if ((cmn.xi[2] != 0.f) && (cmn.c[2] < 3.f)) {
-    cmn.c[2] = 3.f;
+  read(ir, star), cmn.xi[3];
+  if ((cmn.xi[3] != 0.f) && (cmn.c[3] < 3.f)) {
+    cmn.c[3] = 3.f;
     write(iw, "(' ','Number of neutrinos set to 3')");
     write(iw, "(' ','Press <RETURN> to continue: ',$)");
     read(ir, star);
@@ -741,11 +741,11 @@ common::setmod(
   statement_290:
   cmn.c[1] = cmn.c0[1];
   cmn.c[2] = cmn.c0[2];
-  cmn.c[2] = cmn.c0[2];
+  cmn.c[3] = cmn.c0[3];
   cmn.cosmo = cmn.cosmo0;
   cmn.xi[1] = cmn.xi0[1];
   cmn.xi[2] = cmn.xi0[2];
-  cmn.xi[2] = cmn.xi0[2];
+  cmn.xi[3] = cmn.xi0[3];
   cmn.eta1 = cmn.eta0;
   write(iw,
     "(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
@@ -932,7 +932,7 @@ common::check(common& cmn)
   //Number of neutrino species.
   //c[1] is variation of gravitational constant.
   //c[2] is neutron half-life (min).
-  //c(3) is number of neutrino species.
+  //c[3] is number of neutrino species.
   //Cosmological constant.
   //Neutrino degeneracy parameters.
   //xi[1] is e neutrino degeneracy parameter.
@@ -2228,7 +2228,7 @@ common::start(common& cmn)
   //Number of neutrino species.
   //c[1] is variation of gravitational constant.
   //c[2] is neutron lifetime (sec).
-  //c(3) is number of neutrino species.
+  //c[3] is number of neutrino species.
   //Neutrino degeneracy parameters.
   //
   //----------VARIATIONAL PARAMETERS.
@@ -2286,7 +2286,7 @@ common::start(common& cmn)
   g = const2 * c[1];
   tau = c[2]; 						/// Convert n half-life (min) to lifetime (secs).
   tau = tau / 0.98f; 				/// Coulomb correction (Ref 2). TODO check this!
-  xnu = c[2]; 						/// Number of neutrino species.
+  xnu = c[3]; 						/// Number of neutrino species.
   //
   //30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
   //
@@ -2347,8 +2347,8 @@ common::start(common& cmn)
   //
   //50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
   //
-  y[2] = y[1] * y[2] * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); /// (Ref 7).
-  y0[2] = y[2];
+  y[3] = y[1] * y[2] * rhob0 * ex(25.82f / t9) / (.471e+10f * pow(t9, 1.5f)); /// (Ref 7).
+  y0[3] = y[3];
   int i = 0;
   FEM_DO_SAFE(i, 4, cmn.isize) {
     y[i] = cmn.ytmin; 						/// Set rest to minimum abundance.
@@ -2654,7 +2654,7 @@ common::therm(
     bl3 * cosh3 / (3.f * z) - bl4 * cosh4 / (4.f * z) + bl5 * cosh5 /
     (5.f * z));
   //Nonde
-  if ((xi[1] == 0.f) && (xi[2] == 0.f) && (xi[2] == 0)) {
+  if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
     //(Ref 8)
     thm(8) = xnu * cmn.rhone0 * (pow(rnb, (4.f / 3.f)));
     //Include effects of neutrino degenera
@@ -4488,12 +4488,10 @@ common::accum(
   FEM_DO_SAFE(i, 1, cmn.isize) {
     xout(it, i) = y[i] / y[2];
   }
-  //Exception for proton.
-  //xout(it, 2) = y(2) * am(2);
-  xout(it, 2) = y[2] * am[1];
-  //Exception for helium.
-  //xout(it, 6) = y(6) * am(6);
-  xout(it, 6) = y[6] * am[5];
+  //xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
+  xout(it, 2) = y[2] * am[2]; 			/// Exception for proton.
+  //xout(it, 6) = y(6) * am(6); 		/// Exception for helium.
+  xout(it, 6) = y[6] * am[6]; 			/// Exception for helium.
   //..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
   //Li8 to O16.
   xout(it, 10) += xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) 
@@ -5392,7 +5390,7 @@ common::output(common& cmn)
     "(' Model parameters:',/,'   g = ',f5.2,'/  tau = ',f6.2,'/  # nu = ',"
     "f5.2,'/  lambda = ',1p,e10.3,'/  xi-e = ',e10.3,'/  xi-m = ',e10.3,"
     "'/  xi-t = ',e10.3,/)"),
-    c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
+    c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
   //..........PRINT HEADINGS, ABUNDANCES FOR NEUTRON TO LI8.
   write(2,
     "(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
@@ -5466,7 +5464,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
+  write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
   //..........PRINT HEADINGS, ABUNDANCES FOR D,T,HE3,HE4,LI7.
   write(iw,
     "(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
@@ -5490,7 +5488,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
+  write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
   //..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
   write(iw,
     "(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
@@ -5517,7 +5515,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
+  write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
   //..........PRINT ENERGY DENSITIES.
   write(iw,
     "(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
@@ -5539,7 +5537,7 @@ common::output(common& cmn)
   //..........PRINT CAPTION.
   write(iw, format_2014);
   write(iw, format_3100), cy, ct, t9i, t9f, ytmin;
-  write(iw, format_3102), c[1], c[2], c[2], cosmo, xi[1], xi[2], xi[2];
+  write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
   //..........PRINT THERMODYNAMIC QUANTITIES.
   write(iw,
     "(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
@@ -6529,11 +6527,11 @@ program_new123(
   cmn.inc = cmn.inc0; 						/// Accumulation increment.
   cmn.c[1] = cmn.c0[1]; 					/// Variation of gravitational constant.
   cmn.c[2] = cmn.c0[2]; 					/// Neutron lifetime.
-  cmn.c[2] = cmn.c0[2]; 					/// Number of neutrino species.
+  cmn.c[3] = cmn.c0[3]; 					/// Number of neutrino species.
   cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
   cmn.xi[1] = cmn.xi0[1]; 					/// Electron degeneracy parameter.
   cmn.xi[2] = cmn.xi0[2]; 					/// Muon degeneracy parameter.
-  cmn.xi[2] = cmn.xi0[2]; 					/// Tau degeneracy parameter.
+  cmn.xi[3] = cmn.xi0[3]; 					/// Tau degeneracy parameter.
   cmn.dt1 = cmn.dt0; 						/// Initial time step.
   cmn.eta1 = cmn.eta0; 						/// Baryon-to-photon ratio.
   //..........ACCEPT RETURN TO CONTINUE.
