@@ -3370,8 +3370,9 @@ statement_212:
 	}
 	//..........OBTAIN DERIVATIVE.
 	FEM_DO_SAFE(i, 1, isize) {
-		yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
-		dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
+		//yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
+		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
+		dydt[i] = (y[iszie1-i] - y0[i]) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -6060,10 +6061,10 @@ dt0 = 1.00e-04f;
 eta0 = 3.162e-10f;
 for (int i = 0; i < nnuc+1; i++)
 	for (int j = 0; j < nnuc+1; j++)
-if (i == 0 or j == 0)
-	a[i][j] = NOT_USED;
-	else
-	a[i][j] = 0;
+		if (i == 0 or j == 0)
+			a[i][j] = NOT_USED;
+		else
+			a[i][j] = 0;
 
 	// } if called for first time
 	//

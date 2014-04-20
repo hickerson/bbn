@@ -536,7 +536,7 @@ const int common_nucdat::nnuc;
 		// TODO put in a subclass.
 		float a[nnuc+1][nnuc+1];
 		float b[nnuc+1];
-		float yx[nnuc+1];
+		//float yx[nnuc+1];
 
 		/*
 		   boost::numeric::ublas::matrix<float> a;
