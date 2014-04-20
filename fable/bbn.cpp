@@ -5580,7 +5580,32 @@ struct blockdata_unnamed_save
 //
 common::common(
 		int argc,
-		char const* argv[])
+		char const* argv[]) :
+	fem::common(),
+	common_compr0(),
+	common_compr(),
+	common_varpr0(),
+	common_varpr(),
+	common_modpr0(),
+	common_modpr(),
+	//common_recpr0(),
+	common_recpr(),
+	common_evolp1(),
+	common_evolp2(),
+	common_evolp3(),
+	common_ttime(),
+	common_thermcb(),
+	common_endens(),
+	//common_nucdat(),
+	//common_besselcb(),
+	//common_kays(),
+	common_flags(),
+	//common_checkcb(),
+	common_outdat(),
+	common_nupar(),
+	common_runopt(),
+	common_outopt(),
+	common_tcheck()
 {
 	/*
   FEM_CMN_SVE(blockdata_unnamed);
