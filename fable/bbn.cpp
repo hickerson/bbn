@@ -4669,7 +4669,7 @@ statement_200:
 
 		// test -->
 		FEM_DO_SAFE(i, 1, isize)
-			std::cout<<"dydt:"<<dydt[i]<<" y:"<<y[i]<<"\n";
+			std::cout<<"dydt["<<i<<"]:"<<dydt[i]<<" y["<<i<<"]:"<<y[i]<<"\n";
 		// <-- test
 
 		//Trial value for minimum time step (R
@@ -4987,20 +4987,17 @@ statement_210:
 statement_220:
 	write(iw, format_2200);
 	itime = 3;
-	//Call interface subr before computati
-	check(cmn);
-	//Do nucleosynthesis computation.
-	driver(cmn);
+	check(cmn); 					/// Call interface subroutine before computation.
+	driver(cmn); 					/// Do nucleosynthesis computation.
 	itime = 8;
-	//Call interface subr after computatio
-	check(cmn);
+	check(cmn); 					/// Call interface subroutine after computation.
 	write(iw, format_2202);
 	read(ir, star);
 	goto statement_300;
 	//
 	//23--------DO MULTIPLE RUNS SECTION---------------------------------------------
 	//
-	//..........GET NUMBER OF LOOPINGS.
+	//..........GET NUMBER OF LOOPS.
 statement_230:
 	write(iw,
 			"(' ','Enter the number of loops to be done (1 ','(default); 2; 3): ',"
