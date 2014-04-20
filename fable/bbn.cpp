@@ -3169,7 +3169,7 @@ common::sol(
 	//..........INITIALIZE A-MATRIX.
 	FEM_DO_SAFE(i, 1, isize) {
 		FEM_DO_SAFE(j, 1, isize) {
-			a[j][i] = 0; 				/// Set a-matrix to zero.
+			a[j][i] = 0; 					/// Set a-matrix to zero.
 		}
 	}
 	//
@@ -3317,43 +3317,35 @@ common::sol(
 			a[j][i] += rj * ci;
 		  }
 		  if (k <= isize) {
-			//a[k][i] = a[k][i] - rk * ci;
 			a[k][i] -= rk * ci;
 		  }
 		  a[i][i] += ri * ci;
-		  //a[l][i] = a[l][i] - rl * ci;
 		  a[l][i] -= rl * ci;
 		  //..........FILL J NUCLIDE COLUMN.
 		  if (j <= isize) {
 			a[j][j] += rj * cj;
 			if (k <= isize) {
-			  //a[k][j] = a[k][j] - rk * cj;
 			  a[k][j] -= rk * cj;
 			}
 			a[i][j] += ri * cj;
-			//a[l][j] = a[l][j] - rl * cj;
 			a[l][j] -= rl * cj;
 		  }
 		  //..........FILL K NUCLIDE COLUMN.
 		  if (k <= isize) {
 			if (j <= isize) {
-			  //a[j][k] = a[j][k] - rj * ck;
 			  a[j][k] -= rj * ck;
 			}
 			a[k][k] += rk * ck;
-			//a[i][k] = a[i][k] - ri * ck;
 			a[i][k] -= ri * ck;
 			a[l][k] += rl * ck;
 		  }
 		  //..........FILL L NUCLIDE COLUMN.
 		  if (j <= isize) {
-			//a[j][l] = a[j][l] - rj * cl;
 			a[j][l] -= rj * cl;
 		  }
 		  if (k <= isize) {
 			a[k][l] += rk * cl;
 		  }
-		  //a[i][l] = a[i][l] - ri * cl;
 		  a[i][l] -= ri * cl;
 		  a[l][l] += rl * cl;
 		} //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
@@ -3375,7 +3367,6 @@ common::sol(
 		  if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
 			a[j][i] = 0; 							/// Set 0 if tiny.
 		  else
-			//a[j][i] = a[j][i] * dt; 				/// Bring dt over to other side.
 			a[j][i] *= dt; 							/// Bring dt over to other side.
 		}
 		a[i][i] += 1; 								/// Add identity matrix to a-matrix.
