@@ -8,595 +8,604 @@
 
 namespace bbn {
 
-using namespace fem::major_types;
-//using namespace boost::numeric::ublas;
+	using namespace fem::major_types;
+	//using namespace boost::numeric::ublas;
 
-static const float NOT_USED = -5555555.5555555;
+	static const float NOT_USED = -5555555.5555555;
 
-struct common_compr0
-{
-  float cy0;
-  float ct0;
-  float t9i0;
-  float t9f0;
-  float ytmin0;
-  int inc0;
-
-  common_compr0() :
-    cy0(0),
-    ct0(0),
-    t9i0(0),
-    t9f0(0),
-    ytmin0(0),
-    inc0(0)
-  {}
-};
-
-struct common_compr
-{
-  float cy;
-  float ct;
-  float t9i;
-  float t9f;
-  float ytmin;
-  int inc;
-
-  common_compr() :
-    cy(0),
-    ct(0),
-    t9i(0),
-    t9f(0),
-    ytmin(0),
-    inc(0)
-  {}
-};
-
-struct common_varpr0
-{
-  float dt0;
-  float eta0;
-
-  common_varpr0() :
-    dt0(0),
-    eta0(0)
-  {}
-};
-
-struct common_varpr
-{
-  float dt1;
-  float eta1;
-
-  common_varpr() :
-    dt1(0),
-    eta1(0)
-  {}
-};
-
-struct common_modpr0
-{
-	//arr<float> c0;
-	float c0[3+1];
-	float cosmo0;
-	//arr<float> xi0;
-	float xi0[3+1];
-
-	common_modpr0() :
-	//c0(dimension(3), fem::fill0),
-	cosmo0(0)//,
-	//xi0(dimension(3), fem::fill0)
+	struct common_compr0
 	{
-		std::cout << "Calling the common_modpr0 constructor.\n";
-		for (int i = 0; i < 3+1; i++) {
-			c0[i] = 0;
-			xi0[i] = 0;
+		float cy0;
+		float ct0;
+		float t9i0;
+		float t9f0;
+		float ytmin0;
+		int inc0;
+
+		common_compr0() :
+			cy0(0),
+			ct0(0),
+			t9i0(0),
+			t9f0(0),
+			ytmin0(0),
+			inc0(0)
+		{}
+	};
+
+	struct common_compr
+	{
+		float cy;
+		float ct;
+		float t9i;
+		float t9f;
+		float ytmin;
+		int inc;
+
+		common_compr() :
+			cy(0),
+			ct(0),
+			t9i(0),
+			t9f(0),
+			ytmin(0),
+			inc(0)
+		{}
+	};
+
+	struct common_varpr0
+	{
+		float dt0;
+		float eta0;
+
+		common_varpr0() :
+			dt0(0),
+			eta0(0)
+		{}
+	};
+
+	struct common_varpr
+	{
+		float dt1;
+		float eta1;
+
+		common_varpr() :
+			dt1(0),
+			eta1(0)
+		{}
+	};
+
+	struct common_modpr0
+	{
+		//arr<float> c0;
+		float c0[3+1];
+		float cosmo0;
+		//arr<float> xi0;
+		float xi0[3+1];
+
+		common_modpr0() :
+			//c0(dimension(3), fem::fill0),
+			cosmo0(0)//,
+			//xi0(dimension(3), fem::fill0)
+		{
+			std::cout << "common_modpr0 constructor.\n";
+			for (int i = 0; i < 3+1; i++) {
+				c0[i] = 0;
+				xi0[i] = 0;
+			}
 		}
-	}
-};
+	};
 
-struct common_modpr
-{
-  float g;
-  float tau;
-  float xnu;
-  //arr<float> c;
-  float c[3+1];
-  float cosmo;
-  //arr<float> xi;
-  float xi[3+1];
+	struct common_modpr
+	{
+		float g;
+		float tau;
+		float xnu;
+		//arr<float> c;
+		float c[3+1];
+		float cosmo;
+		//arr<float> xi;
+		float xi[3+1];
 
-  common_modpr() :
-    g(0),
-    tau(0),
-    xnu(0),
-    //c(dimension(3), fem::fill0),
-    cosmo(0)//,
-    //xi(dimension(3), fem::fill0)
-  {}
-};
+		common_modpr() :
+			g(0),
+			tau(0),
+			xnu(0),
+			//c(dimension(3), fem::fill0),
+			cosmo(0)//,
+			//xi(dimension(3), fem::fill0)
+		{}
+	};
 
-/*
-struct common_recpr0
-{
-  static const int nrec = 88;
+	/*
+	   struct common_recpr0
+	   {
+	   static const int nrec = 88;
 
-  arr<float, 2> reacpr;
+	   arr<float, 2> reacpr;
 
-  common_recpr0() :
-    reacpr(dimension(nrec, 8), fem::fill0)
-  {}
-};
+	   common_recpr0() :
+	   reacpr(dimension(nrec, 8), fem::fill0)
+	   {}
+	   };
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_recpr0::nrec;
 #endif
-*/
+	 */
 
-struct common_recpr
-{
-  static const int nrec = 88;
+	struct common_recpr
+	{
+		static const int nrec = 88;
 
-  arr<int> iform;
-  arr<int> ii;
-  arr<int> jj;
-  arr<int> kk;
-  arr<int> ll;
-  arr<float> rev;
-  arr<float> q9;
+		arr<int> iform;
+		arr<int> ii;
+		arr<int> jj;
+		arr<int> kk;
+		arr<int> ll;
+		arr<float> rev;
+		arr<float> q9;
 
-  common_recpr() :
-    iform(dimension(nrec), fem::fill0),
-    ii(dimension(nrec), fem::fill0),
-    jj(dimension(nrec), fem::fill0),
-    kk(dimension(nrec), fem::fill0),
-    ll(dimension(nrec), fem::fill0),
-    rev(dimension(nrec), fem::fill0),
-    q9(dimension(nrec), fem::fill0)
-  {}
-};
+		common_recpr() :
+			iform(dimension(nrec), fem::fill0),
+			ii(dimension(nrec), fem::fill0),
+			jj(dimension(nrec), fem::fill0),
+			kk(dimension(nrec), fem::fill0),
+			ll(dimension(nrec), fem::fill0),
+			rev(dimension(nrec), fem::fill0),
+			q9(dimension(nrec), fem::fill0)
+		{}
+	};
 
-/*
+	/*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_recpr::nrec;
 #endif
-*/
+	 */
 
-struct common_evolp1
-{
-  static const int nnuc = 26;
-
-  float t9;
-  float hv;
-  float phie;
-  //arr<float> y;
-  float y[nnuc+1];
-
-  common_evolp1() :
-    t9(0),
-    hv(0),
-    phie(0)//,
-    //y(dimension(nnuc), fem::fill0)
-  {}
-};
-
-#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
-const int common_evolp1::nnuc;
-#endif
-
-struct common_evolp2
-{
-  static const int nnuc = 26;
-
-  float dt9;
-  float dhv;
-  float dphie;
-  //arr<float> dydt;
-  float dydt[nnuc+1];
-
-  common_evolp2() :
-    dt9(0),
-    dhv(0),
-    dphie(0)//,
-    //dydt(dimension(nnuc), fem::fill0)
-  {}
-};
-
-#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
-const int common_evolp2::nnuc;
-#endif
-
-struct common_evolp3
-{
-	static const int nnuc = 26;
-
-	float t90;
-	float hv0;
-	float phie0;
-	//arr<float> y0;
-	float y0[nnuc+1];
-
-	common_evolp3() :
-	t90(0),
-	hv0(0),
-	phie0(0)//,
-	//y0(dimension(nnuc), fem::fill0)
+	struct common_evolp1
 	{
-		for (int i = 0; i < nnuc+1; i++)
-			y0[i] = 0;
-	}
-};
+		static const int nnuc = 26;
+
+		float t9;
+		float hv;
+		float phie;
+		//arr<float> y;
+		float y[nnuc+1];
+
+		common_evolp1() :
+			t9(0),
+			hv(0),
+			phie(0)//,
+			//y(dimension(nnuc), fem::fill0)
+		{
+			std::cout << "common_evolp1 constructor\n";
+			for (int i = 0; i < nnuc+1; i++)
+				y[i] = 0;
+		}
+	};
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
-const int common_evolp3::nnuc;
+	const int common_evolp1::nnuc;
 #endif
 
-struct common_ttime
-{
-  float t;
-  float dt;
-  float dlt9dt;
+	struct common_evolp2
+	{
+		static const int nnuc = 26;
 
-  common_ttime() :
-    t(0),
-    dt(0),
-    dlt9dt(0)
-  {}
-};
+		float dt9;
+		float dhv;
+		float dphie;
+		//arr<float> dydt;
+		float dydt[nnuc+1];
 
-struct common_thermcb
-{
-  arr<float> thm;
-  float hubcst;
+		common_evolp2() :
+			dt9(0),
+			dhv(0),
+			dphie(0)//,
+			//dydt(dimension(nnuc), fem::fill0)
+		{
+			std::cout << "common_evolp2 constructor\n";
+			for (int i = 0; i < nnuc+1; i++)
+				dydt[i] = 0;
+		}
+	};
 
-  common_thermcb() :
-    thm(dimension(14), fem::fill0),
-    hubcst(0)
-  {}
-};
+#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
+	const int common_evolp2::nnuc;
+#endif
 
-struct common_endens
-{
-  float rhone0;
-  float rhob0;
-  float rhob;
-  float rnb;
+	struct common_evolp3
+	{
+		static const int nnuc = 26;
 
-  common_endens() :
-    rhone0(0),
-    rhob0(0),
-    rhob(0),
-    rnb(0)
-  {}
-};
+		float t90;
+		float hv0;
+		float phie0;
+		//arr<float> y0;
+		float y0[nnuc+1];
 
-/*
-struct common_nucdat
-{
-  static const int nnuc = 26;
+		common_evolp3() :
+			t90(0),
+			hv0(0),
+			phie0(0)//,
+			//y0(dimension(nnuc), fem::fill0)
+		{
+			std::cout << "common_evolp3 constructor\n";
+			for (int i = 0; i < nnuc+1; i++)
+				y0[i] = 0;
+		}
+	};
 
-  arr<float> am;
-  arr<float> zm;
-  arr<float> dm;
+#ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
+	const int common_evolp3::nnuc;
+#endif
 
-  common_nucdat() :
-    am(dimension(nnuc), fem::fill0),
-    zm(dimension(nnuc), fem::fill0),
-    dm(dimension(nnuc), fem::fill0)
-  {}
-};
+	struct common_ttime
+	{
+		float t;
+		float dt;
+		float dlt9dt;
+
+		common_ttime() :
+			t(0),
+			dt(0),
+			dlt9dt(0)
+		{}
+	};
+
+	struct common_thermcb
+	{
+		arr<float> thm;
+		float hubcst;
+
+		common_thermcb() :
+			thm(dimension(14), fem::fill0),
+			hubcst(0)
+		{}
+	};
+
+	struct common_endens
+	{
+		float rhone0;
+		float rhob0;
+		float rhob;
+		float rnb;
+
+		common_endens() :
+			rhone0(0),
+			rhob0(0),
+			rhob(0),
+			rnb(0)
+		{}
+	};
+
+	/*
+	   struct common_nucdat
+	   {
+	   static const int nnuc = 26;
+
+	   arr<float> am;
+	   arr<float> zm;
+	   arr<float> dm;
+
+	   common_nucdat() :
+	   am(dimension(nnuc), fem::fill0),
+	   zm(dimension(nnuc), fem::fill0),
+	   dm(dimension(nnuc), fem::fill0)
+	   {}
+	   };
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_nucdat::nnuc;
 #endif
-*/
+	 */
 
-/*
-struct common_besselcb
-{
-  float bl1;
-  float bl2;
-  float bl3;
-  float bl4;
-  float bl5;
-  float bm1;
-  float bm2;
-  float bm3;
-  float bm4;
-  float bm5;
-  float bn1;
-  float bn2;
-  float bn3;
-  float bn4;
-  float bn5;
+	/*
+	   struct common_besselcb
+	   {
+	   float bl1;
+	   float bl2;
+	   float bl3;
+	   float bl4;
+	   float bl5;
+	   float bm1;
+	   float bm2;
+	   float bm3;
+	   float bm4;
+	   float bm5;
+	   float bn1;
+	   float bn2;
+	   float bn3;
+	   float bn4;
+	   float bn5;
 
-  common_besselcb() :
-    bl1(0),
-    bl2(0),
-    bl3(0),
-    bl4(0),
-    bl5(0),
-    bm1(0),
-    bm2(0),
-    bm3(0),
-    bm4(0),
-    bm5(0),
-    bn1(0),
-    bn2(0),
-    bn3(0),
-    bn4(0),
-    bn5(0)
-  {}
-};
+	   common_besselcb() :
+	   bl1(0),
+	   bl2(0),
+	   bl3(0),
+	   bl4(0),
+	   bl5(0),
+	   bm1(0),
+	   bm2(0),
+	   bm3(0),
+	   bm4(0),
+	   bm5(0),
+	   bn1(0),
+	   bn2(0),
+	   bn3(0),
+	   bn4(0),
+	   bn5(0)
+	   {}
+	   };
 
-struct common_kays
-{
-  float bk0;
-  float bk1;
-  float bk2;
-  float bk3;
-  float bk4;
+	   struct common_kays
+	   {
+	   float bk0;
+	   float bk1;
+	   float bk2;
+	   float bk3;
+	   float bk4;
 
-  common_kays() :
-    bk0(0),
-    bk1(0),
-    bk2(0),
-    bk3(0),
-    bk4(0)
-  {}
-};
-*/
+	   common_kays() :
+	   bk0(0),
+	   bk1(0),
+	   bk2(0),
+	   bk3(0),
+	   bk4(0)
+	   {}
+	   };
+	 */
 
-struct common_flags
-{
-  int ltime;
-  int is;
-  int ip;
-  int it;
-  int mbad;
+	struct common_flags
+	{
+		int ltime;
+		int is;
+		int ip;
+		int it;
+		int mbad;
 
-  common_flags() :
-    ltime(0),
-    is(0),
-    ip(0),
-    it(0),
-    mbad(0)
-  {}
-};
+		common_flags() :
+			ltime(0),
+			is(0),
+			ip(0),
+			it(0),
+			mbad(0)
+		{}
+	};
 
-struct common_checkcb
-{
-  int itime;
+	struct common_checkcb
+	{
+		int itime;
 
-  common_checkcb() :
-    itime(0)
-  {}
-};
+		common_checkcb() :
+			itime(0)
+		{}
+	};
 
-// TODO make a class that is arrayed.
-struct common_outdat
-{
-  static const int itmax = 40;
-  static const int nnuc = 26;
+	// TODO make a class that is arrayed.
+	struct common_outdat
+	{
+		static const int itmax = 40;
+		static const int nnuc = 26;
 
-  arr<float, 2> xout;
-  arr<float, 2> thmout;
-  arr<float> t9out;
-  arr<float> tout;
-  arr<float> dtout;
-  arr<float> etaout;
-  arr<float> hubout;
+		arr<float, 2> xout;
+		arr<float, 2> thmout;
+		arr<float> t9out;
+		arr<float> tout;
+		arr<float> dtout;
+		arr<float> etaout;
+		arr<float> hubout;
 
-  common_outdat() :
-    xout(dimension(itmax, nnuc), fem::fill0),
-    thmout(dimension(itmax, 6), fem::fill0),
-    t9out(dimension(itmax), fem::fill0),
-    tout(dimension(itmax), fem::fill0),
-    dtout(dimension(itmax), fem::fill0),
-    etaout(dimension(itmax), fem::fill0),
-    hubout(dimension(itmax), fem::fill0)
-  {}
-};
+		common_outdat() :
+			xout(dimension(itmax, nnuc), fem::fill0),
+			thmout(dimension(itmax, 6), fem::fill0),
+			t9out(dimension(itmax), fem::fill0),
+			tout(dimension(itmax), fem::fill0),
+			dtout(dimension(itmax), fem::fill0),
+			etaout(dimension(itmax), fem::fill0),
+			hubout(dimension(itmax), fem::fill0)
+		{}
+	};
 
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
-const int common_outdat::itmax;
-const int common_outdat::nnuc;
+	const int common_outdat::itmax;
+	const int common_outdat::nnuc;
 #endif
 
-struct common_nupar
-{
-  float t9mev;
-  float tnmev;
-  float tnu;
-  float cnorm;
-  float rhonu;
-  int nu;
+	struct common_nupar
+	{
+		float t9mev;
+		float tnmev;
+		float tnu;
+		float cnorm;
+		float rhonu;
+		int nu;
 
-  common_nupar() :
-    t9mev(0),
-    tnmev(0),
-    tnu(0),
-    cnorm(0),
-    rhonu(0),
-    nu(0)
-  {}
-};
+		common_nupar() :
+			t9mev(0),
+			tnmev(0),
+			tnu(0),
+			cnorm(0),
+			rhonu(0),
+			nu(0)
+		{}
+	};
 
-struct common_runopt
-{
-  int irun;
-  int isize;
-  int jsize;
+	struct common_runopt
+	{
+		int irun;
+		int isize;
+		int jsize;
 
-  common_runopt() :
-    irun(0),
-    isize(0),
-    jsize(0)
-  {}
-};
+		common_runopt() :
+			irun(0),
+			isize(0),
+			jsize(0)
+		{}
+	};
 
-struct common_outopt
-{
-  int nout;
-  bool outfile;
+	struct common_outopt
+	{
+		int nout;
+		bool outfile;
 
-  common_outopt() :
-    nout(0),
-    outfile(false)
-  {}
-};
+		common_outopt() :
+			nout(0),
+			outfile(false)
+		{}
+	};
 
-struct common_tcheck
-{
-  int itime;
+	struct common_tcheck
+	{
+		int itime;
 
-  common_tcheck() :
-    itime(0)
-  {}
-};
+		common_tcheck() :
+			itime(0)
+		{}
+	};
 
-struct common :
-	fem::common,
-	common_compr0,
-	common_compr,
-	common_varpr0,
-	common_varpr,
-	common_modpr0,
-	common_modpr,
-	//common_recpr0,
-	common_recpr,
-	common_evolp1,
-	common_evolp2,
-	common_evolp3,
-	common_ttime,
-	common_thermcb,
-	common_endens,
-	//common_nucdat,
-	//common_besselcb,
-	//common_kays,
-	common_flags,
-	//common_checkcb,
-	common_outdat,
-	common_nupar,
-	common_runopt,
-	common_outopt,
-	common_tcheck
-{
-	/*
-	fem::variant_core common_rates;
-	fem::variant_core common_lncoef;
-	fem::cmn_sve check_sve;
-	fem::cmn_sve knux_sve;
-	fem::cmn_sve rate0_sve;
-	fem::cmn_sve xintd_sve;
-	fem::cmn_sve rate1_sve;
-	fem::cmn_sve start_sve;
-	fem::cmn_sve eqslin_sve;
-	fem::cmn_sve sol_sve;
-	fem::cmn_sve rate2_sve;
-	fem::cmn_sve rate3_sve;
-	fem::cmn_sve rate4_sve;
-	fem::cmn_sve run_sve;
-	fem::cmn_sve blockdata_unnamed_sve;
-	fem::cmn_sve program_new123_sve;
-	*/
+	struct common :
+		fem::common,
+		common_compr0,
+		common_compr,
+		common_varpr0,
+		common_varpr,
+		common_modpr0,
+		common_modpr,
+		//common_recpr0,
+		common_recpr,
+		common_evolp1,
+		common_evolp2,
+		common_evolp3,
+		common_ttime,
+		common_thermcb,
+		common_endens,
+		//common_nucdat,
+		//common_besselcb,
+		//common_kays,
+		common_flags,
+		//common_checkcb,
+		common_outdat,
+		common_nupar,
+		common_runopt,
+		common_outopt,
+		common_tcheck
+	{
+		/*
+		   fem::variant_core common_rates;
+		   fem::variant_core common_lncoef;
+		   fem::cmn_sve check_sve;
+		   fem::cmn_sve knux_sve;
+		   fem::cmn_sve rate0_sve;
+		   fem::cmn_sve xintd_sve;
+		   fem::cmn_sve rate1_sve;
+		   fem::cmn_sve start_sve;
+		   fem::cmn_sve eqslin_sve;
+		   fem::cmn_sve sol_sve;
+		   fem::cmn_sve rate2_sve;
+		   fem::cmn_sve rate3_sve;
+		   fem::cmn_sve rate4_sve;
+		   fem::cmn_sve run_sve;
+		   fem::cmn_sve blockdata_unnamed_sve;
+		   fem::cmn_sve program_new123_sve;
+		 */
 
-	static const int nrec = 88;
-  	static const int nnuc = 26;
-	//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
-	//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
-	//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
-	//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
+		static const int nrec = 88;
+		static const int nnuc = 26;
+		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
+		//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
+		//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
+		//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 
-	// TODO put in a subclass.
-	static const float am[nnuc+1];
-	static const float zm[nnuc+1];
-	static const float dm[nnuc+1];
-	static const float reacpr[nrec][8];
+		// TODO put in a subclass.
+		static const float am[nnuc+1];
+		static const float zm[nnuc+1];
+		static const float dm[nnuc+1];
+		static const float reacpr[nrec][8];
 
-    //arr<float> f;
-    //arr<float> r;
-	//arr<float,float> a;
-	//arr<float> b;
-	//arr<float> yx;
-	float f[nrec+1];
-	float r[nrec+1];
+		//arr<float> f;
+		//arr<float> r;
+		//arr<float,float> a;
+		//arr<float> b;
+		//arr<float> yx;
+		float f[nrec+1];
+		float r[nrec+1];
 
-	// TODO put in a subclass.
-	float a[nnuc+1][nnuc+1];
-	float b[nnuc+1];
-	float yx[nnuc+1];
+		// TODO put in a subclass.
+		float a[nnuc+1][nnuc+1];
+		float b[nnuc+1];
+		float yx[nnuc+1];
 
-	/*
-	boost::numeric::ublas::matrix<float> a;
-	boost::numeric::ublas::vector<float> b;
-	boost::numeric::ublas::vector<float> yx;
-	*/
-	
-	void qvary(common&, int, float);
+		/*
+		   boost::numeric::ublas::matrix<float> a;
+		   boost::numeric::ublas::vector<float> b;
+		   boost::numeric::ublas::vector<float> yx;
+		 */
 
-	public:
-	common( int argc, char const* argv[]);		//TODO don't need those opts for 
+		void qvary(common&, int, float);
 
-	void setcom(common &);
-	void setmod(common &);
-	void check(common &);
-	void driver(common &);
-	void run(common &);
+		public:
+		common( int argc, char const* argv[]);		//TODO don't need those opts for 
 
-	void therm(common &);
-	void nudens(common &);
-	void start(common &);
+		void setcom(common &);
+		void setmod(common &);
+		void check(common &);
+		void driver(common &);
+		void run(common &);
 
-	float xintd(
-			common& cmn,
-			float const&,
-			float const&,
-  			float(* func)(common &, const float&),
-			int const&);
+		void therm(common &);
+		void nudens(common &);
+		void start(common &);
 
-	void eqslin(
-			common&,
-			int const&,
-			int&);
+		float xintd(
+				common& cmn,
+				float const&,
+				float const&,
+				float(* func)(common &, const float&),
+				int const&);
 
-	void sol( common&, int const&);
-	void derivs( common&, int const& );
-	void accum( common& );
-	void output( common& );
+		void eqslin(
+				common&,
+				int const&,
+				int&);
 
-	static float func1( common&, float const& );
-	static float func2( common&, float const& );
-	static float func3( common&, float const& );
-	static float func4( common&, float const& );
-	static float func5( common&, float const& );
-	static float func6( common&, float const& );
+		void sol( common&, int const&);
+		void derivs( common&, int const& );
+		void accum( common& );
+		void output( common& );
 
-	void rate0( common & );
-	void rate1( common &, float const& );
-	void rate2( common & );
-	void rate3( common & );
-	void rate4( common & );
-};
+		static float func1( common&, float const& );
+		static float func2( common&, float const& );
+		static float func3( common&, float const& );
+		static float func4( common&, float const& );
+		static float func5( common&, float const& );
+		static float func6( common&, float const& );
 
-
+		void rate0( common & );
+		void rate1( common &, float const& );
+		void rate2( common & );
+		void rate3( common & );
+		void rate4( common & );
+	};
 
 
 
-const float common::am[26+1] = {
+
+
+	const float common::am[26+1] = {
 		NOT_USED,
 		1.f, 1.f, 2.f, 3.f, 3.f, 4.f, 6.f, 7.f, 7.f, 8.f, 8.f, 9.f,
 		10.f, 11.f, 11.f, 12.f, 12.f, 12.f, 13.f, 13.f, 14.f, 14.f,
 		14.f, 15.f, 15.f, 16.f
 	};
 
-const float common::zm[26+1] = {
+	const float common::zm[26+1] = {
 		NOT_USED,
 		0.f, 1.f, 1.f, 1.f, 2.f, 2.f, 3.f, 3.f, 4.f, 3.f, 5.f, 4.f,
 		5.f, 5.f, 6.f, 5.f, 6.f, 7.f, 6.f, 7.f, 6.f, 7.f, 8.f, 7.f,
 		8.f, 8.f
 	};
 
-const float common::dm[26+1] = {
+	const float common::dm[26+1] = {
 		NOT_USED,
 		.008665f, .007825f, .014102f, .016050f, .016030f, .002603f,
 		.015125f, .016004f, .016929f, .022487f, .024609f, .012186f,
@@ -605,7 +614,7 @@ const float common::dm[26+1] = {
 		.003070f, -.005085f
 	};
 
-const float common::reacpr[88][8] = {
+	const float common::reacpr[88][8] = {
 		{1,	1,	1,	0,	0,	2,	0,	0},
 		{2,	1,	4,	0,	0,	5,	0,	0},
 		{3,	4,	10,	0,	0,	6,	0,	0},
