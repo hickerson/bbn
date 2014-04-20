@@ -2342,7 +2342,7 @@ statement_400:
 			rhob0 = hv * pow3(t9); 					/// TODO Baryon density. 
 			//Nonde
 			if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
-				cmn.rhone0 = 7.366f * pow4(t9); 		/// Electron neutrino density (Ref 6).
+				cmn.rhone0 = 7.366f * pow4(t9); 	/// Electron neutrino density (Ref 6).
 			}
 			//
 			//50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
@@ -2351,8 +2351,8 @@ statement_400:
 			y0[3] = y[3];
 			int i = 0;
 			FEM_DO_SAFE(i, 4, cmn.isize) {
-				y[i] = cmn.ytmin; 						/// Set rest to minimum abundance.
-				y0[i] = y[i]; 							/// Initialize abundances at beginning of iter
+				y[i] = ytmin; 						/// Set rest to minimum abundance.
+				y0[i] = y[i]; 						/// Initialize abundances at beginning of iter
 			}
 			//Compute weak decay rates.
 			rate0(cmn);
@@ -4684,6 +4684,12 @@ statement_200:
 			//..........ADJUST TIME STEP.
 			//Adjust time step after 3 iterations.
 			if (is > 3) {
+
+				// test -->
+				FEM_DO_SAFE(i, 1, isize)
+					std::cout<<"dydt:"<<dydt[i]<<" y:"<<y[i]<<"\n";
+				// <-- test
+
 				//Trial value for minimum time step (R
 				dtmin = abs(1. / dlt9dt) * ct;
 				//Go through all abundance changes.
@@ -6048,11 +6054,11 @@ statement_500:
 				}
 			}
 			*/
-				const float cy0 = .300f;
+			const float cy0 = .300f;
 			const float ct0 = .030f;
 			const float t9i0 = 1.00e+02f;
 			const float t9f0 = 1.00e-02f;
-			const float ytmin0 = 1.00e-25f;
+			const float ytmin0 = 1.00e-25f;			// TODO make smaller with double
 			const float inc0 = 30;
 			const float c0[] = { NOT_USED, 1.00f, 885.7f, 3.0f };
 			/*
@@ -6065,7 +6071,7 @@ statement_500:
 			   }
 			 */
 			const float cosmo0 = 0.00f;
-			const float xi0[] = {NOT_USED,0,0,0};
+			const float xi0[] = {NOT_USED, 0, 0, 0};
 			/*
 			   {
 			   static const float values[] = {

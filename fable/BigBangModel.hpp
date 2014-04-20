@@ -178,7 +178,8 @@ const int common_recpr::nrec;
 			//y(dimension(nnuc), fem::fill0)
 		{
 			std::cout << "common_evolp1 constructor\n";
-			for (int i = 0; i < nnuc+1; i++)
+			y[0] = NOT_USED;
+			for (int i = 1; i < nnuc+1; i++)
 				y[i] = 0;
 		}
 	};
@@ -204,7 +205,8 @@ const int common_recpr::nrec;
 			//dydt(dimension(nnuc), fem::fill0)
 		{
 			std::cout << "common_evolp2 constructor\n";
-			for (int i = 0; i < nnuc+1; i++)
+			dydt[0] = NOT_USED;
+			for (int i = 1; i < nnuc+1; i++)
 				dydt[i] = 0;
 		}
 	};
@@ -230,7 +232,8 @@ const int common_recpr::nrec;
 			//y0(dimension(nnuc), fem::fill0)
 		{
 			std::cout << "common_evolp3 constructor\n";
-			for (int i = 0; i < nnuc+1; i++)
+			y0[0] = NOT_USED;
+			for (int i = 1; i < nnuc+1; i++)
 				y0[i] = 0;
 		}
 	};
