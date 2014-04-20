@@ -268,6 +268,7 @@ struct common_endens
   {}
 };
 
+/*
 struct common_nucdat
 {
   static const int nnuc = 26;
@@ -286,6 +287,7 @@ struct common_nucdat
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 const int common_nucdat::nnuc;
 #endif
+*/
 
 /*
 struct common_besselcb
@@ -438,7 +440,7 @@ struct common_outopt
 
   common_outopt() :
     nout(0),
-    outfile(fem::bool0)
+    outfile(false)
   {}
 };
 
@@ -467,7 +469,7 @@ struct common :
 	common_ttime,
 	common_thermcb,
 	common_endens,
-	common_nucdat,
+	//common_nucdat,
 	//common_besselcb,
 	//common_kays,
 	common_flags,

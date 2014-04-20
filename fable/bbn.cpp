@@ -4903,7 +4903,7 @@ common::run(common& cmn)
   //
   //----------MODEL PARAMETERS.
   //Baryon-to-photon ratio.
-  //c(1) is variation of gravitational constant.
+  //c[1] is variation of gravitational constant.
   //c[2] is neutron lifetime (sec).
   //c[3] is number of neutrino species.
   //Cosmological constant.
@@ -5581,13 +5581,6 @@ struct blockdata_unnamed_save
 common::common(
 		int argc,
 		char const* argv[])
-		//:
-		//fem::common(argc, argv),
-		//f(dimension(nrec)),
-		//r(dimension(nrec)),
-		//a(nrec,nrec),
-		//b(nrec,nrec),
-		//yx(nrec,nrec)
 {
 	/*
   FEM_CMN_SVE(blockdata_unnamed);
