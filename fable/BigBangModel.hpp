@@ -369,6 +369,7 @@ struct common_checkcb
   {}
 };
 
+// TODO make a class that is arrayed.
 struct common_outdat
 {
   static const int itmax = 40;
@@ -514,9 +515,9 @@ struct common :
 	//arr<float> yx;
 	float f[nrec+1];
 	float r[nrec+1];
-	float a[nrec+1][nrec+1];
-	float b[nrec+1];
-	float yx[nrec+1];
+	float a[nnuc+1][nnuc+1];
+	float b[nnuc+1];
+	float yx[nnuc+1];
 
 	/*
 	boost::numeric::ublas::matrix<float> a;

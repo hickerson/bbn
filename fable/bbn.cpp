@@ -1030,7 +1030,7 @@ common::check(common& cmn)
   if (itime == 8) { 						/// Right after a run.
     xout(it,8) += xout(it,9); 				/// Add beryllium to lithium.
     xout(it,5) += xout(it,4); 				/// Add tritium to helium-3.
-    xout(it,6) = xout(it,6) - 0.0003f; 		/// my correction for fitted rates+coarse steps
+    xout(it,6) -= 0.0003f; 					/// my correction for fitted rates+coarse steps
     write(3, "(7(e13.5))"), c[3], c[2], etaout(it), xout(it, 3),
       xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
   }
@@ -2869,13 +2869,13 @@ common::eqslin(
         //Progress diagonally along row.
         FEM_DO_SAFE(k, i + 1, isize) {
           //Subtract scaled coeff along
-          a[j][k] = a[j][k] - cx * a[i][k];
+          a[j][k] -= cx * a[i][k];
         }
         //Scaled coefficient.
         a[j][i] = cx;
         //..........OPERATE ON RIGHT-HAND VECTOR.
         //Subtract off scaled coefficient.
-        x[j] = x[j] - cx * x[i];
+        x[j] -= cx * x[i];
       }
     }
   }
@@ -2899,46 +2899,36 @@ common::eqslin(
   if (icnvm == inc) {
     FEM_DO_SAFE(i, 1, isize) {
       if (y[i] != 0.f) {
-        xdy = fem::dabs(x[i] / y[i]); 		/// Relative error.
+        xdy = fem::dabs(x[i] / y[i]); 			/// Relative error.
         if (xdy > eps) {
-          if (nord < mord) { 				/// Continue to higher orders.
+          if (nord < mord) { 					/// Continue to higher orders.
             nord++;
             //..........FIND ERROR IN RIGHT-HAND VECTOR.
             FEM_DO_SAFE(j, 1, isize) {
-              r = 0; 						/// Initialize r.
+              r = 0; 							/// Initialize r.
               FEM_DO_SAFE(k, 1, isize) {
-                r += a0[j][k] * y[k]; 		/// Left side with approximate sol
+                r += a0[j][k] * y[k]; 			/// Left side with approximate sol
               }
-              //Subtract difference from right side.
-              x[j] = b[j] - r;
+              x[j] = b[j] - r; 					/// Subtract difference from right side.
             }
             //..........OPERATE ON RIGHT-HAND VECTOR.
             FEM_DO_SAFE(j, 1, isize - 1) {
               FEM_DO_SAFE(k, j + 1, isize) {
-                //Subtract off scaled coef
-                x[k] = x[k] - a[k][j] * x[j];
+                x[k] -= a[k][j] * x[j]; 		/// Subtract off scaled coefficient.
               }
             }
-            //Go for another iteration.
-            goto statement_300;
+            goto statement_300; 				/// Go for another iteration.
           }
           else {
             //..........NOT ENOUGH CONVERGENCE.
-            //Signal error problem.
-            mbad = -1;
-            //ith nuclide for which x/y checked.
-            ierror = i;
+            mbad = -1; 							/// Signal error problem.
+            ierror = i; 						/// i'th nuclide for which x/y checked.
             return;
-            //(nord.lt.mord)
-          }
-          //(xdy.gt.eps)
-        }
-        //(y(i).ne.0)
-      }
-      //i = 1,isize
-    }
-    //(icnvm.eq.inc)
-  }
+          } //(nord < mord)
+        } //(xdy > eps)
+      } //(y(i) != 0)
+    } //i = 1...isize
+  } //(icnvm == inc)
   //No more iterations & relative error
   //
 }
@@ -3388,7 +3378,7 @@ common::sol(
 		int i1 = isize1 - i; 						/// Invert the rows.
 		FEM_DO_SAFE(j, 1, isize) {
 		  int j1 = isize1 - j; 						/// Invert the columns.
-		  std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
+		  //std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
 		  if (y0[i1] == NOT_USED) exit(0);
 		  if (y0[j1] == NOT_USED) exit(0);
 		  if (a[j][i] == NOT_USED) exit(0);
@@ -4506,10 +4496,10 @@ common::accum(
   xout(it, 6) = y[6] * am[5];
   //..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
   //Li8 to O16.
-  xout(it, 10) += xout(it, 11) + xout(it, 12) + xout(it, 13) + xout(it,
-    14) + xout(it, 15) + xout(it, 16) + xout(it, 17) + xout(it, 18) + xout(it,
-    19) + xout(it, 20) + xout(it, 21) + xout(it, 22) + xout(it, 23) + xout(it,
-    24) + xout(it, 25) + xout(it, 26);
+  xout(it, 10) += xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) 
+  				+ xout(it,15) + xout(it,16) + xout(it,17) + xout(it,18) 
+				+ xout(it,19) + xout(it,20) + xout(it,21) + xout(it,22) 
+				+ xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
   //..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
   //Temperature.
   t9out(it) = cmn.t9;
@@ -6094,8 +6084,8 @@ common::common(
 	*/
     dt0 = 1.00e-04f;
     eta0 = 3.162e-10f;
-	for (int i = 0; i < nrec+1; i++)
-		for (int j = 0; j < nrec+1; j++)
+	for (int i = 0; i < nnuc+1; i++)
+		for (int j = 0; j < nnuc+1; j++)
 			if (i == 0 or j == 0)
 				a[i][j] = NOT_USED;
 			else
