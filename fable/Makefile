@@ -1,3 +1,4 @@
+#-------------------------------------------------------------------
 #
 # Fortran
 #
@@ -5,6 +6,8 @@ FFILES = new123.f newint.f nuccom.f nucrat.f
 FFLAGS = --separate-cmn-hpp --namespace=bbn --no-fem-do-safe
 FOPTS = --common-equivalence-simple
 
+
+#-------------------------------------------------------------------
 #
 # commands
 #
@@ -12,21 +15,28 @@ CC = colorgcc
 RM = rm -rf
 FCC = fable.out
 
+
+#-------------------------------------------------------------------
 #
 # libraries 
 #
-LIBS = -lgsl -lgslcblas -lm
+GSLLIBS = -lgsl -lgslcblas
+LIBS = -lm $(GSLLIBS)
 
+
+#-------------------------------------------------------------------
 #
 # sources
 #
 MAIN = bbn
-SRCS = bbn.cpp EvlolutionParamaters.cpp
-INCS = BigBangModel.hpp EvlolutionParamaters.hpp
+SRCS = bbn.cpp EvolutionParamaters.cpp
+INCS = BigBangModel.hpp EvolutionParamaters.hpp
 OBJS = $(SRCS:.cpp=.o)
 
+
+#-------------------------------------------------------------------
 #
-# options
+# flags
 #
 DEBUG = -g -Wall
 CFLAGS = $(DEBUG) -std=c++11 -fpermissive
@@ -34,14 +44,17 @@ IFLAGS = -Ifable_sources/fable -I/usr/include/gsl
 LFLAGS = 
 
 
+#-------------------------------------------------------------------
+#
+# arguments
+#
 
-all: $(MAIN)
-	@echo "Make all..."
+default: $(MAIN)
 
 $(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-.cpp.o:
+EvolutionParamaters.o: EvolutionParamaters.cpp EvolutionParamaters.hpp
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 fable:
@@ -58,16 +71,9 @@ install-fable:
 #	rm -f bbn
 #	$(CC) $(LFLAGS) $(OBJS) $(LIBS) -o bbn
 
-run:
-	rm -f bbn
-	g++ -g -o bbn -I$(CLIBS) bbn.cpp
-	rm -f *.dat
-	./bbn
-
 bbn-fable:
 	rm -f bbn
 	g++ -o bbn -I$(CLIBS) bbn-fable.cpp
-
 
 .PHONY: clean
 clean:

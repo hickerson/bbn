@@ -796,9 +796,9 @@ void common::check(common& cmn)
 	// COMMON checkcb
 	//int& itime = static_cast<common_checkcb&>(cmn).itime;
 	// COMMON outdat
-	const int itmax = 40;
-	const int nnuc = 26;
-	const int nrec = 88;
+	//const int itmax = 40;
+	//const int nnuc = 26;
+	//const int nrec = 88;
 	//arr_ref<float, 2> xout(cmn.xout, dimension(itmax, nnuc));
 	//arr_cref<float> etaout(cmn.etaout, dimension(itmax));
 	//
@@ -1496,7 +1496,7 @@ common::func1(
 		common& cmn,
 		float const& x)
 {
-	float return_value = 0;
+	//float return_value = 0;
 	// COMMON modpr
 	//arr_cref<float> xi(cmn.xi, dimension(3));
 	//
@@ -1551,7 +1551,7 @@ common::func2(
 		common& cmn,
 		float const& x)
 {
-	float return_value = 0;
+	//float return_value = 0;
 	// COMMON modpr
 	//arr_cref<float> xi(cmn.xi, dimension(3));
 	//
@@ -1583,18 +1583,15 @@ common::func2(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	float part1 = 0; // TODO move down into loop
-	float part2 = 0;
 	if (x <= 1.f) {
-		return_value = 0.f;
+		return 0;
 	}
-	else {
-		part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
-		part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
-		return_value = cmn.cnorm * x * pow2((x + 2.531f)) * pow(
-				(pow2(x) - 1), .5f) * part1 * part2;
+	else {		// TODO remove cmn
+		float part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
+		float part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
+		return cmn.cnorm * x * pow2((x + 2.531f)) 
+				* pow((pow2(x) - 1), .5f) * part1 * part2;
 	}
-	return return_value;
 }
 
 //typedef float (*func3_function_pointer)(common&, float const&);
@@ -2705,8 +2702,8 @@ void common::therm(
 	//     10) thm(10) = rho total
 	//                 = rho photon + rho electron+positron + rho neutrino
 	//                              + rho baryon
-	//     11) thm(11) = d     /pi**2(hbar*c)**3(ne- - ne+)*z**3\
-	//                   d(t9) \  2  (mc**2)**3                 /
+	//     11) thm(11) = d     [pi**2(hbar*c)**3(ne- - ne+)*z**3]
+	//                   d(t9) [  2  (mc**2)**3                 ]
 	//     12) thm(12) = d        /pi**2(hbar*c)**3(ne- - ne+)*z**3\
 	//                   d(phi e) \  2  (mc**2)**3                 /
 	//     13) thm(13) = rate for n->p
@@ -3039,7 +3036,7 @@ void common::sol(
 	float bdln = 0;
 	int ierror = 0;
 	//arr_1d<nnuc, float> yy(fem::fill0);
-	float yy[nnuc+1];
+	//float yy[nnuc+1];
 	const int iw = 6;
 	//
 	//----------LINKAGES.
@@ -4164,11 +4161,11 @@ void common::derivs(
 	 */
 	//
 	const float pi = boost::math::constants::pi<float>();
-	float sumy = 0;
-	float sumzy = 0;
-	float sumdy = 0;
-	float summdy = 0;
-	float sumzdy = 0;
+	//float sumy = 0;
+	//float sumzy = 0;
+	//float sumdy = 0;
+	//float summdy = 0;
+	//float sumzdy = 0;
 	int i = 0;
 	float dphdt9 = 0;
 	float dphdln = 0;
@@ -4499,8 +4496,8 @@ void common::accum(
 void common::driver(
 		common& cmn)
 {
-	const int nnuc = 26;
 	/*
+	   const int nnuc = 26;
 	   arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
 	   arr_cref<float> dydt(cmn.dydt, dimension(nnuc));
 	   float& ytmin = cmn.ytmin;
