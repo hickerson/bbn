@@ -52,7 +52,7 @@ LFLAGS =
 default: $(MAIN)
 
 $(MAIN): $(OBJS)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+	$(CC) $(LFLAGS) $(OBJ) -o $@ 
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
