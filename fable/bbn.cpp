@@ -2833,38 +2833,30 @@ void common::eqslin(
 	if (icnvm == inc) {
 		FEM_DO_SAFE(i, 1, isize) {
 			FEM_DO_SAFE(j, 1, isize) {
-				a0[j][i] = a[j][i]; 	/// Initial value of coefficient array.
+				a0[j][i] = a[j][i]; 			/// Initial value of coefficient array.
 			}
 		}
 	}
 	//
 	//20--------TRIANGULARIZE MATRIX AND SAVE OPERATOR-------------------------------
 	//
-	//..........CHECK TO SEE THAT THERE ARE NO ZEROES AT PIVOT POINTS.
+	//..........CHECK TO SEE THAT THERE ARE NO ZEROS AT PIVOT POINTS.
 	FEM_DO_SAFE(i, 1, isize - 1) {
-		//Don't want to divide by zero.
-		if (a[i][i] == 0) {
-			//Position of zero coefficient.
-			mbad = i;
-			//Terminate matrix evaluation.
-			return;
+		if (a[i][i] == 0) { 					/// Don't want to divide by zero.
+			mbad = i; 							/// Position of zero coefficient.
+			std::cout << "Found divide by zero on 'a' diagonal.\n";
+			return; 							/// Terminate matrix evaluation.
 		}
-		//..........TRIANGULARIZE MATRIX.
+	//..........TRIANGULARIZE MATRIX.
 		FEM_DO_SAFE(j, i + 1, isize) {
-			//Progress diagonally down the column.
-			if (a[j][i] != 0) {
-				//Scaling factor down the column.
-				cx = a[j][i] / a[i][i];
-				//Progress diagonally along row.
-				FEM_DO_SAFE(k, i + 1, isize) {
-					//Subtract scaled coeff along
-					a[j][k] -= cx * a[i][k];
+			if (a[j][i] != 0) { 				/// Progress diagonally down the column.
+				cx = a[j][i] / a[i][i]; 		/// Scaling factor down the column.
+				FEM_DO_SAFE(k, i + 1, isize) { 	/// Progress diagonally along row.
+					a[j][k] -= cx * a[i][k]; 	/// Subtract scaled coefficient along row.
 				}
-				//Scaled coefficient.
-				a[j][i] = cx;
-				//..........OPERATE ON RIGHT-HAND VECTOR.
-				//Subtract off scaled coefficient.
-				x[j] -= cx * x[i];
+				a[j][i] = cx; 					/// Scaled coefficient.
+	//..........OPERATE ON RIGHT-HAND VECTOR.
+				x[j] -= cx * x[i]; 				/// Subtract off scaled coefficient.
 			}
 		}
 	}
@@ -2872,9 +2864,9 @@ void common::eqslin(
 	//30--------DO BACK SUBSTITUTION-------------------------------------------------
 	//
 statement_300:
-	x[isize] = x[isize] / a[isize][isize]; 	/// Solution for ultimate position.
+	x[isize] = x[isize] / a[isize][isize]; 		/// Solution for ultimate position.
 	y[isize] += x[isize];
-	FEM_DOSTEP(i, isize - 1, 1, -1) { 		/// From i = penultimate to i = 1.
+	FEM_DOSTEP(i, isize - 1, 1, -1) { 			/// From i = penultimate to i = 1.
 		sum = 0;
 		FEM_DO_SAFE(j, i + 1, isize) {
 			sum += a[i][j] * x[j]; 				/// Sum up all previous terms.
@@ -2887,31 +2879,31 @@ statement_300:
 	//
 	if (icnvm == inc) {
 		FEM_DO_SAFE(i, 1, isize) {
-			if (y[i] != 0.f) {
+			if (y[i] != 0.) {
 				xdy = fem::dabs(x[i] / y[i]); 			/// Relative error.
 				if (xdy > eps) {
 					if (nord < mord) { 					/// Continue to higher orders.
 						nord++;
 						//..........FIND ERROR IN RIGHT-HAND VECTOR.
 						FEM_DO_SAFE(j, 1, isize) {
-							r = 0; 							/// Initialize r.
+							r = 0; 						/// Initialize r.
 							FEM_DO_SAFE(k, 1, isize) {
-								r += a0[j][k] * y[k]; 			/// Left side with approximate sol
+								r += a0[j][k] * y[k]; 	/// Left side with approximate sol
 							}
-							x[j] = b[j] - r; 					/// Subtract difference from right side.
+							x[j] = b[j] - r; 			/// Subtract difference from right side.
 						}
 						//..........OPERATE ON RIGHT-HAND VECTOR.
 						FEM_DO_SAFE(j, 1, isize - 1) {
 							FEM_DO_SAFE(k, j + 1, isize) {
-								x[k] -= a[k][j] * x[j]; 		/// Subtract off scaled coefficient.
+								x[k] -= a[k][j] * x[j]; /// Subtract off scaled coefficient.
 							}
 						}
-						goto statement_300; 				/// Go for another iteration.
+						goto statement_300; 			/// Go for another iteration.
 					}
 					else {
 						//..........NOT ENOUGH CONVERGENCE.
-						mbad = -1; 							/// Signal error problem.
-						ierror = i; 						/// i'th nuclide for which x/y checked.
+						mbad = -1; 						/// Signal error problem.
+						ierror = i; 					/// i'th nuclide for which x/y checked.
 						return;
 					} //(nord < mord)
 				} //(xdy > eps)
@@ -4303,20 +4295,20 @@ statement_120:
 	//..........SOLVE COUPLED DIFFERENTIAL EQUATIONS.
 	sol(cmn, loop);
 	//Abort in case matrix not invertible.
-	if (cmn.mbad > 0) {
+	if (mbad > 0) {
 		return;
 	}
 	//
 	//20--------COMPUTE DERIVATIVES FOR TEMPERATURE, hv, AND CHEMICAL POTENTIAL------
 	//
 	//..........INITIALIZE SUMS TO ZERO.
-	sumy = 0.f;
-	sumzy = 0.f;
-	sumdy = 0.f;
-	summdy = 0.f;
-	sumzdy = 0.f;
+	float sumy = 0;
+	float sumzy = 0;
+	float sumdy = 0;
+	float summdy = 0;
+	float sumzdy = 0;
 	//..........ACCUMULATE TO GET SUM.
-	FEM_DO_SAFE(i, 1, cmn.isize) {
+	FEM_DO_SAFE(i, 1, isize) {
 		sumy += y[i]; 					/// Sum of abundance.
 		sumzy += zm[i] * y[i]; 			/// Sum of charge*abundance.
 		sumdy += dydt[i]; 				/// Sum of abundance flow.

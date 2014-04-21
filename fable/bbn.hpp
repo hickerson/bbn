@@ -2,6 +2,7 @@
 #define BBN_CMN_HPP
 
 #include <fem.hpp> // Fortran EMulation library of fable module
+#include "EvolutionParameters.hpp"
 
 namespace bbn {
 
