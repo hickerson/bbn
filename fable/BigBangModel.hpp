@@ -6,6 +6,8 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
+#include "EvolutionParameters.hpp"
+
 namespace bbn {
 
 	using namespace fem::major_types;

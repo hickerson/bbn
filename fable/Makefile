@@ -54,7 +54,7 @@ default: $(MAIN)
 $(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-EvolutionParamaters.o: EvolutionParamaters.cpp EvolutionParamaters.hpp
+.cpp.o:
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 fable:
