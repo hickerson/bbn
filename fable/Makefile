@@ -12,10 +12,6 @@ CC = g++
 RM = rm -rf
 FCC = fable.out
 
-
-# path to any includes 
-INCLUDES = -Ifable_sources/fable -I/usr/include/gsl
-
 #
 # libraries 
 #
@@ -24,32 +20,29 @@ LIBS = -lgsl -lgslcblas -lm
 #
 # sources
 #
+MAIN = bbn
 SRCS = bbn.cpp EvlolutionParamaters.cpp
+INCS = BigBangModel.hpp EvlolutionParamaters.hpp
+OBJS = $(SRCS:.cpp=.o)
 
 #
 # options
 #
 DEBUG = -g -Wall
 CFLAGS = $(DEBUG) -std=c++11 -fpermissive 
-#LFLAGS = 
+IFLAGS = -Ifable_sources/fable -I/usr/include/gsl
+LFLAGS = 
 
-TARGET = bbn
-MAIN = $(TARGET)
 
-# 
-# Generic Make file
-#
-
-.PHONY: depend clean
 
 all: $(MAIN)
 	@echo "Make all..."
 
-$(MAIN): $(OBJ)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+$(MAIN): $(OBJS)
+	$(CC) $(CFLAGS) $(IFLAGS) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 #f2c:
 #	f2c -C++ -I2 -A -s -r -r8 *.f
@@ -78,11 +71,13 @@ bbn-fable:
 	rm -f bbn
 	g++ -o bbn -I$(CLIBS) bbn-fable.cpp
 
+
+.PHONY: clean
 clean:
 	$(RM) *.o $(MAIN) *.dat
 
-depend: $(SRCS)
-	makedepend $(INCLUDES) $^
+#depend: $(SRCS)
+#	makedepend $(IFLAGS) $^
 
 # NOT DELETE THIS LINE -- make depend needs it
 
