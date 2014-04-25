@@ -6472,6 +6472,7 @@ void program_new123(
 	cmn.inc = cmn.inc0; 						/// Accumulation increment.
 	cmn.c[1] = cmn.c0[1]; 					/// Variation of gravitational constant.
 	cmn.c[2] = cmn.c0[2]; 					/// Neutron lifetime.
+	cout << "ntau:"<<cmn.c[2]<<endl; 
 	cmn.c[3] = cmn.c0[3]; 					/// Number of neutrino species.
 	cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
 	cmn.xi[1] = cmn.xi0[1]; 					/// Electron degeneracy parameter.
