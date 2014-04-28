@@ -1370,15 +1370,12 @@ void bessel(
 
 float common::getBesselL(float r)
 {
-	//float K2r = gsl_sf_bessel_Kn(2,r); 	/// Irregular modified cylindrical Bessel functions.
 	float K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
 float common::getBesselM(float r)
 {
-	//float K3r = gsl_sf_bessel_Kn(3,r);	/// Irregular modified cylindrical Bessel functions.
-	//float K1r = gsl_sf_bessel_Kn(1,r);	/// Irregular modified cylindrical Bessel functions.
 	float K3r = cyl_bessel_k(3,r);			/// Irregular modified cylindrical Bessel functions.
 	float K1r = cyl_bessel_k(1,r);			/// Irregular modified cylindrical Bessel functions.
 	return (3*K3r + K1r)/4/r;				/// (Ref ?).
