@@ -46,7 +46,7 @@ void help(common& cmn)
 	//
 	//10--------PRINT HELP SELECTION-------------------------------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_100:
 	//..........DISPLAY MENU.
 	write(iw,
@@ -485,7 +485,7 @@ void common::setcom(common& cmn)
 	//
 	//10--------PRINT RESET SELECTION AND AWAIT RESPONSE-----------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_100:
 	//..........DISPLAY RESET SELECTIONS.
 	write(iw,
@@ -653,7 +653,7 @@ void common::setmod(
 	//
 	//10--------PRINT RESET SELECTION AND AWAIT RESPONSE-----------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_100:
 	//..........DISPLAY RESET SELECTIONS.
 	write(iw,
@@ -4902,7 +4902,7 @@ void common::run(common& cmn)
 	//
 	//10--------PRINT RUN SELECTION AND AWAIT RESPONSE-------------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_100:
 	//..........DISPLAY RUN SELECTIONS.
 	write(iw,
@@ -5099,7 +5099,7 @@ statement_232:
 				}
 			}
 		}
-		//..........COMPUTE NUMBER OF RUNS FOR EACH LOOPING.
+		//..........COMPUTE NUMBER OF RUNS FOR EACH LOOP.
 		FEM_DO_SAFE(l, 1, 3) {
 			lnum(l) = fem::nint((rnum2(l) - rnum1(l) + rnum3(l)) / rnum3(l));
 		}
@@ -5292,7 +5292,7 @@ void common::output(common& cmn)
 	//
 	//10--------PRINT OUTPUT SELECTION AND AWAIT RESPONSE----------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_100:
 	//..........DISPLAY OUTPUT SELECTIONS.
 	write(iw,
@@ -5377,7 +5377,7 @@ statement_200:
 	//
 	//30--------REQUEST OUTPUT ON SCREEN SECTION-------------------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_300:
 	//      DO j = 1,it                  !Temperature in MeV.
 	//        T9out(j) = T9out(j)*.08617
@@ -6493,7 +6493,7 @@ void program_new123(
 	//
 	//30--------PRINT MENU AND AWAIT RESPONSE----------------------------------------
 	//
-	//..........RETURN FROM LOOPING.
+	//..........RETURN FROM LOOP.
 statement_300:
 	//..........DISPLAY MENU.
 	write(iw,
