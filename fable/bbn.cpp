@@ -423,16 +423,6 @@ void common::setcom(common& cmn)
 {
 	common_read read(cmn);
 	common_write write(cmn);
-	/*
-	   double& cy = cmn.cy;
-	   double& ct = cmn.ct;
-	   double& T9i = cmn.T9i;
-	   double& T9f = cmn.T9f;
-	   double& ytmin = cmn.ytmin;
-	   int& inc = cmn.inc;
-	   double& dt1 = cmn.dt1;
-	 */
-	//
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -762,13 +752,6 @@ statement_400:
 	//
 }
 
-/*
-   struct check_save
-   {
-   fem::variant_bindings lncoef_bindings;
-   fem::variant_bindings rates_bindings;
-   };
- */
 
 //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder unix f77):
@@ -790,44 +773,7 @@ statement_400:
 //
 void common::check(common& cmn)
 {
-	//FEM_CMN_SVE(check);
 	common_write write(cmn);
-	// COMMON modpr
-	//arr_cref<double> c(cmn.c, dimension(3));
-	// COMMON flags
-	//int& it = cmn.it;
-	// COMMON checkcb
-	//int& itime = static_cast<common_checkcb&>(cmn).itime;
-	// COMMON outdat
-	//const int itmax = 40;
-	//const int nnuc = 26;
-	//const int nrec = 88;
-	//arr_ref<double, 2> xout(cmn.xout, dimension(itmax, nnuc));
-	//arr_cref<double> etaout(cmn.etaout, dimension(itmax));
-	//
-	/*
-	   common_variant rates(cmn.common_rates, sve.rates_bindings);
-	   common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
-	   if (is_called_first_time) {
-	   using fem::mbr; // member of variant common or equivalence
-	   {
-	   mbr<double> f(dimension(nrec));
-	   mbr<double> r(dimension(nrec));
-	   rates.allocate(), f, r;
-	   }
-	   {
-	   mbr<double> a(dimension(nnuc, nnuc));
-	   mbr<double> b(dimension(nnuc));
-	   mbr<double> yx(dimension(nnuc));
-	   lncoef.allocate(), a, b, yx;
-	   }
-	   }
-	 */
-	//* arr_cref<double> f( */ rates.bind<double>() /* , dimension(nrec)) */ ;
-	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
-	//* arr_cref<double, 2> a( */ lncoef.bind<double>() /* , dimension(nnuc, nnuc)) */ ;
-	//* arr_cref<double> b( */ lncoef.bind<double>() /* , dimension(nnuc)) */ ;
-	//* arr_cref<double> yx( */ lncoef.bind<double>() /* , dimension(nnuc)) */ ;
 	//
 	//----------REMARKS.
 	//     This is an interface subroutine,
@@ -1091,282 +1037,6 @@ double ex( double const& x)
 	//
 }
 
-/*
-   struct knux_save
-   {
-   arr<double> c0;
-   arr<double> c1;
-   arr<double> ci0;
-   arr<double> ci1;
-   arr<double> ck0;
-   arr<double> ck1;
-
-   knux_save() :
-   c0(dimension(7), fem::fill0),
-   c1(dimension(7), fem::fill0),
-   ci0(dimension(7), fem::fill0),
-   ci1(dimension(7), fem::fill0),
-   ck0(dimension(7), fem::fill0),
-   ck1(dimension(7), fem::fill0)
-   {}
-   };
- */
-
-//
-//========================IDENTIFICATION DIVISION================================
-//
-#if 0
-void knux(
-		common& cmn,
-		double const& z)
-{
-	FEM_CMN_SVE(knux);
-	// COMMON kays
-	double& bk0 = cmn.bk0;
-	double& bk1 = cmn.bk1;
-	double& bk2 = cmn.bk2;
-	double& bk3 = cmn.bk3;
-	//
-	// SAVE
-	arr_ref<double> c0(sve.c0, dimension(7));
-	arr_ref<double> c1(sve.c1, dimension(7));
-	arr_ref<double> ci0(sve.ci0, dimension(7));
-	arr_ref<double> ci1(sve.ci1, dimension(7));
-	arr_ref<double> ck0(sve.ck0, dimension(7));
-	arr_ref<double> ck1(sve.ck1, dimension(7));
-	//
-	if (is_called_first_time) {
-		{
-			static const double values[] = {
-				1.f, 3.5156229f, 3.0899424f, 1.2067492f, 0.2659732f,
-				0.0360768f, 0.0045813f
-			};
-			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-				ci0;
-		}
-		{
-			static const double values[] = {
-				0.5f, 0.87890594f, 0.51498869f, 0.15084934f, 0.02658733f,
-				0.00301532f, 0.00032411f
-			};
-			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-				ci1;
-		}
-		{
-			static const double values[] = {
-				-0.57721566f, 0.42278420f, 0.23069756f, 0.03488590f,
-				0.00262698f, 0.00010750f, 0.00000740f
-			};
-			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-				ck0;
-		}
-		{
-			static const double values[] = {
-				1.f, 0.15443144f, -0.67278579f, -0.18156897f, -0.01919402f,
-				-0.00110404f, -0.00004686f
-			};
-			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-				ck1;
-		}
-		{
-			static const double values[] = {
-				1.25331414f, -0.07832358f, 0.02189568f, -0.01062446f,
-				0.00587872f, -0.00251540f, 0.00053208f
-			};
-			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-				c0;
-		}
-		{
-			static const double values[] = {
-				1.25331414f, 0.23498619f, -0.03655620f, 0.01504268f,
-				-0.00780353f, 0.00325614f, -0.00068245f
-			};
-			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-				c1;
-		}
-	}
-	//
-	//----------LINKAGES.
-	//     CALLED BY - [subroutine] bessel
-	//     CALLS     - [function] exp
-	//
-	//----------REMARKS.
-	//     A subroutine for modified bessel functions of the second kind
-	//     k-nu(z).
-	//
-	//----------COMMON AREAS.
-	//Coefficients K.
-	//
-	//===========================DECLARATION DIVISION================================
-	//
-	//-----------MODIFIED BESSEL FUNCTION VALUES.
-	//Values k0(z),k1(z)
-	//Values i0(z),i1(z).
-	//Values k2(z),k3(z),k4(z).
-	//
-	//-----------EXPANSION COEFFICIENTS.
-	//Expansion coefficients for i0 (z.le.2).
-	//Expansion coefficients for i1 (z.le.2).
-	//Expansion coefficients for k0 (z.le.2).
-	//Expansion coefficients for k1 (z.le.2).
-	//Expansion coefficients for k0 (z > 2).
-	//Expansion coefficients for k1 (z > 2).
-	//
-	//-----------VARIABLES TO BE EVALUATED.
-	//Input variable.
-	//Expansion variable = z/2.
-	//Expansion variable = z/3.75.
-	//Logarithmic or exponential coefficient
-	//
-	//==============================DATA DIVISION====================================
-	//
-	//----------EXPANSION COEFFICIENTS.
-	//
-	//===========================PROCEDURE DIVISION==================================
-	//
-	//10--------COMPUTE K0 AND K1----------------------------------------------------
-	//
-	//(Ref. 1).
-	double t = 0;
-	double y = 0;
-	double coeff = 0;
-	double bi0 = 0;
-	double bi1 = 0;
-	int i = 0;
-	if (z <= 2.f) {
-		//..........COMPUTE FACTORS.
-		t = (z / 3.75f);
-		y = (z / 2);
-		coeff = fem::alog(y);
-		//..........VALUES FOR i0(z) and i1(z).
-		bi0 = ci0[1];
-		bi1 = ci1[1];
-		bk0 = ck0[1];
-		bk1 = ck1[1];
-		FEM_DO_SAFE(i, 2, 7) {
-			int n = 2 * (i - 1);
-			double p = pow(t,n);
-			bi0 += ci0(i) * p;
-			bi1 += ci1(i) * p;
-			bk0 += ck0(i) * p;
-			bk1 += ck1(i) * p;
-		}
-		//..........VALUES FOR k0(z) and k1(z).
-		bk0 += -coeff * bi0;
-		bk1 = coeff * bi1 * z + bk1 / z;
-		//(z.le.2.)               !(Ref. 2).
-	}
-	else {
-		//..........COMPUTE FACTORS.
-		y = (2.0f / z);
-		coeff = (ex(-z) / sqrt(z));
-		//..........VALUES FOR k0(z) and k1(z).
-		bk0 = c0[1];
-		bk1 = c1[1];
-		FEM_DO_SAFE(i, 2, 7) {
-			bk0 += c0(i) * pow(y, (i - 1));
-			bk1 += c1(i) * pow(y, (i - 1));
-		}
-		bk0 = coeff * bk0;
-		bk1 = coeff * bk1;
-		//(z.le.2.)
-	}
-	//
-	//20--------FIND K2, K3, AND K4 BY ITERATION (Ref. 3)----------------------------
-	//
-	//k2(z).
-	bk2 = 2.f * (bk1 / z) + bk0;
-	//k3(z).
-	bk3 = 4.f * (bk2 / z) + bk1;
-	//k4(z).
-	cmn.bk4 = 6.f * (bk3 / z) + bk2;
-	//
-	//----------REFERENCES-----------------------------------------------------------
-	//     Handbook of Mathematical Functions (Abramowitz and Stegun),
-	//       Dover Publications, Inc., New York
-	//       1) Polynomial approximations for z.le.2
-	//         page 378, equations 9.8.1 and 9.8.3.
-	//         page 379, equations 9.8.5 and 9.8.7.
-	//       2) Polynomial approximations for z > 2
-	//         page 379, equations 9.8.6 and 9.8.8.
-	//       3) Recursion relation from 1st line of 9.6.26, page 376.
-	//
-}
-#endif
-
-//
-//========================IDENTIFICATION DIVISION================================
-//
-#if 0
-void bessel(
-		common& cmn,
-		double const& z)
-{
-	// COMMON kays
-	//
-	//----------LINKAGES.
-	//     CALLED BY - [subroutine] start, therm
-	//     CALLS     - [subroutine] knux
-	//
-	//----------REMARKS.
-	//     Evaluates functions bl(z), bm(z), and bn(z) using solutions to
-	//     modified Bessel functions.
-	//
-	//----------COMMON AREAS.
-	//Evaluate function bl(z).
-	//Evaluate function bm(z).
-	//Evaluate function bn(z).
-	//Coefficients K.
-	//
-	//==========================DECLARATION DIVISION=================================
-	//
-	//----------EVALUATION OF FUNCTIONS bl,bm,bn.
-	//Single variables equivalenced to arr
-	//
-	//----------EVALUATION OF MODIFIED BESSEL FUNCTIONS.
-	//Values k0(r),k1(r),k2(r),k3(r),k4(r).
-	//
-	//----------LOCAL VARIABLES.
-	//Array containing values from function bl.
-	//Defined by z = m(electron)*c**2/k*T9
-	//Multiples of z.
-	//
-	//----------EQUIVALENCE STATEMENTS.
-	//     EQUIVALENCE (blz(1),bl1),(blz(2),bl2),(blz(3),bl3),(blz(4),bl4),
-	//    |            (blz(5),bl5)
-	//     EQUIVALENCE (bmz(1),bm1),(bmz(2),bm2),(bmz(3),bm3),(bmz(4),bm4),
-	//    |            (bmz(5),bm5)
-	//     EQUIVALENCE (bnz(1),bn1),(bnz(2),bn2),(bnz(3),bn3),(bnz(4),bn4),
-	//    |            (bnz(5),bn5)
-	//
-	//===========================PROCEDURE DIVISION==================================
-	//
-	//10--------LOCALLY DEFINED FUNCTIONS--------------------------------------------
-	//
-	//Function bl.
-	//bl(z) = bk2 / z;
-	//Function bm.
-	//bm(z) = 0.25f * (3.f * cmn.bk3 + cmn.bk1) / z;
-	//Function bn.
-	//bn(z) = 0.5f * (cmn.bk4 + bk2) / z;
-	//
-	//20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
-	//
-	int i = 0;
-	arr_1d<5, double> blz(fem::fill0); //TODO change to c array
-	arr_1d<5, double> bmz(fem::fill0); //TODO change to c array
-	arr_1d<5, double> bnz(fem::fill0); //TODO change to c array
-	FEM_DO_SAFE(i, 1, 5) {
-		double r = i * z; 							//Multiples of z.
-		knux(cmn, r); 								//Get k0(r),k1(r),k2(r),k3(r),k4(r),k(r)
-		blz(i) = cmn.bk2/r; 					//Put value from function bl into array
-		bmz(i) = 0.25*(3*cmn.bk3 + cmn.bk1)/r; 	//Put value from function bm into array
-		bnz(i) = 0.5*(cmn.bk4 + cmn.bk2)/r; 	//Put value from function bn into array
-	}
-
-	// TODO remove this fix 
-}
-#endif
 
 double common::getBesselL(double r)
 {
@@ -1389,13 +1059,6 @@ double common::getBesselN(double r)
 }
 
 
-/*
-   struct rate0_save
-   {
-   fem::variant_bindings rates_bindings;
-   };
- */
-
 //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder DEC unix f77):
 //     -----------------------------------
@@ -1407,22 +1070,6 @@ double common::getBesselN(double r)
 void common::rate0(
 		common& cmn)
 {
-	/*
-	//FEM_CMN_SVE(rate0);
-	//common_variant rates(cmn.common_rates, sve.rates_bindings);
-	const int nrec = 88;
-	arr<double> f[dimension(nrec));
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r(dimension(nrec));
-	rates.allocate(), f, r;
-	}
-	}
-	 */
-	//arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	//arr_cref<double> r( *//* rates.bind<double>() *//* , dimension(nrec)) *//* ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] start
@@ -1484,7 +1131,6 @@ void common::rate0(
 	//
 }
 
-//typedef double (*func1_function_pointer)(common&, double const&);
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -1499,9 +1145,6 @@ common::func1(
 		common& cmn,
 		double const& x)
 {
-	//double return_value = 0;
-	// COMMON modpr
-	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1554,9 +1197,6 @@ common::func2(
 		common& cmn,
 		double const& x)
 {
-	//double return_value = 0;
-	// COMMON modpr
-	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1608,8 +1248,6 @@ common::func3(
 		double const& x)
 {
 	double return_value = 0; // TODO move inside?
-	// COMMON modpr
-	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1664,8 +1302,6 @@ common::func4(
 		double const& x)
 {
 	double return_value = 0;
-	// COMMON modpr
-	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1711,7 +1347,6 @@ common::func4(
 	// TODO test and uncomment
 	/*
 	   if (x <= 1.f) {
-	   return_value = 0.f;
 	   return 0;
 	   }
 	   else {
@@ -1735,8 +1370,6 @@ common::func5(
 		double const& x)
 {
 	double return_value = 0;
-	// COMMON modpr
-	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1782,8 +1415,6 @@ common::func6(
 		double const& x)
 {
 	double return_value = 0;
-	// COMMON modpr
-	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1818,20 +1449,6 @@ common::func6(
 	return return_value;
 }
 
-/*
-   struct xintd_save
-   {
-   int np;
-   arr<double> u;
-   arr<double> w;
-
-   xintd_save() :
-   np(0),
-   u(dimension(6), fem::fill0),
-   w(dimension(6), fem::fill0)
-   {}
-   };
- */
 
 //
 //----------REFERENCES-----------------------------------------------------------
@@ -1850,9 +1467,6 @@ common::xintd(
 		double(* func)(common &, const double&),
 		int const& nq)
 {
-	//FEM_CMN_SVE(xintd);
-	// SAVE
-	//
 	const int np = 6;
 	static const double u[] = {
 		0,
@@ -1864,29 +1478,6 @@ common::xintd(
 		.17132449237917f, .36076157304814f, .46791393457269f,
 		.46791393457269f, .36076157304814f, .17132449237917f
 	};
-	/*
-	//int& np = sve.np;
-	//arr_ref<double> u(sve.u, dimension(6));
-	//arr_ref<double> w(sve.w, dimension(6));
-	if (is_called_first_time) {
-	{
-	static const double values[] = {
-	-.93246951420315f, -.66120938646627f, -.23861918608320f,
-	.23861918608320f, .66120938646627f, .93246951420315f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	u;
-	}
-	{
-	static const double values[] = {
-	.17132449237917f, .36076157304814f, .46791393457269f,
-	.46791393457269f, .36076157304814f, .17132449237917f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	w;
-	}
-	}
-	 */
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] rate1, nudens
@@ -1947,12 +1538,6 @@ common::xintd(
 	return 0.5 * sum * dist;
 }
 
-/*
-   struct rate1_save
-   {
-   fem::variant_bindings rates_bindings;
-   };
- */
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -1961,30 +1546,6 @@ void common::rate1(
 		common& cmn,
 		double const& tph)
 {
-	/*
-	   FEM_CMN_SVE(rate1);
-	// COMMON modpr
-	double& tau = cmn.tau;
-	arr_cref<double> xi(cmn.xi, dimension(3));
-	// COMMON thermcb
-	arr_cref<double> thm(cmn.thm, dimension(14));
-	// COMMON nupar
-	double& T9mev = cmn.T9mev;
-	double& tnmev = cmn.tnmev;
-	//
-	//common_variant rates(cmn.common_rates, sve.rates_bindings);
-	const int nrec = 88;
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r(dimension(nrec));
-	rates.allocate(), f, r;
-	}
-	}
-	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	arr_ref<double> r(rates.bind<double>(), dimension(nrec));
-	 */
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] start, derivs
@@ -2129,38 +1690,6 @@ struct start_save
 //
 void common::start(common& cmn)
 {
-	/*
-	   FEM_CMN_SVE(start);
-	// COMMON evolp1
-	double& T9 = cmn.T9;
-	double& hv = cmn.hv;
-	const int nnuc = 26;
-	arr_ref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	// COMMON evolp3
-	arr_ref<double> y0(cmn.y0, dimension(nnuc));
-	// COMMON modpr
-	double& tau = cmn.tau;
-	arr_cref<double> c(cmn.c, dimension(3));
-	arr_cref<double> xi(cmn.xi, dimension(3));
-	// COMMON endens
-	double& rhob0 = cmn.rhob0;
-	// COMMON nupar
-	double& tnu = cmn.tnu;
-	double& cnorm = cmn.cnorm;
-	//
-	common_variant rates(cmn.common_rates, sve.rates_bindings);
-	const int nrec = 88;
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r;
-	rates.allocate(), f, r;
-	}
-	}
-	 */
-	//arr_cref<double> f(rates.bind<double>(), dimension(nrec));
-	///* double const& r */ rates.bind<double>();
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] driver
@@ -2382,14 +1911,6 @@ void common::start(common& cmn)
 void common::nudens(
 		common& cmn)
 {
-	/*
-	// COMMON modpr
-	arr_cref<double> xi(cmn.xi, dimension(3));
-	// COMMON nupar
-	double& tnu = cmn.tnu;
-	double& rhonu = cmn.rhonu;
-	int& nu = cmn.nu;
-	 */
 	//
 	//
 	//----------LINKAGES.
@@ -2472,29 +1993,6 @@ void common::nudens(
 void common::therm(
 		common& cmn)
 {
-	/*
-	// COMMON evolp1
-	double& T9 = cmn.T9;
-	double& phie = cmn.phie;
-	// COMMON modpr
-	double& xnu = cmn.xnu;
-	arr_cref<double> xi(cmn.xi, dimension(3));
-	// COMMON thermcb
-	arr_ref<double> thm(cmn.thm, dimension(14));
-	// COMMON endens
-	double& rnb = cmn.rnb;
-	// COMMON besselcb
-	double& bl1 = cmn.bl1;
-	double& bl2 = cmn.bl2;
-	double& bl3 = cmn.bl3;
-	double& bl4 = cmn.bl4;
-	double& bl5 = cmn.bl5;
-	double& bm1 = cmn.bm1;
-	double& bm2 = cmn.bm2;
-	double& bm3 = cmn.bm3;
-	double& bm4 = cmn.bm4;
-	double& bm5 = cmn.bm5;
-	 */
 	//
 	//
 	//----------LINKAGES.
@@ -2727,33 +2225,10 @@ void common::eqslin(
 		int const& icnvm,
 		int& ierror)
 {
-	//FEM_CMN_SVE(eqslin);
-	/*
-	   int& inc = cmn.inc;
-	   int& mbad = cmn.mbad;
-	   int& isize = cmn.isize;
-	//
-	const int nnuc = 26;
-	common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> a(dimension(nnuc, nnuc));
-	mbr<double> b(dimension(nnuc));
-	mbr<double> y(dimension(nnuc));
-	lncoef.allocate(), a, b, y;
-	}
-	}
-	arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
-	arr_cref<double> b(lncoef.bind<double>(), dimension(nnuc));
-	arr_ref<double> y(lncoef.bind<double>(), dimension(nnuc));
-	 */
 	int nord = 0;
 	int i = 0;
-	//arr_1d<nnuc, double> x(fem::fill0);
 	double x[nnuc+1];
 	int j = 0;
-	//arr<double, 2> a0(dimension(nnuc, nnuc), fem::fill0);
 	double a0[nnuc+1][nnuc+1];			// TODO fix to zero indexing.
 	double cx = 0;
 	int k = 0;
@@ -2912,24 +2387,6 @@ statement_300:
 	//
 }
 
-/*
-   struct sol_save
-   {
-   fem::variant_bindings lncoef_bindings;
-   fem::variant_bindings rates_bindings;
-   arr<double> si;
-   arr<double> sj;
-   arr<double> sk;
-   arr<double> sl;
-
-   sol_save() :
-   si(dimension(11), fem::fill0),
-   sj(dimension(11), fem::fill0),
-   sk(dimension(11), fem::fill0),
-   sl(dimension(11), fem::fill0)
-   {}
-   };
- */
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -2938,81 +2395,7 @@ void common::sol(
 		common& cmn,
 		int const& loop)
 {
-	//FEM_CMN_SVE(sol);
 	common_write write(cmn);
-	/*
-	   const int nrec = 88;
-	   arr_cref<int> iform(cmn.iform, dimension(nrec));
-	   arr_cref<int> ii(cmn.ii, dimension(nrec));
-	   arr_cref<int> jj(cmn.jj, dimension(nrec));
-	   arr_cref<int> kk(cmn.kk, dimension(nrec));
-	   arr_cref<int> ll(cmn.ll, dimension(nrec));
-	   arr_cref<double> rev(cmn.rev, dimension(nrec));
-	   arr_cref<double> q9(cmn.q9, dimension(nrec));
-	   double& T9 = cmn.T9;
-	   const int nnuc = 26;
-	   arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	   arr_ref<double> dydt(cmn.dydt, dimension(nnuc));
-	   arr_cref<double> y0(cmn.y0, dimension(nnuc));
-	   double& dt = cmn.dt;
-	   double& rhob = cmn.rhob;
-	   int& mbad = cmn.mbad;
-	   int& isize = cmn.isize;
-	//
-	common_variant rates(cmn.common_rates, sve.rates_bindings);
-	common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
-	arr_ref<double> si(sve.si, dimension(11));
-	arr_ref<double> sj(sve.sj, dimension(11));
-	arr_ref<double> sk(sve.sk, dimension(11));
-	arr_ref<double> sl(sve.sl, dimension(11));
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r(dimension(nrec));
-	rates.allocate(), f, r;
-	}
-	{
-	mbr<double> a(dimension(nnuc, nnuc));
-	mbr<double> b(dimension(nnuc));
-	mbr<double> yx(dimension(nnuc));
-	lncoef.allocate(), a, b, yx;
-	}
-	}
-	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	arr_ref<double> r(rates.bind<double>(), dimension(nrec));
-	arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
-	arr_ref<double> b(lncoef.bind<double>(), dimension(nnuc));
-	arr_cref<double> yx(lncoef.bind<double>(), dimension(nnuc));
-	if (is_called_first_time) {
-	{
-	static const double values[] = {
-	1.f, 1.f, 1.f, 1.f, 1.f, 2.f, 3.f, 2.f, 1.f, 1.f, 2.f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	si;
-	}
-	{
-	static const double values[] = {
-	0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	sj;
-	}
-	{
-	static const double values[] = {
-	0.f, 0.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f, 0.f, 2.f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	sk;
-	}
-	{
-	static const double values[] = {
-	1.f, 1.f, 1.f, 2.f, 2.f, 1.f, 1.f, 1.f, 2.f, 3.f, 1.f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	sl;
-	*/
 	const double si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
@@ -3036,8 +2419,6 @@ void common::sol(
 	double cl = 0;
 	double bdln = 0;
 	int ierror = 0;
-	//arr_1d<nnuc, double> yy(fem::fill0);
-	//double yy[nnuc+1];
 	const int iw = 6;
 	//
 	//----------LINKAGES.
@@ -3918,24 +3299,6 @@ void common::rate3(
 void common::rate4(
 		common& cmn)
 {
-	/*
-	   FEM_CMN_SVE(rate4);
-	// COMMON evolp1
-	double& T9 = cmn.T9;
-	//
-	common_variant rates(cmn.common_rates, sve.rates_bindings);
-	const int nrec = 88;
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r(dimension(nrec));
-	rates.allocate(), f, r;
-	}
-	}
-	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	 */
-	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] derivs
@@ -4147,26 +3510,7 @@ void common::derivs(
 		common& cmn,
 		int const& loop)
 {
-	/*
-	   double& T9 = cmn.T9;
-	   double& hv = cmn.hv;
-	   const int nnuc = 26;
-	   arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	   double& dT9 = cmn.dT9;
-	   arr_cref<double> dydt(cmn.dydt, dimension(nnuc));
-	   double& dlT9dt = cmn.dlT9dt;
-	   arr_cref<double> thm(cmn.thm, dimension(14));
-	   double& hubcst = cmn.hubcst;
-	   arr_cref<double> zm(cmn.zm, dimension(nnuc));
-	   arr_cref<double> dm(cmn.dm, dimension(nnuc));
-	 */
-	//
-	const double pi = boost::math::constants::pi<double>();
-	//double sumy = 0;
-	//double sumzy = 0;
-	//double sumdy = 0;
-	//double summdy = 0;
-	//double sumzdy = 0;
+	const double pi = constants::pi<double>();
 	int i = 0;
 	double dphdT9 = 0;
 	double dphdln = 0;
@@ -4345,26 +3689,6 @@ statement_120:
 void common::accum(
 		common& cmn)
 {
-	/*
-	// COMMON evolp1
-	const int nnuc = 26;
-	arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	// COMMON thermcb
-	arr_cref<double> thm(cmn.thm, dimension(14));
-	// COMMON nucdat
-	arr_cref<double> am(cmn.am, dimension(nnuc));
-	// COMMON flags
-	int& it = cmn.it;
-	// COMMON outdat
-	const int itmax = 40;
-	arr_ref<double, 2> xout(cmn.xout, dimension(itmax, nnuc));
-	arr_ref<double, 2> thmout(cmn.thmout, dimension(itmax, 6));
-	arr_ref<double> T9out(cmn.T9out, dimension(itmax));
-	arr_ref<double> tout(cmn.tout, dimension(itmax));
-	arr_ref<double> dtout(cmn.dtout, dimension(itmax));
-	arr_ref<double> etaout(cmn.etaout, dimension(itmax));
-	arr_ref<double> hubout(cmn.hubout, dimension(itmax));
-	 */
 	//
 	//
 	//----------LINKAGES.
@@ -4497,22 +3821,6 @@ void common::accum(
 void common::driver(
 		common& cmn)
 {
-	/*
-	   const int nnuc = 26;
-	   arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	   arr_cref<double> dydt(cmn.dydt, dimension(nnuc));
-	   double& ytmin = cmn.ytmin;
-	   int& inc = cmn.inc;
-	   double& t = cmn.t;
-	   double& dt = cmn.dt;
-	   double& dlT9dt = cmn.dlT9dt;
-	   int& ltime = cmn.ltime;
-	   int& is = cmn.is;
-	   int& ip = cmn.ip;
-	   int& itime = static_cast<common_tcheck&>(cmn).itime;
-	   int& isize = cmn.isize;
-	 */
-	//
 	int mvar = 0;
 	int loop = 0;
 	const double cl = 1.e-16f;
@@ -4520,12 +3828,6 @@ void common::driver(
 	int i = 0;
 	double dtl = 0;
 	const int nvar = 29;
-	/*
-	   arr_1d<nvar, double> v(fem::fill0);
-	   arr_1d<nvar, double> v0(fem::fill0);
-	   arr_1d<nvar, double> dvdt(fem::fill0);
-	   arr_1d<nvar, double> dvdt0(fem::fill0);
-	 */
 	double v[nvar+1];
 	double v0[nvar+1];
 	double dvdt[nvar+1];
@@ -4774,19 +4076,8 @@ void common::qvary(common& cmn, int index, double value)
 //
 void common::run(common& cmn)
 {
-	//FEM_CMN_SVE(run);
 	common_read read(cmn);
 	common_write write(cmn);
-	/*
-	   double& eta1 = cmn.eta1;
-	//int& itime = static_cast<common_checkcb&>(cmn).itime;
-	int& itime = cmn.itime;
-	int& irun = cmn.irun;
-	int& isize = cmn.isize;
-	int& jsize = cmn.jsize;
-	 */
-	//
-	//str_arr_ref<1> vtype(sve.vtype, dimension(8));
 	//if (is_called_first_time) {
 	static const char* vtype[] = {
 		"baryon/photon ratio   ", 
@@ -4798,9 +4089,6 @@ void common::run(common& cmn)
 		"xi-muon               ", 
 		"xi-tauon              "
 	};
-	//  fem::data_of_type_str(FEM_VALUES_AND_SIZE),
-	//    vtype;
-	//}
 	const int iw = 6;
 	const int ir = 5;
 	int inumb = 0;
@@ -5192,28 +4480,6 @@ void common::output(common& cmn)
 {
 	common_read read(cmn);
 	common_write write(cmn);
-	/*
-	   double& cy = cmn.cy;
-	   double& ct = cmn.ct;
-	   double& T9i = cmn.T9i;
-	   double& T9f = cmn.T9f;
-	   double& ytmin = cmn.ytmin;
-	   arr_cref<double> c(cmn.c, dimension(3));
-	   double& cosmo = cmn.cosmo;
-	   arr_cref<double> xi(cmn.xi, dimension(3));
-	   int& it = cmn.it;
-	   const int itmax = 40;
-	   const int nnuc = 26;
-	   arr_cref<double, 2> xout(cmn.xout, dimension(itmax, nnuc));
-	   arr_cref<double, 2> thmout(cmn.thmout, dimension(itmax, 6));
-	   arr_cref<double> T9out(cmn.T9out, dimension(itmax));
-	   arr_cref<double> tout(cmn.tout, dimension(itmax));
-	   arr_cref<double> dtout(cmn.dtout, dimension(itmax));
-	   arr_cref<double> etaout(cmn.etaout, dimension(itmax));
-	   arr_cref<double> hubout(cmn.hubout, dimension(itmax));
-	   int& nout = cmn.nout;
-	 */
-	//
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -5552,506 +4818,19 @@ common::common(
 	common_outopt(),
 	common_tcheck()
 {
-	/*
-	   FEM_CMN_SVE(blockdata_unnamed);
-	// COMMON recpr0
-	const int nrec = 88;
-	arr_ref<double, 2> reacpr(cmn.reacpr, dimension(nrec, 8));
-	// COMMON modpr0
-	arr_ref<double> c0(cmn.c0, dimension(3));
-	arr_ref<double> xi0(cmn.xi0, dimension(3));
-	// COMMON nucdat
-	const int nnuc = 26;
-	arr_ref<double> am(cmn.am, dimension(nnuc));
-	arr_ref<double> zm(cmn.zm, dimension(nnuc));
-	arr_ref<double> dm(cmn.dm, dimension(nnuc));
-	//
-	 */
-	/*
-	   int i = 0;
-	   int j = 0;
-	   if (is_called_first_time) {
-	   {
-	   static const double values[] = {
-	   1.f, 1.f, 2.f, 3.f, 3.f, 4.f, 6.f, 7.f, 7.f, 8.f, 8.f, 9.f,
-	   10.f, 11.f, 11.f, 12.f, 12.f, 12.f, 13.f, 13.f, 14.f, 14.f,
-	   14.f, 15.f, 15.f, 16.f
-	   };
-	   fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	   am;
-	   }
-	   {
-	   static const double values[] = {
-	   0.f, 1.f, 1.f, 1.f, 2.f, 2.f, 3.f, 3.f, 4.f, 3.f, 5.f, 4.f,
-	   5.f, 5.f, 6.f, 5.f, 6.f, 7.f, 6.f, 7.f, 6.f, 7.f, 8.f, 7.f,
-	   8.f, 8.f
-	   };
-	   fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	   zm;
-	   }
-	   {
-	   static const double values[] = {
-	   .008665f, .007825f, .014102f, .016050f, .016030f, .002603f,
-	   .015125f, .016004f, .016929f, .022487f, .024609f, .012186f,
-	   .012939f, .009305f, .011432f, .014354f, .000000f, .018641f,
-	   .003354f, .005738f, .003242f, .003074f, .008597f, .000108f,
-	   .003070f, -.005085f
-	   };
-	   fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	   dm;
-	   }
-	   {
-	   static const double values[] = {
-	   1.f, 1.f, 1.f, 0.f, 0.f, 2.f, 0.0f, 0.0f, 2.f, 1.f, 4.f, 0.f,
-	   0.f, 5.f, 0.0f, 0.0f, 3.f, 4.f, 10.f, 0.f, 0.f, 6.f, 0.0f,
-	   0.0f, 4.f, 1.f, 16.f, 0.f, 0.f, 17.f, 0.0f, 0.0f, 5.f, 1.f,
-	   21.f, 0.f, 0.f, 22.f, 0.0f, 0.0f, 6.f, 4.f, 11.f, 0.f, 0.f,
-	   6.f, 0.0f, 0.0f, 7.f, 1.f, 15.f, 0.f, 0.f, 14.f, 0.0f,
-	   0.0f, 8.f, 1.f, 18.f, 0.f, 0.f, 17.f, 0.0f, 0.0f, 9.f, 1.f,
-	   20.f, 0.f, 0.f, 19.f, 0.0f, 0.0f, 10.f, 1.f, 23.f, 0.f,
-	   0.f, 22.f, 0.0f, 0.0f, 11.f, 1.f, 25.f, 0.f, 0.f, 24.f,
-	   0.0f, 0.0f
-	   };
-	   fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	   FEM_DO_SAFE(i, 1, 11) {
-	   FEM_DO_SAFE(j, 1, 8) {
-	   data, reacpr(i, j);
-	   }
-	   }
-	   }
-	   {
-	   static const double values[] = {
-	   12.f, 2.f, 2.f, 1.f, 0.f, 3.f, 0.471f, 25.82f, 13.f, 2.f,
-	   3.f, 1.f, 0.f, 4.f, 1.63f, 72.62f, 14.f, 2.f, 5.f, 1.f,
-	   0.f, 6.f, 2.61f, 238.81f, 15.f, 2.f, 7.f, 1.f, 0.f, 8.f,
-	   1.19f, 84.17f, 16.f, 3.f, 5.f, 1.f, 2.f, 4.f, 1.002f,
-	   8.863f, 17.f, 3.f, 9.f, 1.f, 2.f, 8.f, 0.998f, 19.081f,
-	   18.f, 3.f, 7.f, 1.f, 4.f, 6.f, 1.070f, 55.494f, 19.f, 5.f,
-	   9.f, 1.f, 0.f, 6.f, 4.70f, 220.39f, 20.f, 2.f, 3.f, 2.f,
-	   0.f, 5.f, 1.63f, 63.750f, 21.f, 2.f, 4.f, 2.f, 0.f, 6.f,
-	   2.61f, 229.932f, 22.f, 2.f, 7.f, 2.f, 0.f, 9.f, 1.19f,
-	   65.054f
-	   };
-	   fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	   FEM_DO_SAFE(i, 12, 22) {
-	   FEM_DO_SAFE(j, 1, 8) {
-	   data, reacpr(i, j);
-	   }
-	   }
-	}
-	{
-	static const double values[] = {
-		23.f, 3.f, 7.f, 2.f, 5.f, 6.f, 1.07f, 46.631f, 24.f, 5.f,
-		8.f, 2.f, 0.f, 6.f, 4.69f, 201.291f, 25.f, 2.f, 6.f, 3.f,
-		0.f, 7.f, 1.53f, 17.118f, 26.f, 2.f, 6.f, 4.f, 0.f, 8.f,
-		1.11f, 28.640f, 27.f, 2.f, 6.f, 5.f, 0.f, 9.f, 1.11f,
-		18.423f, 28.f, 6.f, 3.f, 0.f, 1.f, 5.f, 1.73f, 37.935f,
-		29.f, 6.f, 3.f, 0.f, 2.f, 4.f, 1.73f, 46.798f, 30.f, 3.f,
-		4.f, 3.f, 1.f, 6.f, 5.54f, 204.117f, 31.f, 3.f, 5.f, 3.f,
-		2.f, 6.f, 5.55f, 212.980f, 32.f, 11.f, 5.f, 0.f, 2.f, 6.f,
-		3.39f, 149.230f, 33.f, 9.f, 8.f, 3.f, 1.f, 6.f, 9.95f,
-		175.476f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 23, 33) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		34.f, 9.f, 9.f, 3.f, 2.f, 6.f, 9.97f, 194.557f, 35.f, 2.f,
-		8.f, 1.f, 0.f, 10.f, 1.31f, 23.59f, 36.f, 2.f, 13.f, 1.f,
-		0.f, 14.f, 3.04f, 132.95f, 37.f, 2.f, 14.f, 1.f, 0.f, 16.f,
-		2.34f, 39.10f, 38.f, 3.f, 15.f, 1.f, 2.f, 14.f, 1.002f,
-		32.080f, 39.f, 3.f, 13.f, 1.f, 6.f, 8.f, 0.758f, 32.382f,
-		40.f, 2.f, 9.f, 2.f, 0.f, 11.f, 1.30f, 1.595f, 41.f, 2.f,
-		12.f, 2.f, 0.f, 13.f, 0.973f, 76.427f, 42.f, 2.f, 13.f,
-		2.f, 0.f, 15.f, 3.03f, 100.840f, 43.f, 2.f, 14.f, 2.f, 0.f,
-		17.f, 7.01f, 185.173f, 44.f, 2.f, 15.f, 2.f, 0.f, 18.f,
-		2.33f, 6.975f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 34, 44) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		45.f, 3.f, 16.f, 2.f, 1.f, 17.f, 3.00f, 146.08f, 46.f, 3.f,
-		12.f, 2.f, 6.f, 7.f, 0.618f, 24.674f, 47.f, 3.f, 13.f, 2.f,
-		6.f, 9.f, 0.754f, 13.301f, 48.f, 3.f, 16.f, 2.f, 6.f, 12.f,
-		0.292f, 79.89f, 49.f, 2.f, 7.f, 6.f, 0.f, 13.f, 1.58f,
-		51.753f, 50.f, 2.f, 8.f, 6.f, 0.f, 14.f, 4.02f, 100.538f,
-		51.f, 2.f, 9.f, 6.f, 0.f, 15.f, 4.02f, 87.539f, 52.f, 3.f,
-		11.f, 6.f, 2.f, 15.f, 3.08f, 86.00f, 53.f, 3.f, 10.f, 6.f,
-		1.f, 14.f, 3.07f, 76.96f, 54.f, 3.f, 12.f, 6.f, 1.f, 17.f,
-		10.3f, 66.160f, 55.f, 3.f, 12.f, 3.f, 1.f, 13.f, 2.07f,
-		50.63f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 45, 55) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		56.f, 3.f, 13.f, 3.f, 2.f, 14.f, 6.44f, 107.13f, 57.f, 3.f,
-		14.f, 3.f, 1.f, 17.f, 14.9f, 159.36f, 58.f, 8.f, 6.f, 1.f,
-		0.f, 12.f, 0.584f, 18.260f, 59.f, 7.f, 6.f, 0.f, 0.f, 17.f,
-		2.00f, 84.420f, 60.f, 9.f, 10.f, 2.f, 1.f, 6.f, 3.58f,
-		177.73f, 61.f, 9.f, 11.f, 1.f, 2.f, 6.f, 3.58f, 218.82f,
-		62.f, 9.f, 12.f, 2.f, 3.f, 6.f, 0.807f, 7.555f, 63.f, 10.f,
-		14.f, 2.f, 0.f, 6.f, 3.50f, 100.753f, 64.f, 10.f, 15.f,
-		1.f, 0.f, 6.f, 3.49f, 132.83f, 65.f, 2.f, 17.f, 1.f, 0.f,
-		19.f, 0.886f, 57.41f, 66.f, 2.f, 19.f, 1.f, 0.f, 21.f,
-		3.58f, 94.88f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 56, 66) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		67.f, 2.f, 22.f, 1.f, 0.f, 24.f, 2.71f, 125.74f, 68.f, 3.f,
-		20.f, 1.f, 2.f, 19.f, 1.002f, 34.846f, 69.f, 3.f, 22.f,
-		1.f, 2.f, 21.f, 3.003f, 7.263f, 70.f, 3.f, 25.f, 1.f, 2.f,
-		24.f, 1.002f, 41.037f, 71.f, 3.f, 25.f, 1.f, 6.f, 17.f,
-		0.709f, 98.661f, 72.f, 2.f, 17.f, 2.f, 0.f, 20.f, 0.884f,
-		22.553f, 73.f, 2.f, 19.f, 2.f, 0.f, 22.f, 1.19f, 87.621f,
-		74.f, 2.f, 21.f, 2.f, 0.f, 24.f, 0.900f, 118.452f, 75.f,
-		2.f, 20.f, 2.f, 0.f, 23.f, 3.57f, 53.706f, 76.f, 2.f, 22.f,
-		2.f, 0.f, 25.f, 2.70f, 84.678f, 77.f, 2.f, 24.f, 2.f, 0.f,
-		26.f, 3.62f, 140.734f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 67, 77) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		78.f, 3.f, 24.f, 2.f, 6.f, 17.f, 0.706f, 57.623f, 79.f, 2.f,
-		17.f, 6.f, 0.f, 26.f, 5.13f, 83.111f, 80.f, 3.f, 13.f, 6.f,
-		2.f, 19.f, 9.36f, 47.16f, 81.f, 3.f, 14.f, 6.f, 2.f, 21.f,
-		11.0f, 9.098f, 82.f, 3.f, 15.f, 6.f, 2.f, 22.f, 3.68f,
-		33.915f, 83.f, 3.f, 18.f, 6.f, 2.f, 25.f, 4.26f, 111.87f,
-		84.f, 3.f, 20.f, 6.f, 2.f, 26.f, 5.81f, 60.557f, 85.f, 3.f,
-		13.f, 6.f, 1.f, 20.f, 9.34f, 12.287f, 86.f, 3.f, 14.f, 6.f,
-		1.f, 22.f, 3.67f, 1.835f, 87.f, 3.f, 16.f, 6.f, 1.f, 24.f,
-		4.25f, 88.47f, 88.f, 3.f, 19.f, 6.f, 1.f, 26.f, 5.79f,
-		25.711f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 78, 88) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	*/
-
-	/*
-	am = {
-	1.f, 1.f, 2.f, 3.f, 3.f, 4.f, 6.f, 7.f, 7.f, 8.f, 8.f, 9.f,
-	10.f, 11.f, 11.f, 12.f, 12.f, 12.f, 13.f, 13.f, 14.f, 14.f,
-	14.f, 15.f, 15.f, 16.f
-	};
-	zm = {
-	0.f, 1.f, 1.f, 1.f, 2.f, 2.f, 3.f, 3.f, 4.f, 3.f, 5.f, 4.f,
-	5.f, 5.f, 6.f, 5.f, 6.f, 7.f, 6.f, 7.f, 6.f, 7.f, 8.f, 7.f,
-	8.f, 8.f
-	};
-	dm = {
-	.008665f, .007825f, .014102f, .016050f, .016030f, .002603f,
-	.015125f, .016004f, .016929f, .022487f, .024609f, .012186f,
-	.012939f, .009305f, .011432f, .014354f, .000000f, .018641f,
-	.003354f, .005738f, .003242f, .003074f, .008597f, .000108f,
-	.003070f, -.005085f
-	};
-	reacpr = {
-	{1,	1,	1,	0,	0,	2,	0,	0},
-	{2,	1,	4,	0,	0,	5,	0,	0},
-	{3,	4,	10,	0,	0,	6,	0,	0},
-	{4,	1,	16,	0,	0,	17,	0,	0},
-	{5,	1,	21,	0,	0,	22,	0,	0},
-	{6,	4,	11,	0,	0,	6,	0,	0},
-	{7,	1,	15,	0,	0,	14,	0,	0},
-	{8,	1,	18,	0,	0,	17,	0,	0},
-	{9,	1,	20,	0,	0,	19,	0,	0},
-	{10,	1,	23,	0,	0,	22,	0,	0},
-	{11,	1,	25,	0,	0,	24,	0,	0},
-	{12,	2,	2,	1,	0,	3,	0.471,	25.82},
-	{13,	2,	3,	1,	0,	4,	1.63,	72.62},
-	{14,	2,	5,	1,	0,	6,	2.61,	238.81},
-	{15,	2,	7,	1,	0,	8,	1.19,	84.17},
-	{16,	3,	5,	1,	2,	4,	1.002,	8.863},
-	{17,	3,	9,	1,	2,	8,	0.998,	19.081},
-	{18,	3,	7,	1,	4,	6,	1.070,	55.494},
-	{19,	5,	9,	1,	0,	6,	4.70,	220.39},
-	{20,	2,	3,	2,	0,	5,	1.63,	63.750},
-	{21,	2,	4,	2,	0,	6,	2.61,	229.932},
-	{22,	2,	7,	2,	0,	9,	1.19,	65.054},
-	{23,	3,	7,	2,	5,	6,	1.07,	46.631},
-	{24,	5,	8,	2,	0,	6,	4.69,	201.291},
-	{25,	2,	6,	3,	0,	7,	1.53,	17.118},
-	{26,	2,	6,	4,	0,	8,	1.11,	28.640},
-	{27,	2,	6,	5,	0,	9,	1.11,	18.423},
-	{28,	6,	3,	0,	1,	5,	1.73,	37.935},
-	{29,	6,	3,	0,	2,	4,	1.73,	46.798},
-	{30,	3,	4,	3,	1,	6,	5.54,	204.117},
-	{31,	3,	5,	3,	2,	6,	5.55,	212.980},
-	{32,	11,	5,	0,	2,	6,	3.39,	149.230},
-	{33,	9,	8,	3,	1,	6,	9.95,	175.476},
-	{34,	9,	9,	3,	2,	6,	9.97,	194.557},
-	{35,	2,	8,	1,	0,	10,	1.31,	23.59},
-	{36,	2,	13,	1,	0,	14,	3.04,	132.95},
-	{37,	2,	14,	1,	0,	16,	2.34,	39.10},
-	{38,	3,	15,	1,	2,	14,	1.002,	32.080},
-	{39,	3,	13,	1,	6,	8,	0.758,	32.382},
-	{40,	2,	9,	2,	0,	11,	1.30,	1.595},
-	{41,	2,	12,	2,	0,	13,	0.973,	76.427},
-	{42,	2,	13,	2,	0,	15,	3.03,	100.840},
-	{43,	2,	14,	2,	0,	17,	7.01,	185.173},
-	{44,	2,	15,	2,	0,	18,	2.33,	6.975},
-	{45,	3,	16,	2,	1,	17,	3.00,	146.08},
-	{46,	3,	12,	2,	6,	7,	0.618,	24.674},
-	{47,	3,	13,	2,	6,	9,	0.754,	13.301},
-	{48,	3,	16,	2,	6,	12,	0.292,	79.89},
-	{49,	2,	7,	6,	0,	13,	1.58,	51.753},
-	{50,	2,	8,	6,	0,	14,	4.02,	100.538},
-	{51,	2,	9,	6,	0,	15,	4.02,	87.539},
-	{52,	3,	11,	6,	2,	15,	3.08,	86.00},
-	{53,	3,	10,	6,	1,	14,	3.07,	76.96},
-	{54,	3,	12,	6,	1,	17,	10.3,	66.160},
-	{55,	3,	12,	3,	1,	13,	2.07,	50.63},
-	{56,	3,	13,	3,	2,	14,	6.44,	107.13},
-	{57,	3,	14,	3,	1,	17,	14.9,	159.36},
-	{58,	8,	6,	1,	0,	12,	0.584,	18.260},
-	{59,	7,	6,	0,	0,	17,	2.00,	84.420},
-	{60,	9,	10,	2,	1,	6,	3.58,	177.73},
-	{61,	9,	11,	1,	2,	6,	3.58,	218.82},
-	{62,	9,	12,	2,	3,	6,	0.807,	7.555},
-	{63,	10,	14,	2,	0,	6,	3.50,	100.753},
-	{64,	10,	15,	1,	0,	6,	3.49,	132.83},
-	{65,	2,	17,	1,	0,	19,	0.886,	57.41},
-	{66,	2,	19,	1,	0,	21,	3.58,	94.88},
-	{67,	2,	22,	1,	0,	24,	2.71,	125.74},
-	{68,	3,	20,	1,	2,	19,	1.002,	34.846},
-	{69,	3,	22,	1,	2,	21,	3.003,	7.263},
-	{70,	3,	25,	1,	2,	24,	1.002,	41.037},
-	{71,	3,	25,	1,	6,	17,	0.709,	98.661},
-	{72,	2,	17,	2,	0,	20,	0.884,	22.553},
-	{73,	2,	19,	2,	0,	22,	1.19,	87.621},
-	{74,	2,	21,	2,	0,	24,	0.900,	118.452},
-	{75,	2,	20,	2,	0,	23,	3.57,	53.706},
-	{76,	2,	22,	2,	0,	25,	2.70,	84.678},
-	{77,	2,	24,	2,	0,	26,	3.62,	140.734},
-	{78,	3,	24,	2,	6,	17,	0.706,	57.623},
-	{79,	2,	17,	6,	0,	26,	5.13,	83.111},
-	{80,	3,	13,	6,	2,	19,	9.36,	47.16},
-	{81,	3,	14,	6,	2,	21,	11.0,	9.098},
-	{82,	3,	15,	6,	2,	22,	3.68,	33.915},
-	{83,	3,	18,	6,	2,	25,	4.26,	111.87},
-	{84,	3,	20,	6,	2,	26,	5.81,	60.557},
-	{85,	3,	13,	6,	1,	20,	9.34,	12.287},
-	{86,	3,	14,	6,	1,	22,	3.67,	1.835},
-	{87,	3,	16,	6,	1,	24,	4.25,	88.47},
-	{88,	3,	19,	6,	1,	26,	5.79,	25.711}
-	};
-	*/
-
-
-	/*
-	static const double reacpr[][] = {
-	{ 	1, 	1, 	1, 	0, 	0, 	2, 	0, 	0 },
-	{ 	2, 	1, 	4, 	0, 	0, 	5, 	0, 	0 },
-	{ 	3, 	4, 	10,	0, 	0, 	6, 	0, 	0 },
-	{ 	4, 	1, 	16,	0, 	0, 	17,	0, 	0 },
-	{ 	5, 	1, 	21,	0, 	0, 	22, 0, 	0 },
-	{ 	6, 	4, 	11, 0, 	0, 	6, 	0, 	0 },
-	{ 	7, 	1, 	15, 0, 	0, 	14, 0, 	0 },
-	{ 	8, 	1, 	18, 0, 	0, 	17, 0, 	0 },
-	{ 	9, 	1, 	20, 0, 	0, 	19, 0, 	0 },
-	{ 	10, 1, 	23, 0, 	0, 	22, 0, 	0 },
-	{ 	11, 1, 	25, 0, 	0, 	24, 0, 	0 }
-	{ 	12, 2, 	2, 	1, 	0, 	3, 	0.471f, 25.82f },
-	{ 	13,	2, 	3, 	1, 	0, 	4, 	1.63f, 	72.62f },
-	{ 	14, 2, 	5, 	1, 	0, 	6, 	2.61f, 	238.81f },
-	{ 	15, 2, 	7, 	1, 	0, 	8, 	1.19f, 	84.17f },
-	{ 	16, 3, 	5, 	1, 	2, 	4, 	1.002f, 8.863f },
-	{ 	17, 3, 	9, 	1, 	2, 	8, 	0.998f, 19.081f },
-	{ 	18, 3, 	7, 	1, 	4, 	6, 	1.070f, 55.494f },
-	{ 	19 	5, 	9, 	1, 	0, 	6, 	4.70f, 	220.39f },
-	{ 	20, 2, 	3, 	2, 	0, 	5, 	1.63f, 	63.750f },
-	{ 	21, 2, 	4, 	2, 	0, 	6, 	2.61f, 	229.932f},
-	{	22, 2, 	7, 	2, 	0, 	9, 	1.19f, 65.054f };
-	};
-	{
-	static const double values[] = {
-	23, 3, 7, 2, 5, 6, 1.07f, 46.631f, 24, 5,
-	8, 2, 0, 6, 4.69f, 201.291f, 25, 2, 6, 3,
-	0, 7, 1.53f, 17.118f, 26, 2, 6, 4, 0, 8,
-	1.11f, 28.640f, 27, 2, 6, 5, 0, 9, 1.11f,
-	18.423f, 28, 6, 3, 0, 1, 5, 1.73f, 37.935f,
-	29, 6, 3, 0, 2, 4, 1.73f, 46.798f, 30, 3,
-	4, 3, 1, 6, 5.54f, 204.117f, 31, 3, 5, 3,
-	2, 6, 5.55f, 212.980f, 32, 11, 5, 0, 2, 6,
-	3.39f, 149.230f, 33, 9, 8, 3, 1, 6, 9.95f,
-	175.476f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 23, 33) {
-	FEM_DO_SAFE(j, 1, 8) {
-	data, reacpr(i, j);
-	}
-	}
-	}
-	{
-	static const double values[] = {
-	34, 9, 9, 3, 2, 6, 9.97f, 194.557f, 35, 2,
-	8, 1, 0, 10, 1.31f, 23.59f, 36, 2, 13, 1,
-	0, 14, 3.04f, 132.95f, 37, 2, 14, 1, 0, 16,
-	2.34f, 39.10f, 38, 3, 15, 1, 2, 14, 1.002f,
-	32.080f, 39, 3, 13, 1, 6, 8, 0.758f, 32.382f,
-	40, 2, 9, 2, 0, 11, 1.30f, 1.595f, 41, 2,
-	12, 2, 0, 13, 0.973f, 76.427f, 42, 2, 13,
-	2, 0, 15, 3.03f, 100.840f, 43, 2, 14, 2, 0,
-	17, 7.01f, 185.173f, 44, 2, 15, 2, 0, 18,
-	2.33f, 6.975f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 34, 44) {
-	FEM_DO_SAFE(j, 1, 8) {
-	data, reacpr(i, j);
-	}
-	}
-	}
-	{
-	static const double values[] = {
-	45, 3, 16, 2, 1, 17, 3.00f, 146.08f, 46, 3,
-	12, 2, 6, 7, 0.618f, 24.674f, 47, 3, 13, 2,
-	6, 9, 0.754f, 13.301f, 48, 3, 16, 2, 6, 12,
-	0.292f, 79.89f, 49, 2, 7, 6, 0, 13, 1.58f,
-	51.753f, 50, 2, 8, 6, 0, 14, 4.02f, 100.538f,
-	51, 2, 9, 6, 0, 15, 4.02f, 87.539f, 52, 3,
-	11, 6, 2, 15, 3.08f, 86.00f, 53, 3, 10, 6,
-	1, 14, 3.07f, 76.96f, 54, 3, 12, 6, 1, 17,
-	10.3f, 66.160f, 55, 3, 12, 3, 1, 13, 2.07f,
-	50.63f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 45, 55) {
-	FEM_DO_SAFE(j, 1, 8) {
-		data, reacpr(i, j);
-	}
-	}
-	}
-	{
-	static const double values[] = {
-		56, 3, 13, 3, 2, 14, 6.44f, 107.13f, 57, 3,
-		14, 3, 1, 17, 14.9f, 159.36f, 58, 8, 6, 1,
-		0, 12, 0.584f, 18.260f, 59, 7, 6, 0, 0, 17,
-		2.00f, 84.420f, 60, 9, 10, 2, 1, 6, 3.58f,
-		177.73f, 61, 9, 11, 1, 2, 6, 3.58f, 218.82f,
-		62, 9, 12, 2, 3, 6, 0.807f, 7.555f, 63, 10,
-		14, 2, 0, 6, 3.50f, 100.753f, 64, 10, 15,
-		1, 0, 6, 3.49f, 132.83f, 65, 2, 17, 1, 0,
-		19, 0.886f, 57.41f, 66, 2, 19, 1, 0, 21,
-		3.58f, 94.88f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 56, 66) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		67, 2, 22, 1, 0, 24, 2.71f, 125.74f, 68, 3,
-		20, 1, 2, 19, 1.002f, 34.846f, 69, 3, 22,
-		1, 2, 21, 3.003f, 7.263f, 70, 3, 25, 1, 2,
-		24, 1.002f, 41.037f, 71, 3, 25, 1, 6, 17,
-		0.709f, 98.661f, 72, 2, 17, 2, 0, 20, 0.884f,
-		22.553f, 73, 2, 19, 2, 0, 22, 1.19f, 87.621f,
-		74, 2, 21, 2, 0, 24, 0.900f, 118.452f, 75,
-		2, 20, 2, 0, 23, 3.57f, 53.706f, 76, 2, 22,
-		2, 0, 25, 2.70f, 84.678f, 77, 2, 24, 2, 0,
-		26, 3.62f, 140.734f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 67, 77) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	{
-	static const double values[] = {
-		78, 3, 24, 2, 6, 17, 0.706f, 57.623f, 79, 2,
-		17, 6, 0, 26, 5.13f, 83.111f, 80, 3, 13, 6,
-		2, 19, 9.36f, 47.16f, 81, 3, 14, 6, 2, 21,
-		11.0f, 9.098f, 82, 3, 15, 6, 2, 22, 3.68f,
-		33.915f, 83, 3, 18, 6, 2, 25, 4.26f, 111.87f,
-		84, 3, 20, 6, 2, 26, 5.81f, 60.557f, 85, 3,
-		13, 6, 1, 20, 9.34f, 12.287f, 86, 3, 14, 6,
-		1, 22, 3.67f, 1.835f, 87, 3, 16, 6, 1, 24,
-		4.25f, 88.47f, 88, 3, 19, 6, 1, 26, 5.79f,
-		25.711f
-	};
-	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
-	FEM_DO_SAFE(i, 78, 88) {
-		FEM_DO_SAFE(j, 1, 8) {
-			data, reacpr(i, j);
-		}
-	}
-	}
-	*/
 	cy0 = .300f;
 	ct0 = .030f;
 	T9i0 = 1.00e+02f;
 	T9f0 = 1.00e-02f;
 	ytmin0 = 1.00e-25f;			// TODO make smaller with double
 	inc0 = 30;
-	//c0[] = { NOT_USED, 1.00f, 885.7f, 3.0f };
-	c0[0] = NOT_USED;
 	c0[1] = 1.00;
 	c0[2] = 885.7;
 	c0[3] = 3.0;
-	/*
-	{
-	static const double values[] = {
-	1.00f, 885.7f, 3.0f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	cmn.c0;
-	}
-	 */
 	cosmo0 = 0.00f;
-	xi0[0] = NOT_USED;
 	xi0[1] = 0;
 	xi0[2] = 0;
 	xi0[3] = 0;
-	/*
-	{
-	static const double values[] = {
-	0.00f, 0.00f, 0.00f
-	};
-	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
-	cmn.xi0;
-	}
-	*/
 	dt0 = 1.00e-04f;
 	eta0 = 3.162e-10f;
 	for (int i = 0; i < nnuc+1; i++)
@@ -6238,12 +5017,6 @@ common::common(
 	//
 }
 
-/*
-   struct program_new123_save
-   {
-   fem::variant_bindings rates_bindings;
-   };
- */
 
 //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //     Changes (to run inder unix f77):
@@ -6262,45 +5035,8 @@ void program_new123(
 		char const* argv[])
 {
 	common cmn(argc, argv);
-	//blockdata_unnamed(cmn);
-	//FEM_CMN_SVE(program_new123);
 	common_read read(cmn);
 	common_write write(cmn);
-	/*
-	   const int nrec = 88;
-	   arr_cref<double, 2> reacpr(cmn.reacpr, dimension(nrec, 8));
-	   arr_ref<int> iform(cmn.iform, dimension(nrec));
-	   arr_ref<int> ii(cmn.ii, dimension(nrec));
-	   arr_ref<int> jj(cmn.jj, dimension(nrec));
-	   arr_ref<int> kk(cmn.kk, dimension(nrec));
-	   arr_ref<int> ll(cmn.ll, dimension(nrec));
-	   arr_ref<double> rev(cmn.rev, dimension(nrec));
-	   arr_ref<double> q9(cmn.q9, dimension(nrec));
-	   arr_cref<double> c0(cmn.c0, dimension(3));
-	   arr_cref<double> xi0(cmn.xi0, dimension(3));
-	   arr_ref<double> c(cmn.c, dimension(3));
-	   arr_ref<double> xi(cmn.xi, dimension(3));
-	//int& itime = static_cast<common_checkcb&>(cmn).itime;
-	int& itime = cmn.itime;
-	bool& outfile = cmn.outfile;
-	 */
-	//
-	//common_variant rates(cmn.common_rates, sve.rates_bindings);
-	/*
-	   if (is_called_first_time) {
-	   using fem::mbr; // member of variant common or equivalence
-	   {
-	   mbr<double> f(dimension(nrec));
-	   mbr<double> r(dimension(nrec));
-	   rates.allocate(), f, r;
-	   }
-	   }
-	   arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	   arr_ref<double> r(rates.bind<double>(), dimension(nrec));
-	   arr<double> f(dimension(nrec));
-	   arr<double> r(dimension(nrec));
-	   const int nnuc = 26;
-	 */ 
 	const int iw = 6;
 	int i = 0;
 	const int ir = 5;
