@@ -530,8 +530,12 @@ const int common_nucdat::nnuc;
 		void qvary(common&, int, double);
 
 		public:
-		common( int argc, char const* argv[]);		//TODO don't need those opts for 
+		common(	
+			int argc,
+			char const* argv[]);
 
+		void program_new123();
+		void help();
 		void setcom();
 		void setmod();
 		void check();
@@ -545,7 +549,7 @@ const int common_nucdat::nnuc;
 		double xintd(
 				double const&,
 				double const&,
-				double(* func)(, const double&),
+				double(* func)(const double&),
 				int const&);
 
 		void eqslin(

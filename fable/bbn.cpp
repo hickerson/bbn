@@ -1,4 +1,4 @@
-adefine FEM_TRANSLATION_UNIT_WITH_MAIN
+#define FEM_TRANSLATION_UNIT_WITH_MAIN
 
 #include "BigBangModel.hpp"
 #include <boost/math/special_functions/bessel.hpp>
@@ -15,7 +15,7 @@ using namespace boost::math;
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void help()
+void common::help()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -4540,7 +4540,7 @@ statement_200:
 			"'Li6/H',7x,'Li7/H',7x,'Be7/H',6x,'Li8/H&up',/,132('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(2, "(1p,e10.3,1p,10e12.3)");
+			write_loop wloop(*this, 2, "(1p,e10.3,1p,10e12.3)");
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 10) {
 				wloop, xout(j, i);
@@ -4553,7 +4553,7 @@ statement_200:
 			"'phie',9x,'dt',9x,'eta',10x,'H',/,132('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(2, "(1p,e10.3,9e12.3)");
+			write_loop wloop(*this, 2, "(1p,e10.3,9e12.3)");
 			wloop, T9out(j), tout(j);
 			FEM_DO_SAFE(i, 1, 5) {
 				wloop, thmout(j, i);
@@ -4613,7 +4613,7 @@ statement_310:
 			"(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
 			"80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
-		write_loop wloop(iw, format_3106);
+		write_loop wloop(*this, iw, format_3106);
 		wloop, T9out(j);
 		FEM_DO_SAFE(i, 3, 6) {
 			wloop, xout(j, i);
@@ -4662,7 +4662,7 @@ statement_330:
 			"(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(iw, "(1p,e10.3,4e12.3)");
+			write_loop wloop(*this, iw, "(1p,e10.3,4e12.3)");
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 4) {
 				wloop, thmout(j, i);
@@ -5240,7 +5240,7 @@ main(
 		int argc,
 		char const* argv[])
 {
-	common cmn();
+	common cmn(argc, argv);
 	cmn.program_new123();
 	//return fem::main_with_catch(
 	//		argc, argv,
