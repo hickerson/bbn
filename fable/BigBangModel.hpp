@@ -531,8 +531,9 @@ const int common_nucdat::nnuc;
 
 		public:
 		common(	
-			int argc,
-			char const* argv[]);
+		);
+		//	int argc,
+		//	char const* argv[]);
 
 		void program_new123();
 		void help();

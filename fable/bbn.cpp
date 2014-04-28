@@ -4651,7 +4651,7 @@ statement_320:
 			"80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(iw, format_3106);
+			write_loop wloop(*this, iw, format_3106);
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 2) {
 				wloop, xout(j, i);
@@ -5255,7 +5255,8 @@ main(
 		int argc,
 		char const* argv[])
 {
-	common cmn(argc, argv);
+	//common cmn(argc, argv);
+	common cmn;
 	cmn.program_new123();
 	//return fem::main_with_catch(
 	//		argc, argv,
