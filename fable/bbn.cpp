@@ -502,7 +502,7 @@ statement_100:
 			"' 8. RESET ALL TO DEFAULT VALUES',/,10x,"
 			"' 9. EXIT',5(/),10x,"
 			"'Enter selection (1-9): ',$)"),
-		cy, ct, dt1, t9i, t9f, ytmin, fem::fdouble(inc);
+		cy, ct, dt1, t9i, t9f, ytmin, fem::ffloat(inc);
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i1)"), inum;
 	//
@@ -1929,9 +1929,9 @@ common::xintd(
 	double sum = 0;
 	int nint = 0;
 	int npnt = 0;
-	double dist = (xhi - xlow) / fem::fdouble(nq); 				/// Size of quad interval.
+	double dist = (xhi - xlow) / fem::ffloat(nq); 				/// Size of quad interval.
 	FEM_DO_SAFE(nint, 1, nq) {
-		double cent = xlow + (fem::fdouble(nint) - 0.5) * dist; 	/// Center of interval.
+		double cent = xlow + (fem::ffloat(nint) - 0.5) * dist; 	/// Center of interval.
 		FEM_DO_SAFE(npnt, 1, np) {
 			//x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
 			double x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
@@ -5109,7 +5109,7 @@ statement_232:
 		//Outer loop.
 		FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
 			//Value of param fo
-			rnumb1 = rnum1(1) + fem::fdouble(lnumb1) * rnum3(1);
+			rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
 			if ((inum(1) >= 1) && (inum(1) <= 8)) {
 				if (inum(1) == 1) {
 					//Vary baryon-to-photon ratio.
@@ -5123,7 +5123,7 @@ statement_232:
 			//Middle loop.
 			FEM_DO_SAFE(lnumb2, 0, lnum(2) - 1) {
 				//Value of param
-				rnumb2 = rnum1(2) + fem::fdouble(lnumb2) * rnum3(2);
+				rnumb2 = rnum1(2) + fem::ffloat(lnumb2) * rnum3(2);
 				if ((inum(2) >= 1) && (inum(2) <= 8)) {
 					if (inum(2) == 1) {
 						//Vary baryon-to-photon ratio.
@@ -5137,7 +5137,7 @@ statement_232:
 				//Inner loop.
 				FEM_DO_SAFE(lnumb3, 0, lnum(3) - 1) {
 					//Value of parameter.
-					rnumb3 = rnum1(3) + fem::fdouble(lnumb3) * rnum3(3);
+					rnumb3 = rnum1(3) + fem::ffloat(lnumb3) * rnum3(3);
 					if ((inum(3) >= 1) && (inum(3) <= 8)) {
 						if (inum(3) == 1) {
 							//Vary baryon-to-photon ratio.
