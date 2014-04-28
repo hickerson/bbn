@@ -532,45 +532,43 @@ const int common_nucdat::nnuc;
 		public:
 		common( int argc, char const* argv[]);		//TODO don't need those opts for 
 
-		void setcom(common &);
-		void setmod(common &);
-		void check(common &);
-		void driver(common &);
-		void run(common &);
+		void setcom();
+		void setmod();
+		void check();
+		void driver();
+		void run();
 
-		void therm(common &);
-		void nudens(common &);
-		void start(common &);
+		void therm();
+		void nudens();
+		void start();
 
 		double xintd(
-				common& cmn,
 				double const&,
 				double const&,
-				double(* func)(common &, const double&),
+				double(* func)(, const double&),
 				int const&);
 
 		void eqslin(
-				common&,
 				int const&,
 				int&);
 
-		void sol( common&, int const&);
-		void derivs( common&, int const& );
-		void accum( common& );
-		void output( common& );
+		void sol( int const&);
+		void derivs( int const& );
+		void accum();
+		void output();
 
-		static double func1( common&, double const& );
-		static double func2( common&, double const& );
-		static double func3( common&, double const& );
-		static double func4( common&, double const& );
-		static double func5( common&, double const& );
-		static double func6( common&, double const& );
+		static double func1( double const& );
+		static double func2( double const& );
+		static double func3( double const& );
+		static double func4( double const& );
+		static double func5( double const& );
+		static double func6( double const& );
 
-		void rate0( common & );
-		void rate1( common &, double const& );
-		void rate2( common & );
-		void rate3( common & );
-		void rate4( common & );
+		void rate0();
+		void rate1(double const& );
+		void rate2();
+		void rate3();
+		void rate4();
 
 		private:
 		double getBesselL(double);

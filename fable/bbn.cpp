@@ -1,4 +1,4 @@
-#define FEM_TRANSLATION_UNIT_WITH_MAIN
+adefine FEM_TRANSLATION_UNIT_WITH_MAIN
 
 #include "BigBangModel.hpp"
 #include <boost/math/special_functions/bessel.hpp>
@@ -15,10 +15,10 @@ using namespace boost::math;
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void help(common& cmn)
+void help()
 {
-	common_read read(cmn);
-	common_write write(cmn);
+	common_read read(*this);
+	common_write write(*this);
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -417,10 +417,10 @@ statement_300:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::setcom(common& cmn)
+void common::setcom()
 {
-	common_read read(cmn);
-	common_write write(cmn);
+	common_read read(*this);
+	common_write write(*this);
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -548,19 +548,19 @@ statement_270:
 	//Reset all to default values section.
 statement_280:
 	//Time step limiting constant on abundance
-	cy = cmn.cy0;
+	cy = cy0;
 	//Time step limiting constant on temperature
-	ct = cmn.ct0;
+	ct = ct0;
 	//Time step.
-	dt1 = cmn.dt0;
+	dt1 = dt0;
 	//Initial temperature.
-	T9i = cmn.T9i0;
+	T9i = T9i0;
 	//Final temperature.
-	T9f = cmn.T9f0;
+	T9f = T9f0;
 	//Smallest abundances allowed.
-	ytmin = cmn.ytmin0;
+	ytmin = ytmin0;
 	//Accumulation increment.
-	inc = cmn.inc0;
+	inc = inc0;
 	write(iw,
 			"(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
 	read(ir, star);
@@ -579,11 +579,10 @@ statement_400:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::setmod(
-		common& cmn)
+void common::setmod()
 {
-	common_read read(cmn);
-	common_write write(cmn);
+	common_read read(*this);
+	common_write write(*this);
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -760,9 +759,9 @@ statement_400:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::check(common& cmn)
+void common::check()
 {
-	common_write write(cmn);
+	common_write write(*this);
 	//
 	//----------REMARKS.
 	//     This is an interface subroutine,
@@ -956,7 +955,7 @@ void common::check(common& cmn)
 	//
 	//Beginning of program.
 	if (itime == 1) {
-		cmn.io.open(3, "newint.dat").status("new");
+		io.open(3, "newint.dat").status("new");
 	}
 	//
 	//20--------WRITE INTO FILE------------------------------------------------------
@@ -973,7 +972,7 @@ void common::check(common& cmn)
 	//
 	//End of program.
 	if (itime == 10) {
-		cmn.io.close(2);
+		io.close(2);
 	}
 	//
 	//----------REFERENCES-----------------------------------------------------------
@@ -1056,8 +1055,7 @@ double common::getBesselN(double r)
 //
 //     Default neutron lifetime 888.54 -> 885.7 (+- 0.8) - PDG 2002/3
 //
-void common::rate0(
-		common& cmn)
+void common::rate0()
 {
 	//
 	//----------LINKAGES.
@@ -1131,7 +1129,6 @@ void common::rate0(
 //
 	double
 common::func1(
-		common& cmn,
 		double const& x)
 {
 	//
@@ -1169,21 +1166,19 @@ common::func1(
 		return 0;
 	else {
 		// TODO don't recompute 
-		part1 = 1 / (1 + ex(-.511f * x / cmn.T9mev));
-		part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
-		return cmn.cnorm * x * fem::pow2((x - 2.531f)) * pow(
+		part1 = 1 / (1 + ex(-.511f * x / T9mev));
+		part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - xi[1]));
+		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), 0.5) * part1 * part2;
 	}
 }
 
-//typedef double (*func2_function_pointer)(common&, double const&);
 
 //
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //
 	double
 common::func2(
-		common& cmn,
 		double const& x)
 {
 	//
@@ -1219,21 +1214,19 @@ common::func2(
 		return 0;
 	}
 	else {		// TODO remove cmn
-		double part1 = 1.f / (1.f + ex(+.511f * x / cmn.T9mev));
-		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
-		return cmn.cnorm * x * fem::pow2((x + 2.531f)) 
+		double part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
+		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / tnmev) - xi[1]));
+		return cnorm * x * fem::pow2((x + 2.531f)) 
 				* pow((fem::pow2(x) - 1), .5f) * part1 * part2;
 	}
 }
 
-//typedef double (*func3_function_pointer)(common&, double const&);
 
 //
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
 	double
 common::func3(
-		common& cmn,
 		double const& x)
 {
 	double return_value = 0; // TODO move inside?
@@ -1272,22 +1265,20 @@ common::func3(
 		return_value = 0.f;
 	}
 	else {
-		part1 = 1.f / (1.f + ex(-.511f * x / cmn.T9mev));
-		part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / cmn.tnmev) + cmn.xi[1]));
-		return_value = cmn.cnorm * x * fem::pow2((x + 2.531f)) * pow(
+		part1 = 1.f / (1.f + ex(-.511f * x / T9mev));
+		part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + xi[1]));
+		return_value = cnorm * x * fem::pow2((x + 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
 	return return_value;
 }
 
-//typedef double (*func4_function_pointer)(common&, double const&);
 
 //
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
 	double
 common::func4(
-		common& cmn,
 		double const& x)
 {
 	double return_value = 0;
@@ -1327,9 +1318,9 @@ common::func4(
 		return 0;
 	}
 	else {
-		part1 = 1.f / (1.f + ex(+.511f * x / cmn.T9mev));
-		part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / cmn.tnmev) + cmn.xi[1]));
-		return_value = cmn.cnorm * x * fem::pow2((x - 2.531f)) * pow(
+		part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
+		part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + xi[1]));
+		return_value = cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
 	return return_value;
@@ -1348,14 +1339,12 @@ common::func4(
 	 */
 }
 
-//typedef double (*func5_function_pointer)(common&, double const&);
 
 //
 //50--------INTEGRAL FOR ENERGY DENSITY OF NEUTRINO------------------------------
 //
 	double
 common::func5(
-		common& cmn,
 		double const& x)
 {
 	double return_value = 0;
@@ -1389,18 +1378,16 @@ common::func5(
 	//Exponential expression with neutrino
 	//
 	return_value = 1.f / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1.f + exp(x / cmn.tnu - cmn.xi[cmn.nu]));
+			1.f + exp(x / tnu - xi[nu]));
 	return return_value;
 }
 
-//typedef double (*func6_function_pointer)(common&, double const&);
 
 //
 //60--------INTEGRAL FOR ENERGY DENSITY OF ANTINEUTRINO--------------------------
 //
 	double
 common::func6(
-		common& cmn,
 		double const& x)
 {
 	double return_value = 0;
@@ -1434,7 +1421,7 @@ common::func6(
 	//Exponential expression with neutrino
 	//
 	return_value = 1.f / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1.f + exp(x / cmn.tnu + cmn.xi[cmn.nu]));
+			1.f + exp(x / tnu + xi[nu]));
 	return return_value;
 }
 
@@ -1449,7 +1436,6 @@ common::func6(
 //
 double
 common::xintd(
-		common& cmn,
 		double const& xlow,
 		double const& xhi,
 		//func1_function_pointer func,
@@ -1515,7 +1501,7 @@ common::xintd(
 		FEM_DO_SAFE(npnt, 1, np) {
 			//x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
 			double x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
-			double y = func(cmn, x); 								/// Evaluate function x(1).
+			double y = func( x); 								/// Evaluate function x(1).
 			//sum += f * w(npnt); 								/// Add up sum.
 			sum += y * w[npnt]; 								/// Add up sum.
 		}
@@ -1532,7 +1518,6 @@ common::xintd(
 //========================IDENTIFICATION DIVISION================================
 //
 void common::rate1(
-		common& cmn,
 		double const& tph)
 {
 	//
@@ -1620,7 +1605,7 @@ void common::rate1(
 		//20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 		//
 		T9mev = tph * .086171f; //Convert photon temp to units of MeV.
-		tnmev = cmn.tnu * .086171f; //Convert neutrino temp to units of Me
+		tnmev = tnu * .086171f; //Convert neutrino temp to units of Me
 		//..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
 		_w[1] = (-(T9mev / .511f) * (-88.722f));
 		_w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
@@ -1648,10 +1633,10 @@ void common::rate1(
 			uplim4 = _z[2];
 		}
 		//..........EVALUATE THE INTEGRALS NUMERICALLY.
-		part1 = xintd(cmn, 1., uplim1, func1, iter);
-		part2 = xintd(cmn, 1., uplim2, func2, iter);
-		part3 = xintd(cmn, 1., uplim3, func3, iter);
-		part4 = xintd(cmn, 1., uplim4, func4, iter);
+		part1 = xintd( 1., uplim1, func1, iter);
+		part2 = xintd( 1., uplim2, func2, iter);
+		part3 = xintd( 1., uplim3, func3, iter);
+		part4 = xintd( 1., uplim4, func4, iter);
 		//f(1) = part1 + part2; 		/// Add 2 integrals to get forward rate.
 		f[1] = part1 + part2; 		/// Add 2 integrals to get forward rate.
 		//r(1) = part3 + part4; 		/// Add 2 integrals to get reverse rate.
@@ -1677,7 +1662,7 @@ struct start_save
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::start(common& cmn)
+void common::start()
 {
 	//
 	//----------LINKAGES.
@@ -1774,7 +1759,7 @@ void common::start(common& cmn)
 	//
 	ltime = 0; 									/// No output yet.
 	is = 1; 									/// First iteration coming up.
-	ip = cmn.inc; 								/// Set to maximum allowed # of iterations.
+	ip = inc; 								/// Set to maximum allowed # of iterations.
 	it = 0; 									/// No accumulation yet.
 	mbad = 0; 									/// No computational errors.
 	//
@@ -1785,7 +1770,7 @@ void common::start(common& cmn)
 	tnu = T9; 									/// Initial neutrino temperature.
 	const double const1 = 0.09615f; 				/// Initial time (Ref 1).
 	t = 1 / fem::pow2((const1 * T9));
-	dt = cmn.dt1; 								/// Initial time step.
+	dt = dt1; 								/// Initial time step.
 	//..........MODEL SETTINGS.
 	const double const2 = 6.6700e-8f; 			/// Modify gravitational constant.
 	g = const2 * c[1];
@@ -1815,7 +1800,7 @@ void common::start(common& cmn)
 	if (xi[1] != 0) { 								/// Electron neutrino degeneracy.
 		cnorm = 1.;
 		tnu = .00001f; 								/// Low temperature.
-		rate1(cmn, 0.00001f); 						/// Find normalization constant at low temperature.
+		rate1( 0.00001f); 						/// Find normalization constant at low temperature.
 		//cnorm = 1 / tau / f(1);
 		cnorm = 1 / tau / f[1];
 	}
@@ -1825,7 +1810,7 @@ void common::start(common& cmn)
 	//40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
 	//
 	double z = 5.930f / T9; 				//Inverse of temperature.
-	//bessel(cmn, z); // old call
+	//bessel( z); // old call
 	double bl1 = getBesselL(z);
 	double bl2 = getBesselL(2*z);
 	double bl3 = getBesselL(3*z);
@@ -1843,14 +1828,14 @@ void common::start(common& cmn)
 	   double bn4 = getBesselN(4*z);
 	   double bn5 = getBesselN(5*z);
 	 */
-	hv = 3.3683e+4f * cmn.eta1 * 2.75; 		/// (Ref 4 but with final eta).
-	cmn.phie = hv * (1.784e-5f * y[2]) / 
+	hv = 3.3683e+4f * eta1 * 2.75; 		/// (Ref 4 but with final eta).
+	phie = hv * (1.784e-5f * y[2]) / 
 		(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
 	/// Chemical potential of electron (Ref 5).
 	rhob0 = hv * fem::pow3(T9); 					/// TODO Baryon density. 
 	//Nonde
 	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
-		cmn.rhone0 = 7.366f * fem::pow4(T9); 	/// Electron neutrino density (Ref 6).
+		rhone0 = 7.366f * fem::pow4(T9); 	/// Electron neutrino density (Ref 6).
 	}
 	//
 	//50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
@@ -1858,12 +1843,12 @@ void common::start(common& cmn)
 	y[3] = y[1] * y[2] * rhob0 * ex(25.82f / T9) / (.471e+10f * pow(T9, 1.5f)); /// (Ref 7).
 	y0[3] = y[3];
 	int i = 0;
-	FEM_DO_SAFE(i, 4, cmn.isize) {
+	FEM_DO_SAFE(i, 4, isize) {
 		y[i] = ytmin; 						/// Set rest to minimum abundance.
 		y0[i] = y[i]; 						/// Initialize abundances at beginning of iter
 	}
 	//Compute weak decay rates.
-	rate0(cmn);
+	rate0();
 	//
 	//----------REFERENCES-----------------------------------------------------------
 	//     1) Wagoner, R.V., Fowler, W.A., and Hoyle, F. 1967, Ap. J. 148,
@@ -1897,8 +1882,7 @@ void common::start(common& cmn)
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::nudens(
-		common& cmn)
+void common::nudens()
 {
 	//
 	//
@@ -1958,11 +1942,11 @@ void common::nudens(
 			uplim1 = (88.029f + xi[nu]) * tnu;
 			uplim2 = (88.029f - xi[nu]) * tnu;
 			if (uplim2 <= 0.) {
-				rhonu = xintd(cmn, 0, uplim1, func5, iter);
+				rhonu = xintd( 0, uplim1, func5, iter);
 			}
 			else {
-				rhonu = xintd(cmn, 0, uplim1, func5, iter) 
-					+ xintd(cmn, 0, uplim2, func6, iter);
+				rhonu = xintd(0, uplim1, func5, iter) 
+					+ xintd(0, uplim2, func6, iter);
 			}
 			//(abs(xi(nu)).ge.30.)
 		}
@@ -1979,8 +1963,7 @@ void common::nudens(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::therm(
-		common& cmn)
+void common::therm()
 {
 	//
 	//
@@ -2061,7 +2044,7 @@ void common::therm(
 	double bn4 = getBesselN(4*z);
 	double bn5 = getBesselN(5*z);
 	//Neutrino temperature.
-	cmn.tnu = (pow((rnb), (1.f / 3.f))) * cmn.T9i;
+	tnu = (pow((rnb), (1.f / 3.f))) * T9i;
 	//..........FACTORS OF z.
 	double z1 = z;
 	double z2 = z*z;
@@ -2104,7 +2087,6 @@ void common::therm(
 		sinh4 = 0;
 		sinh5 = 0;
 	}
-	//bessel(cmn, z);
 	//
 	//20--------COMPUTE THERMODYNAMIC VARIABLES--------------------------------------
 	//
@@ -2131,21 +2113,21 @@ void common::therm(
 	//Nonde
 	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
 		//(Ref 8)
-		thm(8) = xnu * cmn.rhone0 * (pow(rnb, (4.f / 3.f)));
+		thm(8) = xnu * rhone0 * (pow(rnb, (4.f / 3.f)));
 		//Include effects of neutrino degenera
 	}
 	else {
 		thm(8) = 0.f;
 		//For every neutrino family.
-		FEM_DO_SAFE(cmn.nu, 1, xnu) {
+		FEM_DO_SAFE(nu, 1, xnu) {
 			//Compute neutrino energy density.
-			nudens(cmn);
+			nudens();
 			//Have 12.79264 from units ch
-			thm(8) += 12.79264f * cmn.rhonu;
+			thm(8) += 12.79264f * rhonu;
 		}
 	}
 	//(Ref 9)
-	thm(9) = cmn.rhob0 * rnb;
+	thm(9) = rhob0 * rnb;
 	//(Ref 10
 	thm(10) = thm(1) + thm(4) + thm(8) + thm(9);
 	//(Ref 11
@@ -2210,7 +2192,6 @@ void common::therm(
 //========================IDENTIFICATION DIVISION================================
 //
 void common::eqslin(
-		common& cmn,
 		int const& icnvm,
 		int& ierror)
 {
@@ -2381,10 +2362,9 @@ statement_300:
 //========================IDENTIFICATION DIVISION================================
 //
 void common::sol(
-		common& cmn,
 		int const& loop)
 {
-	common_write write(cmn);
+	common_write write(*this);
 	const double si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
@@ -2521,7 +2501,7 @@ void common::sol(
 	//
 	//20--------COMPUTE FACTORS FOR THE A-MATRIX-------------------------------------
 	//
-	FEM_DO_SAFE(n, 1, cmn.jsize) {
+	FEM_DO_SAFE(n, 1, jsize) {
 		//..........EQUATE VARIABLES TO ARRAYS.
 		ind = iform(n); 					/// Type of reaction.
 		i = ii(n); 							/// ID # of incoming nuclide i.
@@ -2723,10 +2703,10 @@ statement_212:
 	//
 	//..........SET MONITOR FLAG AND SOLVE BY GAUSSIAN ELIMINATION.
 	if (loop == 1) {
-		eqslin(cmn, cmn.ip, ierror);
+		eqslin(ip, ierror);
 	}
 	else {
-		eqslin(cmn, 0, ierror);
+		eqslin(0, ierror);
 	}
 	//..........OBTAIN DERIVATIVE.
 	FEM_DO_SAFE(i, 1, isize) {
@@ -2786,27 +2766,8 @@ statement_212:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate2(
-		common& cmn)
+void common::rate2()
 {
-	//FEM_CMN_SVE(rate2);
-	// COMMON evolp1
-	/*
-	   double& T9 = cmn.T9;
-	//
-	common_variant rates(cmn.common_rates, sve.rates_bindings);
-	const int nrec = 88;
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r(dimension(nrec));
-	rates.allocate(), f, r;
-	}
-	}
-	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	 */
-	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] derivs
@@ -3030,27 +2991,8 @@ void common::rate2(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate3(
-		common& cmn)
+void common::rate3()
 {
-	/*
-	   FEM_CMN_SVE(rate3);
-	// COMMON evolp1
-	double& T9 = cmn.T9;
-	//
-	common_variant rates(cmn.common_rates, sve.rates_bindings);
-	const int nrec = 88;
-	if (is_called_first_time) {
-	using fem::mbr; // member of variant common or equivalence
-	{
-	mbr<double> f(dimension(nrec));
-	mbr<double> r(dimension(nrec));
-	rates.allocate(), f, r;
-	}
-	}
-	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
-	 */
-	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] derivs
@@ -3286,8 +3228,7 @@ void common::rate3(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate4(
-		common& cmn)
+void common::rate4()
 {
 	//
 	//----------LINKAGES.
@@ -3497,7 +3438,6 @@ void common::rate4(
 //========================IDENTIFICATION DIVISION================================
 //
 void common::derivs(
-		common& cmn,
 		int const& loop)
 {
 	const double pi = constants::pi<double>();
@@ -3599,17 +3539,17 @@ void common::derivs(
 	//10--------COMPUTE DERIVATIVES FOR ABUNDANCES-----------------------------------
 	//
 	//Baryon mass density (ratio to init v
-	cmn.rnb = hv * T9 * T9 * T9 / cmn.rhob0;
+	rnb = hv * T9 * T9 * T9 / rhob0;
 	//..........VARIOUS THERMODYNAMIC QUANTITIES.
-	therm(cmn);
+	therm();
 	//Expansion rate.
-	hubcst = sqrt((8.f / 3.f) * pi * cmn.g * (thm(10)) + (cmn.cosmo / 3.f));
+	hubcst = sqrt((8.f / 3.f) * pi * g * (thm(10)) + (cosmo / 3.f));
 	//Baryon mass density.
-	cmn.rhob = thm(9);
+	rhob = thm(9);
 	//..........COMPUTE REACTION RATE COEFFICIENTS.
-	rate1(cmn, T9);
+	rate1(T9);
 	//Run network selection.
-	switch (cmn.irun) {
+	switch (irun) {
 		case 1: goto statement_100;
 		case 2: goto statement_110;
 		case 3: goto statement_120;
@@ -3617,15 +3557,15 @@ void common::derivs(
 	}
 statement_100:
 	//Forward rate for all of reactions.
-	rate4(cmn);
+	rate4();
 statement_110:
 	//Forward rate for reactions with A <
-	rate3(cmn);
+	rate3();
 statement_120:
 	//Forward rate for reactions with A <
-	rate2(cmn);
+	rate2();
 	//..........SOLVE COUPLED DIFFERENTIAL EQUATIONS.
-	sol(cmn, loop);
+	sol(loop);
 	//Abort in case matrix not invertible.
 	if (mbad > 0) {
 		return;
@@ -3660,9 +3600,9 @@ statement_120:
 	dT9 = (3.f * hubcst) / dlndT9;
 	dlT9dt = dT9 / T9;
 	//(Ref 2)
-	cmn.dhv = -hv * 3*(hubcst + dlT9dt);
+	dhv = -hv * 3*(hubcst + dlT9dt);
 	//(Ref 3)
-	cmn.dphie = dphdT9 * dT9 + dphdln * (3.f * hubcst) + dphdzy * sumzdy;
+	dphie = dphdT9 * dT9 + dphdln * (3.f * hubcst) + dphdzy * sumzdy;
 	//
 	//----------REFERENCES-----------------------------------------------------------
 	//     1)  Kawano, L., 1992, Fermilab preprint FERMILAB-PUB-92/04-A,
@@ -3676,8 +3616,7 @@ statement_120:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::accum(
-		common& cmn)
+void common::accum()
 {
 	//
 	//
@@ -3751,7 +3690,7 @@ void common::accum(
 	//
 	//..........DIVIDE NUMBER FRACTION BY THAT OF PROTON.
 	int i = 0;
-	FEM_DO_SAFE(i, 1, cmn.isize) {
+	FEM_DO_SAFE(i, 1, isize) {
 		xout(it, i) = y[i] / y[2];
 	}
 	//xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
@@ -3766,9 +3705,9 @@ void common::accum(
 		+ xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
 	//..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
 	//Temperature.
-	T9out(it) = cmn.T9;
+	T9out(it) = T9;
 	//Time.
-	tout(it) = cmn.t;
+	tout(it) = t;
 	//rho photon.
 	thmout(it, 1) = thm(1);
 	//rho electron.
@@ -3778,20 +3717,20 @@ void common::accum(
 	//rho baryon.
 	thmout(it, 4) = thm(9);
 	//Chemical potential.
-	thmout(it, 5) = cmn.phie;
+	thmout(it, 5) = phie;
 	//rho total.
 	thmout(it, 6) = thm(10);
 	//Time step.
-	dtout(it) = cmn.dt;
+	dtout(it) = dt;
 	//Baryon to photon ratio.
-	etaout(it) = cmn.hv / (3.3683e+4f);
+	etaout(it) = hv / (3.3683e+4f);
 	//Expansion rate.
-	hubout(it) = cmn.hubcst;
+	hubout(it) = hubcst;
 	//
 	//20--------INDICATE TERMINATION OF ACCUMULATION IF APPROPRIATE------------------
 	//
-	if ((it == itmax) || (cmn.ip < cmn.inc)) {
-		cmn.ltime = 1;
+	if ((it == itmax) || (ip < inc)) {
+		ltime = 1;
 	}
 	//
 }
@@ -3808,8 +3747,7 @@ void common::accum(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::driver(
-		common& cmn)
+void common::driver()
 {
 	int mvar = 0;
 	int loop = 0;
@@ -3908,7 +3846,7 @@ void common::driver(
 	//Set termination indicator to zero.
 	ltime = 0;
 	//Input initialization information.
-	start(cmn);
+	start();
 	//Total number of variables to be evol
 	mvar = isize + 3;
 	//
@@ -3919,18 +3857,18 @@ statement_200:
 	//Loop indicator.
 	loop = 1;
 	//..........COMPUTE DERIVATIVES OF VARIABLES TO BE EVOLVED.
-	derivs(cmn, loop);
+	derivs(loop);
 	//Time = 1st R-K loop.
 	itime = 4;
 	//Check interface subroutine.
-	check(cmn);
+	check();
 	//..........ACCUMULATE.
 	//Low temp.
 	//Small dt.
 	//Enough iterations.
 	//if ((cmn.T9 <= cmn.T9f) || (dt < abs(cl / dlT9dt)) || (ip == inc)) {
 	if ((T9 <= T9f) || (dt < abs(cl / dlT9dt)) || (ip == inc)) {
-		accum(cmn);
+		accum();
 	}
 	//..........POSSIBLY TERMINATE COMPUTATION.
 	//Return to run selection.
@@ -3999,11 +3937,11 @@ statement_200:
 	//Step up loop counter.
 	loop = 2;
 	//..........COMPUTE DERIVATIVES OF VARIABLES TO BE EVOLVED.
-	derivs(cmn, loop);
+	derivs(loop);
 	//Time = 2nd R-K loop.
 	itime = 7;
 	//Check interface subroutine.
-	check(cmn);
+	check();
 	//..........INCREMENT VALUES.
 	FEM_DO_SAFE(i, 1, mvar) {
 		v[i] = v0[i] + .5f * (dvdt[i] + dvdt0[i]) * dt;
@@ -4039,7 +3977,7 @@ statement_200:
 // Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
 // TODO make private
-void common::qvary(common& cmn, int index, double value)
+void common::qvary(int index, double value)
 {
 	//----------EQUIVALENCE VARIABLE.
 	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
@@ -4064,10 +4002,10 @@ void common::qvary(common& cmn, int index, double value)
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::run(common& cmn)
+void common::run()
 {
-	common_read read(cmn);
-	common_write write(cmn);
+	common_read read(*this);
+	common_write write(*this);
 	//if (is_called_first_time) {
 	static const char* vtype[] = {
 		"baryon/photon ratio   ", 
@@ -4254,10 +4192,10 @@ statement_210:
 statement_220:
 	write(iw, format_2200);
 	itime = 3;
-	check(cmn); 					/// Call interface subroutine before computation.
-	driver(cmn); 					/// Do nucleosynthesis computation.
+	check(); 					/// Call interface subroutine before computation.
+	driver(); 					/// Do nucleosynthesis computation.
 	itime = 8;
-	check(cmn); 					/// Call interface subroutine after computation.
+	check(); 					/// Call interface subroutine after computation.
 	write(iw, format_2202);
 	read(ir, star);
 	goto statement_300;
@@ -4395,7 +4333,7 @@ statement_232:
 				}
 				else {
 					//Vary other quantities.
-					qvary(cmn, inum(1)-1, rnumb1);
+					qvary(inum(1)-1, rnumb1);
 				}
 			}
 			//Middle loop.
@@ -4409,7 +4347,7 @@ statement_232:
 					}
 					else {
 						//Vary other quantities.
-						qvary(cmn, inum(2)-1, rnumb2);
+						qvary(inum(2)-1, rnumb2);
 					}
 				}
 				//Inner loop.
@@ -4423,17 +4361,17 @@ statement_232:
 						}
 						else {
 							//Vary other quantities.
-							qvary(cmn, inum(3)-1, rnumb3);
+							qvary(inum(3)-1, rnumb3);
 						}
 					}
 					itime = 3;
 					//Check interface subroutine before computation.
-					check(cmn);
+					check();
 					//Do nucleosynthesis computation.
-					driver(cmn);
+					driver();
 					itime = 8;
 					//Check interface subroutine after computation.
-					check(cmn);
+					check();
 					//lnumb3 = 0,lnum(3)-1
 				}
 				//lnumb2 = 0,lnum(2)-1
@@ -4466,10 +4404,10 @@ statement_300:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::output(common& cmn)
+void common::output()
 {
-	common_read read(cmn);
-	common_write write(cmn);
+	common_read read(*this);
+	common_write write(*this);
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -4602,7 +4540,7 @@ statement_200:
 			"'Li6/H',7x,'Li7/H',7x,'Be7/H',6x,'Li8/H&up',/,132('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(cmn, 2, "(1p,e10.3,1p,10e12.3)");
+			write_loop wloop(2, "(1p,e10.3,1p,10e12.3)");
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 10) {
 				wloop, xout(j, i);
@@ -4615,7 +4553,7 @@ statement_200:
 			"'phie',9x,'dt',9x,'eta',10x,'H',/,132('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(cmn, 2, "(1p,e10.3,9e12.3)");
+			write_loop wloop(2, "(1p,e10.3,9e12.3)");
 			wloop, T9out(j), tout(j);
 			FEM_DO_SAFE(i, 1, 5) {
 				wloop, thmout(j, i);
@@ -4625,7 +4563,7 @@ statement_200:
 	}
 	write(2, format_2014);
 	//Output file requested.
-	cmn.outfile = true;
+	outfile = true;
 	write(iw,
 			"(' ','Output file requested - Press <RETURN> to ','continue: ',$)");
 	read(ir, star);
@@ -4675,7 +4613,7 @@ statement_310:
 			"(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
 			"80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
-		write_loop wloop(cmn, iw, format_3106);
+		write_loop wloop(iw, format_3106);
 		wloop, T9out(j);
 		FEM_DO_SAFE(i, 3, 6) {
 			wloop, xout(j, i);
@@ -4698,7 +4636,7 @@ statement_320:
 			"80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(cmn, iw, format_3106);
+			write_loop wloop(iw, format_3106);
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 2) {
 				wloop, xout(j, i);
@@ -4724,7 +4662,7 @@ statement_330:
 			"(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
 	FEM_DO_SAFE(j, 1, it) {
 		{
-			write_loop wloop(cmn, iw, "(1p,e10.3,4e12.3)");
+			write_loop wloop(iw, "(1p,e10.3,4e12.3)");
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 4) {
 				wloop, thmout(j, i);
@@ -4779,9 +4717,7 @@ statement_500:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-common::common(
-		int argc,
-		char const* argv[]) :
+common::common() :
 	fem::common(),
 	common_compr0(),
 	common_compr(),
@@ -5020,13 +4956,10 @@ common::common(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void program_new123(
-		int argc,
-		char const* argv[])
+void common::program_new123()
 {
-	common cmn(argc, argv);
-	common_read read(cmn);
-	common_write write(cmn);
+	common_read read(*this);
+	common_write write(*this);
 	const int iw = 6;
 	int i = 0;
 	const int ir = 5;
@@ -5149,12 +5082,12 @@ void program_new123(
 	//10--------OPEN FILES AND PRINT GREETING----------------------------------------
 	//
 	//Output file.
-	cmn.io.open(2, "new123.dat")
+	io.open(2, "new123.dat")
 		.status("new");
 	//Time = beginning of program.
-	cmn.itime = 1;
+	itime = 1;
 	//Check interface subroutine.
-	cmn.check(cmn);
+	check();
 	write(iw,
 			"(6(/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU',4x,8('C'),6x,'11',8x,6('2'),6x,"
 			"6('3'),/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU  CC',12x,'1111',6x,'22',6x,"
@@ -5168,52 +5101,52 @@ void program_new123(
 	//
 	//20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
 	//
-	FEM_DO_SAFE(i, 1, cmn.nrec) {
+	FEM_DO_SAFE(i, 1, nrec) {
 		//..........READ IN REACTION PARAMETERS.
 		/*
-		   cmn.iform(i) = cmn.reacpr(i, 2); 		/// Reaction type.
-		   cmn.ii(i) = cmn.reacpr(i, 3); 			/// Incoming nuclide type.
-		   cmn.jj(i) = cmn.reacpr(i, 4); 			/// Incoming nuclide type.
-		   cmn.kk(i) = cmn.reacpr(i, 5); 			/// Outgoing nuclide type.
-		   cmn.ll(i) = cmn.reacpr(i, 6); 			/// Outgoing nuclide type.
-		   cmn.rev(i) = cmn.reacpr(i, 7); 			/// Reverse reaction coefficient.
-		   cmn.q9(i) = cmn.reacpr(i, 8); 			/// Energy released.
+		   iform(i) = reacpr(i, 2); 		/// Reaction type.
+		   ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
+		   jj(i) = reacpr(i, 4); 			/// Incoming nuclide type.
+		   kk(i) = reacpr(i, 5); 			/// Outgoing nuclide type.
+		   ll(i) = reacpr(i, 6); 			/// Outgoing nuclide type.
+		   rev(i) = reacpr(i, 7); 			/// Reverse reaction coefficient.
+		   q9(i) = reacpr(i, 8); 			/// Energy released.
 		 */
-		cmn.iform(i) = cmn.reacpr[i-1][2-1]; 		/// Reaction type.
-		cmn.ii(i) = cmn.reacpr[i-1][3-1]; 			/// Incoming nuclide type.
-		cmn.jj(i) = cmn.reacpr[i-1][4-1]; 			/// Incoming nuclide type.
-		cmn.kk(i) = cmn.reacpr[i-1][5-1]; 			/// Outgoing nuclide type.
-		cmn.ll(i) = cmn.reacpr[i-1][6-1]; 			/// Outgoing nuclide type.
-		cmn.rev(i) = cmn.reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
-		cmn.q9(i) = cmn.reacpr[i-1][8-1]; 			/// Energy released.
+		iform(i) = reacpr[i-1][2-1]; 		/// Reaction type.
+		ii(i) = reacpr[i-1][3-1]; 			/// Incoming nuclide type.
+		jj(i) = reacpr[i-1][4-1]; 			/// Incoming nuclide type.
+		kk(i) = reacpr[i-1][5-1]; 			/// Outgoing nuclide type.
+		ll(i) = reacpr[i-1][6-1]; 			/// Outgoing nuclide type.
+		rev(i) = reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
+		q9(i) = reacpr[i-1][8-1]; 			/// Energy released.
 		//..........INITIALIZE REACTION RATES.
-		cmn.f[i] = 0; 							/// Forward rate coeff.
-		cmn.r[i] = 0; 							/// Reverse rate coeff.
+		f[i] = 0; 							/// Forward rate coeff.
+		r[i] = 0; 							/// Reverse rate coeff.
 		//..........SET RUN OPTIONS TO DEFAULT.
 	}
-	cmn.irun = 1; 							/// Do full run.
-	cmn.isize = cmn.nnuc; 					/// Use all 26 nuclides.
-	cmn.jsize = cmn.nrec; 					/// Use all 88 reactions.
+	irun = 1; 							/// Do full run.
+	isize = nnuc; 					/// Use all 26 nuclides.
+	jsize = nrec; 					/// Use all 88 reactions.
 	//..........SET OUTPUT OPTION TO DEFAULT.
-	cmn.nout = 0; 							/// No output requests.
-	cmn.outfile = false; 						/// Output file not used.
+	nout = 0; 							/// No output requests.
+	outfile = false; 						/// Output file not used.
 	//..........SET VALUES TO DEFAULT.
-	cmn.cy = cmn.cy0; 						/// Time step limiting constant on abundance.
-	cmn.ct = cmn.ct0; 						/// Time step limiting constant on temperature.
-	cmn.T9i = cmn.T9i0; 						/// Initial temperature.
-	cmn.T9f = cmn.T9f0; 						/// Final temperature.
-	cmn.ytmin = cmn.ytmin0; 					/// Smallest abundances allowed.
-	cmn.inc = cmn.inc0; 						/// Accumulation increment.
-	cmn.c[1] = cmn.c0[1]; 					/// Variation of gravitational constant.
-	cmn.c[2] = cmn.c0[2]; 					/// Neutron lifetime.
-	std::cout << "ntau:"<<cmn.c[2]<<std::endl; 
-	cmn.c[3] = cmn.c0[3]; 					/// Number of neutrino species.
-	cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
-	cmn.xi[1] = cmn.xi0[1]; 					/// Electron degeneracy parameter.
-	cmn.xi[2] = cmn.xi0[2]; 					/// Muon degeneracy parameter.
-	cmn.xi[3] = cmn.xi0[3]; 					/// Tau degeneracy parameter.
-	cmn.dt1 = cmn.dt0; 						/// Initial time step.
-	cmn.eta1 = cmn.eta0; 						/// Baryon-to-photon ratio.
+	cy = cy0; 						/// Time step limiting constant on abundance.
+	ct = ct0; 						/// Time step limiting constant on temperature.
+	T9i = T9i0; 						/// Initial temperature.
+	T9f = T9f0; 						/// Final temperature.
+	ytmin = ytmin0; 					/// Smallest abundances allowed.
+	inc = inc0; 						/// Accumulation increment.
+	c[1] = c0[1]; 					/// Variation of gravitational constant.
+	c[2] = c0[2]; 					/// Neutron lifetime.
+	std::cout << "ntau:"<<c[2]<<std::endl; 
+	c[3] = c0[3]; 					/// Number of neutrino species.
+	cosmo = cosmo0; 					/// Cosmological constant.
+	xi[1] = xi0[1]; 					/// Electron degeneracy parameter.
+	xi[2] = xi0[2]; 					/// Muon degeneracy parameter.
+	xi[3] = xi0[3]; 					/// Tau degeneracy parameter.
+	dt1 = dt0; 						/// Initial time step.
+	eta1 = eta0; 						/// Baryon-to-photon ratio.
 	//..........ACCEPT RETURN TO CONTINUE.
 	read(ir, star); 							/// Pause.
 	//
@@ -5251,46 +5184,46 @@ statement_300:
 	goto statement_460;
 	//Help section.
 statement_410:
-	help(cmn);
+	help();
 	goto statement_500;
 	//Set computation parameters section.
 statement_420:
-	cmn.setcom(cmn);
+	setcom();
 	goto statement_500;
 	//Set model parameters section.
 statement_430:
-	cmn.setmod(cmn);
+	setmod();
 	goto statement_500;
 	//Run section.
 statement_440:
 	//Time = beginning of run section.
-	cmn.itime = 2;
+	itime = 2;
 	//Check interface subroutine.
-	cmn.check(cmn);
-	cmn.run(cmn);
+	check();
+	run();
 	//Time = end of run section.
-	cmn.itime = 9;
+	itime = 9;
 	//Check interface subroutine.
-	cmn.check(cmn);
+	check();
 	goto statement_500;
 	//Output section.
 statement_450:
-	cmn.output(cmn);
+	output();
 	goto statement_500;
 	//Exit section.
 statement_460:
-	if (cmn.outfile) {
+	if (outfile) {
 		//Close output file.
-		cmn.io.close(2).status("keep");
+		io.close(2).status("keep");
 	}
 	else {
 		//File not used - dispose.
-		cmn.io.close(2).status("delete");
+		io.close(2).status("delete");
 	}
 	//Time = end of program.
-	cmn.itime = 10;
+	itime = 10;
 	//Check interface subroutine.
-	cmn.check(cmn);
+	check();
 	//FEM_STOP(0);
 	//
 	//50---------GO BACK TO MENU-----------------------------------------------------
@@ -5307,8 +5240,10 @@ main(
 		int argc,
 		char const* argv[])
 {
-	return fem::main_with_catch(
-			argc, argv,
-			program_new123);
+	common cmn();
+	cmn.program_new123();
+	//return fem::main_with_catch(
+	//		argc, argv,
+	//		program_new123);
 }
 
