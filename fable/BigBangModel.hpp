@@ -546,10 +546,15 @@ const int common_nucdat::nnuc;
 		void nudens();
 		void start();
 
+		//double xintd(
+		//		double const&,
+		//		double const&,
+		//		double(* func)(const double&),
+		//		int const&);
+		template <int n>
 		double xintd(
 				double const&,
 				double const&,
-				double(* func)(const double&),
 				int const&);
 
 		void eqslin(
@@ -561,12 +566,8 @@ const int common_nucdat::nnuc;
 		void accum();
 		void output();
 
-		static double func1( double const& );
-		static double func2( double const& );
-		static double func3( double const& );
-		static double func4( double const& );
-		static double func5( double const& );
-		static double func6( double const& );
+		template <int n>
+		double integrand( double const& );
 
 		void rate0();
 		void rate1(double const& );
