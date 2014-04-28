@@ -1127,8 +1127,10 @@ void common::rate0()
 //10--------1ST PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //***************************************************************************
 //
-	double
-common::func1(
+template <>
+double
+common::integrand<1>(
+//common::func1(
 		double const& x)
 {
 	//
@@ -1435,11 +1437,13 @@ common::func6(
 //========================IDENTIFICATION DIVISION================================
 //
 double
+template <int n>
 common::xintd(
+//common::xintd(
 		double const& xlow,
 		double const& xhi,
 		//func1_function_pointer func,
-		double(* func)(common &, const double&),
+		//double(* func)(common &, const double&),
 		int const& nq)
 {
 	const int np = 6;
@@ -1501,7 +1505,8 @@ common::xintd(
 		FEM_DO_SAFE(npnt, 1, np) {
 			//x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
 			double x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
-			double y = func( x); 								/// Evaluate function x(1).
+			//double y = func( x); 								/// Evaluate function x(1).
+			double y = integrand<n>( x); 								/// Evaluate function x(1).
 			//sum += f * w(npnt); 								/// Add up sum.
 			sum += y * w[npnt]; 								/// Add up sum.
 		}
