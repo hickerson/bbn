@@ -6029,7 +6029,11 @@ common::common(
 	t9f0 = 1.00e-02f;
 	ytmin0 = 1.00e-25f;			// TODO make smaller with double
 	inc0 = 30;
-	c0[] = { NOT_USED, 1.00f, 885.7f, 3.0f };
+	//c0[] = { NOT_USED, 1.00f, 885.7f, 3.0f };
+	c0[0] = NOT_USED;
+	c0[1] = 1.00;
+	c0[2] = 885.7;
+	c0[3] = 3.0;
 	/*
 	{
 	static const float values[] = {
@@ -6040,7 +6044,10 @@ common::common(
 	}
 	 */
 	cosmo0 = 0.00f;
-	xi0[] = {NOT_USED, 0, 0, 0};
+	xi0[0] = NOT_USED;
+	xi0[1] = 0;
+	xi0[2] = 0;
+	xi0[3] = 0;
 	/*
 	{
 	static const float values[] = {
