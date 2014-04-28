@@ -495,25 +495,6 @@ const int common_nucdat::nnuc;
 		common_outopt,
 		common_tcheck
 	{
-		/*
-		   fem::variant_core common_rates;
-		   fem::variant_core common_lncoef;
-		   fem::cmn_sve check_sve;
-		   fem::cmn_sve knux_sve;
-		   fem::cmn_sve rate0_sve;
-		   fem::cmn_sve xintd_sve;
-		   fem::cmn_sve rate1_sve;
-		   fem::cmn_sve start_sve;
-		   fem::cmn_sve eqslin_sve;
-		   fem::cmn_sve sol_sve;
-		   fem::cmn_sve rate2_sve;
-		   fem::cmn_sve rate3_sve;
-		   fem::cmn_sve rate4_sve;
-		   fem::cmn_sve run_sve;
-		   fem::cmn_sve blockdata_unnamed_sve;
-		   fem::cmn_sve program_new123_sve;
-		 */
-
 		static const int nrec = 88;
 		static const int nnuc = 26;
 		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};

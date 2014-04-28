@@ -1,8 +1,6 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
-//#include "bbn.hpp"
 #include "BigBangModel.hpp"
-//#include <gsl/gsl_sf_bessel.h>
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <iostream>
@@ -586,15 +584,6 @@ void common::setmod(
 {
 	common_read read(cmn);
 	common_write write(cmn);
-	/*
-	   arr_cref<double> c0(cmn.c0, dimension(3));
-	   arr_cref<double> xi0(cmn.xi0, dimension(3));
-	   arr_ref<double> c(cmn.c, dimension(3));
-	   double& cosmo = cmn.cosmo;
-	   arr_ref<double> xi(cmn.xi, dimension(3));
-	   double& eta1 = cmn.eta1;
-	 */
-	//
 	const int iw = 6;
 	const int ir = 5;
 	int inum = 0;
@@ -2743,7 +2732,8 @@ statement_212:
 	FEM_DO_SAFE(i, 1, isize) {
 		//yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
-		dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
+		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
+		dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
