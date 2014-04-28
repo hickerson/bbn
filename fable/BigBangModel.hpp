@@ -13,15 +13,15 @@ namespace bbn {
 	using namespace fem::major_types;
 	//using namespace boost::numeric::ublas;
 
-	static const float NOT_USED = -5555555.5555555;
+	static const double NOT_USED = -5555555.5555555;
 
 	struct common_compr0
 	{
-		float cy0;
-		float ct0;
-		float t9i0;
-		float t9f0;
-		float ytmin0;
+		double cy0;
+		double ct0;
+		double t9i0;
+		double t9f0;
+		double ytmin0;
 		int inc0;
 
 		common_compr0() :
@@ -36,11 +36,11 @@ namespace bbn {
 
 	struct common_compr
 	{
-		float cy;
-		float ct;
-		float t9i;
-		float t9f;
-		float ytmin;
+		double cy;
+		double ct;
+		double t9i;
+		double t9f;
+		double ytmin;
 		int inc;
 
 		common_compr() :
@@ -55,8 +55,8 @@ namespace bbn {
 
 	struct common_varpr0
 	{
-		float dt0;
-		float eta0;
+		double dt0;
+		double eta0;
 
 		common_varpr0() :
 			dt0(0),
@@ -66,8 +66,8 @@ namespace bbn {
 
 	struct common_varpr
 	{
-		float dt1;
-		float eta1;
+		double dt1;
+		double eta1;
 
 		common_varpr() :
 			dt1(0),
@@ -77,11 +77,11 @@ namespace bbn {
 
 	struct common_modpr0
 	{
-		//arr<float> c0;
-		float c0[3+1];
-		float cosmo0;
-		//arr<float> xi0;
-		float xi0[3+1];
+		//arr<double> c0;
+		double c0[3+1];
+		double cosmo0;
+		//arr<double> xi0;
+		double xi0[3+1];
 
 		common_modpr0() :
 			//c0(dimension(3), fem::fill0),
@@ -98,14 +98,14 @@ namespace bbn {
 
 	struct common_modpr
 	{
-		float g;
-		float tau;
-		float xnu;
-		//arr<float> c;
-		float c[3+1];
-		float cosmo;
-		//arr<float> xi;
-		float xi[3+1];
+		double g;
+		double tau;
+		double xnu;
+		//arr<double> c;
+		double c[3+1];
+		double cosmo;
+		//arr<double> xi;
+		double xi[3+1];
 
 		common_modpr() :
 			g(0),
@@ -122,7 +122,7 @@ namespace bbn {
 	   {
 	   static const int nrec = 88;
 
-	   arr<float, 2> reacpr;
+	   arr<double, 2> reacpr;
 
 	   common_recpr0() :
 	   reacpr(dimension(nrec, 8), fem::fill0)
@@ -143,8 +143,8 @@ const int common_recpr0::nrec;
 		arr<int> jj;
 		arr<int> kk;
 		arr<int> ll;
-		arr<float> rev;
-		arr<float> q9;
+		arr<double> rev;
+		arr<double> q9;
 
 		common_recpr() :
 			iform(dimension(nrec), fem::fill0),
@@ -167,11 +167,11 @@ const int common_recpr::nrec;
 	{
 		static const int nnuc = 26;
 
-		float t9;
-		float hv;
-		float phie;
-		//arr<float> y;
-		float y[nnuc+1];
+		double t9;
+		double hv;
+		double phie;
+		//arr<double> y;
+		double y[nnuc+1];
 
 		common_evolp1() :
 			t9(0),
@@ -194,11 +194,11 @@ const int common_recpr::nrec;
 	{
 		static const int nnuc = 26;
 
-		float dt9;
-		float dhv;
-		float dphie;
-		//arr<float> dydt;
-		float dydt[nnuc+1];
+		double dt9;
+		double dhv;
+		double dphie;
+		//arr<double> dydt;
+		double dydt[nnuc+1];
 
 		common_evolp2() :
 			dt9(0),
@@ -221,11 +221,11 @@ const int common_recpr::nrec;
 	{
 		static const int nnuc = 26;
 
-		float t90;
-		float hv0;
-		float phie0;
-		//arr<float> y0;
-		float y0[nnuc+1];
+		double t90;
+		double hv0;
+		double phie0;
+		//arr<double> y0;
+		double y0[nnuc+1];
 
 		common_evolp3() :
 			t90(0),
@@ -246,9 +246,9 @@ const int common_recpr::nrec;
 
 	struct common_ttime
 	{
-		float t;
-		float dt;
-		float dlt9dt;
+		double t;
+		double dt;
+		double dlt9dt;
 
 		common_ttime() :
 			t(0),
@@ -259,8 +259,8 @@ const int common_recpr::nrec;
 
 	struct common_thermcb
 	{
-		arr<float> thm;
-		float hubcst;
+		arr<double> thm;
+		double hubcst;
 
 		common_thermcb() :
 			thm(dimension(14), fem::fill0),
@@ -270,10 +270,10 @@ const int common_recpr::nrec;
 
 	struct common_endens
 	{
-		float rhone0;
-		float rhob0;
-		float rhob;
-		float rnb;
+		double rhone0;
+		double rhob0;
+		double rhob;
+		double rnb;
 
 		common_endens() :
 			rhone0(0),
@@ -288,9 +288,9 @@ const int common_recpr::nrec;
 	   {
 	   static const int nnuc = 26;
 
-	   arr<float> am;
-	   arr<float> zm;
-	   arr<float> dm;
+	   arr<double> am;
+	   arr<double> zm;
+	   arr<double> dm;
 
 	   common_nucdat() :
 	   am(dimension(nnuc), fem::fill0),
@@ -307,21 +307,21 @@ const int common_nucdat::nnuc;
 	/*
 	   struct common_besselcb
 	   {
-	   float bl1;
-	   float bl2;
-	   float bl3;
-	   float bl4;
-	   float bl5;
-	   float bm1;
-	   float bm2;
-	   float bm3;
-	   float bm4;
-	   float bm5;
-	   float bn1;
-	   float bn2;
-	   float bn3;
-	   float bn4;
-	   float bn5;
+	   double bl1;
+	   double bl2;
+	   double bl3;
+	   double bl4;
+	   double bl5;
+	   double bm1;
+	   double bm2;
+	   double bm3;
+	   double bm4;
+	   double bm5;
+	   double bn1;
+	   double bn2;
+	   double bn3;
+	   double bn4;
+	   double bn5;
 
 	   common_besselcb() :
 	   bl1(0),
@@ -344,11 +344,11 @@ const int common_nucdat::nnuc;
 
 	   struct common_kays
 	   {
-	   float bk0;
-	   float bk1;
-	   float bk2;
-	   float bk3;
-	   float bk4;
+	   double bk0;
+	   double bk1;
+	   double bk2;
+	   double bk3;
+	   double bk4;
 
 	   common_kays() :
 	   bk0(0),
@@ -392,13 +392,13 @@ const int common_nucdat::nnuc;
 		static const int itmax = 40;
 		static const int nnuc = 26;
 
-		arr<float, 2> xout;
-		arr<float, 2> thmout;
-		arr<float> t9out;
-		arr<float> tout;
-		arr<float> dtout;
-		arr<float> etaout;
-		arr<float> hubout;
+		arr<double, 2> xout;
+		arr<double, 2> thmout;
+		arr<double> t9out;
+		arr<double> tout;
+		arr<double> dtout;
+		arr<double> etaout;
+		arr<double> hubout;
 
 		common_outdat() :
 			xout(dimension(itmax, nnuc), fem::fill0),
@@ -418,11 +418,11 @@ const int common_nucdat::nnuc;
 
 	struct common_nupar
 	{
-		float t9mev;
-		float tnmev;
-		float tnu;
-		float cnorm;
-		float rhonu;
+		double t9mev;
+		double tnmev;
+		double tnu;
+		double cnorm;
+		double rhonu;
 		int nu;
 
 		common_nupar() :
@@ -522,31 +522,31 @@ const int common_nucdat::nnuc;
 		//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 
 		// TODO put in a subclass.
-		static const float am[nnuc+1];
-		static const float zm[nnuc+1];
-		static const float dm[nnuc+1];
-		static const float reacpr[nrec][8];
+		static const double am[nnuc+1];
+		static const double zm[nnuc+1];
+		static const double dm[nnuc+1];
+		static const double reacpr[nrec][8];
 
-		//arr<float> f;
-		//arr<float> r;
-		//arr<float,float> a;
-		//arr<float> b;
-		//arr<float> yx;
-		float f[nrec+1];
-		float r[nrec+1];
+		//arr<double> f;
+		//arr<double> r;
+		//arr<double,double> a;
+		//arr<double> b;
+		//arr<double> yx;
+		double f[nrec+1];
+		double r[nrec+1];
 
 		// TODO put in a subclass.
-		float a[nnuc+1][nnuc+1];
-		float b[nnuc+1];
-		//float yx[nnuc+1];
+		double a[nnuc+1][nnuc+1];
+		double b[nnuc+1];
+		//double yx[nnuc+1];
 
 		/*
-		   boost::numeric::ublas::matrix<float> a;
-		   boost::numeric::ublas::vector<float> b;
-		   boost::numeric::ublas::vector<float> yx;
+		   boost::numeric::ublas::matrix<double> a;
+		   boost::numeric::ublas::vector<double> b;
+		   boost::numeric::ublas::vector<double> yx;
 		 */
 
-		void qvary(common&, int, float);
+		void qvary(common&, int, double);
 
 		public:
 		common( int argc, char const* argv[]);		//TODO don't need those opts for 
@@ -561,11 +561,11 @@ const int common_nucdat::nnuc;
 		void nudens(common &);
 		void start(common &);
 
-		float xintd(
+		double xintd(
 				common& cmn,
-				float const&,
-				float const&,
-				float(* func)(common &, const float&),
+				double const&,
+				double const&,
+				double(* func)(common &, const double&),
 				int const&);
 
 		void eqslin(
@@ -578,40 +578,40 @@ const int common_nucdat::nnuc;
 		void accum( common& );
 		void output( common& );
 
-		static float func1( common&, float const& );
-		static float func2( common&, float const& );
-		static float func3( common&, float const& );
-		static float func4( common&, float const& );
-		static float func5( common&, float const& );
-		static float func6( common&, float const& );
+		static double func1( common&, double const& );
+		static double func2( common&, double const& );
+		static double func3( common&, double const& );
+		static double func4( common&, double const& );
+		static double func5( common&, double const& );
+		static double func6( common&, double const& );
 
 		void rate0( common & );
-		void rate1( common &, float const& );
+		void rate1( common &, double const& );
 		void rate2( common & );
 		void rate3( common & );
 		void rate4( common & );
 
 		private:
-		float getBesselL(float);
-		float getBesselM(float);
-		float getBesselN(float);
+		double getBesselL(double);
+		double getBesselM(double);
+		double getBesselN(double);
 	};
 
-	const float common::am[26+1] = {
+	const double common::am[26+1] = {
 		NOT_USED,
 		1.f, 1.f, 2.f, 3.f, 3.f, 4.f, 6.f, 7.f, 7.f, 8.f, 8.f, 9.f,
 		10.f, 11.f, 11.f, 12.f, 12.f, 12.f, 13.f, 13.f, 14.f, 14.f,
 		14.f, 15.f, 15.f, 16.f
 	};
 
-	const float common::zm[26+1] = {
+	const double common::zm[26+1] = {
 		NOT_USED,
 		0.f, 1.f, 1.f, 1.f, 2.f, 2.f, 3.f, 3.f, 4.f, 3.f, 5.f, 4.f,
 		5.f, 5.f, 6.f, 5.f, 6.f, 7.f, 6.f, 7.f, 6.f, 7.f, 8.f, 7.f,
 		8.f, 8.f
 	};
 
-	const float common::dm[26+1] = {
+	const double common::dm[26+1] = {
 		NOT_USED,
 		.008665f, .007825f, .014102f, .016050f, .016030f, .002603f,
 		.015125f, .016004f, .016929f, .022487f, .024609f, .012186f,
@@ -620,7 +620,7 @@ const int common_nucdat::nnuc;
 		.003070f, -.005085f
 	};
 
-	const float common::reacpr[88][8] = {
+	const double common::reacpr[88][8] = {
 		{1,	1,	1,	0,	0,	2,	0,	0},
 		{2,	1,	4,	0,	0,	5,	0,	0},
 		{3,	4,	10,	0,	0,	6,	0,	0},

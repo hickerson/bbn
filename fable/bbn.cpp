@@ -424,13 +424,13 @@ void common::setcom(common& cmn)
 	common_read read(cmn);
 	common_write write(cmn);
 	/*
-	   float& cy = cmn.cy;
-	   float& ct = cmn.ct;
-	   float& t9i = cmn.t9i;
-	   float& t9f = cmn.t9f;
-	   float& ytmin = cmn.ytmin;
+	   double& cy = cmn.cy;
+	   double& ct = cmn.ct;
+	   double& t9i = cmn.t9i;
+	   double& t9f = cmn.t9f;
+	   double& ytmin = cmn.ytmin;
 	   int& inc = cmn.inc;
-	   float& dt1 = cmn.dt1;
+	   double& dt1 = cmn.dt1;
 	 */
 	//
 	const int iw = 6;
@@ -502,7 +502,7 @@ statement_100:
 			"' 8. RESET ALL TO DEFAULT VALUES',/,10x,"
 			"' 9. EXIT',5(/),10x,"
 			"'Enter selection (1-9): ',$)"),
-		cy, ct, dt1, t9i, t9f, ytmin, fem::ffloat(inc);
+		cy, ct, dt1, t9i, t9f, ytmin, fem::fdouble(inc);
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i1)"), inum;
 	//
@@ -597,12 +597,12 @@ void common::setmod(
 	common_read read(cmn);
 	common_write write(cmn);
 	/*
-	   arr_cref<float> c0(cmn.c0, dimension(3));
-	   arr_cref<float> xi0(cmn.xi0, dimension(3));
-	   arr_ref<float> c(cmn.c, dimension(3));
-	   float& cosmo = cmn.cosmo;
-	   arr_ref<float> xi(cmn.xi, dimension(3));
-	   float& eta1 = cmn.eta1;
+	   arr_cref<double> c0(cmn.c0, dimension(3));
+	   arr_cref<double> xi0(cmn.xi0, dimension(3));
+	   arr_ref<double> c(cmn.c, dimension(3));
+	   double& cosmo = cmn.cosmo;
+	   arr_ref<double> xi(cmn.xi, dimension(3));
+	   double& eta1 = cmn.eta1;
 	 */
 	//
 	const int iw = 6;
@@ -793,7 +793,7 @@ void common::check(common& cmn)
 	//FEM_CMN_SVE(check);
 	common_write write(cmn);
 	// COMMON modpr
-	//arr_cref<float> c(cmn.c, dimension(3));
+	//arr_cref<double> c(cmn.c, dimension(3));
 	// COMMON flags
 	//int& it = cmn.it;
 	// COMMON checkcb
@@ -802,8 +802,8 @@ void common::check(common& cmn)
 	//const int itmax = 40;
 	//const int nnuc = 26;
 	//const int nrec = 88;
-	//arr_ref<float, 2> xout(cmn.xout, dimension(itmax, nnuc));
-	//arr_cref<float> etaout(cmn.etaout, dimension(itmax));
+	//arr_ref<double, 2> xout(cmn.xout, dimension(itmax, nnuc));
+	//arr_cref<double> etaout(cmn.etaout, dimension(itmax));
 	//
 	/*
 	   common_variant rates(cmn.common_rates, sve.rates_bindings);
@@ -811,23 +811,23 @@ void common::check(common& cmn)
 	   if (is_called_first_time) {
 	   using fem::mbr; // member of variant common or equivalence
 	   {
-	   mbr<float> f(dimension(nrec));
-	   mbr<float> r(dimension(nrec));
+	   mbr<double> f(dimension(nrec));
+	   mbr<double> r(dimension(nrec));
 	   rates.allocate(), f, r;
 	   }
 	   {
 	   mbr<double> a(dimension(nnuc, nnuc));
-	   mbr<float> b(dimension(nnuc));
-	   mbr<float> yx(dimension(nnuc));
+	   mbr<double> b(dimension(nnuc));
+	   mbr<double> yx(dimension(nnuc));
 	   lncoef.allocate(), a, b, yx;
 	   }
 	   }
 	 */
-	//* arr_cref<float> f( */ rates.bind<float>() /* , dimension(nrec)) */ ;
-	//* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+	//* arr_cref<double> f( */ rates.bind<double>() /* , dimension(nrec)) */ ;
+	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//* arr_cref<double, 2> a( */ lncoef.bind<double>() /* , dimension(nnuc, nnuc)) */ ;
-	//* arr_cref<float> b( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
-	//* arr_cref<float> yx( */ lncoef.bind<float>() /* , dimension(nnuc)) */ ;
+	//* arr_cref<double> b( */ lncoef.bind<double>() /* , dimension(nnuc)) */ ;
+	//* arr_cref<double> yx( */ lncoef.bind<double>() /* , dimension(nnuc)) */ ;
 	//
 	//----------REMARKS.
 	//     This is an interface subroutine,
@@ -1055,9 +1055,9 @@ void common::check(common& cmn)
 //
 //========================IDENTIFICATION DIVISION================================
 //
-float ex( float const& x)
+double ex( double const& x)
 {
-	float return_value = 0;
+	double return_value = 0;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] start, rate2, rate3, rate4, sol
@@ -1094,12 +1094,12 @@ float ex( float const& x)
 /*
    struct knux_save
    {
-   arr<float> c0;
-   arr<float> c1;
-   arr<float> ci0;
-   arr<float> ci1;
-   arr<float> ck0;
-   arr<float> ck1;
+   arr<double> c0;
+   arr<double> c1;
+   arr<double> ci0;
+   arr<double> ci1;
+   arr<double> ck0;
+   arr<double> ck1;
 
    knux_save() :
    c0(dimension(7), fem::fill0),
@@ -1118,70 +1118,70 @@ float ex( float const& x)
 #if 0
 void knux(
 		common& cmn,
-		float const& z)
+		double const& z)
 {
 	FEM_CMN_SVE(knux);
 	// COMMON kays
-	float& bk0 = cmn.bk0;
-	float& bk1 = cmn.bk1;
-	float& bk2 = cmn.bk2;
-	float& bk3 = cmn.bk3;
+	double& bk0 = cmn.bk0;
+	double& bk1 = cmn.bk1;
+	double& bk2 = cmn.bk2;
+	double& bk3 = cmn.bk3;
 	//
 	// SAVE
-	arr_ref<float> c0(sve.c0, dimension(7));
-	arr_ref<float> c1(sve.c1, dimension(7));
-	arr_ref<float> ci0(sve.ci0, dimension(7));
-	arr_ref<float> ci1(sve.ci1, dimension(7));
-	arr_ref<float> ck0(sve.ck0, dimension(7));
-	arr_ref<float> ck1(sve.ck1, dimension(7));
+	arr_ref<double> c0(sve.c0, dimension(7));
+	arr_ref<double> c1(sve.c1, dimension(7));
+	arr_ref<double> ci0(sve.ci0, dimension(7));
+	arr_ref<double> ci1(sve.ci1, dimension(7));
+	arr_ref<double> ck0(sve.ck0, dimension(7));
+	arr_ref<double> ck1(sve.ck1, dimension(7));
 	//
 	if (is_called_first_time) {
 		{
-			static const float values[] = {
+			static const double values[] = {
 				1.f, 3.5156229f, 3.0899424f, 1.2067492f, 0.2659732f,
 				0.0360768f, 0.0045813f
 			};
-			fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 				ci0;
 		}
 		{
-			static const float values[] = {
+			static const double values[] = {
 				0.5f, 0.87890594f, 0.51498869f, 0.15084934f, 0.02658733f,
 				0.00301532f, 0.00032411f
 			};
-			fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 				ci1;
 		}
 		{
-			static const float values[] = {
+			static const double values[] = {
 				-0.57721566f, 0.42278420f, 0.23069756f, 0.03488590f,
 				0.00262698f, 0.00010750f, 0.00000740f
 			};
-			fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 				ck0;
 		}
 		{
-			static const float values[] = {
+			static const double values[] = {
 				1.f, 0.15443144f, -0.67278579f, -0.18156897f, -0.01919402f,
 				-0.00110404f, -0.00004686f
 			};
-			fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 				ck1;
 		}
 		{
-			static const float values[] = {
+			static const double values[] = {
 				1.25331414f, -0.07832358f, 0.02189568f, -0.01062446f,
 				0.00587872f, -0.00251540f, 0.00053208f
 			};
-			fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 				c0;
 		}
 		{
-			static const float values[] = {
+			static const double values[] = {
 				1.25331414f, 0.23498619f, -0.03655620f, 0.01504268f,
 				-0.00780353f, 0.00325614f, -0.00068245f
 			};
-			fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+			fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 				c1;
 		}
 	}
@@ -1227,11 +1227,11 @@ void knux(
 	//10--------COMPUTE K0 AND K1----------------------------------------------------
 	//
 	//(Ref. 1).
-	float t = 0;
-	float y = 0;
-	float coeff = 0;
-	float bi0 = 0;
-	float bi1 = 0;
+	double t = 0;
+	double y = 0;
+	double coeff = 0;
+	double bi0 = 0;
+	double bi1 = 0;
 	int i = 0;
 	if (z <= 2.f) {
 		//..........COMPUTE FACTORS.
@@ -1245,7 +1245,7 @@ void knux(
 		bk1 = ck1[1];
 		FEM_DO_SAFE(i, 2, 7) {
 			int n = 2 * (i - 1);
-			float p = pow(t,n);
+			double p = pow(t,n);
 			bi0 += ci0(i) * p;
 			bi1 += ci1(i) * p;
 			bk0 += ck0(i) * p;
@@ -1300,7 +1300,7 @@ void knux(
 #if 0
 void bessel(
 		common& cmn,
-		float const& z)
+		double const& z)
 {
 	// COMMON kays
 	//
@@ -1353,11 +1353,11 @@ void bessel(
 	//20--------CALCULATE FOR 1 THRU 5 Z---------------------------------------------
 	//
 	int i = 0;
-	arr_1d<5, float> blz(fem::fill0); //TODO change to c array
-	arr_1d<5, float> bmz(fem::fill0); //TODO change to c array
-	arr_1d<5, float> bnz(fem::fill0); //TODO change to c array
+	arr_1d<5, double> blz(fem::fill0); //TODO change to c array
+	arr_1d<5, double> bmz(fem::fill0); //TODO change to c array
+	arr_1d<5, double> bnz(fem::fill0); //TODO change to c array
 	FEM_DO_SAFE(i, 1, 5) {
-		float r = i * z; 							//Multiples of z.
+		double r = i * z; 							//Multiples of z.
 		knux(cmn, r); 								//Get k0(r),k1(r),k2(r),k3(r),k4(r),k(r)
 		blz(i) = cmn.bk2/r; 					//Put value from function bl into array
 		bmz(i) = 0.25*(3*cmn.bk3 + cmn.bk1)/r; 	//Put value from function bm into array
@@ -1368,23 +1368,23 @@ void bessel(
 }
 #endif
 
-float common::getBesselL(float r)
+double common::getBesselL(double r)
 {
-	float K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
+	double K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
-float common::getBesselM(float r)
+double common::getBesselM(double r)
 {
-	float K3r = cyl_bessel_k(3,r);			/// Irregular modified cylindrical Bessel functions.
-	float K1r = cyl_bessel_k(1,r);			/// Irregular modified cylindrical Bessel functions.
+	double K3r = cyl_bessel_k(3,r);			/// Irregular modified cylindrical Bessel functions.
+	double K1r = cyl_bessel_k(1,r);			/// Irregular modified cylindrical Bessel functions.
 	return (3*K3r + K1r)/4/r;				/// (Ref ?).
 }
 
-float common::getBesselN(float r)
+double common::getBesselN(double r)
 {
-	float K4r = cyl_bessel_k(4,r);			/// Irregular modified cylindrical Bessel functions.
-	float K2r = cyl_bessel_k(2,r);			/// Irregular modified cylindrical Bessel functions.
+	double K4r = cyl_bessel_k(4,r);			/// Irregular modified cylindrical Bessel functions.
+	double K2r = cyl_bessel_k(2,r);			/// Irregular modified cylindrical Bessel functions.
 	return (K4r + K2r)/2/r; 				/// (Ref ?).
 }
 
@@ -1411,18 +1411,18 @@ void common::rate0(
 	//FEM_CMN_SVE(rate0);
 	//common_variant rates(cmn.common_rates, sve.rates_bindings);
 	const int nrec = 88;
-	arr<float> f[dimension(nrec));
+	arr<double> f[dimension(nrec));
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r(dimension(nrec));
+	mbr<double> f(dimension(nrec));
+	mbr<double> r(dimension(nrec));
 	rates.allocate(), f, r;
 	}
 	}
 	 */
-	//arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-	//arr_cref<float> r( *//* rates.bind<float>() *//* , dimension(nrec)) *//* ;
+	//arr_ref<double> f(rates.bind<double>(), dimension(nrec));
+	//arr_cref<double> r( *//* rates.bind<double>() *//* , dimension(nrec)) *//* ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] start
@@ -1484,7 +1484,7 @@ void common::rate0(
 	//
 }
 
-//typedef float (*func1_function_pointer)(common&, float const&);
+//typedef double (*func1_function_pointer)(common&, double const&);
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -1494,14 +1494,14 @@ void common::rate0(
 //10--------1ST PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //***************************************************************************
 //
-	float
+	double
 common::func1(
 		common& cmn,
-		float const& x)
+		double const& x)
 {
-	//float return_value = 0;
+	//double return_value = 0;
 	// COMMON modpr
-	//arr_cref<float> xi(cmn.xi, dimension(3));
+	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1531,8 +1531,8 @@ common::func1(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	float part1 = 0; //TODO move down inside loop
-	float part2 = 0;
+	double part1 = 0; //TODO move down inside loop
+	double part2 = 0;
 	if (x <= 0)
 		return 0;
 	else {
@@ -1544,19 +1544,19 @@ common::func1(
 	}
 }
 
-//typedef float (*func2_function_pointer)(common&, float const&);
+//typedef double (*func2_function_pointer)(common&, double const&);
 
 //
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //
-	float
+	double
 common::func2(
 		common& cmn,
-		float const& x)
+		double const& x)
 {
-	//float return_value = 0;
+	//double return_value = 0;
 	// COMMON modpr
-	//arr_cref<float> xi(cmn.xi, dimension(3));
+	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1590,26 +1590,26 @@ common::func2(
 		return 0;
 	}
 	else {		// TODO remove cmn
-		float part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
-		float part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
+		double part1 = 1.f / (1.f + ex(+.511f * x / cmn.t9mev));
+		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / cmn.tnmev) - cmn.xi[1]));
 		return cmn.cnorm * x * fem::pow2((x + 2.531f)) 
 				* pow((fem::pow2(x) - 1), .5f) * part1 * part2;
 	}
 }
 
-//typedef float (*func3_function_pointer)(common&, float const&);
+//typedef double (*func3_function_pointer)(common&, double const&);
 
 //
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-	float
+	double
 common::func3(
 		common& cmn,
-		float const& x)
+		double const& x)
 {
-	float return_value = 0; // TODO move inside?
+	double return_value = 0; // TODO move inside?
 	// COMMON modpr
-	//arr_cref<float> xi(cmn.xi, dimension(3));
+	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1639,8 +1639,8 @@ common::func3(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	float part1 = 0;
-	float part2 = 0;
+	double part1 = 0;
+	double part2 = 0;
 	if (x <= 1.f) {
 		return_value = 0.f;
 	}
@@ -1653,19 +1653,19 @@ common::func3(
 	return return_value;
 }
 
-//typedef float (*func4_function_pointer)(common&, float const&);
+//typedef double (*func4_function_pointer)(common&, double const&);
 
 //
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-	float
+	double
 common::func4(
 		common& cmn,
-		float const& x)
+		double const& x)
 {
-	float return_value = 0;
+	double return_value = 0;
 	// COMMON modpr
-	//arr_cref<float> xi(cmn.xi, dimension(3));
+	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1695,8 +1695,8 @@ common::func4(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	float part1 = 0;
-	float part2 = 0;
+	double part1 = 0;
+	double part2 = 0;
 	if (x <= 1.f) {
 		return_value = 0.f;
 		return 0;
@@ -1715,28 +1715,28 @@ common::func4(
 	   return 0;
 	   }
 	   else {
-	   const float me = 0.511;
-	   const float K = x - 2.531;
-	   const float part1 = 1 + exp(+me * x / cmn.t9mev);
-	   const float part2 = 1 + exp(-K*(.511f / cmn.tnmev) + xi[1]);
+	   const double me = 0.511;
+	   const double K = x - 2.531;
+	   const double part1 = 1 + exp(+me * x / cmn.t9mev);
+	   const double part2 = 1 + exp(-K*(.511f / cmn.tnmev) + xi[1]);
 	   return cmn.cnorm * x * K * K * sqrt(x*x - 1) / (part1 * part2);
 	   }
 	 */
 }
 
-//typedef float (*func5_function_pointer)(common&, float const&);
+//typedef double (*func5_function_pointer)(common&, double const&);
 
 //
 //50--------INTEGRAL FOR ENERGY DENSITY OF NEUTRINO------------------------------
 //
-	float
+	double
 common::func5(
 		common& cmn,
-		float const& x)
+		double const& x)
 {
-	float return_value = 0;
+	double return_value = 0;
 	// COMMON modpr
-	//arr_cref<float> xi(cmn.xi, dimension(3));
+	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1771,19 +1771,19 @@ common::func5(
 	return return_value;
 }
 
-//typedef float (*func6_function_pointer)(common&, float const&);
+//typedef double (*func6_function_pointer)(common&, double const&);
 
 //
 //60--------INTEGRAL FOR ENERGY DENSITY OF ANTINEUTRINO--------------------------
 //
-	float
+	double
 common::func6(
 		common& cmn,
-		float const& x)
+		double const& x)
 {
-	float return_value = 0;
+	double return_value = 0;
 	// COMMON modpr
-	//arr_cref<float> xi(cmn.xi, dimension(3));
+	//arr_cref<double> xi(cmn.xi, dimension(3));
 	//
 	//
 	//----------LINKAGES.
@@ -1822,8 +1822,8 @@ common::func6(
    struct xintd_save
    {
    int np;
-   arr<float> u;
-   arr<float> w;
+   arr<double> u;
+   arr<double> w;
 
    xintd_save() :
    np(0),
@@ -1841,48 +1841,48 @@ common::func6(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-float
+double
 common::xintd(
 		common& cmn,
-		float const& xlow,
-		float const& xhi,
+		double const& xlow,
+		double const& xhi,
 		//func1_function_pointer func,
-		float(* func)(common &, const float&),
+		double(* func)(common &, const double&),
 		int const& nq)
 {
 	//FEM_CMN_SVE(xintd);
 	// SAVE
 	//
 	const int np = 6;
-	static const float u[] = {
+	static const double u[] = {
 		0,
 		-.93246951420315f, -.66120938646627f, -.23861918608320f,
 		.23861918608320f, .66120938646627f, .93246951420315f
 	};
-	static const float w[] = {
+	static const double w[] = {
 		0,
 		.17132449237917f, .36076157304814f, .46791393457269f,
 		.46791393457269f, .36076157304814f, .17132449237917f
 	};
 	/*
 	//int& np = sve.np;
-	//arr_ref<float> u(sve.u, dimension(6));
-	//arr_ref<float> w(sve.w, dimension(6));
+	//arr_ref<double> u(sve.u, dimension(6));
+	//arr_ref<double> w(sve.w, dimension(6));
 	if (is_called_first_time) {
 	{
-	static const float values[] = {
+	static const double values[] = {
 	-.93246951420315f, -.66120938646627f, -.23861918608320f,
 	.23861918608320f, .66120938646627f, .93246951420315f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	u;
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 	.17132449237917f, .36076157304814f, .46791393457269f,
 	.46791393457269f, .36076157304814f, .17132449237917f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	w;
 	}
 	}
@@ -1926,16 +1926,16 @@ common::xintd(
 	//
 	//10--------DO INTEGRATION-------------------------------------------------------
 	//
-	float sum = 0;
+	double sum = 0;
 	int nint = 0;
 	int npnt = 0;
-	float dist = (xhi - xlow) / fem::ffloat(nq); 				/// Size of quad interval.
+	double dist = (xhi - xlow) / fem::fdouble(nq); 				/// Size of quad interval.
 	FEM_DO_SAFE(nint, 1, nq) {
-		float cent = xlow + (fem::ffloat(nint) - 0.5) * dist; 	/// Center of interval.
+		double cent = xlow + (fem::fdouble(nint) - 0.5) * dist; 	/// Center of interval.
 		FEM_DO_SAFE(npnt, 1, np) {
 			//x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
-			float x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
-			float y = func(cmn, x); 								/// Evaluate function x(1).
+			double x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
+			double y = func(cmn, x); 								/// Evaluate function x(1).
 			//sum += f * w(npnt); 								/// Add up sum.
 			sum += y * w[npnt]; 								/// Add up sum.
 		}
@@ -1959,31 +1959,31 @@ common::xintd(
 //
 void common::rate1(
 		common& cmn,
-		float const& tph)
+		double const& tph)
 {
 	/*
 	   FEM_CMN_SVE(rate1);
 	// COMMON modpr
-	float& tau = cmn.tau;
-	arr_cref<float> xi(cmn.xi, dimension(3));
+	double& tau = cmn.tau;
+	arr_cref<double> xi(cmn.xi, dimension(3));
 	// COMMON thermcb
-	arr_cref<float> thm(cmn.thm, dimension(14));
+	arr_cref<double> thm(cmn.thm, dimension(14));
 	// COMMON nupar
-	float& t9mev = cmn.t9mev;
-	float& tnmev = cmn.tnmev;
+	double& t9mev = cmn.t9mev;
+	double& tnmev = cmn.tnmev;
 	//
 	//common_variant rates(cmn.common_rates, sve.rates_bindings);
 	const int nrec = 88;
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r(dimension(nrec));
+	mbr<double> f(dimension(nrec));
+	mbr<double> r(dimension(nrec));
 	rates.allocate(), f, r;
 	}
 	}
-	arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-	arr_ref<float> r(rates.bind<float>(), dimension(nrec));
+	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
+	arr_ref<double> r(rates.bind<double>(), dimension(nrec));
 	 */
 	//
 	//----------LINKAGES.
@@ -2042,23 +2042,23 @@ void common::rate1(
 	//
 	//10--------COMPUTE WEAK REACTION RATES (NONDEGENERATE)--------------------------
 	//
-	//arr_1d<2, float> w(fem::fill0);
-	//arr_1d<2, float> x(fem::fill0);
-	//arr_1d<2, float> y(fem::fill0);
-	//arr_1d<2, float> z(fem::fill0);
-	float _w[2+1];
-	float _x[2+1];
-	float _y[2+1];
-	float _z[2+1];
-	float uplim1 = 0;
-	float uplim2 = 0;
-	float uplim3 = 0;
-	float uplim4 = 0;
+	//arr_1d<2, double> w(fem::fill0);
+	//arr_1d<2, double> x(fem::fill0);
+	//arr_1d<2, double> y(fem::fill0);
+	//arr_1d<2, double> z(fem::fill0);
+	double _w[2+1];
+	double _x[2+1];
+	double _y[2+1];
+	double _z[2+1];
+	double uplim1 = 0;
+	double uplim2 = 0;
+	double uplim3 = 0;
+	double uplim4 = 0;
 	const int iter = 50;
-	float part1 = 0;
-	float part2 = 0;
-	float part3 = 0;
-	float part4 = 0;
+	double part1 = 0;
+	double part2 = 0;
+	double part3 = 0;
+	double part4 = 0;
 	if (xi[1] == 0) {
 		//f(1) = thm(13) / tau; 	/// Forward rate for weak np reaction.
 		f[1] = thm(13) / tau; 	/// Forward rate for weak np reaction.
@@ -2069,10 +2069,8 @@ void common::rate1(
 		//
 		//20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 		//
-		//Convert photon temp to units of MeV.
-		t9mev = tph * .086171f;
-		//Convert neutrino temp to units of Me
-		tnmev = cmn.tnu * .086171f;
+		t9mev = tph * .086171f; //Convert photon temp to units of MeV.
+		tnmev = cmn.tnu * .086171f; //Convert neutrino temp to units of Me
 		//..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
 		_w[1] = (-(t9mev / .511f) * (-88.722f));
 		_w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
@@ -2134,35 +2132,35 @@ void common::start(common& cmn)
 	/*
 	   FEM_CMN_SVE(start);
 	// COMMON evolp1
-	float& t9 = cmn.t9;
-	float& hv = cmn.hv;
+	double& t9 = cmn.t9;
+	double& hv = cmn.hv;
 	const int nnuc = 26;
-	arr_ref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+	arr_ref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
 	// COMMON evolp3
-	arr_ref<float> y0(cmn.y0, dimension(nnuc));
+	arr_ref<double> y0(cmn.y0, dimension(nnuc));
 	// COMMON modpr
-	float& tau = cmn.tau;
-	arr_cref<float> c(cmn.c, dimension(3));
-	arr_cref<float> xi(cmn.xi, dimension(3));
+	double& tau = cmn.tau;
+	arr_cref<double> c(cmn.c, dimension(3));
+	arr_cref<double> xi(cmn.xi, dimension(3));
 	// COMMON endens
-	float& rhob0 = cmn.rhob0;
+	double& rhob0 = cmn.rhob0;
 	// COMMON nupar
-	float& tnu = cmn.tnu;
-	float& cnorm = cmn.cnorm;
+	double& tnu = cmn.tnu;
+	double& cnorm = cmn.cnorm;
 	//
 	common_variant rates(cmn.common_rates, sve.rates_bindings);
 	const int nrec = 88;
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r;
+	mbr<double> f(dimension(nrec));
+	mbr<double> r;
 	rates.allocate(), f, r;
 	}
 	}
 	 */
-	//arr_cref<float> f(rates.bind<float>(), dimension(nrec));
-	///* float const& r */ rates.bind<float>();
+	//arr_cref<double> f(rates.bind<double>(), dimension(nrec));
+	///* double const& r */ rates.bind<double>();
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] driver
@@ -2267,11 +2265,11 @@ void common::start(common& cmn)
 	//..........COMPUTATIONAL SETTINGS.
 	t9 = t9i; 									/// Initial temperature.
 	tnu = t9; 									/// Initial neutrino temperature.
-	const float const1 = 0.09615f; 				/// Initial time (Ref 1).
+	const double const1 = 0.09615f; 				/// Initial time (Ref 1).
 	t = 1 / fem::pow2((const1 * t9));
 	dt = cmn.dt1; 								/// Initial time step.
 	//..........MODEL SETTINGS.
-	const float const2 = 6.6700e-8f; 			/// Modify gravitational constant.
+	const double const2 = 6.6700e-8f; 			/// Modify gravitational constant.
 	g = const2 * c[1];
 	tau = c[2]; 								/// Convert n half-life (min) to lifetime (secs).
 	tau = tau / 0.98f; 							/// Coulomb correction (Ref 2). 
@@ -2308,24 +2306,24 @@ void common::start(common& cmn)
 	//
 	//40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
 	//
-	float z = 5.930f / t9; 				//Inverse of temperature.
+	double z = 5.930f / t9; 				//Inverse of temperature.
 	//bessel(cmn, z); // old call
-	float bl1 = getBesselL(z);
-	float bl2 = getBesselL(2*z);
-	float bl3 = getBesselL(3*z);
-	float bl4 = getBesselL(4*z);
-	float bl5 = getBesselL(5*z);
+	double bl1 = getBesselL(z);
+	double bl2 = getBesselL(2*z);
+	double bl3 = getBesselL(3*z);
+	double bl4 = getBesselL(4*z);
+	double bl5 = getBesselL(5*z);
 	/*
-	   float bm1 = getBesselM(z);
-	   float bm2 = getBesselM(2*z);
-	   float bm3 = getBesselM(3*z);
-	   float bm4 = getBesselM(4*z);
-	   float bm5 = getBesselM(5*z);
-	   float bn1 = getBesselN(z);
-	   float bn2 = getBesselN(2*z);
-	   float bn3 = getBesselN(3*z);
-	   float bn4 = getBesselN(4*z);
-	   float bn5 = getBesselN(5*z);
+	   double bm1 = getBesselM(z);
+	   double bm2 = getBesselM(2*z);
+	   double bm3 = getBesselM(3*z);
+	   double bm4 = getBesselM(4*z);
+	   double bm5 = getBesselM(5*z);
+	   double bn1 = getBesselN(z);
+	   double bn2 = getBesselN(2*z);
+	   double bn3 = getBesselN(3*z);
+	   double bn4 = getBesselN(4*z);
+	   double bn5 = getBesselN(5*z);
 	 */
 	hv = 3.3683e+4f * cmn.eta1 * 2.75; 		/// (Ref 4 but with final eta).
 	cmn.phie = hv * (1.784e-5f * y[2]) / 
@@ -2386,10 +2384,10 @@ void common::nudens(
 {
 	/*
 	// COMMON modpr
-	arr_cref<float> xi(cmn.xi, dimension(3));
+	arr_cref<double> xi(cmn.xi, dimension(3));
 	// COMMON nupar
-	float& tnu = cmn.tnu;
-	float& rhonu = cmn.rhonu;
+	double& tnu = cmn.tnu;
+	double& rhonu = cmn.rhonu;
 	int& nu = cmn.nu;
 	 */
 	//
@@ -2430,8 +2428,8 @@ void common::nudens(
 	//
 	//10--------COMPUTE NEUTRINO ENERGY DENSITIES------------------------------------
 	//
-	float uplim1 = 0;
-	float uplim2 = 0;
+	double uplim1 = 0;
+	double uplim2 = 0;
 	const int iter = 50;
 	if (abs(xi[nu]) <= 0.03f) {
 		//..........SMALL xi APPROXIMATION.
@@ -2476,26 +2474,26 @@ void common::therm(
 {
 	/*
 	// COMMON evolp1
-	float& t9 = cmn.t9;
-	float& phie = cmn.phie;
+	double& t9 = cmn.t9;
+	double& phie = cmn.phie;
 	// COMMON modpr
-	float& xnu = cmn.xnu;
-	arr_cref<float> xi(cmn.xi, dimension(3));
+	double& xnu = cmn.xnu;
+	arr_cref<double> xi(cmn.xi, dimension(3));
 	// COMMON thermcb
-	arr_ref<float> thm(cmn.thm, dimension(14));
+	arr_ref<double> thm(cmn.thm, dimension(14));
 	// COMMON endens
-	float& rnb = cmn.rnb;
+	double& rnb = cmn.rnb;
 	// COMMON besselcb
-	float& bl1 = cmn.bl1;
-	float& bl2 = cmn.bl2;
-	float& bl3 = cmn.bl3;
-	float& bl4 = cmn.bl4;
-	float& bl5 = cmn.bl5;
-	float& bm1 = cmn.bm1;
-	float& bm2 = cmn.bm2;
-	float& bm3 = cmn.bm3;
-	float& bm4 = cmn.bm4;
-	float& bm5 = cmn.bm5;
+	double& bl1 = cmn.bl1;
+	double& bl2 = cmn.bl2;
+	double& bl3 = cmn.bl3;
+	double& bl4 = cmn.bl4;
+	double& bl5 = cmn.bl5;
+	double& bm1 = cmn.bm1;
+	double& bm2 = cmn.bm2;
+	double& bm3 = cmn.bm3;
+	double& bm4 = cmn.bm4;
+	double& bm5 = cmn.bm5;
 	 */
 	//
 	//
@@ -2559,42 +2557,42 @@ void common::therm(
 	//10--------COMPUTE FACTORS------------------------------------------------------
 	//
 	//z = m(electron)c**2/k(t9).
-	float z = 5.930f / t9;
-	float bl1 = getBesselL(z);
-	float bl2 = getBesselL(2*z);
-	float bl3 = getBesselL(3*z);
-	float bl4 = getBesselL(4*z);
-	float bl5 = getBesselL(5*z);
-	float bm1 = getBesselM(z);
-	float bm2 = getBesselM(2*z);
-	float bm3 = getBesselM(3*z);
-	float bm4 = getBesselM(4*z);
-	float bm5 = getBesselM(5*z);
-	float bn1 = getBesselN(z);
-	float bn2 = getBesselN(2*z);
-	float bn3 = getBesselN(3*z);
-	float bn4 = getBesselN(4*z);
-	float bn5 = getBesselN(5*z);
+	double z = 5.930f / t9;
+	double bl1 = getBesselL(z);
+	double bl2 = getBesselL(2*z);
+	double bl3 = getBesselL(3*z);
+	double bl4 = getBesselL(4*z);
+	double bl5 = getBesselL(5*z);
+	double bm1 = getBesselM(z);
+	double bm2 = getBesselM(2*z);
+	double bm3 = getBesselM(3*z);
+	double bm4 = getBesselM(4*z);
+	double bm5 = getBesselM(5*z);
+	double bn1 = getBesselN(z);
+	double bn2 = getBesselN(2*z);
+	double bn3 = getBesselN(3*z);
+	double bn4 = getBesselN(4*z);
+	double bn5 = getBesselN(5*z);
 	//Neutrino temperature.
 	cmn.tnu = (pow((rnb), (1.f / 3.f))) * cmn.t9i;
 	//..........FACTORS OF z.
-	float z1 = z;
-	float z2 = z*z;
-	float z3 = z*z*z;
-	float z4 = z*z*z*z;
-	float z5 = z*z*z*z*z;
+	double z1 = z;
+	double z2 = z*z;
+	double z3 = z*z*z;
+	double z4 = z*z*z*z;
+	double z5 = z*z*z*z*z;
 	//..........TRIGONOMETRIC FUNCTION VALUES.
 	//No chance of overflow.
-	float cosh1 = 0;
-	float cosh2 = 0;
-	float cosh3 = 0;
-	float cosh4 = 0;
-	float cosh5 = 0;
-	float sinh1 = 0;
-	float sinh2 = 0;
-	float sinh3 = 0;
-	float sinh4 = 0;
-	float sinh5 = 0;
+	double cosh1 = 0;
+	double cosh2 = 0;
+	double cosh3 = 0;
+	double cosh4 = 0;
+	double cosh5 = 0;
+	double sinh1 = 0;
+	double sinh2 = 0;
+	double sinh3 = 0;
+	double sinh4 = 0;
+	double sinh5 = 0;
 	if (phie <= 17.f) {
 		cosh1 = cosh(phie);
 		cosh2 = cosh(2*phie);
@@ -2678,7 +2676,7 @@ void common::therm(
 	thm(13) = 1.000f + 0.565f / z1 - 6.382f / z2 + 11.108f / z3 +
 		36.492f / z4 + 27.512f / z5;
 	//(Ref 14
-	const float q = 2.531f;
+	const double q = 2.531f;
 	thm(14) = (5.252f / z1 - 16.229f / z2 + 18.059f / z3 + 34.181f /
 			z4 + 27.617f / z5) * ex(-q * z);
 	//
@@ -2740,30 +2738,30 @@ void common::eqslin(
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> a(dimension(nnuc, nnuc));
-	mbr<float> b(dimension(nnuc));
-	mbr<float> y(dimension(nnuc));
+	mbr<double> a(dimension(nnuc, nnuc));
+	mbr<double> b(dimension(nnuc));
+	mbr<double> y(dimension(nnuc));
 	lncoef.allocate(), a, b, y;
 	}
 	}
 	arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
-	arr_cref<float> b(lncoef.bind<float>(), dimension(nnuc));
-	arr_ref<float> y(lncoef.bind<float>(), dimension(nnuc));
+	arr_cref<double> b(lncoef.bind<double>(), dimension(nnuc));
+	arr_ref<double> y(lncoef.bind<double>(), dimension(nnuc));
 	 */
 	int nord = 0;
 	int i = 0;
-	//arr_1d<nnuc, float> x(fem::fill0);
-	float x[nnuc+1];
+	//arr_1d<nnuc, double> x(fem::fill0);
+	double x[nnuc+1];
 	int j = 0;
-	//arr<float, 2> a0(dimension(nnuc, nnuc), fem::fill0);
-	float a0[nnuc+1][nnuc+1];			// TODO fix to zero indexing.
-	float cx = 0;
+	//arr<double, 2> a0(dimension(nnuc, nnuc), fem::fill0);
+	double a0[nnuc+1][nnuc+1];			// TODO fix to zero indexing.
+	double cx = 0;
 	int k = 0;
-	float sum = 0;
-	float xdy = 0;
-	const float eps = 2.e-4f;
+	double sum = 0;
+	double xdy = 0;
+	const double eps = 2.e-4f;
 	const int mord = 1;
-	float r = 0;
+	double r = 0;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2919,10 +2917,10 @@ statement_300:
    {
    fem::variant_bindings lncoef_bindings;
    fem::variant_bindings rates_bindings;
-   arr<float> si;
-   arr<float> sj;
-   arr<float> sk;
-   arr<float> sl;
+   arr<double> si;
+   arr<double> sj;
+   arr<double> sk;
+   arr<double> sl;
 
    sol_save() :
    si(dimension(11), fem::fill0),
@@ -2949,78 +2947,78 @@ void common::sol(
 	   arr_cref<int> jj(cmn.jj, dimension(nrec));
 	   arr_cref<int> kk(cmn.kk, dimension(nrec));
 	   arr_cref<int> ll(cmn.ll, dimension(nrec));
-	   arr_cref<float> rev(cmn.rev, dimension(nrec));
-	   arr_cref<float> q9(cmn.q9, dimension(nrec));
-	   float& t9 = cmn.t9;
+	   arr_cref<double> rev(cmn.rev, dimension(nrec));
+	   arr_cref<double> q9(cmn.q9, dimension(nrec));
+	   double& t9 = cmn.t9;
 	   const int nnuc = 26;
-	   arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	   arr_ref<float> dydt(cmn.dydt, dimension(nnuc));
-	   arr_cref<float> y0(cmn.y0, dimension(nnuc));
-	   float& dt = cmn.dt;
-	   float& rhob = cmn.rhob;
+	   arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+	   arr_ref<double> dydt(cmn.dydt, dimension(nnuc));
+	   arr_cref<double> y0(cmn.y0, dimension(nnuc));
+	   double& dt = cmn.dt;
+	   double& rhob = cmn.rhob;
 	   int& mbad = cmn.mbad;
 	   int& isize = cmn.isize;
 	//
 	common_variant rates(cmn.common_rates, sve.rates_bindings);
 	common_variant lncoef(cmn.common_lncoef, sve.lncoef_bindings);
-	arr_ref<float> si(sve.si, dimension(11));
-	arr_ref<float> sj(sve.sj, dimension(11));
-	arr_ref<float> sk(sve.sk, dimension(11));
-	arr_ref<float> sl(sve.sl, dimension(11));
+	arr_ref<double> si(sve.si, dimension(11));
+	arr_ref<double> sj(sve.sj, dimension(11));
+	arr_ref<double> sk(sve.sk, dimension(11));
+	arr_ref<double> sl(sve.sl, dimension(11));
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r(dimension(nrec));
+	mbr<double> f(dimension(nrec));
+	mbr<double> r(dimension(nrec));
 	rates.allocate(), f, r;
 	}
 	{
 	mbr<double> a(dimension(nnuc, nnuc));
-	mbr<float> b(dimension(nnuc));
-	mbr<float> yx(dimension(nnuc));
+	mbr<double> b(dimension(nnuc));
+	mbr<double> yx(dimension(nnuc));
 	lncoef.allocate(), a, b, yx;
 	}
 	}
-	arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-	arr_ref<float> r(rates.bind<float>(), dimension(nrec));
+	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
+	arr_ref<double> r(rates.bind<double>(), dimension(nrec));
 	arr_ref<double, 2> a(lncoef.bind<double>(), dimension(nnuc, nnuc));
-	arr_ref<float> b(lncoef.bind<float>(), dimension(nnuc));
-	arr_cref<float> yx(lncoef.bind<float>(), dimension(nnuc));
+	arr_ref<double> b(lncoef.bind<double>(), dimension(nnuc));
+	arr_cref<double> yx(lncoef.bind<double>(), dimension(nnuc));
 	if (is_called_first_time) {
 	{
-	static const float values[] = {
+	static const double values[] = {
 	1.f, 1.f, 1.f, 1.f, 1.f, 2.f, 3.f, 2.f, 1.f, 1.f, 2.f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	si;
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 	0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	sj;
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 	0.f, 0.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f, 0.f, 2.f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	sk;
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 	1.f, 1.f, 1.f, 2.f, 2.f, 1.f, 1.f, 1.f, 2.f, 3.f, 1.f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	sl;
 	*/
-	const float si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
-	const float sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
-	const float sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
-	const float sl[] = {NOT_USED, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
-	float t932 = 0;
-	float t9m32 = 0;
+	const double si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
+	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
+	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
+	const double sl[] = {NOT_USED, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
+	double t932 = 0;
+	double t9m32 = 0;
 	int isize1 = 0;
 	int i = 0;
 	int j = 0;
@@ -3028,18 +3026,18 @@ void common::sol(
 	int ind = 0;
 	int k = 0;
 	int l = 0;
-	float ri = 0;
-	float rj = 0;
-	float rk = 0;
-	float rl = 0;
-	float ci = 0;
-	float cj = 0;
-	float ck = 0;
-	float cl = 0;
-	float bdln = 0;
+	double ri = 0;
+	double rj = 0;
+	double rk = 0;
+	double rl = 0;
+	double ci = 0;
+	double cj = 0;
+	double ck = 0;
+	double cl = 0;
+	double bdln = 0;
 	int ierror = 0;
-	//arr_1d<nnuc, float> yy(fem::fill0);
-	//float yy[nnuc+1];
+	//arr_1d<nnuc, double> yy(fem::fill0);
+	//double yy[nnuc+1];
 	const int iw = 6;
 	//
 	//----------LINKAGES.
@@ -3423,21 +3421,21 @@ void common::rate2(
 	//FEM_CMN_SVE(rate2);
 	// COMMON evolp1
 	/*
-	   float& t9 = cmn.t9;
+	   double& t9 = cmn.t9;
 	//
 	common_variant rates(cmn.common_rates, sve.rates_bindings);
 	const int nrec = 88;
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r(dimension(nrec));
+	mbr<double> f(dimension(nrec));
+	mbr<double> r(dimension(nrec));
 	rates.allocate(), f, r;
 	}
 	}
-	arr_ref<float> f(rates.bind<float>(), dimension(nrec));
+	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
 	 */
-	//* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] derivs
@@ -3468,33 +3466,33 @@ void common::rate2(
 	//10--------TEMPERATURE FACTORS--------------------------------------------------
 	//
 	//t9**(1/3)
-	float t913 = pow(t9, (.33333333f));
+	double t913 = pow(t9, (.33333333f));
 	//t9**(2/3)
-	float t923 = t913 * t913;
+	double t923 = t913 * t913;
 	//t9**(4/3)
-	float t943 = t923 * t923;
+	double t943 = t923 * t923;
 	//t9**(5/3)
-	float t953 = t9 * t923;
+	double t953 = t9 * t923;
 	//t9**(1/2)
-	float t912 = sqrt(t9);
+	double t912 = sqrt(t9);
 	//t9**(3/2)
-	float t932 = t9 * t912;
+	double t932 = t9 * t912;
 	//t9**(-1)
-	float t9m1 = 1 / t9;
+	double t9m1 = 1 / t9;
 	//t9**(-2/3)
-	float t9m23 = 1.0f / t923;
+	double t9m23 = 1.0f / t923;
 	//t9**(-3/2)
-	float t9m32 = 1.0f / t932;
+	double t9m32 = 1.0f / t932;
 	//For reaction 17.
-	float t9a = t9 / (1.0f + 13.076f * t9);
+	double t9a = t9 / (1.0f + 13.076f * t9);
 	//t9a**(3/2)
-	float t9a32 = pow(t9a, (1.5f));
+	double t9a32 = pow(t9a, (1.5f));
 	//For reaction 18.
-	float t9b = t9 / (1. + 49.18f * t9);
+	double t9b = t9 / (1. + 49.18f * t9);
 	//t9b**(3/2)
-	float t9b32 = pow(t9b, (1.5f));
+	double t9b32 = pow(t9b, (1.5f));
 	//For reaction 22.
-	float t9c = 0;
+	double t9c = 0;
 	if (t9 > 10.) {
 		t9c = 1.;
 	}
@@ -3503,27 +3501,27 @@ void common::rate2(
 				pow(1.f - 9.69e-2f * t9, (2.f / 3.f)));
 	}
 	//t9c**(1/3)
-	float t9c13 = pow(t9c, (.3333333f));
+	double t9c13 = pow(t9c, (.3333333f));
 	//t9c**(5/6)
-	float t9c56 = pow(t9c, (.8333333f));
+	double t9c56 = pow(t9c, (.8333333f));
 	//For reaction 24.
-	float t9d = t9 / (1. + 0.759f * t9);
+	double t9d = t9 / (1. + 0.759f * t9);
 	//t9d**(1/3)
-	float t9d13 = pow(t9d, (.3333333f));
+	double t9d13 = pow(t9d, (.3333333f));
 	//t9d**(5/6)
-	float t9d56 = pow(t9d, (.8333333f));
+	double t9d56 = pow(t9d, (.8333333f));
 	//For reaction 26.
-	float t9e = t9 / (1. + 0.1378f * t9);
+	double t9e = t9 / (1. + 0.1378f * t9);
 	//t9e**(1/3)
-	float t9e13 = pow(t9e, (.3333333f));
+	double t9e13 = pow(t9e, (.3333333f));
 	//t9e**(5/6)
-	float t9e56 = pow(t9e, (.8333333f));
+	double t9e56 = pow(t9e, (.8333333f));
 	//For reaction 27.
-	float t9f = t9 / (1. + 0.1071f * t9);
+	double t9f = t9 / (1. + 0.1071f * t9);
 	//t9f**(1/3)
-	float t9f13 = pow(t9f, (.3333333f));
+	double t9f13 = pow(t9f, (.3333333f));
 	//t9f**(5/6)
-	float t9f56 = pow(t9f, (.8333333f));
+	double t9f56 = pow(t9f, (.8333333f));
 	//
 	//20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
 	//
@@ -3667,21 +3665,21 @@ void common::rate3(
 	/*
 	   FEM_CMN_SVE(rate3);
 	// COMMON evolp1
-	float& t9 = cmn.t9;
+	double& t9 = cmn.t9;
 	//
 	common_variant rates(cmn.common_rates, sve.rates_bindings);
 	const int nrec = 88;
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r(dimension(nrec));
+	mbr<double> f(dimension(nrec));
+	mbr<double> r(dimension(nrec));
 	rates.allocate(), f, r;
 	}
 	}
-	arr_ref<float> f(rates.bind<float>(), dimension(nrec));
+	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
 	 */
-	//* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] derivs
@@ -3712,39 +3710,39 @@ void common::rate3(
 	//10--------TEMPERATURE FACTORS--------------------------------------------------
 	//
 	//t9**(1/3)
-	float t913 = pow(t9, (.33333333f));
+	double t913 = pow(t9, (.33333333f));
 	//t9**(2/3)
-	float t923 = t913 * t913;
+	double t923 = t913 * t913;
 	//t9**(4/3)
-	float t943 = t923 * t923;
+	double t943 = t923 * t923;
 	//t9**(5/3)
-	float t953 = t9 * t923;
+	double t953 = t9 * t923;
 	//t9**(1/2)
-	float t912 = sqrt(t9);
+	double t912 = sqrt(t9);
 	//t9**(3/2)
-	float t932 = t9 * t912;
+	double t932 = t9 * t912;
 	//t9**(1/5)
-	float t915 = pow(t9, (.2f));
+	double t915 = pow(t9, (.2f));
 	//t9**(5/4)
-	float t954 = pow(t9, (1.25f));
+	double t954 = pow(t9, (1.25f));
 	//t9**(-1)
-	float t9m1 = 1.0f / t9;
+	double t9m1 = 1.0f / t9;
 	//t9**(-2/3)
-	float t9m23 = 1.0f / t923;
+	double t9m23 = 1.0f / t923;
 	//t9**(-3/2)
-	float t9m32 = 1.0f / t932;
+	double t9m32 = 1.0f / t932;
 	//t9**(-3/4)
-	float t9m34 = sqrt(t9m32);
+	double t9m34 = sqrt(t9m32);
 	//t9**(-1/5)
-	float t9m15 = 1.0f / t915;
+	double t9m15 = 1.0f / t915;
 	//t9**(-5/4)
-	float t9m54 = 1.0f / t954;
+	double t9m54 = 1.0f / t954;
 	//For reaction 53.
-	float t9a = t9 / (1. + t9 / 15.1f);
+	double t9a = t9 / (1. + t9 / 15.1f);
 	//t9a**(1/3)
-	float t9a13 = pow(t9a, (.3333333f));
+	double t9a13 = pow(t9a, (.3333333f));
 	//t9a**(5/6)
-	float t9a56 = pow(t9a, (.8333333f));
+	double t9a56 = pow(t9a, (.8333333f));
 	//
 	//20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
 	//
@@ -3923,21 +3921,21 @@ void common::rate4(
 	/*
 	   FEM_CMN_SVE(rate4);
 	// COMMON evolp1
-	float& t9 = cmn.t9;
+	double& t9 = cmn.t9;
 	//
 	common_variant rates(cmn.common_rates, sve.rates_bindings);
 	const int nrec = 88;
 	if (is_called_first_time) {
 	using fem::mbr; // member of variant common or equivalence
 	{
-	mbr<float> f(dimension(nrec));
-	mbr<float> r(dimension(nrec));
+	mbr<double> f(dimension(nrec));
+	mbr<double> r(dimension(nrec));
 	rates.allocate(), f, r;
 	}
 	}
-	arr_ref<float> f(rates.bind<float>(), dimension(nrec));
+	arr_ref<double> f(rates.bind<double>(), dimension(nrec));
 	 */
-	//* arr_cref<float> r( */ rates.bind<float>() /* , dimension(nrec)) */ ;
+	//* arr_cref<double> r( */ rates.bind<double>() /* , dimension(nrec)) */ ;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] derivs
@@ -3967,45 +3965,45 @@ void common::rate4(
 	//10--------TEMPERATURE FACTORS--------------------------------------------------
 	//
 	//t9**(1/3)
-	float t913 = pow(t9, (.33333333f));
+	double t913 = pow(t9, (.33333333f));
 	//t9**(2/3)
-	float t923 = t913 * t913;
+	double t923 = t913 * t913;
 	//t9**(4/3)
-	float t943 = t923 * t923;
+	double t943 = t923 * t923;
 	//t9**(5/3)
-	float t953 = t9 * t923;
+	double t953 = t9 * t923;
 	//t9**(1/2)
-	float t912 = sqrt(t9);
+	double t912 = sqrt(t9);
 	//t9**(3/2)
-	float t932 = t9 * t912;
+	double t932 = t9 * t912;
 	//t9**(3/5)
-	float t935 = pow(t9, (.6f));
+	double t935 = pow(t9, (.6f));
 	//t9**(6/5)
-	float t965 = pow(t9, (1.2f));
+	double t965 = pow(t9, (1.2f));
 	//t9**(3/8)
-	float t938 = pow(t9, (.375f));
+	double t938 = pow(t9, (.375f));
 	//t9**(1/3)
-	float t9m13 = 1.0f / t913;
+	double t9m13 = 1.0f / t913;
 	//t9**(-2/3)
-	float t9m23 = 1.0f / t923;
+	double t9m23 = 1.0f / t923;
 	//t9**(-3/2)
-	float t9m32 = 1.0f / t932;
+	double t9m32 = 1.0f / t932;
 	//t9**(-6/5)
-	float t9m65 = 1.0f / t965;
+	double t9m65 = 1.0f / t965;
 	//For reaction 82.
-	float t9a = t9 / (1. + 4.78e-2f * t9 + 7.56e-3f * t953 / pow((
+	double t9a = t9 / (1. + 4.78e-2f * t9 + 7.56e-3f * t953 / pow((
 					1.f + 4.78e-2f * t9), (2.f / 3.f)));
 	//t9a**(1/3)
-	float t9a13 = pow(t9a, (.33333333f));
+	double t9a13 = pow(t9a, (.33333333f));
 	//t9a**(5/6)
-	float t9a56 = pow(t9a, (.83333333f));
+	double t9a56 = pow(t9a, (.83333333f));
 	//For reaction 84.
-	float t9b = t9 / (1. + 7.76e-2f * t9 + 2.64e-2f * t953 / pow((
+	double t9b = t9 / (1. + 7.76e-2f * t9 + 2.64e-2f * t953 / pow((
 					1.f + 7.76e-2f * t9), (2.f / 3.f)));
 	//t9b**(1/3)
-	float t9b13 = pow(t9b, (.33333333f));
+	double t9b13 = pow(t9b, (.33333333f));
 	//t9b**(5/6)
-	float t9b56 = pow(t9b, (.83333333f));
+	double t9b56 = pow(t9b, (.83333333f));
 	//
 	//20--------NEUTRON, PHOTON REACTIONS--------------------------------------------
 	//
@@ -4150,31 +4148,31 @@ void common::derivs(
 		int const& loop)
 {
 	/*
-	   float& t9 = cmn.t9;
-	   float& hv = cmn.hv;
+	   double& t9 = cmn.t9;
+	   double& hv = cmn.hv;
 	   const int nnuc = 26;
-	   arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	   float& dt9 = cmn.dt9;
-	   arr_cref<float> dydt(cmn.dydt, dimension(nnuc));
-	   float& dlt9dt = cmn.dlt9dt;
-	   arr_cref<float> thm(cmn.thm, dimension(14));
-	   float& hubcst = cmn.hubcst;
-	   arr_cref<float> zm(cmn.zm, dimension(nnuc));
-	   arr_cref<float> dm(cmn.dm, dimension(nnuc));
+	   arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+	   double& dt9 = cmn.dt9;
+	   arr_cref<double> dydt(cmn.dydt, dimension(nnuc));
+	   double& dlt9dt = cmn.dlt9dt;
+	   arr_cref<double> thm(cmn.thm, dimension(14));
+	   double& hubcst = cmn.hubcst;
+	   arr_cref<double> zm(cmn.zm, dimension(nnuc));
+	   arr_cref<double> dm(cmn.dm, dimension(nnuc));
 	 */
 	//
-	const float pi = boost::math::constants::pi<float>();
-	//float sumy = 0;
-	//float sumzy = 0;
-	//float sumdy = 0;
-	//float summdy = 0;
-	//float sumzdy = 0;
+	const double pi = boost::math::constants::pi<double>();
+	//double sumy = 0;
+	//double sumzy = 0;
+	//double sumdy = 0;
+	//double summdy = 0;
+	//double sumzdy = 0;
 	int i = 0;
-	float dphdt9 = 0;
-	float dphdln = 0;
-	float dphdzy = 0;
-	float bar = 0;
-	float dlndt9 = 0;
+	double dphdt9 = 0;
+	double dphdln = 0;
+	double dphdzy = 0;
+	double bar = 0;
+	double dlndt9 = 0;
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] driver
@@ -4302,11 +4300,11 @@ statement_120:
 	//20--------COMPUTE DERIVATIVES FOR TEMPERATURE, hv, AND CHEMICAL POTENTIAL------
 	//
 	//..........INITIALIZE SUMS TO ZERO.
-	float sumy = 0;
-	float sumzy = 0;
-	float sumdy = 0;
-	float summdy = 0;
-	float sumzdy = 0;
+	double sumy = 0;
+	double sumzy = 0;
+	double sumdy = 0;
+	double summdy = 0;
+	double sumzdy = 0;
 	//..........ACCUMULATE TO GET SUM.
 	FEM_DO_SAFE(i, 1, isize) {
 		sumy += y[i]; 					/// Sum of abundance.
@@ -4350,22 +4348,22 @@ void common::accum(
 	/*
 	// COMMON evolp1
 	const int nnuc = 26;
-	arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+	arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
 	// COMMON thermcb
-	arr_cref<float> thm(cmn.thm, dimension(14));
+	arr_cref<double> thm(cmn.thm, dimension(14));
 	// COMMON nucdat
-	arr_cref<float> am(cmn.am, dimension(nnuc));
+	arr_cref<double> am(cmn.am, dimension(nnuc));
 	// COMMON flags
 	int& it = cmn.it;
 	// COMMON outdat
 	const int itmax = 40;
-	arr_ref<float, 2> xout(cmn.xout, dimension(itmax, nnuc));
-	arr_ref<float, 2> thmout(cmn.thmout, dimension(itmax, 6));
-	arr_ref<float> t9out(cmn.t9out, dimension(itmax));
-	arr_ref<float> tout(cmn.tout, dimension(itmax));
-	arr_ref<float> dtout(cmn.dtout, dimension(itmax));
-	arr_ref<float> etaout(cmn.etaout, dimension(itmax));
-	arr_ref<float> hubout(cmn.hubout, dimension(itmax));
+	arr_ref<double, 2> xout(cmn.xout, dimension(itmax, nnuc));
+	arr_ref<double, 2> thmout(cmn.thmout, dimension(itmax, 6));
+	arr_ref<double> t9out(cmn.t9out, dimension(itmax));
+	arr_ref<double> tout(cmn.tout, dimension(itmax));
+	arr_ref<double> dtout(cmn.dtout, dimension(itmax));
+	arr_ref<double> etaout(cmn.etaout, dimension(itmax));
+	arr_ref<double> hubout(cmn.hubout, dimension(itmax));
 	 */
 	//
 	//
@@ -4501,13 +4499,13 @@ void common::driver(
 {
 	/*
 	   const int nnuc = 26;
-	   arr_cref<float> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
-	   arr_cref<float> dydt(cmn.dydt, dimension(nnuc));
-	   float& ytmin = cmn.ytmin;
+	   arr_cref<double> y(static_cast<common_evolp1&>(cmn).y, dimension(nnuc));
+	   arr_cref<double> dydt(cmn.dydt, dimension(nnuc));
+	   double& ytmin = cmn.ytmin;
 	   int& inc = cmn.inc;
-	   float& t = cmn.t;
-	   float& dt = cmn.dt;
-	   float& dlt9dt = cmn.dlt9dt;
+	   double& t = cmn.t;
+	   double& dt = cmn.dt;
+	   double& dlt9dt = cmn.dlt9dt;
 	   int& ltime = cmn.ltime;
 	   int& is = cmn.is;
 	   int& ip = cmn.ip;
@@ -4517,21 +4515,21 @@ void common::driver(
 	//
 	int mvar = 0;
 	int loop = 0;
-	const float cl = 1.e-16f;
-	float dtmin = 0;
+	const double cl = 1.e-16f;
+	double dtmin = 0;
 	int i = 0;
-	float dtl = 0;
+	double dtl = 0;
 	const int nvar = 29;
 	/*
-	   arr_1d<nvar, float> v(fem::fill0);
-	   arr_1d<nvar, float> v0(fem::fill0);
-	   arr_1d<nvar, float> dvdt(fem::fill0);
-	   arr_1d<nvar, float> dvdt0(fem::fill0);
+	   arr_1d<nvar, double> v(fem::fill0);
+	   arr_1d<nvar, double> v0(fem::fill0);
+	   arr_1d<nvar, double> dvdt(fem::fill0);
+	   arr_1d<nvar, double> dvdt0(fem::fill0);
 	 */
-	float v[nvar+1];
-	float v0[nvar+1];
-	float dvdt[nvar+1];
-	float dvdt0[nvar+1];
+	double v[nvar+1];
+	double v0[nvar+1];
+	double dvdt[nvar+1];
+	double dvdt0[nvar+1];
 	FEM_DO_SAFE(i, 1, nvar) {
 		v[i] = 0;
 		v0[i] = 0;
@@ -4749,7 +4747,7 @@ statement_200:
 // Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
 // TODO make private
-void common::qvary(common& cmn, int index, float value)
+void common::qvary(common& cmn, int index, double value)
 {
 	//----------EQUIVALENCE VARIABLE.
 	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
@@ -4780,7 +4778,7 @@ void common::run(common& cmn)
 	common_read read(cmn);
 	common_write write(cmn);
 	/*
-	   float& eta1 = cmn.eta1;
+	   double& eta1 = cmn.eta1;
 	//int& itime = static_cast<common_checkcb&>(cmn).itime;
 	int& itime = cmn.itime;
 	int& irun = cmn.irun;
@@ -4815,19 +4813,19 @@ void common::run(common& cmn)
 	int jnum = 0;
 	int knum = 0;
 	int i = 0;
-	arr_1d<3, float> rnum1(fem::fill0);
-	arr_1d<3, float> rnum2(fem::fill0);
-	arr_1d<3, float> rnum3(fem::fill0);
+	arr_1d<3, double> rnum1(fem::fill0);
+	arr_1d<3, double> rnum2(fem::fill0);
+	arr_1d<3, double> rnum3(fem::fill0);
 	arr_1d<3, int> inum(fem::fill0);
 	fem::str<1> lchose;
 	int l = 0;
 	arr_1d<3, int> lnum(fem::fill0);
 	int lnumb1 = 0;
-	float rnumb1 = 0;
+	double rnumb1 = 0;
 	int lnumb2 = 0;
-	float rnumb2 = 0;
+	double rnumb2 = 0;
 	int lnumb3 = 0;
-	float rnumb3 = 0;
+	double rnumb3 = 0;
 	static const char* format_1001 = "(i1)";
 	static const char* format_2200 = "(' ','Begin computation run....')";
 	static const char* format_2202 =
@@ -5111,7 +5109,7 @@ statement_232:
 		//Outer loop.
 		FEM_DO_SAFE(lnumb1, 0, lnum(1) - 1) {
 			//Value of param fo
-			rnumb1 = rnum1(1) + fem::ffloat(lnumb1) * rnum3(1);
+			rnumb1 = rnum1(1) + fem::fdouble(lnumb1) * rnum3(1);
 			if ((inum(1) >= 1) && (inum(1) <= 8)) {
 				if (inum(1) == 1) {
 					//Vary baryon-to-photon ratio.
@@ -5125,7 +5123,7 @@ statement_232:
 			//Middle loop.
 			FEM_DO_SAFE(lnumb2, 0, lnum(2) - 1) {
 				//Value of param
-				rnumb2 = rnum1(2) + fem::ffloat(lnumb2) * rnum3(2);
+				rnumb2 = rnum1(2) + fem::fdouble(lnumb2) * rnum3(2);
 				if ((inum(2) >= 1) && (inum(2) <= 8)) {
 					if (inum(2) == 1) {
 						//Vary baryon-to-photon ratio.
@@ -5139,7 +5137,7 @@ statement_232:
 				//Inner loop.
 				FEM_DO_SAFE(lnumb3, 0, lnum(3) - 1) {
 					//Value of parameter.
-					rnumb3 = rnum1(3) + fem::ffloat(lnumb3) * rnum3(3);
+					rnumb3 = rnum1(3) + fem::fdouble(lnumb3) * rnum3(3);
 					if ((inum(3) >= 1) && (inum(3) <= 8)) {
 						if (inum(3) == 1) {
 							//Vary baryon-to-photon ratio.
@@ -5195,24 +5193,24 @@ void common::output(common& cmn)
 	common_read read(cmn);
 	common_write write(cmn);
 	/*
-	   float& cy = cmn.cy;
-	   float& ct = cmn.ct;
-	   float& t9i = cmn.t9i;
-	   float& t9f = cmn.t9f;
-	   float& ytmin = cmn.ytmin;
-	   arr_cref<float> c(cmn.c, dimension(3));
-	   float& cosmo = cmn.cosmo;
-	   arr_cref<float> xi(cmn.xi, dimension(3));
+	   double& cy = cmn.cy;
+	   double& ct = cmn.ct;
+	   double& t9i = cmn.t9i;
+	   double& t9f = cmn.t9f;
+	   double& ytmin = cmn.ytmin;
+	   arr_cref<double> c(cmn.c, dimension(3));
+	   double& cosmo = cmn.cosmo;
+	   arr_cref<double> xi(cmn.xi, dimension(3));
 	   int& it = cmn.it;
 	   const int itmax = 40;
 	   const int nnuc = 26;
-	   arr_cref<float, 2> xout(cmn.xout, dimension(itmax, nnuc));
-	   arr_cref<float, 2> thmout(cmn.thmout, dimension(itmax, 6));
-	   arr_cref<float> t9out(cmn.t9out, dimension(itmax));
-	   arr_cref<float> tout(cmn.tout, dimension(itmax));
-	   arr_cref<float> dtout(cmn.dtout, dimension(itmax));
-	   arr_cref<float> etaout(cmn.etaout, dimension(itmax));
-	   arr_cref<float> hubout(cmn.hubout, dimension(itmax));
+	   arr_cref<double, 2> xout(cmn.xout, dimension(itmax, nnuc));
+	   arr_cref<double, 2> thmout(cmn.thmout, dimension(itmax, 6));
+	   arr_cref<double> t9out(cmn.t9out, dimension(itmax));
+	   arr_cref<double> tout(cmn.tout, dimension(itmax));
+	   arr_cref<double> dtout(cmn.dtout, dimension(itmax));
+	   arr_cref<double> etaout(cmn.etaout, dimension(itmax));
+	   arr_cref<double> hubout(cmn.hubout, dimension(itmax));
 	   int& nout = cmn.nout;
 	 */
 	//
@@ -5558,15 +5556,15 @@ common::common(
 	   FEM_CMN_SVE(blockdata_unnamed);
 	// COMMON recpr0
 	const int nrec = 88;
-	arr_ref<float, 2> reacpr(cmn.reacpr, dimension(nrec, 8));
+	arr_ref<double, 2> reacpr(cmn.reacpr, dimension(nrec, 8));
 	// COMMON modpr0
-	arr_ref<float> c0(cmn.c0, dimension(3));
-	arr_ref<float> xi0(cmn.xi0, dimension(3));
+	arr_ref<double> c0(cmn.c0, dimension(3));
+	arr_ref<double> xi0(cmn.xi0, dimension(3));
 	// COMMON nucdat
 	const int nnuc = 26;
-	arr_ref<float> am(cmn.am, dimension(nnuc));
-	arr_ref<float> zm(cmn.zm, dimension(nnuc));
-	arr_ref<float> dm(cmn.dm, dimension(nnuc));
+	arr_ref<double> am(cmn.am, dimension(nnuc));
+	arr_ref<double> zm(cmn.zm, dimension(nnuc));
+	arr_ref<double> dm(cmn.dm, dimension(nnuc));
 	//
 	 */
 	/*
@@ -5574,36 +5572,36 @@ common::common(
 	   int j = 0;
 	   if (is_called_first_time) {
 	   {
-	   static const float values[] = {
+	   static const double values[] = {
 	   1.f, 1.f, 2.f, 3.f, 3.f, 4.f, 6.f, 7.f, 7.f, 8.f, 8.f, 9.f,
 	   10.f, 11.f, 11.f, 12.f, 12.f, 12.f, 13.f, 13.f, 14.f, 14.f,
 	   14.f, 15.f, 15.f, 16.f
 	   };
-	   fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	   fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	   am;
 	   }
 	   {
-	   static const float values[] = {
+	   static const double values[] = {
 	   0.f, 1.f, 1.f, 1.f, 2.f, 2.f, 3.f, 3.f, 4.f, 3.f, 5.f, 4.f,
 	   5.f, 5.f, 6.f, 5.f, 6.f, 7.f, 6.f, 7.f, 6.f, 7.f, 8.f, 7.f,
 	   8.f, 8.f
 	   };
-	   fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	   fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	   zm;
 	   }
 	   {
-	   static const float values[] = {
+	   static const double values[] = {
 	   .008665f, .007825f, .014102f, .016050f, .016030f, .002603f,
 	   .015125f, .016004f, .016929f, .022487f, .024609f, .012186f,
 	   .012939f, .009305f, .011432f, .014354f, .000000f, .018641f,
 	   .003354f, .005738f, .003242f, .003074f, .008597f, .000108f,
 	   .003070f, -.005085f
 	   };
-	   fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	   fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	   dm;
 	   }
 	   {
-	   static const float values[] = {
+	   static const double values[] = {
 	   1.f, 1.f, 1.f, 0.f, 0.f, 2.f, 0.0f, 0.0f, 2.f, 1.f, 4.f, 0.f,
 	   0.f, 5.f, 0.0f, 0.0f, 3.f, 4.f, 10.f, 0.f, 0.f, 6.f, 0.0f,
 	   0.0f, 4.f, 1.f, 16.f, 0.f, 0.f, 17.f, 0.0f, 0.0f, 5.f, 1.f,
@@ -5614,7 +5612,7 @@ common::common(
 	   0.f, 22.f, 0.0f, 0.0f, 11.f, 1.f, 25.f, 0.f, 0.f, 24.f,
 	   0.0f, 0.0f
 	   };
-	   fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	   fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	   FEM_DO_SAFE(i, 1, 11) {
 	   FEM_DO_SAFE(j, 1, 8) {
 	   data, reacpr(i, j);
@@ -5622,7 +5620,7 @@ common::common(
 	   }
 	   }
 	   {
-	   static const float values[] = {
+	   static const double values[] = {
 	   12.f, 2.f, 2.f, 1.f, 0.f, 3.f, 0.471f, 25.82f, 13.f, 2.f,
 	   3.f, 1.f, 0.f, 4.f, 1.63f, 72.62f, 14.f, 2.f, 5.f, 1.f,
 	   0.f, 6.f, 2.61f, 238.81f, 15.f, 2.f, 7.f, 1.f, 0.f, 8.f,
@@ -5634,7 +5632,7 @@ common::common(
 	   2.61f, 229.932f, 22.f, 2.f, 7.f, 2.f, 0.f, 9.f, 1.19f,
 	   65.054f
 	   };
-	   fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	   fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	   FEM_DO_SAFE(i, 12, 22) {
 	   FEM_DO_SAFE(j, 1, 8) {
 	   data, reacpr(i, j);
@@ -5642,7 +5640,7 @@ common::common(
 	   }
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		23.f, 3.f, 7.f, 2.f, 5.f, 6.f, 1.07f, 46.631f, 24.f, 5.f,
 		8.f, 2.f, 0.f, 6.f, 4.69f, 201.291f, 25.f, 2.f, 6.f, 3.f,
 		0.f, 7.f, 1.53f, 17.118f, 26.f, 2.f, 6.f, 4.f, 0.f, 8.f,
@@ -5654,7 +5652,7 @@ common::common(
 		3.39f, 149.230f, 33.f, 9.f, 8.f, 3.f, 1.f, 6.f, 9.95f,
 		175.476f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 23, 33) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5662,7 +5660,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		34.f, 9.f, 9.f, 3.f, 2.f, 6.f, 9.97f, 194.557f, 35.f, 2.f,
 		8.f, 1.f, 0.f, 10.f, 1.31f, 23.59f, 36.f, 2.f, 13.f, 1.f,
 		0.f, 14.f, 3.04f, 132.95f, 37.f, 2.f, 14.f, 1.f, 0.f, 16.f,
@@ -5674,7 +5672,7 @@ common::common(
 		17.f, 7.01f, 185.173f, 44.f, 2.f, 15.f, 2.f, 0.f, 18.f,
 		2.33f, 6.975f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 34, 44) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5682,7 +5680,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		45.f, 3.f, 16.f, 2.f, 1.f, 17.f, 3.00f, 146.08f, 46.f, 3.f,
 		12.f, 2.f, 6.f, 7.f, 0.618f, 24.674f, 47.f, 3.f, 13.f, 2.f,
 		6.f, 9.f, 0.754f, 13.301f, 48.f, 3.f, 16.f, 2.f, 6.f, 12.f,
@@ -5694,7 +5692,7 @@ common::common(
 		10.3f, 66.160f, 55.f, 3.f, 12.f, 3.f, 1.f, 13.f, 2.07f,
 		50.63f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 45, 55) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5702,7 +5700,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		56.f, 3.f, 13.f, 3.f, 2.f, 14.f, 6.44f, 107.13f, 57.f, 3.f,
 		14.f, 3.f, 1.f, 17.f, 14.9f, 159.36f, 58.f, 8.f, 6.f, 1.f,
 		0.f, 12.f, 0.584f, 18.260f, 59.f, 7.f, 6.f, 0.f, 0.f, 17.f,
@@ -5714,7 +5712,7 @@ common::common(
 		19.f, 0.886f, 57.41f, 66.f, 2.f, 19.f, 1.f, 0.f, 21.f,
 		3.58f, 94.88f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 56, 66) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5722,7 +5720,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		67.f, 2.f, 22.f, 1.f, 0.f, 24.f, 2.71f, 125.74f, 68.f, 3.f,
 		20.f, 1.f, 2.f, 19.f, 1.002f, 34.846f, 69.f, 3.f, 22.f,
 		1.f, 2.f, 21.f, 3.003f, 7.263f, 70.f, 3.f, 25.f, 1.f, 2.f,
@@ -5734,7 +5732,7 @@ common::common(
 		2.f, 0.f, 25.f, 2.70f, 84.678f, 77.f, 2.f, 24.f, 2.f, 0.f,
 		26.f, 3.62f, 140.734f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 67, 77) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5742,7 +5740,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		78.f, 3.f, 24.f, 2.f, 6.f, 17.f, 0.706f, 57.623f, 79.f, 2.f,
 		17.f, 6.f, 0.f, 26.f, 5.13f, 83.111f, 80.f, 3.f, 13.f, 6.f,
 		2.f, 19.f, 9.36f, 47.16f, 81.f, 3.f, 14.f, 6.f, 2.f, 21.f,
@@ -5754,7 +5752,7 @@ common::common(
 		4.25f, 88.47f, 88.f, 3.f, 19.f, 6.f, 1.f, 26.f, 5.79f,
 		25.711f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 78, 88) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5875,7 +5873,7 @@ common::common(
 
 
 	/*
-	static const float reacpr[][] = {
+	static const double reacpr[][] = {
 	{ 	1, 	1, 	1, 	0, 	0, 	2, 	0, 	0 },
 	{ 	2, 	1, 	4, 	0, 	0, 	5, 	0, 	0 },
 	{ 	3, 	4, 	10,	0, 	0, 	6, 	0, 	0 },
@@ -5900,7 +5898,7 @@ common::common(
 	{	22, 2, 	7, 	2, 	0, 	9, 	1.19f, 65.054f };
 	};
 	{
-	static const float values[] = {
+	static const double values[] = {
 	23, 3, 7, 2, 5, 6, 1.07f, 46.631f, 24, 5,
 	8, 2, 0, 6, 4.69f, 201.291f, 25, 2, 6, 3,
 	0, 7, 1.53f, 17.118f, 26, 2, 6, 4, 0, 8,
@@ -5912,7 +5910,7 @@ common::common(
 	3.39f, 149.230f, 33, 9, 8, 3, 1, 6, 9.95f,
 	175.476f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 23, 33) {
 	FEM_DO_SAFE(j, 1, 8) {
 	data, reacpr(i, j);
@@ -5920,7 +5918,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 	34, 9, 9, 3, 2, 6, 9.97f, 194.557f, 35, 2,
 	8, 1, 0, 10, 1.31f, 23.59f, 36, 2, 13, 1,
 	0, 14, 3.04f, 132.95f, 37, 2, 14, 1, 0, 16,
@@ -5932,7 +5930,7 @@ common::common(
 	17, 7.01f, 185.173f, 44, 2, 15, 2, 0, 18,
 	2.33f, 6.975f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 34, 44) {
 	FEM_DO_SAFE(j, 1, 8) {
 	data, reacpr(i, j);
@@ -5940,7 +5938,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 	45, 3, 16, 2, 1, 17, 3.00f, 146.08f, 46, 3,
 	12, 2, 6, 7, 0.618f, 24.674f, 47, 3, 13, 2,
 	6, 9, 0.754f, 13.301f, 48, 3, 16, 2, 6, 12,
@@ -5952,7 +5950,7 @@ common::common(
 	10.3f, 66.160f, 55, 3, 12, 3, 1, 13, 2.07f,
 	50.63f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 45, 55) {
 	FEM_DO_SAFE(j, 1, 8) {
 		data, reacpr(i, j);
@@ -5960,7 +5958,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		56, 3, 13, 3, 2, 14, 6.44f, 107.13f, 57, 3,
 		14, 3, 1, 17, 14.9f, 159.36f, 58, 8, 6, 1,
 		0, 12, 0.584f, 18.260f, 59, 7, 6, 0, 0, 17,
@@ -5972,7 +5970,7 @@ common::common(
 		19, 0.886f, 57.41f, 66, 2, 19, 1, 0, 21,
 		3.58f, 94.88f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 56, 66) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -5980,7 +5978,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		67, 2, 22, 1, 0, 24, 2.71f, 125.74f, 68, 3,
 		20, 1, 2, 19, 1.002f, 34.846f, 69, 3, 22,
 		1, 2, 21, 3.003f, 7.263f, 70, 3, 25, 1, 2,
@@ -5992,7 +5990,7 @@ common::common(
 		2, 0, 25, 2.70f, 84.678f, 77, 2, 24, 2, 0,
 		26, 3.62f, 140.734f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 67, 77) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -6000,7 +5998,7 @@ common::common(
 	}
 	}
 	{
-	static const float values[] = {
+	static const double values[] = {
 		78, 3, 24, 2, 6, 17, 0.706f, 57.623f, 79, 2,
 		17, 6, 0, 26, 5.13f, 83.111f, 80, 3, 13, 6,
 		2, 19, 9.36f, 47.16f, 81, 3, 14, 6, 2, 21,
@@ -6012,7 +6010,7 @@ common::common(
 		4.25f, 88.47f, 88, 3, 19, 6, 1, 26, 5.79f,
 		25.711f
 	};
-	fem::data_of_type<float> data(FEM_VALUES_AND_SIZE);
+	fem::data_of_type<double> data(FEM_VALUES_AND_SIZE);
 	FEM_DO_SAFE(i, 78, 88) {
 		FEM_DO_SAFE(j, 1, 8) {
 			data, reacpr(i, j);
@@ -6033,10 +6031,10 @@ common::common(
 	c0[3] = 3.0;
 	/*
 	{
-	static const float values[] = {
+	static const double values[] = {
 	1.00f, 885.7f, 3.0f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	cmn.c0;
 	}
 	 */
@@ -6047,10 +6045,10 @@ common::common(
 	xi0[3] = 0;
 	/*
 	{
-	static const float values[] = {
+	static const double values[] = {
 	0.00f, 0.00f, 0.00f
 	};
-	fem::data_of_type<float>(FEM_VALUES_AND_SIZE),
+	fem::data_of_type<double>(FEM_VALUES_AND_SIZE),
 	cmn.xi0;
 	}
 	*/
@@ -6270,18 +6268,18 @@ void program_new123(
 	common_write write(cmn);
 	/*
 	   const int nrec = 88;
-	   arr_cref<float, 2> reacpr(cmn.reacpr, dimension(nrec, 8));
+	   arr_cref<double, 2> reacpr(cmn.reacpr, dimension(nrec, 8));
 	   arr_ref<int> iform(cmn.iform, dimension(nrec));
 	   arr_ref<int> ii(cmn.ii, dimension(nrec));
 	   arr_ref<int> jj(cmn.jj, dimension(nrec));
 	   arr_ref<int> kk(cmn.kk, dimension(nrec));
 	   arr_ref<int> ll(cmn.ll, dimension(nrec));
-	   arr_ref<float> rev(cmn.rev, dimension(nrec));
-	   arr_ref<float> q9(cmn.q9, dimension(nrec));
-	   arr_cref<float> c0(cmn.c0, dimension(3));
-	   arr_cref<float> xi0(cmn.xi0, dimension(3));
-	   arr_ref<float> c(cmn.c, dimension(3));
-	   arr_ref<float> xi(cmn.xi, dimension(3));
+	   arr_ref<double> rev(cmn.rev, dimension(nrec));
+	   arr_ref<double> q9(cmn.q9, dimension(nrec));
+	   arr_cref<double> c0(cmn.c0, dimension(3));
+	   arr_cref<double> xi0(cmn.xi0, dimension(3));
+	   arr_ref<double> c(cmn.c, dimension(3));
+	   arr_ref<double> xi(cmn.xi, dimension(3));
 	//int& itime = static_cast<common_checkcb&>(cmn).itime;
 	int& itime = cmn.itime;
 	bool& outfile = cmn.outfile;
@@ -6292,15 +6290,15 @@ void program_new123(
 	   if (is_called_first_time) {
 	   using fem::mbr; // member of variant common or equivalence
 	   {
-	   mbr<float> f(dimension(nrec));
-	   mbr<float> r(dimension(nrec));
+	   mbr<double> f(dimension(nrec));
+	   mbr<double> r(dimension(nrec));
 	   rates.allocate(), f, r;
 	   }
 	   }
-	   arr_ref<float> f(rates.bind<float>(), dimension(nrec));
-	   arr_ref<float> r(rates.bind<float>(), dimension(nrec));
-	   arr<float> f(dimension(nrec));
-	   arr<float> r(dimension(nrec));
+	   arr_ref<double> f(rates.bind<double>(), dimension(nrec));
+	   arr_ref<double> r(rates.bind<double>(), dimension(nrec));
+	   arr<double> f(dimension(nrec));
+	   arr<double> r(dimension(nrec));
 	   const int nnuc = 26;
 	 */ 
 	const int iw = 6;
