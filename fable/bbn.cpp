@@ -2525,6 +2525,7 @@ void common::sol(
 		l = ll(n); 							/// ID # of outgoing nuclide l.
 		//Reactio
 		if ((ind != 0) && (i <= isize) && (l <= isize)) {
+			std::cout << "ind:"<< ind << "\n";
 			ri = si[ind]; 					/// # of incoming nuclide i.
 			rj = sj[ind]; 					/// # of incoming nuclide j.
 			rk = sk[ind]; 					/// # of outgoing nuclide k.
@@ -3770,7 +3771,7 @@ void common::driver()
 	double dtmin = 0;
 	int i = 0;
 	double dtl = 0;
-	const int nvar = 29;
+	const int nvar = nnuc + 3;
 	double v[nvar+1];
 	double v0[nvar+1];
 	double dvdt[nvar+1];
@@ -3780,6 +3781,12 @@ void common::driver()
 		v0[i] = 0;
 		dvdt[i] = 0;
 		dvdt0[i] = 0;
+	}
+	/// this is an attempt to copy the equivalence
+	FEM_DO_SAFE(i, 1, nvar) {
+		v[i+3] = y[i];
+		dvdt[i+3] = dydt[i];
+		v0[i+3] = y0[i];
 	}
 	//
 	//----------LINKAGES.
@@ -3868,6 +3875,8 @@ void common::driver()
 	//20--------LOOP ONE-------------------------------------------------------------
 	//
 	//Begin Runge-Kutta looping.
+
+
 statement_200:
 	//Loop indicator.
 	loop = 1;
