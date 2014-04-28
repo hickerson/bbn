@@ -694,44 +694,44 @@ statement_100:
 statement_210:
 	write(iw,
 			"(' ','Enter value for variation of gravitational ','constant: ',$)");
-	read(ir, star), cmn.c[1];
+	read(ir, star), c[1];
 	goto statement_400;
 	//Change neutron lifetime section.
 statement_220:
 	write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
-	read(ir, star), cmn.c[2];
+	read(ir, star), c[2];
 	goto statement_400;
 	//Change number of neutrino species section.
 statement_230:
 	write(iw, "(' ','Enter value for number of neutrino species: ',$)");
-	read(ir, star), cmn.c[3];
+	read(ir, star), c[3];
 	goto statement_400;
 	//Change baryon-to-photon ratio section.
 statement_240:
 	write(iw, "(' ','Enter value for baryon-to-photon ratio: ',$)");
-	read(ir, star), cmn.eta1;
+	read(ir, star), eta1;
 	goto statement_400;
 	//Change cosmological constant section.
 statement_250:
 	write(iw, "(' ','Enter value for cosmological constant: ',$)");
-	read(ir, star), cmn.cosmo;
+	read(ir, star), cosmo;
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_260:
 	write(iw, "(' ','Enter value for xi electron: ',$)");
-	read(ir, star), cmn.xi[1];
+	read(ir, star), xi[1];
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_270:
 	write(iw, "(' ','Enter value for xi muon: ',$)");
-	read(ir, star), cmn.xi[2];
+	read(ir, star), xi[2];
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_280:
 	write(iw, "(' ','Enter value for xi tauon: ',$)");
-	read(ir, star), cmn.xi[3];
-	if ((cmn.xi[3] != 0.f) && (cmn.c[3] < 3.f)) {
-		cmn.c[3] = 3.f;
+	read(ir, star), xi[3];
+	if ((xi[3] != 0.f) && (c[3] < 3.f)) {
+		c[3] = 3.f;
 		write(iw, "(' ','Number of neutrinos set to 3')");
 		write(iw, "(' ','Press <RETURN> to continue: ',$)");
 		read(ir, star);
@@ -739,14 +739,14 @@ statement_280:
 	goto statement_400;
 	//Reset all to default values section.
 statement_290:
-	cmn.c[1] = cmn.c0[1];
-	cmn.c[2] = cmn.c0[2];
-	cmn.c[3] = cmn.c0[3];
-	cmn.cosmo = cmn.cosmo0;
-	cmn.xi[1] = cmn.xi0[1];
-	cmn.xi[2] = cmn.xi0[2];
-	cmn.xi[3] = cmn.xi0[3];
-	cmn.eta1 = cmn.eta0;
+	c[1] = c0[1];
+	c[2] = c0[2];
+	c[3] = c0[3];
+	cosmo = cosmo0;
+	xi[1] = xi0[1];
+	xi[2] = xi0[2];
+	xi[3] = xi0[3];
+	eta1 = eta0;
 	write(iw,
 			"(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
 	read(ir, star);
