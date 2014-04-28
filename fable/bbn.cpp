@@ -1179,8 +1179,10 @@ common::integrand<1>(
 //
 //20--------2ND PART OF INTEGRAL FOR n->p RATE-----------------------------------
 //
-	double
-common::func2(
+template <>
+double
+common::integrand<2>(
+//common::func2(
 		double const& x)
 {
 	//
@@ -1227,8 +1229,10 @@ common::func2(
 //
 //30--------1ST PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-	double
-common::func3(
+template <>
+double
+common::integrand<3>(
+//common::func3(
 		double const& x)
 {
 	double return_value = 0; // TODO move inside?
@@ -1279,8 +1283,10 @@ common::func3(
 //
 //40--------2ND PART OF INTEGRAL FOR p->n RATE-----------------------------------
 //
-	double
-common::func4(
+template <>
+double
+common::integrand<4>(
+//common::func4(
 		double const& x)
 {
 	double return_value = 0;
@@ -1345,8 +1351,10 @@ common::func4(
 //
 //50--------INTEGRAL FOR ENERGY DENSITY OF NEUTRINO------------------------------
 //
-	double
-common::func5(
+template <>
+double
+common::integrand<5>(
+//common::func5(
 		double const& x)
 {
 	double return_value = 0;
@@ -1388,8 +1396,10 @@ common::func5(
 //
 //60--------INTEGRAL FOR ENERGY DENSITY OF ANTINEUTRINO--------------------------
 //
-	double
-common::func6(
+template <>
+double
+common::integrand<6>(
+//common::func6(
 		double const& x)
 {
 	double return_value = 0;
@@ -1638,10 +1648,10 @@ void common::rate1(
 			uplim4 = _z[2];
 		}
 		//..........EVALUATE THE INTEGRALS NUMERICALLY.
-		part1 = xintd( 1., uplim1, func1, iter);
-		part2 = xintd( 1., uplim2, func2, iter);
-		part3 = xintd( 1., uplim3, func3, iter);
-		part4 = xintd( 1., uplim4, func4, iter);
+		part1 = xintd<1>( 1., uplim1, iter);
+		part2 = xintd<2>( 1., uplim2, iter);
+		part3 = xintd<3>( 1., uplim3, iter);
+		part4 = xintd<4>( 1., uplim4, iter);
 		//f(1) = part1 + part2; 		/// Add 2 integrals to get forward rate.
 		f[1] = part1 + part2; 		/// Add 2 integrals to get forward rate.
 		//r(1) = part3 + part4; 		/// Add 2 integrals to get reverse rate.
