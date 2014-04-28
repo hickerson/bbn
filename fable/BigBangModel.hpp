@@ -19,16 +19,16 @@ namespace bbn {
 	{
 		double cy0;
 		double ct0;
-		double t9i0;
-		double t9f0;
+		double T9i0;
+		double T9f0;
 		double ytmin0;
 		int inc0;
 
 		common_compr0() :
 			cy0(0),
 			ct0(0),
-			t9i0(0),
-			t9f0(0),
+			T9i0(0),
+			T9f0(0),
 			ytmin0(0),
 			inc0(0)
 		{}
@@ -38,16 +38,16 @@ namespace bbn {
 	{
 		double cy;
 		double ct;
-		double t9i;
-		double t9f;
+		double T9i;
+		double T9f;
 		double ytmin;
 		int inc;
 
 		common_compr() :
 			cy(0),
 			ct(0),
-			t9i(0),
-			t9f(0),
+			T9i(0),
+			T9f(0),
 			ytmin(0),
 			inc(0)
 		{}
@@ -167,14 +167,14 @@ const int common_recpr::nrec;
 	{
 		static const int nnuc = 26;
 
-		double t9;
+		double T9;
 		double hv;
 		double phie;
 		//arr<double> y;
 		double y[nnuc+1];
 
 		common_evolp1() :
-			t9(0),
+			T9(0),
 			hv(0),
 			phie(0)//,
 			//y(dimension(nnuc), fem::fill0)
@@ -194,14 +194,14 @@ const int common_recpr::nrec;
 	{
 		static const int nnuc = 26;
 
-		double dt9;
+		double dT9;
 		double dhv;
 		double dphie;
 		//arr<double> dydt;
 		double dydt[nnuc+1];
 
 		common_evolp2() :
-			dt9(0),
+			dT9(0),
 			dhv(0),
 			dphie(0)//,
 			//dydt(dimension(nnuc), fem::fill0)
@@ -221,14 +221,14 @@ const int common_recpr::nrec;
 	{
 		static const int nnuc = 26;
 
-		double t90;
+		double T90;
 		double hv0;
 		double phie0;
 		//arr<double> y0;
 		double y0[nnuc+1];
 
 		common_evolp3() :
-			t90(0),
+			T90(0),
 			hv0(0),
 			phie0(0)//,
 			//y0(dimension(nnuc), fem::fill0)
@@ -248,12 +248,12 @@ const int common_recpr::nrec;
 	{
 		double t;
 		double dt;
-		double dlt9dt;
+		double dlT9dt;
 
 		common_ttime() :
 			t(0),
 			dt(0),
-			dlt9dt(0)
+			dlT9dt(0)
 		{}
 	};
 
@@ -394,7 +394,7 @@ const int common_nucdat::nnuc;
 
 		arr<double, 2> xout;
 		arr<double, 2> thmout;
-		arr<double> t9out;
+		arr<double> T9out;
 		arr<double> tout;
 		arr<double> dtout;
 		arr<double> etaout;
@@ -403,7 +403,7 @@ const int common_nucdat::nnuc;
 		common_outdat() :
 			xout(dimension(itmax, nnuc), fem::fill0),
 			thmout(dimension(itmax, 6), fem::fill0),
-			t9out(dimension(itmax), fem::fill0),
+			T9out(dimension(itmax), fem::fill0),
 			tout(dimension(itmax), fem::fill0),
 			dtout(dimension(itmax), fem::fill0),
 			etaout(dimension(itmax), fem::fill0),
@@ -418,7 +418,7 @@ const int common_nucdat::nnuc;
 
 	struct common_nupar
 	{
-		double t9mev;
+		double T9mev;
 		double tnmev;
 		double tnu;
 		double cnorm;
@@ -426,7 +426,7 @@ const int common_nucdat::nnuc;
 		int nu;
 
 		common_nupar() :
-			t9mev(0),
+			T9mev(0),
 			tnmev(0),
 			tnu(0),
 			cnorm(0),
