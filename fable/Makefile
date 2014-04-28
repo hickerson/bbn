@@ -11,7 +11,7 @@ FOPTS = --common-equivalence-simple
 #
 # commands
 #
-CC = colorgcc
+CC = colorg++
 RM = rm -rf
 FCC = fable.out
 
@@ -52,10 +52,11 @@ LFLAGS =
 default: $(SRCS) $(MAIN)
 
 $(MAIN): $(OBJS)
-	$(CC) $(LFLAGS) $(OBJ) -o $@ 
+	$(CC) $(LFLAGS) $(LIBS) $(OBJS) -o $@ 
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(LIBS) $(IFLAGS) -c $< -o $@
+	echo $(CC) $(CFLAGS) $(LIBS) $(IFLAGS) -c $< -o $@ $(LIBS)
 
 fable:
 	. fable_build/setpaths.sh

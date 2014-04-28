@@ -590,6 +590,11 @@ const int common_nucdat::nnuc;
 		void rate2( common & );
 		void rate3( common & );
 		void rate4( common & );
+
+		private:
+		float getBesselL(float);
+		float getBesselM(float);
+		float getBesselN(float);
 	};
 
 	const float common::am[26+1] = {

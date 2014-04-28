@@ -2,14 +2,17 @@
 
 //#include "bbn.hpp"
 #include "BigBangModel.hpp"
-#include <gsl/gsl_sf_bessel.h>
+//#include <gsl/gsl_sf_bessel.h>
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/constants/constants.hpp>
+#include <iostream>
 
-namespace bbn {
+// namespace bbn {
+using namespace bbn;
+using namespace boost::math;
 
 //using namespace fem;
-using namespace std;
+//using namespace std;
 
 //
 //========================IDENTIFICATION DIVISION================================
@@ -1365,24 +1368,27 @@ void bessel(
 }
 #endif
 
-float getBesselL(float r)
+float common::getBesselL(float r)
 {
-	float K2r = gsl_sf_bessel_Kn(2,r); 		/// Irregular modified cylindrical Bessel functions.
+	//float K2r = gsl_sf_bessel_Kn(2,r); 	/// Irregular modified cylindrical Bessel functions.
+	float K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
-float getBesselM(float r)
+float common::getBesselM(float r)
 {
-	const float K3r = gsl_sf_bessel_Kn(3,r);/// Irregular modified cylindrical Bessel functions.
-	const float K1r = gsl_sf_bessel_Kn(1,r);/// Irregular modified cylindrical Bessel functions.
-	return 0.25*(3*K3r + K1r)/r;			/// (Ref ?).
+	//float K3r = gsl_sf_bessel_Kn(3,r);	/// Irregular modified cylindrical Bessel functions.
+	//float K1r = gsl_sf_bessel_Kn(1,r);	/// Irregular modified cylindrical Bessel functions.
+	float K3r = cyl_bessel_k(3,r);			/// Irregular modified cylindrical Bessel functions.
+	float K1r = cyl_bessel_k(1,r);			/// Irregular modified cylindrical Bessel functions.
+	return (3*K3r + K1r)/4/r;				/// (Ref ?).
 }
 
-float getBesselN(float r)
+float common::getBesselN(float r)
 {
-	const float K4r = gsl_sf_bessel_Kn(4,r);/// Irregular modified cylindrical Bessel functions.
-	const float K2r = gsl_sf_bessel_Kn(2,r);/// Irregular modified cylindrical Bessel functions.
-	return 0.5*(K4r + K2r)/r; 				/// (Ref ?).
+	float K4r = cyl_bessel_k(4,r);			/// Irregular modified cylindrical Bessel functions.
+	float K2r = cyl_bessel_k(2,r);			/// Irregular modified cylindrical Bessel functions.
+	return (K4r + K2r)/2/r; 				/// (Ref ?).
 }
 
 
@@ -6472,7 +6478,7 @@ void program_new123(
 	cmn.inc = cmn.inc0; 						/// Accumulation increment.
 	cmn.c[1] = cmn.c0[1]; 					/// Variation of gravitational constant.
 	cmn.c[2] = cmn.c0[2]; 					/// Neutron lifetime.
-	cout << "ntau:"<<cmn.c[2]<<endl; 
+	std::cout << "ntau:"<<cmn.c[2]<<std::endl; 
 	cmn.c[3] = cmn.c0[3]; 					/// Number of neutrino species.
 	cmn.cosmo = cmn.cosmo0; 					/// Cosmological constant.
 	cmn.xi[1] = cmn.xi0[1]; 					/// Electron degeneracy parameter.
@@ -6566,7 +6572,7 @@ statement_500:
 	//
 }
 
-} // namespace bbn
+//} // namespace bbn
 
 	int
 main(
@@ -6575,6 +6581,6 @@ main(
 {
 	return fem::main_with_catch(
 			argc, argv,
-			bbn::program_new123);
+			program_new123);
 }
 
