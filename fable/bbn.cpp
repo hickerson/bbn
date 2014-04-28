@@ -1446,8 +1446,8 @@ common::integrand<6>(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-double
 template <int n>
+double
 common::xintd(
 //common::xintd(
 		double const& xlow,
@@ -1957,11 +1957,11 @@ void common::nudens()
 			uplim1 = (88.029f + xi[nu]) * tnu;
 			uplim2 = (88.029f - xi[nu]) * tnu;
 			if (uplim2 <= 0.) {
-				rhonu = xintd( 0, uplim1, func5, iter);
+				rhonu = xintd<5>( 0, uplim1, iter);
 			}
 			else {
-				rhonu = xintd(0, uplim1, func5, iter) 
-					+ xintd(0, uplim2, func6, iter);
+				rhonu = xintd<5>(0, uplim1, iter) 
+					+ xintd<6>(0, uplim2, iter);
 			}
 			//(abs(xi(nu)).ge.30.)
 		}
