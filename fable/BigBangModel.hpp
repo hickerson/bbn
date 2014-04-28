@@ -527,7 +527,7 @@ const int common_nucdat::nnuc;
 		   boost::numeric::ublas::vector<double> yx;
 		 */
 
-		void qvary(common&, int, double);
+		void qvary(int, double);
 
 		public:
 		common(	
