@@ -13,24 +13,32 @@
  * Author: Kevin Peter Hickerson
  * Created: Sun Apr 20 17:11:14 PDT 2014
  */
-template <class real, int nnuc> 
+template <class real, int n> 
 class EvolutionParameters
 {
-	private : static const real Ydefault = 0;
+	private: static const real Ydefault = 0;
+	
+	public: static const unsigned nnuc = n;
+	public: static const unsigned nvar = n + 3;
 
-	public : real T9;	
-	public : real hv;
-	public : real phie;
-	public : real Y[nnuc+1];
+	public: real T9;	
+	public: real hv;
+	public: real phie;
+	//public: real Y[nnuc+1];
+	public: real v[nvar+1];
+	public: real* Y; 
 
-	public : EvolutionParameters() :
+	public: EvolutionParameters() :
 		T9(0),
 		hv(0),
 		phie(0)
 	{
 		verbose("Default constructor for EvolutionParameters");
-		for (int i = 0; i <= nnuc; i++)
-			Y[i] = Ydefault;					/// Default abundance.
+		for (int i = 0; i <= 3; i++)
+			v[i] = 0;					/// Default abundance.
+		for (int i = 1; i <= nnuc; i++)
+			v[i] = Ydefault;					/// Default abundance.
+		Y = &(v[4]);
 	}
 
 	public : EvolutionParameters(const EvolutionParameters & copy) :

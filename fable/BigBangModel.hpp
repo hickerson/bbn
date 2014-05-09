@@ -166,12 +166,17 @@ const int common_recpr::nrec;
 	struct common_evolp1
 	{
 		static const int nnuc = 26;
+		static const int nvar = 26+3;
 
 		double T9;
 		double hv;
 		double phie;
 		//arr<double> y;
-		double y[nnuc+1];
+		//double y[nnuc+1];
+		
+		// shared memory array
+		double v[nvar+1];
+		double* y;
 
 		common_evolp1() :
 			T9(0),
@@ -180,9 +185,12 @@ const int common_recpr::nrec;
 			//y(dimension(nnuc), fem::fill0)
 		{
 			std::cout << "common_evolp1 constructor\n";
-			y[0] = NOT_USED;
-			for (int i = 1; i < nnuc+1; i++)
-				y[i] = 0;
+			//y[0] = NOT_USED;
+			//for (int i = 1; i < nnuc+1; i++)
+			v[0] = NOT_USED;
+			for (int i = 1; i < nvar+1; i++)
+				v[i] = 0;
+			y = &(v[4]);
 		}
 	};
 

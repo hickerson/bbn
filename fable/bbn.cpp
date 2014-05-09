@@ -3776,6 +3776,7 @@ void common::driver()
 	double v0[nvar+1];
 	double dvdt[nvar+1];
 	double dvdt0[nvar+1];
+	/*
 	FEM_DO_SAFE(i, 1, nvar) {
 		v[i] = 0;
 		v0[i] = 0;
@@ -3788,6 +3789,7 @@ void common::driver()
 		dvdt[i+3] = dydt[i];
 		v0[i+3] = y0[i];
 	}
+	*/
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] run

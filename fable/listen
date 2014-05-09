@@ -1,6 +1,0 @@
-#!/bin/sh
-
-while [ 1 ]
-do
-	nc -l 1234
-done
