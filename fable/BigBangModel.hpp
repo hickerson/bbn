@@ -486,9 +486,9 @@ const int common_nucdat::nnuc;
 		common_modpr,
 		//common_recpr0,
 		common_recpr,
-		common_evolp1,
-		common_evolp2,
-		common_evolp3,
+		//common_evolp1,
+		//common_evolp2,
+		//common_evolp3,
 		common_ttime,
 		common_thermcb,
 		common_endens,
@@ -528,6 +528,8 @@ const int common_nucdat::nnuc;
 		double a[nnuc+1][nnuc+1];
 		double b[nnuc+1];
 		//double yx[nnuc+1];
+
+		EvolutionParameters U, dU, U0; 
 
 		/*
 		   boost::numeric::ublas::matrix<double> a;

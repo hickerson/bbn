@@ -1781,6 +1781,7 @@ void common::start()
 	//20--------SETTINGS-------------------------------------------------------------
 	//
 	//..........COMPUTATIONAL SETTINGS.
+	double &T9 = U.T9;
 	T9 = T9i; 									/// Initial temperature.
 	tnu = T9; 									/// Initial neutrino temperature.
 	const double const1 = 0.09615f; 				/// Initial time (Ref 1).
