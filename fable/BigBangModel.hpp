@@ -529,7 +529,7 @@ const int common_nucdat::nnuc;
 		double b[nnuc+1];
 		//double yx[nnuc+1];
 
-		EvolutionParameters U, dU, U0; 
+		EvolutionParameters<double, nnuc> U, dU, U0; 
 
 		/*
 		   boost::numeric::ublas::matrix<double> a;
@@ -539,8 +539,7 @@ const int common_nucdat::nnuc;
 
 		void qvary(int, double);
 
-		public:
-		common(	
+		public: common(	
 		);
 		//	int argc,
 		//	char const* argv[]);

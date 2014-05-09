@@ -1774,19 +1774,20 @@ void common::start()
 	//
 	ltime = 0; 									/// No output yet.
 	is = 1; 									/// First iteration coming up.
-	ip = inc; 								/// Set to maximum allowed # of iterations.
+	ip = inc; 									/// Set to maximum allowed # of iterations.
 	it = 0; 									/// No accumulation yet.
 	mbad = 0; 									/// No computational errors.
 	//
 	//20--------SETTINGS-------------------------------------------------------------
 	//
 	//..........COMPUTATIONAL SETTINGS.
-	double &T9 = U.T9;
+	double &T9 = U.T9;							/// Copy the reference.
+	double* y = U.Y;							/// Get the array pointer.
 	T9 = T9i; 									/// Initial temperature.
 	tnu = T9; 									/// Initial neutrino temperature.
-	const double const1 = 0.09615f; 				/// Initial time (Ref 1).
+	const double const1 = 0.09615f; 			/// Initial time (Ref 1).
 	t = 1 / fem::pow2((const1 * T9));
-	dt = dt1; 								/// Initial time step.
+	dt = dt1; 									/// Initial time step.
 	//..........MODEL SETTINGS.
 	const double const2 = 6.6700e-8f; 			/// Modify gravitational constant.
 	g = const2 * c[1];

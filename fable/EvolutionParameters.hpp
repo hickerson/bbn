@@ -16,7 +16,7 @@
 template <class real, int n> 
 class EvolutionParameters
 {
-	private: static const real Ydefault = 0;
+	public: static const double Ydefault = 0;
 	
 	public: static const unsigned nnuc = n;
 	public: static const unsigned nvar = n + 3;
