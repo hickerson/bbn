@@ -2112,9 +2112,6 @@ void common::therm()
 	//20--------COMPUTE THERMODYNAMIC VARIABLES--------------------------------------
 	//
 	double& T9 = U.T9;							/// Copy the reference.
-	double* y = U.Y;							/// Get the array pointer.
-	double* y0 = U0.Y;							/// Get the array pointer.
-	double& hv = U.hv;							/// Copy the reference.
 	thm(1) = 8.418f * T9 * T9 * T9 * T9; 					///(Ref 1)
 	thm(2) = 4.f * thm(1) / T9; 							///(Ref 2)
 	thm(3) = thm(1) / 3.f; 									///(Ref 3)
@@ -2225,10 +2222,7 @@ void common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
-	double& T9 = U.T9;				/// Copy the reference.
 	double* y = U.Y;				/// Get the array pointer.
-	double* y0 = U0.Y;				/// Get the array pointer.
-	double& hv = U.hv;				/// Copy the reference.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2511,8 +2505,6 @@ void common::sol(
 	double& T9 = U.T9;							/// Copy the reference.
 	double* y = U.Y;							/// Get the array pointer.
 	double* y0 = U0.Y;							/// Get the array pointer.
-	double& hv = U.hv;							/// Copy the reference.
-	double& phie = U.phie;						/// Copy the reference.
 	T932 = pow(T9, 1.5); 						/// T9**(3/2).
 	T9m32 = 1. / T932;							/// T9**(-3/2).
 	//..........MATRIX SIZE.
@@ -3573,7 +3565,6 @@ void common::derivs(
 	double& phie = U.phie;						/// Copy the reference.
 	double* y = U.Y;							/// Get the array pointer.
 
-	double* y0 = U0.Y;							/// Get the array pointer.
 	double* dydt = dUdt.Y;						/// Get the array pointer.
 
 	double& dT9 = dU.T9;						/// Copy the reference.
@@ -3735,13 +3726,6 @@ void common::accum()
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
 	double* y = U.Y;							/// Get the array pointer.
-
-	double* y0 = U0.Y;							/// Get the array pointer.
-	double* dydt = dUdt.Y;						/// Get the array pointer.
-
-	double& dT9 = dU.T9;						/// Copy the reference.
-	double& dhv = dU.hv;						/// Copy the reference.
-	double& dphie = dU.phie;					/// Copy the reference.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
