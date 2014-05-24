@@ -3731,6 +3731,18 @@ void common::accum()
 	//10--------SET UP OUTPUT VARIABLES----------------------------------------------
 	//
 	//..........DIVIDE NUMBER FRACTION BY THAT OF PROTON.
+	double& T9 = U.T9;							/// Copy the reference.
+	double& hv = U.hv;							/// Copy the reference.
+	double& phie = U.phie;						/// Copy the reference.
+	double* y = U.Y;							/// Get the array pointer.
+
+	double* y0 = U0.Y;							/// Get the array pointer.
+	double* dydt = dUdt.Y;						/// Get the array pointer.
+
+	double& dT9 = dU.T9;						/// Copy the reference.
+	double& dhv = dU.hv;						/// Copy the reference.
+	double& dphie = dU.phie;					/// Copy the reference.
+
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
 		xout(it, i) = y[i] / y[2];
@@ -3791,6 +3803,18 @@ void common::accum()
 //
 void common::driver()
 {
+	double& T9 = U.T9;							/// Copy the reference.
+	double& hv = U.hv;							/// Copy the reference.
+	double& phie = U.phie;						/// Copy the reference.
+	double* y = U.Y;							/// Get the array pointer.
+
+	double* y0 = U0.Y;							/// Get the array pointer.
+	double* dydt = dUdt.Y;						/// Get the array pointer.
+
+	double& dT9 = dU.T9;						/// Copy the reference.
+	double& dhv = dU.hv;						/// Copy the reference.
+	double& dphie = dU.phie;					/// Copy the reference.
+
 	int mvar = 0;
 	int loop = 0;
 	const double cl = 1.e-16f;
@@ -4779,9 +4803,9 @@ common::common() :
 	common_modpr(),
 	//common_recpr0(),
 	common_recpr(),
-	common_evolp1(),
-	common_evolp2(),
-	common_evolp3(),
+	//common_evolp1(),
+	//common_evolp2(),
+	//common_evolp3(),
 	common_ttime(),
 	common_thermcb(),
 	common_endens(),

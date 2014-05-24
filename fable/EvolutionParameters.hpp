@@ -33,7 +33,7 @@ class EvolutionParameters
 		hv(0),
 		phie(0)
 	{
-		verbose("Default constructor for EvolutionParameters");
+		//verbose("Default constructor for EvolutionParameters");
 		for (int i = 0; i <= 3; i++)
 			v[i] = 0;							/// Default abundance.
 		for (int i = 1; i <= nnuc; i++)
@@ -46,19 +46,19 @@ class EvolutionParameters
 		hv(copy.hv),
 		phie(copy.phie)
 	{
-		verbose("Empty copy constructor for EvolutionParameters");
+		//verbose("Empty copy constructor for EvolutionParameters");
 		for (int i = 0; i <= nnuc; i++)			/// Copy abundances.
 			Y[i] = copy.Y[i];				
 	}
 
 	public : ~EvolutionParameters()				/// Does nothing.
 	{
-		verbose("Empty destructor for EvolutionParameters");
+		//verbose("Empty destructor for EvolutionParameters");
 	}
 	
 	public : EvolutionParameters & operator = (const EvolutionParameters & other)
     {
-		verbose("Empty copy operator for EvolutionParameters");
+		//verbose("Empty copy operator for EvolutionParameters");
         if (this != &other) // protect against invalid self-assignment
         {
 			T9 = other.T9;
