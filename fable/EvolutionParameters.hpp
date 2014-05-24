@@ -16,8 +16,7 @@
 template <class real, int n> 
 class EvolutionParameters
 {
-	public: static const real Ydefault = 0;
-	
+	//public: static const double Ydefault = 0;
 	public: static const unsigned nnuc = n;
 	public: static const unsigned nvar = n + 3;
 
@@ -26,7 +25,7 @@ class EvolutionParameters
 	public: real phie;
 	//public: real Y[nnuc+1];
 	public: real v[nvar+1];
-	public: real Y[]; 
+	public: real* Y; 
 
 	public: EvolutionParameters() :
 		T9(0),
@@ -35,9 +34,9 @@ class EvolutionParameters
 	{
 		//verbose("Default constructor for EvolutionParameters");
 		for (int i = 0; i <= 3; i++)
-			v[i] = 0;							/// Default abundance.
+			v[i] = 0;
 		for (int i = 1; i <= nnuc; i++)
-			v[i] = Ydefault;					/// Default abundance.
+			v[i] = 0;					/// Default abundance.
 		Y = &(v[4]);
 	}
 
