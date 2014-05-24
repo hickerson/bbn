@@ -163,6 +163,7 @@ const int common_recpr::nrec;
 #endif
 	 */
 
+#if 0
 	struct common_evolp1
 	{
 		static const int nnuc = 26;
@@ -175,13 +176,13 @@ const int common_recpr::nrec;
 		//double y[nnuc+1];
 		
 		// shared memory array
-		double v[nvar+1];
-		double* y;
+		//double U.v[nvar+1];
+		//double* U.y;
 
 		common_evolp1() :
-			T9(0),
-			hv(0),
-			phie(0)//,
+			U.T9(0),
+			U.hv(0),
+			U.phie(0)//,
 			//y(dimension(nnuc), fem::fill0)
 		{
 			std::cout << "common_evolp1 constructor\n";
@@ -248,9 +249,13 @@ const int common_recpr::nrec;
 		}
 	};
 
+
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 	const int common_evolp3::nnuc;
 #endif
+
+#endif
+
 
 	struct common_ttime
 	{
@@ -529,7 +534,7 @@ const int common_nucdat::nnuc;
 		double b[nnuc+1];
 		//double yx[nnuc+1];
 
-		EvolutionParameters<double, nnuc> U, dU, U0; 
+		EvolutionParameters<double, nnuc> U, U0, dU, dUdt; 
 
 		/*
 		   boost::numeric::ublas::matrix<double> a;

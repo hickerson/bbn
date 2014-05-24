@@ -1781,8 +1781,12 @@ void common::start()
 	//20--------SETTINGS-------------------------------------------------------------
 	//
 	//..........COMPUTATIONAL SETTINGS.
-	double &T9 = U.T9;							/// Copy the reference.
+	double& T9 = U.T9;							/// Copy the reference.
 	double* y = U.Y;							/// Get the array pointer.
+	double* y0 = U0.Y;							/// Get the array pointer.
+	double& hv = U.hv;							/// Copy the reference.
+	double& phie = U.phie;						/// Copy the reference.
+
 	T9 = T9i; 									/// Initial temperature.
 	tnu = T9; 									/// Initial neutrino temperature.
 	const double const1 = 0.09615f; 			/// Initial time (Ref 1).
@@ -2043,8 +2047,7 @@ void common::therm()
 	//
 	//10--------COMPUTE FACTORS------------------------------------------------------
 	//
-	//z = m(electron)c**2/k(T9).
-	double z = 5.930f / T9;
+	double z = 5.930f / U.T9; 			/// z = m(electron)c^2/k(T9).
 	double bl1 = getBesselL(z);
 	double bl2 = getBesselL(2*z);
 	double bl3 = getBesselL(3*z);
@@ -2080,6 +2083,7 @@ void common::therm()
 	double sinh3 = 0;
 	double sinh4 = 0;
 	double sinh5 = 0;
+	double& phie = U.phie;						/// Copy the reference.
 	if (phie <= 17.f) {
 		cosh1 = cosh(phie);
 		cosh2 = cosh(2*phie);
@@ -2107,30 +2111,27 @@ void common::therm()
 	//
 	//20--------COMPUTE THERMODYNAMIC VARIABLES--------------------------------------
 	//
-	//(Ref 1)
-	thm(1) = 8.418f * T9 * T9 * T9 * T9;
-	//(Ref 2)
-	thm(2) = 4.f * thm(1) / T9;
-	//(Ref 3)
-	thm(3) = thm(1) / 3.f;
-	//(Ref 4)
+	double& T9 = U.T9;							/// Copy the reference.
+	double* y = U.Y;							/// Get the array pointer.
+	double* y0 = U0.Y;							/// Get the array pointer.
+	double& hv = U.hv;							/// Copy the reference.
+	thm(1) = 8.418f * T9 * T9 * T9 * T9; 					///(Ref 1)
+	thm(2) = 4.f * thm(1) / T9; 							///(Ref 2)
+	thm(3) = thm(1) / 3.f; 									///(Ref 3)
 	thm(4) = 3206.f * (bm1 * cosh1 - bm2 * cosh2 + bm3 * cosh3 - bm4 *
-			cosh4 + bm5 * cosh5);
-	//(Ref 5)
+			cosh4 + bm5 * cosh5); 							///(Ref 4)
 	thm(5) = 3206.f * (z / T9) * (bn1 * cosh1 - 2.f * bn2 *
 			cosh2 + 3.f * bn3 * cosh3 - 4.f * bn4 * cosh4 + 5.f *
-			bn5 * cosh5);
-	//(Ref 6)
+			bn5 * cosh5); 									///(Ref 5)
 	thm(6) = 3206.f * (bm1 * sinh1 - 2.f * bm2 * sinh2 + 3.f * bm3 *
-			sinh3 - 4.f * bm4 * sinh4 + 5.f * bm5 * sinh5);
-	//(Ref 7)
+			sinh3 - 4.f * bm4 * sinh4 + 5.f * bm5 * sinh5); 
+															///(Ref 6)
 	thm(7) = 3206.f * (bl1 * cosh1 / z - bl2 * cosh2 / (2.f * z) +
 			bl3 * cosh3 / (3.f * z) - bl4 * cosh4 / (4.f * z) + bl5 * cosh5 /
-			(5.f * z));
+			(5.f * z)); 									///(Ref 7)
 	//Nonde
 	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
-		//(Ref 8)
-		thm(8) = xnu * rhone0 * (pow(rnb, (4.f / 3.f)));
+		thm(8) = xnu * rhone0 * (pow(rnb, (4.f / 3.f))); 	///(Ref 8)
 		//Include effects of neutrino degenera
 	}
 	else {
@@ -2216,7 +2217,7 @@ void common::eqslin(
 	int i = 0;
 	double x[nnuc+1];
 	int j = 0;
-	double a0[nnuc+1][nnuc+1];			// TODO fix to zero indexing.
+	double a0[nnuc+1][nnuc+1];		/// TODO fix to zero indexing.
 	double cx = 0;
 	int k = 0;
 	double sum = 0;
@@ -2224,6 +2225,10 @@ void common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
+	double& T9 = U.T9;				/// Copy the reference.
+	double* y = U.Y;				/// Get the array pointer.
+	double* y0 = U0.Y;				/// Get the array pointer.
+	double& hv = U.hv;				/// Copy the reference.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2503,10 +2508,13 @@ void common::sol(
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
 	//..........TEMPERATURE FACTORS.
-	//T9**(3/2).
-	T932 = pow(T9, 1.5);
-	//T9**(-3/2).
-	T9m32 = 1. / T932;
+	double& T9 = U.T9;							/// Copy the reference.
+	double* y = U.Y;							/// Get the array pointer.
+	double* y0 = U0.Y;							/// Get the array pointer.
+	double& hv = U.hv;							/// Copy the reference.
+	double& phie = U.phie;						/// Copy the reference.
+	T932 = pow(T9, 1.5); 						/// T9**(3/2).
+	T9m32 = 1. / T932;							/// T9**(-3/2).
 	//..........MATRIX SIZE.
 	isize1 = isize + 1;
 	//..........INITIALIZE A-MATRIX.
@@ -2731,7 +2739,8 @@ statement_212:
 		//yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
-		dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
+		//dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
+		dUdt.Y[i] = (U.Y[i] - U0.Y[i]) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -2815,6 +2824,7 @@ void common::rate2()
 	//
 	//10--------TEMPERATURE FACTORS--------------------------------------------------
 	//
+	double& T9 = U.T9;
 	//T9**(1/3)
 	double T913 = pow(T9, (.33333333f));
 	//T9**(2/3)
@@ -3040,8 +3050,9 @@ void common::rate3()
 	//
 	//10--------TEMPERATURE FACTORS--------------------------------------------------
 	//
+	double& T9 = U.T9;
 	//T9**(1/3)
-	double T913 = pow(T9, (.33333333f));
+	double T913 = pow(U.T9, (.33333333f));
 	//T9**(2/3)
 	double T923 = T913 * T913;
 	//T9**(4/3)
@@ -3276,6 +3287,7 @@ void common::rate4()
 	//
 	//10--------TEMPERATURE FACTORS--------------------------------------------------
 	//
+	double& T9 = U.T9;
 	//T9**(1/3)
 	double T913 = pow(T9, (.33333333f));
 	//T9**(2/3)
@@ -3556,6 +3568,18 @@ void common::derivs(
 	//
 	//10--------COMPUTE DERIVATIVES FOR ABUNDANCES-----------------------------------
 	//
+	double& T9 = U.T9;							/// Copy the reference.
+	double& hv = U.hv;							/// Copy the reference.
+	double& phie = U.phie;						/// Copy the reference.
+	double* y = U.Y;							/// Get the array pointer.
+
+	double* y0 = U0.Y;							/// Get the array pointer.
+	double* dydt = dUdt.Y;						/// Get the array pointer.
+
+	double& dT9 = dU.T9;						/// Copy the reference.
+	double& dhv = dU.hv;						/// Copy the reference.
+	double& dphie = dU.phie;					/// Copy the reference.
+
 	//Baryon mass density (ratio to init v
 	rnb = hv * T9 * T9 * T9 / rhob0;
 	//..........VARIOUS THERMODYNAMIC QUANTITIES.
