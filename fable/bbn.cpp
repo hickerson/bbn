@@ -2189,8 +2189,8 @@ void common::therm()
 	//                              + rho baryon
 	//     11) thm(11) = d     [pi**2(hbar*c)**3(ne- - ne+)*z**3]
 	//                   d(T9) [  2  (mc**2)**3                 ]
-	//     12) thm(12) = d        /pi**2(hbar*c)**3(ne- - ne+)*z**3\
-	//                   d(phi e) \  2  (mc**2)**3                 /
+	//     12) thm(12) = d        [pi**2(hbar*c)**3(ne- - ne+)*z**3]
+	//                   d(phi e) [  2  (mc**2)**3                 ]
 	//     13) thm(13) = rate for n->p
 	//     14) thm(14) = rate for p->n
 	//
@@ -2374,13 +2374,106 @@ statement_300:
 }
 
 
-//
-//========================IDENTIFICATION DIVISION================================
-//
+/**
+ * ========================IDENTIFICATION DIVISION================================
+ * 
+ * 
+ * ----------LINKAGES.
+ *      CALLED BY - [subroutine] derivs
+ *      CALLS     - [subroutine] eqslin
+ *                - [function] ex
+ * 
+ * ----------REMARKS.
+ *      Computes reverse strong and electromagnetic reaction rates.
+ *      Fills and solves matrix equation for dydt(i).
+ * 
+ * ----------PARAMETERS.
+ * Input unit number.
+ * Output unit number.
+ * Number of nuclear reactions.
+ * Number of nuclides in calculation.
+ * 
+ * -----------COMMON AREAS.
+ * Reaction parameter
+ * Reaction rates.
+ * Evolution paramete
+ * Time varying param
+ * Dynamic variable
+ * Energy densities.
+ * Linear eqn coeffic
+ * Flags,counters.
+ * Run option.
+ * 
+ * ==========================DECLARATION DIVISION=================================
+ * 
+ * ----------REACTION PARAMETERS.
+ * Reaction code number (1-88).
+ * Incoming nuclide type (1-26).
+ * Incoming light nuclide type (1-6).
+ * Outgoing light nuclide type (1-6).
+ * Outgoing nuclide type (1-26).
+ * Reverse reaction coefficient.
+ * Energy released in reaction.
+ * 
+ * ----------REACTION RATES.
+ * Forward reaction rate coefficients.
+ * Reverse reaction rate coefficients.
+ * 
+ * ----------EVOLUTION PARAMETERS.
+ * Temperature (in units of 10**9 K).
+ * Relative number abundances.
+ * 
+ * ----------EVOLUTION PARAMETERS (DERIVATIVES).
+ * Change in rel number abundances.
+ * 
+ * ----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
+ * Rel # abund at start of iteration.
+ * 
+ * ----------TIME VARIABLES.
+ * Time step.
+ * 
+ * ----------DYNAMIC VARIABLES.
+ * Expansion rate.
+ * 
+ * ----------ENERGY DENSITIES.
+ * Baryon mass density.
+ * 
+ * ----------COMPONENTS OF MATRIX EQUATION.
+ * Relates y(t-dt) to y(t).
+ * Contains y0 in inverse order.
+ * yy in reverse order.
+ * 
+ * ----------COUNTERS AND FLAGS.
+ * Counts which Runge-Kutta loop.
+ * # time steps after outputting a line
+ * Indicates if gaussian elimination fa
+ * 
+ * ----------RUN OPTIONS.
+ * Number of nuclides in computation.
+ * Equals isize + 1.
+ * Number of reactions in computation.
+ * 
+ * ----------EVOLUTION EQUATION COEFFICIENTS.
+ * Equate to ii,jj,kk,ll.
+ * Equate to si,sj,sk,sl.
+ * Coefficients of rate equation.
+ * 
+ * ----------LOCAL VARIABLES.
+ * Abundances at end of iteration.
+ * # of nuclide i,j,k,l
+ * (10**(-5))*volume expansion rate.
+ * Equate to iform.
+ * Element which does not converge.
+ * 
+ * ===========================PROCEDURE DIVISION==================================
+ */
 void common::sol(
 		int const& loop)
 {
 	common_write write(*this);
+	//
+	//----------NUMBER OF NUCLIDES IN REACTION TYPES 1-11.
+	//
 	const double si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
@@ -2388,125 +2481,26 @@ void common::sol(
 	double T932 = 0;
 	double T9m32 = 0;
 	int isize1 = 0;
-	int i = 0;
-	int j = 0;
+	int i, j, k, l;
 	int n = 0;
 	int ind = 0;
-	int k = 0;
-	int l = 0;
-	double ri = 0;
-	double rj = 0;
-	double rk = 0;
-	double rl = 0;
-	double ci = 0;
-	double cj = 0;
-	double ck = 0;
-	double cl = 0;
+	double ri, rj, rk, rl;
+	double ci, cj, ck, cl;
 	double bdln = 0;
 	int ierror = 0;
 	const int iw = 6;
-	//
-	//----------LINKAGES.
-	//     CALLED BY - [subroutine] derivs
-	//     CALLS     - [subroutine] eqslin
-	//               - [function] ex
-	//
-	//----------REMARKS.
-	//     Computes reverse strong and electromagnetic reaction rates.
-	//     Fills and solves matrix equation for dydt(i).
-	//
-	//----------PARAMETERS.
-	//Input unit number.
-	//Output unit number.
-	//Number of nuclear reactions.
-	//Number of nuclides in calculation.
-	//
-	//-----------COMMON AREAS.
-	//Reaction parameter
-	//Reaction rates.
-	//Evolution paramete
-	//Time varying param
-	//Dynamic variable
-	//Energy densities.
-	//Linear eqn coeffic
-	//Flags,counters.
-	//Run option.
-	//
-	//==========================DECLARATION DIVISION=================================
-	//
-	//----------REACTION PARAMETERS.
-	//Reaction code number (1-88).
-	//Incoming nuclide type (1-26).
-	//Incoming light nuclide type (1-6).
-	//Outgoing light nuclide type (1-6).
-	//Outgoing nuclide type (1-26).
-	//Reverse reaction coefficient.
-	//Energy released in reaction.
-	//
-	//----------REACTION RATES.
-	//Forward reaction rate coefficients.
-	//Reverse reaction rate coefficients.
-	//
-	//----------EVOLUTION PARAMETERS.
-	//Temperature (in units of 10**9 K).
-	//Relative number abundances.
-	//
-	//----------EVOLUTION PARAMETERS (DERIVATIVES).
-	//Change in rel number abundances.
-	//
-	//----------EVOLUTION PARAMETERS (ORIGINAL VALUES).
-	//Rel # abund at start of iteration.
-	//
-	//----------TIME VARIABLES.
-	//Time step.
-	//
-	//----------DYNAMIC VARIABLES.
-	//Expansion rate.
-	//
-	//----------ENERGY DENSITIES.
-	//Baryon mass density.
-	//
-	//----------COMPONENTS OF MATRIX EQUATION.
-	//Relates y(t-dt) to y(t).
-	//Contains y0 in inverse order.
-	//yy in reverse order.
-	//
-	//----------COUNTERS AND FLAGS.
-	//Counts which Runge-Kutta loop.
-	//# time steps after outputting a line
-	//Indicates if gaussian elimination fa
-	//
-	//----------RUN OPTIONS.
-	//Number of nuclides in computation.
-	//Equals isize + 1.
-	//Number of reactions in computation.
-	//
-	//----------EVOLUTION EQUATION COEFFICIENTS.
-	//Equate to ii,jj,kk,ll.
-	//Equate to si,sj,sk,sl.
-	//Coefficients of rate equation.
-	//
-	//----------LOCAL VARIABLES.
-	//Abundances at end of iteration.
-	//# of nuclide i,j,k,l
-	//(10**(-5))*volume expansion rate.
-	//Equate to iform.
-	//Element which does not converge.
-	//
-	//==============================DATA DIVISION====================================
-	//
-	//----------NUMBER OF NUCLIDES IN REACTION TYPES 1-11.
-	//
-	//===========================PROCEDURE DIVISION==================================
-	//
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
 	//..........TEMPERATURE FACTORS.
-	double& T9 = U.T9;							/// Copy the reference.
-	double* y = U.Y;							/// Get the array pointer.
-	double* y0 = U0.Y;							/// Get the array pointer.
-	T932 = pow(T9, 1.5); 						/// T9**(3/2).
-	T9m32 = 1. / T932;							/// T9**(-3/2).
+	double& T9 = U.T9;						/// Copy the reference.
+	double* y = U.Y;						/// Get the array pointer.
+	double* y0 = U0.Y;						/// Get the array pointer.
+
+	// test access to y
+	y[l];
+
+	T932 = pow(T9, 1.5); 					/// T9**(3/2).
+	T9m32 = 1. / T932;						/// T9**(-3/2).
 	//..........MATRIX SIZE.
 	isize1 = isize + 1;
 	//..........INITIALIZE A-MATRIX.
@@ -2549,64 +2543,60 @@ void common::sol(
 			}
 			//configuration1001:
 statement_201: 			/// 1-0-0-1 configuration.
-			//ci = f(n); 				/// (Ref 1).
 			ci = f[n]; 				/// (Ref 1).
 			cj = 0;
 			ck = 0;
-			//cl = r(n);
 			cl = r[n];
 			goto statement_212;
 statement_202: 			/// 1-1-0-1 configuration.
-			//r(n) = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f(n); 	/// (Ref 2).
 			r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
-			//f(n) = rhob * f(n);
 			f[n] = rhob * f[n];
-			//ci = y(j) * f(n) / 2.;
 			ci = y[j] * f[n] / 2.;
-			//cj = y(i) * f(n) / 2.;
 			cj = y[i] * f[n] / 2.;
 			ck = 0;
-			//cl = r(n);
 			cl = r[n];
 			goto statement_212;
 statement_203: 				/// 1-1-1-1 configuration.
 			f[n] = rhob * f[n]; 			/// (Ref 3).
 			r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
-			ci = y[j] * f[n] / 2.;
-			cj = y[i] * f[n] / 2.;
-			ck = y[l] * r[n] / 2.;
-			cl = y[k] * r[n] / 2.;
+			ci = y[j] * f[n] / 2;
+			cj = y[i] * f[n] / 2;
+			ck = y[l] * r[n] / 2;
+			cl = y[k] * r[n] / 2;
 			goto statement_212;
 statement_204: 				/// 1-0-0-2 configuration.
+		{	
 			ci = f[n];
-			cj = 0.;
-			ck = 0.;
-			cl = y[l] * r[n] / 2.;
+			cj = 0;
+			ck = 0;
+			double __rn = r[n];
+			cl = y[l] * __rn / 2;
+		}
 			goto statement_212;
 statement_205: 				/// 1-1-0-2 configuration.
 			f[n] = rhob * f[n];
 			r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-			ci = y[j] * f[n] / 2.;
-			cj = y[i] * f[n] / 2.;
-			ck = 0.;
-			cl = y[l] * r[n] / 2.;
+			ci = y[j] * f[n] / 2;
+			cj = y[i] * f[n] / 2;
+			ck = 0;
+			cl = y[l] * r[n] / 2;
 			goto statement_212;
 statement_206: 				/// 2-0-1-1 configuration.
 			f[n] = rhob * f[n];
 			r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-			ci = y[i] * f[n] / 2.;
-			cj = 0.;
-			ck = y[l] * r[n] / 2.;
-			cl = y[k] * r[n] / 2.;
+			ci = y[i] * f[n] / 2;
+			cj = 0;
+			ck = y[l] * r[n] / 2;
+			cl = y[k] * r[n] / 2;
 			goto statement_212;
 			//3-0-0-1 configuration.
 statement_207:
 			//(Ref 4).
 			r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
 			f[n] = rhob * rhob * f[n];
-			ci = y[i] * y[i] * f[n] / 6.;
-			cj = 0.;
-			ck = 0.;
+			ci = y[i] * y[i] * f[n] / 6;
+			cj = 0;
+			ck = 0;
 			cl = r[n];
 			goto statement_212;
 			//2-1-0-1 configuration.
@@ -2700,21 +2690,21 @@ statement_212:
 	//(10**(-5))*(Expansion rate).
 	bdln = 1.e-5f * (3. * hubcst);
 	FEM_DO_SAFE(i, 1, isize) {
-		int i1 = isize1 - i; 						/// Invert the rows.
+		int i1 = isize1 - i; 			/// Invert the rows.
 		FEM_DO_SAFE(j, 1, isize) {
-			int j1 = isize1 - j; 						/// Invert the columns.
+			int j1 = isize1 - j; 		/// Invert the columns.
 			//std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
 			if (y0[i1] == NOT_USED) exit(0);
 			if (y0[j1] == NOT_USED) exit(0);
 			if (a[j][i] == NOT_USED) exit(0);
 
 			if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
-				a[j][i] = 0; 							/// Set 0 if tiny.
+				a[j][i] = 0; 			/// Set 0 if tiny.
 			else
-				a[j][i] *= dt; 							/// Bring dt over to other side.
+				a[j][i] *= dt; 			/// Bring dt over to other side.
 		}
-		a[i][i] += 1; 								/// Add identity matrix to a-matrix.
-		b[i1] = y0[i]; 								/// Initial abundances.
+		a[i][i] += 1; 					/// Add identity matrix to a-matrix.
+		b[i1] = y0[i]; 					/// Initial abundances.
 	}
 	//
 	//50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -2732,7 +2722,7 @@ statement_212:
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
 		//dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
-		dUdt.Y[i] = (U.Y[i] - U0.Y[i]) / dt; 		/// Take derivative.
+		dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -3562,7 +3552,6 @@ void common::derivs(
 	//
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
-	double& phie = U.phie;						/// Copy the reference.
 	double* y = U.Y;							/// Get the array pointer.
 
 	double* dydt = dUdt.Y;						/// Get the array pointer.
@@ -3788,16 +3777,8 @@ void common::accum()
 void common::driver()
 {
 	double& T9 = U.T9;							/// Copy the reference.
-	double& hv = U.hv;							/// Copy the reference.
-	double& phie = U.phie;						/// Copy the reference.
 	double* y = U.Y;							/// Get the array pointer.
-
-	double* y0 = U0.Y;							/// Get the array pointer.
 	double* dydt = dUdt.Y;						/// Get the array pointer.
-
-	double& dT9 = dU.T9;						/// Copy the reference.
-	double& dhv = dU.hv;						/// Copy the reference.
-	double& dphie = dU.phie;					/// Copy the reference.
 
 	int mvar = 0;
 	int loop = 0;
