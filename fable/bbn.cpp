@@ -1779,7 +1779,7 @@ void common::start()
 	//
 	//..........COMPUTATIONAL SETTINGS.
 	double& T9 = U.T9;							/// Copy the reference.
-	double* y = U.Y;							/// Get the array pointer.
+	double* const y = U.Y;							/// Get the array pointer.
 	double* y0 = U0.Y;							/// Get the array pointer.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
@@ -2219,7 +2219,7 @@ void common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
-	double* y = U.Y;				/// Get the array pointer.
+	double* const y = U.Y;				/// Get the array pointer.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2486,17 +2486,21 @@ void common::sol(
 	double bdln = 0;
 	int ierror = 0;
 	const int iw = 6;
+
+	// Short hand for evolution parameters
+	double* const y = U.Y;						/// Get the array pointer.
+	double* y0 = U0.Y;						/// Get the array pointer.
+
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
 	//..........TEMPERATURE FACTORS.
 	double& T9 = U.T9;						/// Copy the reference.
-	double* y = U.Y;						/// Get the array pointer.
-	double* y0 = U0.Y;						/// Get the array pointer.
-
 	T932 = pow(T9, 1.5); 					/// T9**(3/2).
 	T9m32 = 1. / T932;						/// T9**(-3/2).
+
 	//..........MATRIX SIZE.
 	isize1 = isize + 1;
+
 	//..........INITIALIZE A-MATRIX.
 	FEM_DO_SAFE(i, 1, isize) {
 		FEM_DO_SAFE(j, 1, isize) {
@@ -2523,6 +2527,7 @@ void common::sol(
 			rl = sl[ind]; 					/// # of outgoing nuclide l.
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (ind) {
+				/*
 				case 1: goto statement_201;
 				case 2: goto statement_202;
 				case 3: goto statement_203;
@@ -2535,108 +2540,114 @@ void common::sol(
 				case 10: goto statement_210;
 				case 11: goto statement_211;
 				default: break;
-			}
-			//configuration1001:
-statement_201: 			/// 1-0-0-1 configuration.
-			ci = f[n]; 				/// (Ref 1).
-			cj = 0;
-			ck = 0;
-			cl = r[n];
-			goto statement_212;
-statement_202: 			/// 1-1-0-1 configuration.
-			r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
-			f[n] = rhob * f[n];
-			ci = y[j] * f[n] / 2.;
-			cj = y[i] * f[n] / 2.;
-			ck = 0;
-			cl = r[n];
-			goto statement_212;
-statement_203: 				/// 1-1-1-1 configuration.
-			f[n] = rhob * f[n]; 			/// (Ref 3).
-			r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
-			ci = y[j] * f[n] / 2;
-			cj = y[i] * f[n] / 2;
-			ck = y[l] * r[n] / 2;
-			cl = y[k] * r[n] / 2;
-			goto statement_212;
-statement_204: 				/// 1-0-0-2 configuration.
-		{	
-			// test access to y
-			y[l];
+				*/
+			//}
+			case 1: /// 1-0-0-1 configuration.
+				ci = f[n]; 				/// (Ref 1).
+				cj = 0;
+				ck = 0;
+				cl = r[n];
+				break;
 
-			ci = f[n];
-			cj = 0;
-			ck = 0;
-			double __rn = r[n];
-			cl = y[l] * __rn / 2;
-		}
-			goto statement_212;
-statement_205: 				/// 1-1-0-2 configuration.
-			f[n] = rhob * f[n];
-			r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-			ci = y[j] * f[n] / 2;
-			cj = y[i] * f[n] / 2;
-			ck = 0;
-			cl = y[l] * r[n] / 2;
-			goto statement_212;
-statement_206: 				/// 2-0-1-1 configuration.
-			f[n] = rhob * f[n];
-			r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-			ci = y[i] * f[n] / 2;
-			cj = 0;
-			ck = y[l] * r[n] / 2;
-			cl = y[k] * r[n] / 2;
-			goto statement_212;
-			//3-0-0-1 configuration.
-statement_207:
-			//(Ref 4).
-			r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
-			f[n] = rhob * rhob * f[n];
-			ci = y[i] * y[i] * f[n] / 6;
-			cj = 0;
-			ck = 0;
-			cl = r[n];
-			goto statement_212;
-			//2-1-0-1 configuration.
-statement_208:
-			//(Ref 4).
-			r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
-			f[n] = rhob * rhob * f[n];
-			ci = y[j] * y[i] * f[n] / 3.;
-			cj = y[i] * y[i] * f[n] / 6.;
-			ck = 0.;
-			cl = r[n];
-			goto statement_212;
-			//1-1-1-2 configuration.
-statement_209:
-			f[n] = rhob * f[n];
-			//(Ref 5)
-			r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-			ci = y[j] * f[n] / 2.;
-			cj = y[i] * f[n] / 2.;
-			ck = y[l] * y[l] * r[n] / 6.;
-			cl = y[k] * y[l] * r[n] / 3.;
-			goto statement_212;
-			//1-1-0-3 configuration.
-statement_210:
-			f[n] = rhob * f[n];
-			//(Ref 5)
-			r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-			ci = y[j] * f[n] / 2.;
-			cj = y[i] * f[n] / 2.;
-			ck = 0.;
-			cl = y[l] * y[l] * r[n] / 6.;
-			goto statement_212;
-			//2-0-2-1 configuration.
-statement_211:
-			f[n] = rhob * f[n];
-			//(Ref 5)
-			r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-			ci = y[i] * f[n] / 2.;
-			cj = 0.;
-			ck = y[l] * y[k] * r[n] / 3.;
-			cl = y[k] * y[k] * r[n] / 6.;
-statement_212:
+			case 2: /// 1-1-0-1 configuration.
+				r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
+				f[n] = rhob * f[n];
+				ci = y[j] * f[n] / 2.;
+				cj = y[i] * f[n] / 2.;
+				ck = 0;
+				cl = r[n];
+				break;
+
+			case 3: /// 1-1-1-1 configuration.
+				f[n] = rhob * f[n]; 			/// (Ref 3).
+				r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
+				ci = y[j] * f[n] / 2;
+				cj = y[i] * f[n] / 2;
+				ck = y[l] * r[n] / 2;
+				cl = y[k] * r[n] / 2;
+				break;
+
+			case 4: /// 1-0-0-2 configuration.
+			{	
+				double __rn = r[n];
+
+				ci = f[n];
+				cj = 0;
+				ck = 0;
+				cl = y[l] * __rn / 2;
+			}
+				break;
+
+			case 5: /// 1-1-0-2 configuration.
+				f[n] = rhob * f[n];
+				r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+				ci = y[j] * f[n] / 2;
+				cj = y[i] * f[n] / 2;
+				ck = 0;
+				cl = y[l] * r[n] / 2;
+				break;
+
+			case 6: /// 2-0-1-1 configuration.
+				f[n] = rhob * f[n];
+				r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+				ci = y[i] * f[n] / 2;
+				cj = 0;
+				ck = y[l] * r[n] / 2;
+				cl = y[k] * r[n] / 2;
+				break;
+
+			case 7: /// 3-0-0-1 configuration.
+				//(Ref 4).
+				r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+				f[n] = rhob * rhob * f[n];
+				ci = y[i] * y[i] * f[n] / 6;
+				cj = 0;
+				ck = 0;
+				cl = r[n];
+				break;
+
+			case 8: /// 2-1-0-1 configuration.
+				//(Ref 4).
+				r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+				f[n] = rhob * rhob * f[n];
+				ci = y[j] * y[i] * f[n] / 3.;
+				cj = y[i] * y[i] * f[n] / 6.;
+				ck = 0.;
+				cl = r[n];
+				break;
+
+			case 9: /// 1-1-1-2 configuration.
+				f[n] = rhob * f[n];
+				//(Ref 5)
+				r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+				ci = y[j] * f[n] / 2.;
+				cj = y[i] * f[n] / 2.;
+				ck = y[l] * y[l] * r[n] / 6.;
+				cl = y[k] * y[l] * r[n] / 3.;
+				break;
+
+			case 10: /// 1-1-0-3 configuration.
+				f[n] = rhob * f[n];
+				//(Ref 5)
+				r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+				ci = y[j] * f[n] / 2.;
+				cj = y[i] * f[n] / 2.;
+				ck = 0.;
+				cl = y[l] * y[l] * r[n] / 6.;
+				break;
+
+			case 11: /// 2-0-2-1 configuration.
+				f[n] = rhob * f[n];
+				//(Ref 5)
+				r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+				ci = y[i] * f[n] / 2.;
+				cj = 0.;
+				ck = y[l] * y[k] * r[n] / 3.;
+				cl = y[k] * y[k] * r[n] / 6.;
+				break;
+
+			default: break;
+			}
 			//
 			//30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
 			//
@@ -3550,7 +3561,7 @@ void common::derivs(
 	//
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
-	double* y = U.Y;							/// Get the array pointer.
+	double* const y = U.Y;							/// Get the array pointer.
 
 	double* dydt = dUdt.Y;						/// Get the array pointer.
 
@@ -3712,7 +3723,7 @@ void common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	double* y = U.Y;							/// Get the array pointer.
+	double* const y = U.Y;							/// Get the array pointer.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
@@ -3775,7 +3786,7 @@ void common::accum()
 void common::driver()
 {
 	double& T9 = U.T9;							/// Copy the reference.
-	double* y = U.Y;							/// Get the array pointer.
+	double* const y = U.Y;							/// Get the array pointer.
 	double* dydt = dUdt.Y;						/// Get the array pointer.
 
 	int mvar = 0;

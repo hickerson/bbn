@@ -58,6 +58,7 @@ class EvolutionParameters
 	public : ~EvolutionParameters()				/// Does nothing.
 	{
 		//verbose("Empty destructor for EvolutionParameters");
+		printf("Empty destructor for EvolutionParameters\n");
 	}
 	
 	public : EvolutionParameters & operator = (const EvolutionParameters & other)
