@@ -1652,11 +1652,8 @@ void common::rate1(
 		part2 = xintd<2>( 1., uplim2, iter);
 		part3 = xintd<3>( 1., uplim3, iter);
 		part4 = xintd<4>( 1., uplim4, iter);
-		//f(1) = part1 + part2; 		/// Add 2 integrals to get forward rate.
-		f[1] = part1 + part2; 		/// Add 2 integrals to get forward rate.
-		//r(1) = part3 + part4; 		/// Add 2 integrals to get reverse rate.
-		r[1] = part3 + part4; 		/// Add 2 integrals to get reverse rate.
-		//(xi(1).eq.0.)
+		f[1] = part1 + part2; 		/// Sum integrals to get forward rate.
+		r[1] = part3 + part4; 		/// Sum integrals to get reverse rate.
 	}
 	//
 	//----------REFERENCES-----------------------------------------------------------
