@@ -2496,9 +2496,6 @@ void common::sol(
 	double* y = U.Y;						/// Get the array pointer.
 	double* y0 = U0.Y;						/// Get the array pointer.
 
-	// test access to y
-	y[l];
-
 	T932 = pow(T9, 1.5); 					/// T9**(3/2).
 	T9m32 = 1. / T932;						/// T9**(-3/2).
 	//..........MATRIX SIZE.
@@ -2519,6 +2516,7 @@ void common::sol(
 		j = jj(n); 							/// ID # of incoming nuclide j.
 		k = kk(n); 							/// ID # of outgoing nuclide k.
 		l = ll(n); 							/// ID # of outgoing nuclide l.
+
 		//Reactio
 		if ((ind != 0) && (i <= isize) && (l <= isize)) {
 			std::cout << "ind:"<< ind << "\n";
@@ -2566,6 +2564,9 @@ statement_203: 				/// 1-1-1-1 configuration.
 			goto statement_212;
 statement_204: 				/// 1-0-0-2 configuration.
 		{	
+			// test access to y
+			y[l];
+
 			ci = f[n];
 			cj = 0;
 			ck = 0;
@@ -4783,7 +4784,8 @@ common::common() :
 	common_nupar(),
 	common_runopt(),
 	common_outopt(),
-	common_tcheck()
+	common_tcheck(),
+	U(), U0(), dU(), dUdt()
 {
 	cy0 = .300f;
 	ct0 = .030f;

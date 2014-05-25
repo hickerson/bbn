@@ -544,8 +544,7 @@ const int common_nucdat::nnuc;
 
 		void qvary(int, double);
 
-		public: common(	
-		);
+		public: common();
 		//	int argc,
 		//	char const* argv[]);
 
