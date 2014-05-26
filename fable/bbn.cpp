@@ -2481,8 +2481,8 @@ void common::sol(
 	const int iw = 6;
 
 	// Short hand for evolution parameters
-	const double* const y = U.Y;						/// Get the array pointer.
-	double* y0 = U0.Y;						/// Get the array pointer.
+	double* const y = U.Y;						/// Get the array pointer.
+	double* const y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
@@ -2508,141 +2508,122 @@ void common::sol(
 	//FEM_DO_SAFE(n, 1, jsize) {
 	for (int n = 1; n <= jsize; n++) {
 		//..........EQUATE VARIABLES TO ARRAYS.
-		unsigned ind = iform(n); 					/// Type of reaction.
+		unsigned reaction = iform(n); 					/// Type of reaction.
 		unsigned i = ii(n); 							/// ID # of incoming nuclide i.
 		unsigned j = jj(n); 							/// ID # of incoming nuclide j.
 		unsigned k = kk(n); 							/// ID # of outgoing nuclide k.
 		unsigned l = ll(n); 							/// ID # of outgoing nuclide l.
 
 		//Reactio
-		if ((ind != 0) && (i <= isize) && (l <= isize)) {
-			std::cout << "ind:"<< ind << "\n";
-			unsigned ri = si[ind]; 					/// # of incoming nuclide i.
-			unsigned rj = sj[ind]; 					/// # of incoming nuclide j.
-			unsigned rk = sk[ind]; 					/// # of outgoing nuclide k.
-			unsigned rl = sl[ind]; 					/// # of outgoing nuclide l.
+		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
+			std::cout << "reaction:"<< reaction << "\n";
+			unsigned ri = si[reaction]; 					/// # of incoming nuclide i.
+			unsigned rj = sj[reaction]; 					/// # of incoming nuclide j.
+			unsigned rk = sk[reaction]; 					/// # of outgoing nuclide k.
+			unsigned rl = sl[reaction]; 					/// # of outgoing nuclide l.
 			//..........COMPUTE DIFFERENT REACTION RATES.
-			switch (ind) {
-				/*
-				case 1: goto statement_201;
-				case 2: goto statement_202;
-				case 3: goto statement_203;
-				case 4: goto statement_204;
-				case 5: goto statement_205;
-				case 6: goto statement_206;
-				case 7: goto statement_207;
-				case 8: goto statement_208;
-				case 9: goto statement_209;
-				case 10: goto statement_210;
-				case 11: goto statement_211;
+			switch (reaction) {
+				case 1: /// 1-0-0-1 configuration.
+					ci = f[n]; 				/// (Ref 1).
+					cj = 0;
+					ck = 0;
+					cl = r[n];
+					break;
+
+				case 2: /// 1-1-0-1 configuration.
+					r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
+					f[n] = rhob * f[n];
+					ci = y[j] * f[n] / 2.;
+					cj = y[i] * f[n] / 2.;
+					ck = 0;
+					cl = r[n];
+					break;
+
+				case 3: /// 1-1-1-1 configuration.
+					f[n] = rhob * f[n]; 			/// (Ref 3).
+					r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
+					ci = y[j] * f[n] / 2;
+					cj = y[i] * f[n] / 2;
+					ck = y[l] * r[n] / 2;
+					cl = y[k] * r[n] / 2;
+					break;
+
+				case 4: /// 1-0-0-2 configuration.
+					ci = f[n];
+					cj = 0;
+					ck = 0;
+					cl = y[l] * r[n] / 2;
+					break;
+
+				case 5: /// 1-1-0-2 configuration.
+					f[n] = rhob * f[n];
+					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+					ci = y[j] * f[n] / 2;
+					cj = y[i] * f[n] / 2;
+					ck = 0;
+					cl = y[l] * r[n] / 2;
+					break;
+
+				case 6: /// 2-0-1-1 configuration.
+					f[n] = rhob * f[n];
+					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+					ci = y[i] * f[n] / 2;
+					cj = 0;
+					ck = y[l] * r[n] / 2;
+					cl = y[k] * r[n] / 2;
+					break;
+
+				case 7: /// 3-0-0-1 configuration.
+					//(Ref 4).
+					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+					f[n] = rhob * rhob * f[n];
+					ci = y[i] * y[i] * f[n] / 6;
+					cj = 0;
+					ck = 0;
+					cl = r[n];
+					break;
+
+				case 8: /// 2-1-0-1 configuration.
+					//(Ref 4).
+					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+					f[n] = rhob * rhob * f[n];
+					ci = y[j] * y[i] * f[n] / 3.;
+					cj = y[i] * y[i] * f[n] / 6.;
+					ck = 0.;
+					cl = r[n];
+					break;
+
+				case 9: /// 1-1-1-2 configuration.
+					f[n] = rhob * f[n];
+					//(Ref 5)
+					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					ci = y[j] * f[n] / 2.;
+					cj = y[i] * f[n] / 2.;
+					ck = y[l] * y[l] * r[n] / 6.;
+					cl = y[k] * y[l] * r[n] / 3.;
+					break;
+
+				case 10: /// 1-1-0-3 configuration.
+					f[n] = rhob * f[n];
+					//(Ref 5)
+					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					ci = y[j] * f[n] / 2.;
+					cj = y[i] * f[n] / 2.;
+					ck = 0.;
+					cl = y[l] * y[l] * r[n] / 6.;
+					break;
+
+				case 11: /// 2-0-2-1 configuration.
+					f[n] = rhob * f[n];
+					//(Ref 5)
+					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					ci = y[i] * f[n] / 2.;
+					cj = 0.;
+					ck = y[l] * y[k] * r[n] / 3.;
+					cl = y[k] * y[k] * r[n] / 6.;
+					break;
+
 				default: break;
-				*/
-			//}
-			case 1: /// 1-0-0-1 configuration.
-				ci = f[n]; 				/// (Ref 1).
-				cj = 0;
-				ck = 0;
-				cl = r[n];
-				break;
-
-			case 2: /// 1-1-0-1 configuration.
-				r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
-				f[n] = rhob * f[n];
-				ci = y[j] * f[n] / 2.;
-				cj = y[i] * f[n] / 2.;
-				ck = 0;
-				cl = r[n];
-				break;
-
-			case 3: /// 1-1-1-1 configuration.
-				f[n] = rhob * f[n]; 			/// (Ref 3).
-				r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
-				ci = y[j] * f[n] / 2;
-				cj = y[i] * f[n] / 2;
-				ck = y[l] * r[n] / 2;
-				cl = y[k] * r[n] / 2;
-				break;
-
-			case 4: /// 1-0-0-2 configuration.
-			{	
-				double __rn = r[n];
-
-				ci = f[n];
-				cj = 0;
-				ck = 0;
-				cl = y[l] * __rn / 2;
-			}
-				break;
-
-			case 5: /// 1-1-0-2 configuration.
-				f[n] = rhob * f[n];
-				r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-				ci = y[j] * f[n] / 2;
-				cj = y[i] * f[n] / 2;
-				ck = 0;
-				cl = y[l] * r[n] / 2;
-				break;
-
-			case 6: /// 2-0-1-1 configuration.
-				f[n] = rhob * f[n];
-				r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-				ci = y[i] * f[n] / 2;
-				cj = 0;
-				ck = y[l] * r[n] / 2;
-				cl = y[k] * r[n] / 2;
-				break;
-
-			case 7: /// 3-0-0-1 configuration.
-				//(Ref 4).
-				r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
-				f[n] = rhob * rhob * f[n];
-				ci = y[i] * y[i] * f[n] / 6;
-				cj = 0;
-				ck = 0;
-				cl = r[n];
-				break;
-
-			case 8: /// 2-1-0-1 configuration.
-				//(Ref 4).
-				r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
-				f[n] = rhob * rhob * f[n];
-				ci = y[j] * y[i] * f[n] / 3.;
-				cj = y[i] * y[i] * f[n] / 6.;
-				ck = 0.;
-				cl = r[n];
-				break;
-
-			case 9: /// 1-1-1-2 configuration.
-				f[n] = rhob * f[n];
-				//(Ref 5)
-				r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-				ci = y[j] * f[n] / 2.;
-				cj = y[i] * f[n] / 2.;
-				ck = y[l] * y[l] * r[n] / 6.;
-				cl = y[k] * y[l] * r[n] / 3.;
-				break;
-
-			case 10: /// 1-1-0-3 configuration.
-				f[n] = rhob * f[n];
-				//(Ref 5)
-				r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-				ci = y[j] * f[n] / 2.;
-				cj = y[i] * f[n] / 2.;
-				ck = 0.;
-				cl = y[l] * y[l] * r[n] / 6.;
-				break;
-
-			case 11: /// 2-0-2-1 configuration.
-				f[n] = rhob * f[n];
-				//(Ref 5)
-				r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-				ci = y[i] * f[n] / 2.;
-				cj = 0.;
-				ck = y[l] * y[k] * r[n] / 3.;
-				cl = y[k] * y[k] * r[n] / 6.;
-				break;
-
-			default: break;
 			}
 			//
 			//30--------CONSTRUCT THE A-MATRIX-----------------------------------------------
@@ -2687,7 +2668,7 @@ void common::sol(
 			}
 			a[i][l] -= ri * cl;
 			a[l][l] += rl * cl;
-		} //((ind.ne.0).and.(i.le.isize).and.(l.le.isize))
+		} //((reaction.ne.0).and.(i.le.isize).and.(l.le.isize))
 	} //n = 1,jsize
 	//
 	//40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
@@ -3796,10 +3777,17 @@ void common::driver()
 	int i = 0;
 	double dtl = 0;
 	const int nvar = nnuc + 3;
+	/*
 	double v[nvar+1];
 	double v0[nvar+1];
 	double dvdt[nvar+1];
 	double dvdt0[nvar+1];
+	*/
+	double* v = U.v;
+	double* v0 = U0.v;
+	double* dvdt = dUdt.v;
+	double* dvdt0 = dUdt0.v;
+	
 	/*
 	FEM_DO_SAFE(i, 1, nvar) {
 		v[i] = 0;
@@ -4793,7 +4781,7 @@ common::common() :
 	common_runopt(),
 	common_outopt(),
 	common_tcheck(),
-	U(), U0(), dU(), dUdt()
+	U(), U0(), dU(), dUdt(), dUdt0()
 {
 	cy0 = .300f;
 	ct0 = .030f;

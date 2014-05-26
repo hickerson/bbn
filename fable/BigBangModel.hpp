@@ -534,7 +534,6 @@ const int common_nucdat::nnuc;
 		double b[nnuc+1];
 		//double yx[nnuc+1];
 
-		EvolutionParameters<double, nnuc> U, U0, dU, dUdt; 
 
 		/*
 		   boost::numeric::ublas::matrix<double> a;
@@ -544,7 +543,8 @@ const int common_nucdat::nnuc;
 
 		void qvary(int, double);
 
-		public: common();
+	public: 
+		common();
 		//	int argc,
 		//	char const* argv[]);
 
@@ -589,10 +589,24 @@ const int common_nucdat::nnuc;
 		void rate3();
 		void rate4();
 
-		private:
+	private:
 		double getBesselL(double);
 		double getBesselM(double);
 		double getBesselN(double);
+
+	private:
+		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
+
+		double& y(unsigned index) { return U.y[index] }
+		double& y0(unsigned index) { return U.y[index] }
+		double& dy(unsigned index) { return U.y[index] }
+		double& dydt(unsigned index) { return U.y[index] }
+
+		double& v(unsigned index) { return index < 4? U.v[index] : U.y[index-3] }
+		double& v0(unsigned index) { return index < 4? U0.v[index] : U0.y[index-3] }
+		double& dv(unsigned index) { return index < 4? dU.v[index] : dU.y[index-3] }
+		double& dvdt(unsigned index) { return index < 4? dUdt.v[index] : dUdt.y[index-3] }
+		double& dvdt0(unsigned index) { return index < 4? dUdt0.v[index] : dUdt0.y[index-3] }
 	};
 
 	const double common::am[26+1] = {
