@@ -2475,56 +2475,52 @@ void common::sol(
 	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 	const double sl[] = {NOT_USED, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
-	double T932 = 0;
-	double T9m32 = 0;
-	int isize1 = 0;
-	int i, j, k, l;
-	int n = 0;
-	int ind = 0;
-	double ri, rj, rk, rl;
 	double ci, cj, ck, cl;
 	double bdln = 0;
 	int ierror = 0;
 	const int iw = 6;
 
 	// Short hand for evolution parameters
-	double* const y = U.Y;						/// Get the array pointer.
+	const double* const y = U.Y;						/// Get the array pointer.
 	double* y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
 	//..........TEMPERATURE FACTORS.
 	double& T9 = U.T9;						/// Copy the reference.
-	T932 = pow(T9, 1.5); 					/// T9**(3/2).
-	T9m32 = 1. / T932;						/// T9**(-3/2).
+	double T932 = pow(T9, 1.5); 					/// T9**(3/2).
+	double T9m32 = 1. / T932;						/// T9**(-3/2).
 
 	//..........MATRIX SIZE.
-	isize1 = isize + 1;
+	int isize1 = isize + 1;
 
 	//..........INITIALIZE A-MATRIX.
-	FEM_DO_SAFE(i, 1, isize) {
-		FEM_DO_SAFE(j, 1, isize) {
+	//FEM_DO_SAFE(i, 1, isize) {
+		//FEM_DO_SAFE(j, 1, isize) {
+	for (int i = 1; i <= isize; i++)
+		for (int j = 1; j <= isize; j++)
 			a[j][i] = 0; 					/// Set a-matrix to zero.
-		}
-	}
+		//}
+	//}
 	//
 	//20--------COMPUTE FACTORS FOR THE A-MATRIX-------------------------------------
 	//
-	FEM_DO_SAFE(n, 1, jsize) {
+	//FEM_DO_SAFE(n, 1, jsize) {
+	for (int n = 1; n <= jsize; n++) {
 		//..........EQUATE VARIABLES TO ARRAYS.
-		ind = iform(n); 					/// Type of reaction.
-		i = ii(n); 							/// ID # of incoming nuclide i.
-		j = jj(n); 							/// ID # of incoming nuclide j.
-		k = kk(n); 							/// ID # of outgoing nuclide k.
-		l = ll(n); 							/// ID # of outgoing nuclide l.
+		unsigned ind = iform(n); 					/// Type of reaction.
+		unsigned i = ii(n); 							/// ID # of incoming nuclide i.
+		unsigned j = jj(n); 							/// ID # of incoming nuclide j.
+		unsigned k = kk(n); 							/// ID # of outgoing nuclide k.
+		unsigned l = ll(n); 							/// ID # of outgoing nuclide l.
 
 		//Reactio
 		if ((ind != 0) && (i <= isize) && (l <= isize)) {
 			std::cout << "ind:"<< ind << "\n";
-			ri = si[ind]; 					/// # of incoming nuclide i.
-			rj = sj[ind]; 					/// # of incoming nuclide j.
-			rk = sk[ind]; 					/// # of outgoing nuclide k.
-			rl = sl[ind]; 					/// # of outgoing nuclide l.
+			unsigned ri = si[ind]; 					/// # of incoming nuclide i.
+			unsigned rj = sj[ind]; 					/// # of incoming nuclide j.
+			unsigned rk = sk[ind]; 					/// # of outgoing nuclide k.
+			unsigned rl = sl[ind]; 					/// # of outgoing nuclide l.
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (ind) {
 				/*
@@ -2698,9 +2694,11 @@ void common::sol(
 	//
 	//(10**(-5))*(Expansion rate).
 	bdln = 1.e-5f * (3. * hubcst);
-	FEM_DO_SAFE(i, 1, isize) {
+	//FEM_DO_SAFE(i, 1, isize) {
+	for (int i = 1; i <= isize; i++) {
 		int i1 = isize1 - i; 			/// Invert the rows.
-		FEM_DO_SAFE(j, 1, isize) {
+		//FEM_DO_SAFE(j, 1, isize) {
+		for (int j = 1; j <= isize; j++) {
 			int j1 = isize1 - j; 		/// Invert the columns.
 			//std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
 			if (y0[i1] == NOT_USED) exit(0);
@@ -2726,7 +2724,9 @@ void common::sol(
 		eqslin(0, ierror);
 	}
 	//..........OBTAIN DERIVATIVE.
-	FEM_DO_SAFE(i, 1, isize) {
+	//FEM_DO_SAFE(i, 1, isize) {
+	for (int i = 1; i <= isize; i++)
+	{
 		//yy[i] = yx[isize1 - i]; 					/// Abundance at t+dt.
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
