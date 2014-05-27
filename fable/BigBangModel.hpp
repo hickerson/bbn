@@ -597,16 +597,16 @@ const int common_nucdat::nnuc;
 	private:
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
 
-		double& y(unsigned index) { return U.y[index] }
-		double& y0(unsigned index) { return U.y[index] }
-		double& dy(unsigned index) { return U.y[index] }
-		double& dydt(unsigned index) { return U.y[index] }
+		double& y(unsigned index) { return U.Y[index]; }
+		double& y0(unsigned index) { return U.Y[index]; }
+		double& dy(unsigned index) { return U.Y[index]; }
+		double& dydt(unsigned index) { return U.Y[index]; }
 
-		double& v(unsigned index) { return index < 4? U.v[index] : U.y[index-3] }
-		double& v0(unsigned index) { return index < 4? U0.v[index] : U0.y[index-3] }
-		double& dv(unsigned index) { return index < 4? dU.v[index] : dU.y[index-3] }
-		double& dvdt(unsigned index) { return index < 4? dUdt.v[index] : dUdt.y[index-3] }
-		double& dvdt0(unsigned index) { return index < 4? dUdt0.v[index] : dUdt0.y[index-3] }
+		double& v(unsigned index) { return index < 4? U.V[index] : U.Y[index-3]; }
+		double& v0(unsigned index) { return index < 4? U0.V[index] : U0.Y[index-3]; }
+		double& dv(unsigned index) { return index < 4? dU.V[index] : dU.Y[index-3]; }
+		double& dvdt(unsigned index) { return index < 4? dUdt.V[index] : dUdt.Y[index-3]; }
+		double& dvdt0(unsigned index) { return index < 4? dUdt0.V[index] : dUdt0.Y[index-3]; }
 	};
 
 	const double common::am[26+1] = {

@@ -3783,10 +3783,10 @@ void common::driver()
 	double dvdt[nvar+1];
 	double dvdt0[nvar+1];
 	*/
-	double* v = U.v;
-	double* v0 = U0.v;
-	double* dvdt = dUdt.v;
-	double* dvdt0 = dUdt0.v;
+	double* v = U.V;
+	double* v0 = U0.V;
+	double* dvdt = dUdt.V;
+	double* dvdt0 = dUdt0.V;
 	
 	/*
 	FEM_DO_SAFE(i, 1, nvar) {
