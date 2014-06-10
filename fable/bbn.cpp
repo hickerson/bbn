@@ -5159,35 +5159,35 @@ void common::program_new123()
 		rev(i) = reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
 		q9(i) = reacpr[i-1][8-1]; 			/// Energy released.
 		//..........INITIALIZE REACTION RATES.
-		f[i] = 0; 							/// Forward rate coeff.
-		r[i] = 0; 							/// Reverse rate coeff.
+		f[i] = 0; 							/// Forward rate coefficient.
+		r[i] = 0; 							/// Reverse rate coefficient.
 		//..........SET RUN OPTIONS TO DEFAULT.
 	}
 	irun = 1; 							/// Do full run.
-	isize = nnuc; 					/// Use all 26 nuclides.
-	jsize = nrec; 					/// Use all 88 reactions.
+	isize = nnuc; 						/// Use all 26 nuclides.
+	jsize = nrec; 						/// Use all 88 reactions.
 	//..........SET OUTPUT OPTION TO DEFAULT.
 	nout = 0; 							/// No output requests.
-	outfile = false; 						/// Output file not used.
+	outfile = false; 					/// Output file not used.
 	//..........SET VALUES TO DEFAULT.
-	cy = cy0; 						/// Time step limiting constant on abundance.
-	ct = ct0; 						/// Time step limiting constant on temperature.
+	cy = cy0; 							/// Time step limiting constant on abundance.
+	ct = ct0; 							/// Time step limiting constant on temperature.
 	T9i = T9i0; 						/// Initial temperature.
 	T9f = T9f0; 						/// Final temperature.
 	ytmin = ytmin0; 					/// Smallest abundances allowed.
 	inc = inc0; 						/// Accumulation increment.
-	c[1] = c0[1]; 					/// Variation of gravitational constant.
-	c[2] = c0[2]; 					/// Neutron lifetime.
+	c[1] = c0[1]; 						/// Variation of gravitational constant.
+	c[2] = c0[2]; 						/// Neutron lifetime.
 	std::cout << "ntau:"<<c[2]<<std::endl; 
-	c[3] = c0[3]; 					/// Number of neutrino species.
+	c[3] = c0[3]; 						/// Number of neutrino species.
 	cosmo = cosmo0; 					/// Cosmological constant.
 	xi[1] = xi0[1]; 					/// Electron degeneracy parameter.
 	xi[2] = xi0[2]; 					/// Muon degeneracy parameter.
 	xi[3] = xi0[3]; 					/// Tau degeneracy parameter.
-	dt1 = dt0; 						/// Initial time step.
+	dt1 = dt0; 							/// Initial time step.
 	eta1 = eta0; 						/// Baryon-to-photon ratio.
 	//..........ACCEPT RETURN TO CONTINUE.
-	read(ir, star); 							/// Pause.
+	read(ir, star); 					/// Pause.
 	//
 	//30--------PRINT MENU AND AWAIT RESPONSE----------------------------------------
 	//
