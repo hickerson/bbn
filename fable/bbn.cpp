@@ -1779,8 +1779,8 @@ void common::start()
 	//
 	//..........COMPUTATIONAL SETTINGS.
 	double& T9 = U.T9;							/// Copy the reference.
-	//double* const y = U.Y;							/// Get the array pointer.
-	//double* y0 = U0.Y;							/// Get the array pointer.
+	double* const y = U.Y;							/// Get the array pointer.
+	double* y0 = U0.Y;							/// Get the array pointer.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
 
@@ -2219,7 +2219,7 @@ void common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
-	//double* const y = U.Y;				/// Get the array pointer.
+	double* const y = U.Y;				/// Get the array pointer.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2481,8 +2481,8 @@ void common::sol(
 	const int iw = 6;
 
 	// Short hand for evolution parameters
-	//double* const y = U.Y;						/// Get the array pointer.
-	//double* const y0 = U0.Y;						/// Get the array pointer.
+	double* const y = U.Y;						/// Get the array pointer.
+	double* const y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
