@@ -1779,8 +1779,8 @@ void common::start()
 	//
 	//..........COMPUTATIONAL SETTINGS.
 	double& T9 = U.T9;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
-	double* y0 = U0.Y;							/// Get the array pointer.
+	//double* const y = U.Y;							/// Get the array pointer.
+	//double* y0 = U0.Y;							/// Get the array pointer.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
 
@@ -2219,7 +2219,7 @@ void common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
-	double* const y = U.Y;				/// Get the array pointer.
+	//double* const y = U.Y;				/// Get the array pointer.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2481,8 +2481,8 @@ void common::sol(
 	const int iw = 6;
 
 	// Short hand for evolution parameters
-	double* const y = U.Y;						/// Get the array pointer.
-	double* const y0 = U0.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
+	//double* const y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
@@ -2682,11 +2682,11 @@ void common::sol(
 		for (int j = 1; j <= isize; j++) {
 			int j1 = isize1 - j; 		/// Invert the columns.
 			//std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
-			if (y0[i1] == NOT_USED) exit(0);
-			if (y0[j1] == NOT_USED) exit(0);
+			if (y0(i1) == NOT_USED) exit(0);
+			if (y0(j1) == NOT_USED) exit(0);
 			if (a[j][i] == NOT_USED) exit(0);
 
-			if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
+			if (abs(a[j][i]) < bdln * y0(j1) / y0(i1))
 				a[j][i] = 0; 			/// Set 0 if tiny.
 			else
 				a[j][i] *= dt; 			/// Bring dt over to other side.
@@ -2712,7 +2712,8 @@ void common::sol(
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
 		//dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
-		dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
+		//dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
+		dydt(i) = (y(i) - y0(i)) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -3024,7 +3025,7 @@ void common::rate3()
 	//
 	double& T9 = U.T9;
 	//T9**(1/3)
-	double T913 = pow(U.T9, (.33333333f));
+	double T913 = pow(T9, (.33333333f));
 	//T9**(2/3)
 	double T923 = T913 * T913;
 	//T9**(4/3)
@@ -3542,9 +3543,9 @@ void common::derivs(
 	//
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
+	//double* const y = U.Y;							/// Get the array pointer.
 
-	double* dydt = dUdt.Y;						/// Get the array pointer.
+	//double* dydt = dUdt.Y;						/// Get the array pointer.
 
 	double& dT9 = dU.T9;						/// Copy the reference.
 	double& dhv = dU.hv;						/// Copy the reference.
@@ -3593,11 +3594,11 @@ statement_120:
 	double sumzdy = 0;
 	//..........ACCUMULATE TO GET SUM.
 	FEM_DO_SAFE(i, 1, isize) {
-		sumy += y[i]; 					/// Sum of abundance.
-		sumzy += zm[i] * y[i]; 			/// Sum of charge*abundance.
-		sumdy += dydt[i]; 				/// Sum of abundance flow.
-		summdy += dm[i] * dydt[i]; 		/// Sum of (mass excess)*(abundanc
-		sumzdy += zm[i] * dydt[i]; 		/// Sum of (charge)*(abundance flo
+		sumy += y(i); 					/// Sum of abundance.
+		sumzy += zm[i] * y(i); 			/// Sum of charge*abundance.
+		sumdy += dydt(i); 				/// Sum of abundance flow.
+		summdy += dm[i] * dydt(i); 		/// Sum of (mass excess)*(abundanc
+		sumzdy += zm[i] * dydt(i); 		/// Sum of (charge)*(abundance flo
 	}
 	//..........CHANGES IN TEMPERATURE, hv, AND CHEMICAL POTENTIAL.
 	dphdT9 = thm(12) * (-1.070e-4f * hv * sumzy / T9 - thm(11));
@@ -3704,7 +3705,7 @@ void common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	double* const y = U.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {

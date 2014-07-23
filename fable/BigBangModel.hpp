@@ -598,9 +598,10 @@ const int common_nucdat::nnuc;
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
 
 		double& y(unsigned index) { return U.Y[index]; }
-		double& y0(unsigned index) { return U.Y[index]; }
-		double& dy(unsigned index) { return U.Y[index]; }
-		double& dydt(unsigned index) { return U.Y[index]; }
+		double& y0(unsigned index) { return U0.Y[index]; }
+		double& dy(unsigned index) { return dU.Y[index]; }
+		double& dydt(unsigned index) { return dUdt.Y[index]; }
+		double& dydt0(unsigned index) { return dUdt0.Y[index]; }
 
 		double& v(unsigned index) { return index < 4? U.V[index] : U.Y[index-3]; }
 		double& v0(unsigned index) { return index < 4? U0.V[index] : U0.Y[index-3]; }
