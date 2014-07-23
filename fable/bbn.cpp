@@ -3704,7 +3704,7 @@ void common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
+	double* const y = U.Y;						/// Get the array pointer.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
@@ -3767,8 +3767,8 @@ void common::accum()
 void common::driver()
 {
 	double& T9 = U.T9;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
-	double* dydt = dUdt.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
+	//double* dydt = dUdt.Y;						/// Get the array pointer.
 
 	int mvar = 0;
 	int loop = 0;
@@ -3783,10 +3783,11 @@ void common::driver()
 	double dvdt[nvar+1];
 	double dvdt0[nvar+1];
 	*/
-	double* v = U.V;
-	double* v0 = U0.V;
-	double* dvdt = dUdt.V;
-	double* dvdt0 = dUdt0.V;
+    // TODO this overides the call to 
+	//double* v = U.V; 
+	//double* v0 = U0.V;
+	//double* dvdt = dUdt.V;
+	//double* dvdt0 = dUdt0.V;
 	
 	/*
 	FEM_DO_SAFE(i, 1, nvar) {
@@ -3926,16 +3927,16 @@ statement_200:
 
 		// test -->
 		FEM_DO_SAFE(i, 1, isize)
-			std::cout<<"dydt["<<i<<"]:"<<dydt[i]<<" y["<<i<<"]:"<<y[i]<<"\n";
+			std::cout<<"dydt("<<i<<"):"<<dydt(i)<<" y("<<i<<"):"<<y(i)<<"\n";
 		// <-- test
 
 		//Trial value for minimum time step (R
 		dtmin = abs(1. / dlT9dt) * ct;
 		//Go through all abundance changes.
 		FEM_DO_SAFE(i, 1, isize) {
-			if ((dydt[i] != 0) && (y[i] > ytmin)) {
-				dtl = abs(y[i] / dydt[i]) * cy 
-					* (1.f + fem::pow2(( fem::alog10(y[i]) / fem::alog10(ytmin))));  /// (Ref 2).
+			if ((dydt(i) != 0) && (y(i) > ytmin)) {
+				dtl = abs(y(i) / dydt(i)) * cy 
+					* (1.f + fem::pow2(( fem::alog10(y(i)) / fem::alog10(ytmin))));  /// (Ref 2).
 				if (dtl < dtmin) { 												/// Find smallest time st
 					dtmin = dtl;
 				}
@@ -3960,15 +3961,31 @@ statement_200:
 	}
 	}
 	 */
+     /*
 	FEM_DO_SAFE(i, 1, mvar) {
 		v0[i] = v[i];
 		dvdt0[i] = dvdt[i];
 		v[i] = v0[i] + dvdt0[i] * dt;
 		//Set at minimum
-		if ((i >= 4) && (v[i] < ytmin)) {
+		if (ytmin < 0)
+            ; 
+		if (i >= 4) {
+            std::cout << "Found i >= 4 where i = " << i << std::endl; 
+        }
+		if (i >= 4 and v[i] < ytmin) {
 			v[i] = ytmin;
 		}
 	}
+    */
+    for (int i = 1; i <= mvar; i++) {
+        v0(i) = v(i);
+		dvdt0(i) = dvdt(i);
+		v(i) = v0(i) + dvdt0(i) * dt;
+    }
+    for (int i = 1; i <= nnuc; i++)
+        if (ytmin < 0)
+            y(i) = ytmin;
+
 	//
 	//30--------LOOP TWO-------------------------------------------------------------
 	//
@@ -3982,12 +3999,13 @@ statement_200:
 	check();
 	//..........INCREMENT VALUES.
 	FEM_DO_SAFE(i, 1, mvar) {
-		v[i] = v0[i] + .5f * (dvdt[i] + dvdt0[i]) * dt;
+		v(i) = v0(i) + .5f * (dvdt(i) + dvdt0(i)) * dt;
 		//Set at minimum
-		if ((i >= 4) && (v[i] < ytmin)) {
-			v[i] = ytmin;
+		if ((i >= 4) && (v(i) < ytmin)) {
+			v(i) = ytmin;
 		}
 	}
+    // TODO <-- put into two loops without calling v
 	goto statement_200;
 	//
 	//----------REFERENCES-----------------------------------------------------------
