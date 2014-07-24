@@ -597,17 +597,59 @@ const int common_nucdat::nnuc;
 	private:
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
 
-		double& y(unsigned index) { return U.Y[index]; }
-		double& y0(unsigned index) { return U0.Y[index]; }
-		double& dy(unsigned index) { return dU.Y[index]; }
-		double& dydt(unsigned index) { return dUdt.Y[index]; }
-		double& dydt0(unsigned index) { return dUdt0.Y[index]; }
+        bool isNuclideIndex(index) {
+            if (index <= 0 and index > nnuc)
+                return true;
+            exit(1);
+            return false;
+        }
+		double& y(unsigned index) { 
+            isNuclideIndex(index);
+            return U.Y[index]; 
+        }
+		double& y0(unsigned index) { 
+            isNuclideIndex(index);
+            return U0.Y[index]; 
+        }
+		double& dy(unsigned index) { 
+            isNuclideIndex(index);
+            return dU.Y[index]; 
+        }
+		double& dydt(unsigned index) { 
+            isNuclideIndex(index);
+            return dUdt.Y[index]; 
+        }
+		double& dydt0(unsigned index) { 
+            isNuclideIndex(index);
+            return dUdt0.Y[index]; 
+        }
 
-		double& v(unsigned index) { return index < 4? U.V[index] : U.Y[index-3]; }
-		double& v0(unsigned index) { return index < 4? U0.V[index] : U0.Y[index-3]; }
-		double& dv(unsigned index) { return index < 4? dU.V[index] : dU.Y[index-3]; }
-		double& dvdt(unsigned index) { return index < 4? dUdt.V[index] : dUdt.Y[index-3]; }
-		double& dvdt0(unsigned index) { return index < 4? dUdt0.V[index] : dUdt0.Y[index-3]; }
+        bool isVIndex(index) {
+            if (index <= 0 and index > mvar)
+                return true;
+            exit(1);
+            return false;
+        }
+		double& v(unsigned index) { 
+            isVIndex(index);
+            return index < 4? U.V[index] : U.Y[index-3]; 
+        }
+		double& v0(unsigned index) { 
+            isVIndex(index);
+            return index < 4? U0.V[index] : U0.Y[index-3]; 
+        }
+		double& dv(unsigned index) { 
+            isVIndex(index);
+            return index < 4? dU.V[index] : dU.Y[index-3]; 
+        }
+		double& dvdt(unsigned index) { 
+            isVIndex(index);
+            return index < 4? dUdt.V[index] : dUdt.Y[index-3]; 
+        }
+		double& dvdt0(unsigned index) { 
+            isVIndex(index);
+            return index < 4? dUdt0.V[index] : dUdt0.Y[index-3]; 
+        }
 	};
 
 	const double common::am[26+1] = {

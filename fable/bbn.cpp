@@ -2482,7 +2482,7 @@ void common::sol(
 
 	// Short hand for evolution parameters
 	double* const y = U.Y;						/// Get the array pointer.
-	double* const y0 = U0.Y;						/// Get the array pointer.
+	//double* const y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
@@ -2692,7 +2692,7 @@ void common::sol(
 				a[j][i] *= dt; 			/// Bring dt over to other side.
 		}
 		a[i][i] += 1; 					/// Add identity matrix to a-matrix.
-		b[i1] = y0[i]; 					/// Initial abundances.
+		b[i1] = y0(i); 					/// Initial abundances.
 	}
 	//
 	//50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -2713,7 +2713,7 @@ void common::sol(
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
 		//dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
 		//dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
-		dydt(i) = (y(i) - y0(i)) / dt; 		/// Take derivative.
+		dydt(i) = (y[i] - y0(i)) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -3705,7 +3705,7 @@ void common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	//double* const y = U.Y;						/// Get the array pointer.
+	double* const y = U.Y;						/// Get the array pointer.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
@@ -3717,10 +3717,12 @@ void common::accum()
 	xout(it, 6) = y[6] * am[6]; 			/// Exception for helium.
 	//..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
 	//Li8 to O16.
-	xout(it, 10) += xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) 
-		+ xout(it,15) + xout(it,16) + xout(it,17) + xout(it,18) 
-		+ xout(it,19) + xout(it,20) + xout(it,21) + xout(it,22) 
-		+ xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
+	xout(it, 10) += 
+        xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) +
+		xout(it,15) + xout(it,16) + xout(it,17) + xout(it,18) +
+		xout(it,19) + xout(it,20) + xout(it,21) + xout(it,22) +
+		xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
+
 	//..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
 	//Temperature.
 	T9out(it) = T9;
