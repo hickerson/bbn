@@ -15,7 +15,7 @@ using namespace boost::math;
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::help()
+void bbn::common::help()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -417,7 +417,7 @@ statement_300:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::setcom()
+void bbn::common::setcom()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -579,7 +579,7 @@ statement_400:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::setmod()
+void bbn::common::setmod()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -759,7 +759,7 @@ statement_400:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::check()
+void bbn::common::check()
 {
 	common_write write(*this);
 	//
@@ -1026,20 +1026,20 @@ double ex( double const& x)
 }
 
 
-double common::getBesselL(double r)
+double bbn::common::getBesselL(double r)
 {
 	double K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
-double common::getBesselM(double r)
+double bbn::common::getBesselM(double r)
 {
 	double K3r = cyl_bessel_k(3,r);			/// Irregular modified cylindrical Bessel functions.
 	double K1r = cyl_bessel_k(1,r);			/// Irregular modified cylindrical Bessel functions.
 	return (3*K3r + K1r)/4/r;				/// (Ref ?).
 }
 
-double common::getBesselN(double r)
+double bbn::common::getBesselN(double r)
 {
 	double K4r = cyl_bessel_k(4,r);			/// Irregular modified cylindrical Bessel functions.
 	double K2r = cyl_bessel_k(2,r);			/// Irregular modified cylindrical Bessel functions.
@@ -1055,7 +1055,7 @@ double common::getBesselN(double r)
 //
 //     Default neutron lifetime 888.54 -> 885.7 (+- 0.8) - PDG 2002/3
 //
-void common::rate0()
+void bbn::common::rate0()
 {
 	//
 	//----------LINKAGES.
@@ -1129,7 +1129,7 @@ void common::rate0()
 //
 template <>
 double
-common::integrand<1>(
+bbn::common::integrand<1>(
 //common::func1(
 		double const& x)
 {
@@ -1181,7 +1181,7 @@ common::integrand<1>(
 //
 template <>
 double
-common::integrand<2>(
+bbn::common::integrand<2>(
 //common::func2(
 		double const& x)
 {
@@ -1231,7 +1231,7 @@ common::integrand<2>(
 //
 template <>
 double
-common::integrand<3>(
+bbn::common::integrand<3>(
 //common::func3(
 		double const& x)
 {
@@ -1285,7 +1285,7 @@ common::integrand<3>(
 //
 template <>
 double
-common::integrand<4>(
+bbn::common::integrand<4>(
 //common::func4(
 		double const& x)
 {
@@ -1353,7 +1353,7 @@ common::integrand<4>(
 //
 template <>
 double
-common::integrand<5>(
+bbn::common::integrand<5>(
 //common::func5(
 		double const& x)
 {
@@ -1398,7 +1398,7 @@ common::integrand<5>(
 //
 template <>
 double
-common::integrand<6>(
+bbn::common::integrand<6>(
 //common::func6(
 		double const& x)
 {
@@ -1448,7 +1448,7 @@ common::integrand<6>(
 //
 template <int n>
 double
-common::xintd(
+bbn::common::xintd(
 //common::xintd(
 		double const& xlow,
 		double const& xhi,
@@ -1532,7 +1532,7 @@ common::xintd(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate1(
+void bbn::common::rate1(
 		double const& tph)
 {
 	//
@@ -1674,7 +1674,7 @@ struct start_save
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::start()
+void bbn::common::start()
 {
 	//
 	//----------LINKAGES.
@@ -1900,7 +1900,7 @@ void common::start()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::nudens()
+void bbn::common::nudens()
 {
 	//
 	//
@@ -1981,7 +1981,7 @@ void common::nudens()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::therm()
+void bbn::common::therm()
 {
 	//
 	//
@@ -2203,7 +2203,7 @@ void common::therm()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::eqslin(
+void bbn::common::eqslin(
 		int const& icnvm,
 		int& ierror)
 {
@@ -2464,7 +2464,7 @@ statement_300:
  * 
  * ===========================PROCEDURE DIVISION==================================
  */
-void common::sol(
+void bbn::common::sol(
 		int const& loop)
 {
 	common_write write(*this);
@@ -2481,7 +2481,7 @@ void common::sol(
 	const int iw = 6;
 
 	// Short hand for evolution parameters
-	double* const y = U.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
 	//double* const y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
@@ -2508,19 +2508,19 @@ void common::sol(
 	//FEM_DO_SAFE(n, 1, jsize) {
 	for (int n = 1; n <= jsize; n++) {
 		//..........EQUATE VARIABLES TO ARRAYS.
-		unsigned reaction = iform(n); 					/// Type of reaction.
-		unsigned i = ii(n); 							/// ID # of incoming nuclide i.
-		unsigned j = jj(n); 							/// ID # of incoming nuclide j.
-		unsigned k = kk(n); 							/// ID # of outgoing nuclide k.
-		unsigned l = ll(n); 							/// ID # of outgoing nuclide l.
+		int reaction = iform(n); 				/// Type of reaction.
+		int i = ii(n); 							/// ID # of incoming nuclide i.
+		int j = jj(n); 							/// ID # of incoming nuclide j.
+		int k = kk(n); 							/// ID # of outgoing nuclide k.
+		int l = ll(n); 							/// ID # of outgoing nuclide l.
 
 		//Reactio
 		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
 			std::cout << "reaction:"<< reaction << "\n";
-			unsigned ri = si[reaction]; 					/// # of incoming nuclide i.
-			unsigned rj = sj[reaction]; 					/// # of incoming nuclide j.
-			unsigned rk = sk[reaction]; 					/// # of outgoing nuclide k.
-			unsigned rl = sl[reaction]; 					/// # of outgoing nuclide l.
+			int ri = si[reaction]; 					/// # of incoming nuclide i.
+			int rj = sj[reaction]; 					/// # of incoming nuclide j.
+			int rk = sk[reaction]; 					/// # of outgoing nuclide k.
+			int rl = sl[reaction]; 					/// # of outgoing nuclide l.
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (reaction) {
 				case 1: /// 1-0-0-1 configuration.
@@ -2533,8 +2533,8 @@ void common::sol(
 				case 2: /// 1-1-0-1 configuration.
 					r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
 					f[n] = rhob * f[n];
-					ci = y[j] * f[n] / 2.;
-					cj = y[i] * f[n] / 2.;
+					ci = y(j) * f[n] / 2.;
+					cj = y(i) * f[n] / 2.;
 					ck = 0;
 					cl = r[n];
 					break;
@@ -2542,42 +2542,42 @@ void common::sol(
 				case 3: /// 1-1-1-1 configuration.
 					f[n] = rhob * f[n]; 			/// (Ref 3).
 					r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
-					ci = y[j] * f[n] / 2;
-					cj = y[i] * f[n] / 2;
-					ck = y[l] * r[n] / 2;
-					cl = y[k] * r[n] / 2;
+					ci = y(j) * f[n] / 2;
+					cj = y(i) * f[n] / 2;
+					ck = y(l) * r[n] / 2;
+					cl = y(k) * r[n] / 2;
 					break;
 
 				case 4: /// 1-0-0-2 configuration.
 					ci = f[n];
 					cj = 0;
 					ck = 0;
-					cl = y[l] * r[n] / 2;
+					cl = y(l) * r[n] / 2;
 					break;
 
 				case 5: /// 1-1-0-2 configuration.
 					f[n] = rhob * f[n];
 					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-					ci = y[j] * f[n] / 2;
-					cj = y[i] * f[n] / 2;
+					ci = y(j) * f[n] / 2;
+					cj = y(i) * f[n] / 2;
 					ck = 0;
-					cl = y[l] * r[n] / 2;
+					cl = y(l) * r[n] / 2;
 					break;
 
 				case 6: /// 2-0-1-1 configuration.
 					f[n] = rhob * f[n];
 					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-					ci = y[i] * f[n] / 2;
+					ci = y(i) * f[n] / 2;
 					cj = 0;
-					ck = y[l] * r[n] / 2;
-					cl = y[k] * r[n] / 2;
+					ck = y(l) * r[n] / 2;
+					cl = y(k) * r[n] / 2;
 					break;
 
 				case 7: /// 3-0-0-1 configuration.
 					//(Ref 4).
 					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
-					ci = y[i] * y[i] * f[n] / 6;
+					ci = y(i) * y(i) * f[n] / 6;
 					cj = 0;
 					ck = 0;
 					cl = r[n];
@@ -2587,8 +2587,8 @@ void common::sol(
 					//(Ref 4).
 					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
-					ci = y[j] * y[i] * f[n] / 3.;
-					cj = y[i] * y[i] * f[n] / 6.;
+					ci = y(j) * y(i) * f[n] / 3.;
+					cj = y(i) * y(i) * f[n] / 6.;
 					ck = 0.;
 					cl = r[n];
 					break;
@@ -2597,30 +2597,30 @@ void common::sol(
 					f[n] = rhob * f[n];
 					//(Ref 5)
 					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-					ci = y[j] * f[n] / 2.;
-					cj = y[i] * f[n] / 2.;
-					ck = y[l] * y[l] * r[n] / 6.;
-					cl = y[k] * y[l] * r[n] / 3.;
+					ci = y(j) * f[n] / 2.;
+					cj = y(i) * f[n] / 2.;
+					ck = y(l) * y(l) * r[n] / 6.;
+					cl = y(k) * y(l) * r[n] / 3.;
 					break;
 
 				case 10: /// 1-1-0-3 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
 					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-					ci = y[j] * f[n] / 2.;
-					cj = y[i] * f[n] / 2.;
+					ci = y(j) * f[n] / 2.;
+					cj = y(i) * f[n] / 2.;
 					ck = 0.;
-					cl = y[l] * y[l] * r[n] / 6.;
+					cl = y(l) * y(l) * r[n] / 6.;
 					break;
 
 				case 11: /// 2-0-2-1 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
 					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-					ci = y[i] * f[n] / 2.;
+					ci = y(i) * f[n] / 2.;
 					cj = 0.;
-					ck = y[l] * y[k] * r[n] / 3.;
-					cl = y[k] * y[k] * r[n] / 6.;
+					ck = y(l) * y(k) * r[n] / 3.;
+					cl = y(k) * y(k) * r[n] / 6.;
 					break;
 
 				default: break;
@@ -2713,7 +2713,7 @@ void common::sol(
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
 		//dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
 		//dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
-		dydt(i) = (y[i] - y0(i)) / dt; 		/// Take derivative.
+		dydt(i) = (y(i) - y0(i)) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -2766,7 +2766,7 @@ void common::sol(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate2()
+void bbn::common::rate2()
 {
 	//
 	//----------LINKAGES.
@@ -2992,7 +2992,7 @@ void common::rate2()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate3()
+void bbn::common::rate3()
 {
 	//
 	//----------LINKAGES.
@@ -3230,7 +3230,7 @@ void common::rate3()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate4()
+void bbn::common::rate4()
 {
 	//
 	//----------LINKAGES.
@@ -3440,7 +3440,7 @@ void common::rate4()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::derivs(
+void bbn::common::derivs(
 		int const& loop)
 {
 	const double pi = constants::pi<double>();
@@ -3629,7 +3629,7 @@ statement_120:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::accum()
+void bbn::common::accum()
 {
 	//
 	//
@@ -3767,7 +3767,7 @@ void common::accum()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::driver()
+void bbn::common::driver()
 {
 	double& T9 = U.T9;							/// Copy the reference.
 	//double* const y = U.Y;						/// Get the array pointer.
@@ -4036,7 +4036,7 @@ statement_200:
 // Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
 // TODO make private
-void common::qvary(int index, double value)
+void bbn::common::qvary(int index, double value)
 {
 	//----------EQUIVALENCE VARIABLE.
 	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
@@ -4061,7 +4061,7 @@ void common::qvary(int index, double value)
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::run()
+void bbn::common::run()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -4463,7 +4463,7 @@ statement_300:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::output()
+void bbn::common::output()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -4776,7 +4776,7 @@ statement_500:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-common::common() :
+bbn::common::common() :
 	fem::common(),
 	common_compr0(),
 	common_compr(),

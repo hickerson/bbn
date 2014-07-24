@@ -27,8 +27,9 @@ class EvolutionParameters
 			//real const _v[nvar+1];
 			//real* const V; 
 			//real* const Y; 
-			real V[nvar-nnuc+1]; 
-			real Y[nnuc+1]; 
+    private:
+			real _V[nvar-nnuc+1]; 
+			real _Y[nnuc+1]; 
 
 	public: EvolutionParameters(): 
 			T9(0),
@@ -38,10 +39,10 @@ class EvolutionParameters
 	{
 		//verbose("Default constructor for EvolutionParameters");
 		for (int i = 1; i <= 3; i++)
-			V[i] = 0;
+			_V[i] = 0;
 		for (int i = 1; i <= nnuc; i++)
-			Y[i] = 0;							/// Default abundance.
-		printf("Default: Y address is: %p\n", Y);
+			_Y[i] = 0;							/// Default abundance.
+		printf("Default: Y address is: %p\n", _Y);
 	}
 
 	public: EvolutionParameters(const EvolutionParameters & copy): 
@@ -52,10 +53,10 @@ class EvolutionParameters
 	{
 		//verbose("Copy constructor for EvolutionParameters");
 		for (int i = 1; i <= 3; i++)
-			V[i] = copy.V[i];
+			_V[i] = copy._V[i];
 		for (int i = 1; i <= nnuc; i++)
-			Y[i] = copy.Y[i];					/// Default abundance.
-		printf("Copy: Y address is: %p\n", Y);
+			_Y[i] = copy._Y[i];					/// Default abundance.
+		printf("Copy: Y address is: %p\n", _Y);
 	}
 
 	public:~EvolutionParameters()				/// Does nothing.
@@ -73,12 +74,23 @@ class EvolutionParameters
 			hv = other.hv;
 			phie = other.phie;
 			for (int i = 1; i <= 3; i++)
-				V[i] = other.V[i];
+				_V[i] = other._V[i];
 			for (int i = 1; i <= nnuc; i++)
-				Y[i] = other.Y[i];				/// Default abundance.
-			printf("=: Y address is: %p\n", Y);
+				_Y[i] = other._Y[i];				/// Default abundance.
+			printf("=: Y address is: %p\n", _Y);
         }
         return *this;
+    }
+
+	public: double & Y(const unsigned index)
+    {
+        if (index <= 0 or index > nnuc)
+        {
+            std::cout << "Error in EvolutionParameters.\n";
+            std::cout << "Index out of bounds. (index = " << index << "\n";
+            exit(1);
+        }
+        return _Y[index];
     }
 };
 
