@@ -1779,8 +1779,8 @@ void bbn::common::start()
 	//
 	//..........COMPUTATIONAL SETTINGS.
 	double& T9 = U.T9;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
-	double* y0 = U0.Y;							/// Get the array pointer.
+	//double* const y = U.Y;							/// Get the array pointer.
+	//double* y0 = U0.Y;							/// Get the array pointer.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
 
@@ -1802,17 +1802,17 @@ void bbn::common::start()
 	//30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
 	//
 	if ((15.011f / T9 + xi[1]) > 58.f) { 		/// Overabundance of anti-neutrinos.
-		y[1] = 1.e-25f; 						/// Very little of neutrons.
-		y[2] = 1.f; 							/// Essentially all protons.
+		y(1) = 1.e-25f; 						/// Very little of neutrons.
+		y(2) = 1.f; 							/// Essentially all protons.
 	}
 	else {
 		if ((15.011f / T9 + xi[1]) <  - 58.f) { 	/// Overabundance of neutrinos.
-			y[1] = 1.f; 							/// Essentially all neutrons.
-			y[2] = 1.e-25f; 						/// Very little of protons.
+			y(1) = 1.f; 							/// Essentially all neutrons.
+			y(2) = 1.e-25f; 						/// Very little of protons.
 		}
 		else {
-			y[1] = 1/(ex(15.011/T9 + xi[1]) + 1); 	/// Initial n abundance (Ref 3).
-			y[2] = 1/(ex(-15.011/T9 - xi[1]) + 1);	/// Initial p abundance (Ref 3).
+			y(1) = 1/(ex(15.011/T9 + xi[1]) + 1); 	/// Initial n abundance (Ref 3).
+			y(2) = 1/(ex(-15.011/T9 - xi[1]) + 1);	/// Initial p abundance (Ref 3).
 		}
 	}
 	if (xi[1] != 0) { 								/// Electron neutrino degeneracy.
@@ -1822,8 +1822,8 @@ void bbn::common::start()
 		//cnorm = 1 / tau / f(1);
 		cnorm = 1 / tau / f[1];
 	}
-	y0[1] = y[1];
-	y0[2] = y[2];
+	y0[1] = y(1);
+	y0[2] = y(2);
 	//
 	//40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
 	//
@@ -1847,7 +1847,7 @@ void bbn::common::start()
 	   double bn5 = getBesselN(5*z);
 	 */
 	hv = 3.3683e+4f * eta1 * 2.75; 		/// (Ref 4 but with final eta).
-	phie = hv * (1.784e-5f * y[2]) / 
+	phie = hv * (1.784e-5f * y(2)) / 
 		(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
 	/// Chemical potential of electron (Ref 5).
 	rhob0 = hv * fem::pow3(T9); 					/// TODO Baryon density. 
@@ -1858,12 +1858,12 @@ void bbn::common::start()
 	//
 	//50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
 	//
-	y[3] = y[1] * y[2] * rhob0 * ex(25.82f / T9) / (.471e+10f * pow(T9, 1.5f)); /// (Ref 7).
-	y0[3] = y[3];
+	y(3) = y(1) * y(2) * rhob0 * ex(25.82f / T9) / (.471e+10f * pow(T9, 1.5f)); /// (Ref 7).
+	y0(3) = y(3);
 	int i = 0;
 	FEM_DO_SAFE(i, 4, isize) {
-		y[i] = ytmin; 						/// Set rest to minimum abundance.
-		y0[i] = y[i]; 						/// Initialize abundances at beginning of iter
+		y(i) = ytmin; 						/// Set rest to minimum abundance.
+		y0(i) = y(i); 						/// Initialize abundances at beginning of iter
 	}
 	//Compute weak decay rates.
 	rate0();
@@ -3709,10 +3709,10 @@ void bbn::common::accum()
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
-		xout(it, i) = y[i] / y[2];
+		xout(it, i) = y[i] / y(2);
 	}
 	//xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
-	xout(it, 2) = y[2] * am[2]; 			/// Exception for proton.
+	xout(it, 2) = y(2) * am[2]; 			/// Exception for proton.
 	//xout(it, 6) = y(6) * am(6); 		/// Exception for helium.
 	xout(it, 6) = y[6] * am[6]; 			/// Exception for helium.
 	//..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
