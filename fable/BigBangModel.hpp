@@ -597,7 +597,7 @@ const int common_nucdat::nnuc;
 	private:
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
 
-        bool isNuclideIndex(index) {
+        bool isNuclideIndex(int index) {
             if (index <= 0 and index > nnuc)
                 return true;
             exit(1);
@@ -624,8 +624,8 @@ const int common_nucdat::nnuc;
             return dUdt0.Y[index]; 
         }
 
-        bool isVIndex(index) {
-            if (index <= 0 and index > mvar)
+        bool isVIndex(int index) {
+            if (index <= 0 and index > nnuc + 3)
                 return true;
             exit(1);
             return false;
