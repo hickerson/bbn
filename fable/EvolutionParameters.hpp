@@ -86,11 +86,21 @@ class EvolutionParameters
     {
         if (index <= 0 or index > nnuc)
         {
-            std::cout << "Error in EvolutionParameters.\n";
-            std::cout << "Index out of bounds. (index = " << index << "\n";
+            std::cout << "Error in EvolutionParameters abundances.\n";
+            std::cout << "Index out of bounds. (index = " << index << ")\n";
             exit(1);
         }
         return _Y[index];
+    }
+
+	public: double & V(const unsigned index)
+    {
+        if (index > 0 and index <= 3)
+            return _V[index];
+
+        std::cout << "Error in EvolutionParameters temporaries.\n";
+        std::cout << "Index out of bounds. (index = " << index << ")\n";
+        exit(1);
     }
 };
 

@@ -1801,14 +1801,14 @@ void bbn::common::start()
 	//
 	//30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
 	//
-	if ((15.011f / T9 + xi[1]) > 58.f) { 		/// Overabundance of anti-neutrinos.
-		y(1) = 1.e-25f; 						/// Very little of neutrons.
-		y(2) = 1.f; 							/// Essentially all protons.
+	if ((15.011f / T9 + xi[1]) > 58.f) { 		    /// Overabundance of anti-neutrinos.
+		y(1) = 1.e-25f; 						    /// Very little of neutrons.
+		y(2) = 1.f; 							    /// Essentially all protons.
 	}
 	else {
-		if ((15.011f / T9 + xi[1]) <  - 58.f) { 	/// Overabundance of neutrinos.
-			y(1) = 1.f; 							/// Essentially all neutrons.
-			y(2) = 1.e-25f; 						/// Very little of protons.
+		if ((15.011f / T9 + xi[1]) <  - 58.f) {     /// Overabundance of neutrinos.
+			y(1) = 1.f; 						    /// Essentially all neutrons.
+			y(2) = 1.e-25f; 					    /// Very little of protons.
 		}
 		else {
 			y(1) = 1/(ex(15.011/T9 + xi[1]) + 1); 	/// Initial n abundance (Ref 3).
@@ -1818,12 +1818,12 @@ void bbn::common::start()
 	if (xi[1] != 0) { 								/// Electron neutrino degeneracy.
 		cnorm = 1.;
 		tnu = .00001f; 								/// Low temperature.
-		rate1( 0.00001f); 						/// Find normalization constant at low temperature.
+		rate1( 0.00001f); 						    /// Find normalization constant at low temperature.
 		//cnorm = 1 / tau / f(1);
 		cnorm = 1 / tau / f[1];
 	}
-	y0[1] = y(1);
-	y0[2] = y(2);
+	y0(1) = y(1);
+	y0(2) = y(2);
 	//
 	//40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
 	//
@@ -2219,7 +2219,7 @@ void bbn::common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
-	double* const y = U.Y;				/// Get the array pointer.
+	//double* const y = U.Y;				/// Get the array pointer.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2282,7 +2282,7 @@ void bbn::common::eqslin(
 	//..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
 	FEM_DO_SAFE(i, 1, isize) {
 		x[i] = b[i]; 		/// Right-hand vector.
-		y[i] = 0; 			/// Solution vector.
+		y(i) = 0; 			/// Solution vector.
 	}
 	//..........SAVE MATRIX.
 	//Monitor convergence.
@@ -2321,22 +2321,22 @@ void bbn::common::eqslin(
 	//
 statement_300:
 	x[isize] = x[isize] / a[isize][isize]; 		/// Solution for ultimate position.
-	y[isize] += x[isize];
+	y(isize) += x[isize];
 	FEM_DOSTEP(i, isize - 1, 1, -1) { 			/// From i = penultimate to i = 1.
 		sum = 0;
 		FEM_DO_SAFE(j, i + 1, isize) {
 			sum += a[i][j] * x[j]; 				/// Sum up all previous terms.
 		}
 		x[i] = (x[i] - sum) / a[i][i];
-		y[i] += x[i]; 							/// Add difference to initial value.
+		y(i) += x[i]; 							/// Add difference to initial value.
 	}
 	//
 	//40--------TESTS AND EXITS------------------------------------------------------
 	//
 	if (icnvm == inc) {
 		FEM_DO_SAFE(i, 1, isize) {
-			if (y[i] != 0.) {
-				xdy = fem::dabs(x[i] / y[i]); 			/// Relative error.
+			if (y(i) != 0.) {
+				xdy = fem::dabs(x[i] / y(i)); 			/// Relative error.
 				if (xdy > eps) {
 					if (nord < mord) { 					/// Continue to higher orders.
 						nord++;
@@ -2344,7 +2344,7 @@ statement_300:
 						FEM_DO_SAFE(j, 1, isize) {
 							r = 0; 						/// Initialize r.
 							FEM_DO_SAFE(k, 1, isize) {
-								r += a0[j][k] * y[k]; 	/// Left side with approximate sol
+								r += a0[j][k] * y(k); 	/// Left side with approximate sol
 							}
 							x[j] = b[j] - r; 			/// Subtract difference from right side.
 						}
@@ -3705,16 +3705,16 @@ void bbn::common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	double* const y = U.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
-		xout(it, i) = y[i] / y(2);
+		xout(it, i) = y(i) / y(2);
 	}
 	//xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
 	xout(it, 2) = y(2) * am[2]; 			/// Exception for proton.
 	//xout(it, 6) = y(6) * am(6); 		/// Exception for helium.
-	xout(it, 6) = y[6] * am[6]; 			/// Exception for helium.
+	xout(it, 6) = y(6) * am[6]; 			/// Exception for helium.
 	//..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
 	//Li8 to O16.
 	xout(it, 10) += 
