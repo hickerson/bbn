@@ -672,7 +672,30 @@ const int common_nucdat::nnuc;
             isVIndex(index);
             return index < 4? dUdt0.V(index) : dUdt0.Y(index-3); 
         }
+
+        public: void output(std::ostream& os) const
+        {
+            os << "Current state (U):\n"; 
+            os << U << "\n";
+            os << "Initial state (U0):\n"; 
+            os << U0 << "\n";
+            os << "Differential (dU):\n"; 
+            os << dU << "\n";
+            os << "Time derivative (dUdt):\n"; 
+            os << dUdt << "\n";
+            os << "Initial time deriviative (dUdt0):\n"; 
+            os << dUdt0 << "\n";
+
+            return os;
+        }
 	};
+
+
+    std::ostream& operator<<(std::ostream& os, const common & BBN)
+    {
+        BBN.output(os);
+        return os;
+    }
 
 	const double common::am[26+1] = {
 		NOT_USED,
