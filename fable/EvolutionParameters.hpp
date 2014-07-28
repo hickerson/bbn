@@ -106,25 +106,24 @@ class EvolutionParameters
         exit(1);
     }
 
-    public: const void output(std::ostream& os)
+    public: const void output(std::ostream& os) const
     {
         os << "T9: " << T9 << "\n";
         os << "hv: " << hv << "\n";
         os << "phie: " << phie << "\n";
         os << "V address is: " << _Y << "\n";
         for (int i = 1; i <= 3; i++)
-            "\t" << _V[i];
+            os << "\t" << _V[i];
         os << "\n";
         os << "Y address is: " << _Y << "\n";
         for (int i = 1; i <= nnuc; i++)
-            "\t" << _Y[i];
+            os << "\t" << _Y[i];
         os << "\n";
     }
 };
 
-using namespace std;
 template <class real, int n> 
-ostream& operator<<(ostream& os, const EvolutionParameters<real,n> & ep)
+std::ostream& operator<<(std::ostream& os, const EvolutionParameters<real,n> & ep)
 {
     ep.output(os);
     return os;
