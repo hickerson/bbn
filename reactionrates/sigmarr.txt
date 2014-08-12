@@ -1,0 +1,14 @@
+Reaction Rates from Maxwellian Averaged Cross Sections 
+
+sigmamaxw=(2/sqrt(pi))*(a^2/kT^2)*integrate(sigma(Enlab)*Enlab*(e^(a*Enlab)/kT)dEnlab)
+a=m2/m1+m2 m1=projectile mass, m2=target mass
+Enlab=neutron lab energy
+sigma(Enlab)=sigma1+(Enlab-Enlab1)*((sigma2-sigma1)/(Enlab2-Enlab1))
+-Cross sections are linearly dependent on a particular energy bin. sigma 1,2, and Enlab1,2 are pointwise cross sections and energies for the energy bins. Definite integrals for each energy bin are summed for the total value. This gives sigmamaxw as a function of kT which can easily be changed to a function of t9. I am unclear on how Pritychenko and Mughabghab (Neutron Thermal Cross Sections, Westcott Factors, Resonance Integrals, Maxwellian Averaged Cross Sections and Astrophysical Reaction Rates Calculated from the ENDF/B-VII.1, JEFF-3.1.2, JENDL-4.0, ROSFOND-2010, CENDL-3.1 and EAF-2010 Evaluated Data Libraries) determine the energy bins. I believe they get them using the PREPRO code, FORTRAN 77 executables available on the IAEA website that generate Doppler broadened cross sections. However, I wonder if using the code is unnecessary, as the sigma files on the ENDF website (ex: https://www-nds.iaea.org/exfor/servlet/E4sGetTabSect?SectID=2247710&req=40796&PenSectID=2265235) generate cross sections and energies which are linearly dependent on one another. I cannot find anywhere that they specify the bin widths they use. 
+
+R(t9)=10^-24*N_a*sigmamaxw(kT)*(sqrt(2*kT/mu))
+mu=reduced mass
+N_a=Avogadro’s #
+t9=11.6045kT
+
+
