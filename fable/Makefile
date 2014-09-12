@@ -38,10 +38,9 @@ OBJS = $(SRCS:.cpp=.o)
 #
 # flags
 #
-DEBUG = -g -Wall
+DEBUG = -g -O1
 CFLAGS = $(DEBUG) -std=c++11 -fpermissive
 IFLAGS = -Ifable_sources/fable -I/usr/include/gsl
-LFLAGS = 
 
 
 #-------------------------------------------------------------------

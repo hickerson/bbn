@@ -42,9 +42,9 @@ class EvolutionParameters
 	{
 		//verbose("Default constructor for EvolutionParameters");
 		for (int i = 1; i <= 3; i++)
-			_V[i] = 0;
+			;//_V[i] = 0;
 		for (int i = 1; i <= nnuc; i++)
-			_Y[i] = 0;							/// Default abundance.
+			;//_Y[i] = 0;							/// Default abundance.
 		printf("Default: Y address is: %p\n", _Y);
 	}
 

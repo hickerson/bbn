@@ -964,8 +964,11 @@ void bbn::common::check()
 		xout(it,8) += xout(it,9); 				/// Add beryllium to lithium.
 		xout(it,5) += xout(it,4); 				/// Add tritium to helium-3.
 		xout(it,6) -= 0.0003f; 					/// my correction for fitted rates+coarse steps
-		write(3, "(7(e13.5))"), c[3], c[2], etaout(it), xout(it, 3),
-			xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
+		//write(3, "(7(e13.5))"), c[3], c[2], etaout(it), xout(it, 3),
+		//write(3, "(7e13.5)"), c[3], c[2], etaout(it), xout(it, 3),
+		//	xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
+		std::cout << c[3] <<" "<< c[2] <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "<<
+			xout(it,5) <<" "<< xout(it,6) <<" "<< xout(it,8) << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
 	}
 	//
 	//30--------CLOSE FILE-----------------------------------------------------------
@@ -1619,7 +1622,7 @@ void bbn::common::rate1(
 		//
 		//20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 		//
-		T9mev = tph * .086171f; //Convert photon temp to units of MeV.
+		T9mev = tph * .086171f; //Convert photon temp to units of MeV.  TODO update to more digits
 		tnmev = tnu * .086171f; //Convert neutrino temp to units of Me
 		//..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
 		_w[1] = (-(T9mev / .511f) * (-88.722f));
@@ -2516,7 +2519,7 @@ void bbn::common::sol(
 
 		//Reactio
 		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
-			std::cout << "reaction:"<< reaction << "\n";
+			std::cout << "reaction: "<< reaction << "\n";
 			int ri = si[reaction]; 					/// # of incoming nuclide i.
 			int rj = sj[reaction]; 					/// # of incoming nuclide j.
 			int rk = sk[reaction]; 					/// # of outgoing nuclide k.
@@ -2722,11 +2725,13 @@ void bbn::common::sol(
 	if (mbad != 0) {
 		//Error message.
 		if (mbad ==  - 1) {
-			write(iw, "(' ','** y(',i2,') fails to converge **')"), ierror;
+			//write(iw, "(' ','** y(',i2,') fails to converge **')"), ierror;
+			std::cout << "(** " << ierror << " fails to converge **)\n";
 		}
 		//Error message.
 		if (mbad >= 1) {
-			write(iw, "(' ','** ',i2,' th diagonal term equals zero **')"), mbad;
+			//write(iw, "(' ','** ',i2,' th diagonal term equals zero **')"), mbad;
+			std::cout << "(** " << mbad << "th diagonal term equals zero **)\n";
 		}
 	}
 	//
