@@ -30,8 +30,7 @@ LIBS = -lm $(GSLLIBS)
 #
 MAIN = bbn
 SRCS = bbn.cpp EvolutionParameters.cpp ModelParameters.cpp NuclearParameters.cpp
-INCS = BigBangSimulator.hpp EvolutionParameters.cpp ModelParameters.hpp \
-       NuclearParameters.hpp
+INCS = BigBangSimulator.hpp EvolutionParameters.cpp ModelParameters.hpp NuclearParameters.hpp
 OBJS = $(SRCS:.cpp=.o)
 
 

@@ -6,7 +6,7 @@
 #include <ostream>
 
 
-static const double NOT_USED = -5555555.5555555;
+//static const double NOT_USED = -5555555.5555555;
 
 //using namespace std;
 
