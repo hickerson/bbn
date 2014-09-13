@@ -2458,10 +2458,6 @@ void bbn::common::sol(
 	//
 	//----------NUMBER OF NUCLIDES IN REACTION TYPES 1-11.
 	//
-	const double si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
-	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
-	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
-	const double sl[] = {NOT_USED, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 	double ci, cj, ck, cl;
 	double bdln = 0;
 	int ierror = 0;
@@ -2501,13 +2497,13 @@ void bbn::common::sol(
 		int k = kk(n); 							/// ID # of outgoing nuclide k.
 		int l = ll(n); 							/// ID # of outgoing nuclide l.
 
-		//Reactio
+		//Reaction
 		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
 			std::cout << "reaction: "<< reaction << "\n";
-			int ri = si[reaction]; 					/// # of incoming nuclide i.
-			int rj = sj[reaction]; 					/// # of incoming nuclide j.
-			int rk = sk[reaction]; 					/// # of outgoing nuclide k.
-			int rl = sl[reaction]; 					/// # of outgoing nuclide l.
+			int ri = s[0][reaction-1]; 					/// # of incoming nuclide i.
+			int rj = s[1][reaction-1]; 					/// # of incoming nuclide j.
+			int rk = s[2][reaction-1]; 					/// # of outgoing nuclide k.
+			int rl = s[3][reaction-1]; 					/// # of outgoing nuclide l.
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (reaction) {
 				case 1: /// 1-0-0-1 configuration.
