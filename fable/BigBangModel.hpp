@@ -7,6 +7,7 @@
 #include <boost/numeric/ublas/io.hpp>
 
 #include "EvolutionParameters.hpp"
+#include "NuclearParameters.hpp"
 
 namespace bbn {
 
@@ -15,6 +16,7 @@ namespace bbn {
 
 	static const double NOT_USED = -5555555.5555555;
 
+/*
 	struct common_compr0
 	{
 		double cy0;
@@ -33,6 +35,7 @@ namespace bbn {
 			inc0(0)
 		{}
 	};
+*/
 
 	struct common_compr
 	{
@@ -75,6 +78,21 @@ namespace bbn {
 		{}
 	};
 
+    class ModelParameters
+    {
+      public:
+		double g;
+		double tau;
+		double xnu;
+
+      private:
+		double _c[3+1];
+		double _cosmo;
+		double _xi[3+1];
+        
+        double 
+
+    
 	struct common_modpr0
 	{
 		//arr<double> c0;
@@ -115,6 +133,7 @@ namespace bbn {
 			cosmo(0)//,
 			//xi(dimension(3), fem::fill0)
 		{}
+	    public: double & Y(const unsigned index)
 	};
 
 	/*
@@ -134,6 +153,7 @@ const int common_recpr0::nrec;
 #endif
 	 */
 
+/*
 	struct common_recpr
 	{
 		static const int nrec = 88;
@@ -156,6 +176,7 @@ const int common_recpr0::nrec;
 			q9(dimension(nrec), fem::fill0)
 		{}
 	};
+    */
 
 	/*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
@@ -490,7 +511,7 @@ const int common_nucdat::nnuc;
 		common_modpr0,
 		common_modpr,
 		//common_recpr0,
-		common_recpr,
+		//common_recpr,
 		//common_evolp1,
 		//common_evolp2,
 		//common_evolp3,
@@ -683,7 +704,7 @@ const int common_nucdat::nnuc;
             os << dU << "\n";
             os << "Time derivative (dUdt):\n"; 
             os << dUdt << "\n";
-            os << "Initial time deriviative (dUdt0):\n"; 
+            os << "Initial time derivative (dUdt0):\n"; 
             os << dUdt0 << "\n";
 
             return os;

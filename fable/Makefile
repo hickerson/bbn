@@ -29,8 +29,9 @@ LIBS = -lm $(GSLLIBS)
 # sources
 #
 MAIN = bbn
-SRCS = bbn.cpp EvolutionParameters.cpp
-INCS = BigBangModel.hpp EvolutionParameters.hpp
+SRCS = bbn.cpp EvolutionParameters.cpp ModelParameters.cpp NuclearParameters.cpp
+INCS = BigBangSimulator.hpp EvolutionParameters.cpp ModelParameters.hpp \
+       NuclearParameters.hpp
 OBJS = $(SRCS:.cpp=.o)
 
 

@@ -1,6 +1,6 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
-#include "BigBangModel.hpp"
+#include "BigBangSimulator.hpp"
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <iostream>
@@ -1165,14 +1165,12 @@ bbn::common::integrand<1>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	double part1 = 0; //TODO move down inside loop
-	double part2 = 0;
 	if (x <= 0)
 		return 0;
 	else {
 		// TODO don't recompute 
-		part1 = 1 / (1 + ex(-.511f * x / T9mev));
-		part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - xi[1]));
+		double part1 = 1 / (1 + ex(-.511f * x / T9mev));
+		double part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - xi[1]));
 		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), 0.5) * part1 * part2;
 	}
@@ -1238,7 +1236,6 @@ bbn::common::integrand<3>(
 //common::func3(
 		double const& x)
 {
-	double return_value = 0; // TODO move inside?
 	//
 	//
 	//----------LINKAGES.
@@ -1268,18 +1265,15 @@ bbn::common::integrand<3>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	double part1 = 0;
-	double part2 = 0;
 	if (x <= 1.f) {
-		return_value = 0.f;
+        return 0;
 	}
 	else {
-		part1 = 1.f / (1.f + ex(-.511f * x / T9mev));
-		part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + xi[1]));
-		return_value = cnorm * x * fem::pow2((x + 2.531f)) * pow(
+		double part1 = 1.f / (1.f + ex(-.511f * x / T9mev));
+		double part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + xi[1]));
+		return cnorm * x * fem::pow2((x + 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
-	return return_value;
 }
 
 
@@ -1292,7 +1286,6 @@ bbn::common::integrand<4>(
 //common::func4(
 		double const& x)
 {
-	double return_value = 0;
 	//
 	//
 	//----------LINKAGES.
@@ -1322,19 +1315,15 @@ bbn::common::integrand<4>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	double part1 = 0;
-	double part2 = 0;
 	if (x <= 1.f) {
-		return_value = 0.f;
 		return 0;
 	}
 	else {
-		part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
-		part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + xi[1]));
-		return_value = cnorm * x * fem::pow2((x - 2.531f)) * pow(
+		double part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
+		double part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + xi[1]));
+		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
-	return return_value;
 	// TODO test and uncomment
 	/*
 	   if (x <= 1.f) {
@@ -1360,7 +1349,6 @@ bbn::common::integrand<5>(
 //common::func5(
 		double const& x)
 {
-	double return_value = 0;
 	//
 	//
 	//----------LINKAGES.
@@ -1390,9 +1378,7 @@ bbn::common::integrand<5>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	return_value = 1.f / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1.f + exp(x / tnu - xi[nu]));
-	return return_value;
+	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (1 + exp(x / tnu - xi[nu]));
 }
 
 
@@ -1405,7 +1391,6 @@ bbn::common::integrand<6>(
 //common::func6(
 		double const& x)
 {
-	double return_value = 0;
 	//
 	//
 	//----------LINKAGES.
@@ -1435,9 +1420,8 @@ bbn::common::integrand<6>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	return_value = 1.f / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1.f + exp(x / tnu + xi[nu]));
-	return return_value;
+	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (
+			1 + exp(x / tnu + xi[nu]));
 }
 
 
@@ -1519,7 +1503,7 @@ bbn::common::xintd(
 			//x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
 			double x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
 			//double y = func( x); 								/// Evaluate function x(1).
-			double y = integrand<n>( x); 								/// Evaluate function x(1).
+			double y = integrand<n>(x); 								/// Evaluate function x(1).
 			//sum += f * w(npnt); 								/// Add up sum.
 			sum += y * w[npnt]; 								/// Add up sum.
 		}
