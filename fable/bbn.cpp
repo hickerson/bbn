@@ -3239,7 +3239,7 @@ void bbn::common::rate4()
 	//Forward reaction rate coefficients.
 	//
 	//----------EVOLUTION PARAMETER.
-	//Temperature of photons (units of 10*
+	//Temperature of photons (units of GK = 10^9 K)
 	//
 	//===========================PROCEDURE DIVISION==================================
 	//
@@ -5157,6 +5157,7 @@ void common::program_new123()
 		   rev(i) = reacpr(i, 7); 			/// Reverse reaction coefficient.
 		   q9(i) = reacpr(i, 8); 			/// Energy released.
 		 */
+
 		iform(i) = reacpr[i-1][2-1]; 		/// Reaction type.
 		ii(i) = reacpr[i-1][3-1]; 			/// Incoming nuclide type.
 		jj(i) = reacpr[i-1][4-1]; 			/// Incoming nuclide type.
