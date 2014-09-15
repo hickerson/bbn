@@ -506,6 +506,7 @@ const int common_nucdat::nnuc;
 	};
 
 	struct common :
+        CosmologicalModel,
 		fem::common,
 		common_compr0,
 		common_compr,

@@ -4770,6 +4770,7 @@ statement_500:
 //========================IDENTIFICATION DIVISION================================
 //
 bbn::common::common() :
+    CosmologicalModel(),
 	fem::common(),
 	common_compr0(),
 	common_compr(),
@@ -4813,11 +4814,13 @@ bbn::common::common() :
 	dt0 = 1.00e-04f;
 	eta0 = 3.162e-10f;
 	for (int i = 0; i < nnuc+1; i++)
-	for (int j = 0; j < nnuc+1; j++)
-		if (i == 0 or j == 0)
-			a[i][j] = NOT_USED;
-		else
-			a[i][j] = 0;
+        for (int j = 0; j < nnuc+1; j++)
+        {
+            if (i == 0 or j == 0)
+                a[i][j] = NOT_USED;
+            else
+                a[i][j] = 0;
+        }
 
 	// } if called for first time
 	//
