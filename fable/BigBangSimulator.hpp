@@ -8,6 +8,7 @@
 
 #include "EvolutionParameters.hpp"
 //#include "NuclearParameters.hpp"
+#include "ModelParameters.hpp"
 #include "Reaction.hpp"
 
 namespace bbn {
@@ -92,7 +93,6 @@ namespace bbn {
 		double _cosmo;
 		double _xi[3+1];
     }
- */       
 
     
 	struct common_modpr0
@@ -139,6 +139,7 @@ namespace bbn {
 
 	    // TODO public: double & Y(const unsigned index)
 	};
+    */
 
 	/*
 	   struct common_recpr0
