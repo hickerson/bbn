@@ -2491,23 +2491,31 @@ void bbn::common::sol(
 	//FEM_DO_SAFE(n, 1, jsize) {
 	for (int n = 1; n <= jsize; n++) {
 		//..........EQUATE VARIABLES TO ARRAYS.
-		int reaction = iform(n); 				/// Type of reaction.
-		int i = ii(n); 							/// ID # of incoming nuclide i.
-		int j = jj(n); 							/// ID # of incoming nuclide j.
-		int k = kk(n); 							/// ID # of outgoing nuclide k.
-		int l = ll(n); 							/// ID # of outgoing nuclide l.
+        /*
+		int reaction = iform(n); 		/// Type of reaction.
+		int i = ii(n); 					/// ID # of incoming nuclide i.
+		int j = jj(n); 					/// ID # of incoming nuclide j.
+		int k = kk(n); 					/// ID # of outgoing nuclide k.
+		int l = ll(n); 					/// ID # of outgoing nuclide l.
+        */
+		Reaction<double,2> reaction = reactions[n-1];     
+        int type = reaction.type        /// Type of reaction.
+		int i = reaction.in[0]; 		/// ID # of incoming nuclide i.
+		int j = reaction.in[1]; 		/// ID # of incoming nuclide j.
+		int k = reaction.out[0]; 		/// ID # of outgoing nuclide k.
+		int l = reaction.out[1]; 		/// ID # of outgoing nuclide l.
 
 		//Reaction
 		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
 			std::cout << "reaction: "<< reaction << "\n";
-			int ri = s[0][reaction-1]; 					/// # of incoming nuclide i.
-			int rj = s[1][reaction-1]; 					/// # of incoming nuclide j.
-			int rk = s[2][reaction-1]; 					/// # of outgoing nuclide k.
-			int rl = s[3][reaction-1]; 					/// # of outgoing nuclide l.
+			int ri = s[0][type-1]; 		/// # of incoming nuclide i.
+			int rj = s[1][type-1]; 		/// # of incoming nuclide j.
+			int rk = s[2][type-1]; 		/// # of outgoing nuclide k.
+			int rl = s[3][type-1]; 		/// # of outgoing nuclide l.
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (reaction) {
 				case 1: /// 1-0-0-1 configuration.
-					ci = f[n]; 				/// (Ref 1).
+					ci = f[n]; 			/// (Ref 1).
 					cj = 0;
 					ck = 0;
 					cl = r[n];
@@ -4767,10 +4775,10 @@ bbn::common::common() :
 	common_compr(),
 	common_varpr0(),
 	common_varpr(),
-	common_modpr0(),
-	common_modpr(),
+	//common_modpr0(),
+	//common_modpr(),
 	//common_recpr0(),
-	common_recpr(),
+	//common_recpr(),
 	//common_evolp1(),
 	//common_evolp2(),
 	//common_evolp3(),
@@ -5149,7 +5157,7 @@ void common::program_new123()
 	FEM_DO_SAFE(i, 1, nrec) 
     {
 		//..........READ IN REACTION PARAMETERS.
-        reactions.push_back(Reaction(i));   // TODO Read from file.
+        reactions.push_back(Reaction<double,2>(i));   // TODO Read from file.
 		/*
 		iform(i) = reacpr(i, 2); 		/// Reaction type.
 		ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.

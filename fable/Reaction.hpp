@@ -19,15 +19,13 @@
 template <class real, int n> 
 class Reaction
 {
-	public: 
-    int type;       /// Reaction type.
-    int in[n];      /// Incoming nuclide types.
-    int out[n];     /// Outgoing nuclide types.
-    real reverse;   /// Reverse reaction coefficient.
-    real energy;    /// Endpoint energy of this reaction.
-
-
-    private:
+    public: 
+        string name;    /// Reaction name;
+        int type;       /// Reaction type.
+        int in[n];      /// Incoming nuclide types.
+        int out[n];     /// Outgoing nuclide types.
+        real reverse;   /// Reverse reaction coefficient.
+        real energy;    /// Endpoint energy of this reaction.
 
 	public: 
     Reaction(): 

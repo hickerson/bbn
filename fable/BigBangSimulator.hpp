@@ -5,10 +5,11 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <vector>
 
 #include "EvolutionParameters.hpp"
 //#include "NuclearParameters.hpp"
-#include "ModelParameters.hpp"
+#include "CosmologicalModel.hpp"
 #include "Reaction.hpp"
 
 namespace bbn {
@@ -18,7 +19,6 @@ namespace bbn {
 
 	static const double NOT_USED = -5555555.5555555;
 
-/*
 	struct common_compr0
 	{
 		double cy0;
@@ -37,7 +37,6 @@ namespace bbn {
 			inc0(0)
 		{}
 	};
-*/
 
 	struct common_compr
 	{
@@ -512,8 +511,8 @@ const int common_nucdat::nnuc;
 		common_compr,
 		common_varpr0,
 		common_varpr,
-		common_modpr0,
-		common_modpr,
+		//common_modpr0,
+		//common_modpr,
 		//common_recpr0,
 		//common_recpr,
 		//common_evolp1,
@@ -553,7 +552,7 @@ const int common_nucdat::nnuc;
 		//arr<double> yx;
 		double f[nrec+1];
 		double r[nrec+1];
-        vector<Reaction> reactions;
+        vector< Reaction<double,2> > reactions;
 
 		// TODO put in a subclass.
 		double a[nnuc+1][nnuc+1];
