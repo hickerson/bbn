@@ -1031,7 +1031,7 @@ double ex( double const& x)
 
 double bbn::common::getBesselL(double r)
 {
-	double K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
+	double K2r = cyl_bessel_k(2,r); 		/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
@@ -1378,7 +1378,7 @@ bbn::common::integrand<5>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (1 + exp(x / tnu - xi[nu]));
+	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (1 + exp(x / Tnu - xi[nu]));
 }
 
 
@@ -1421,7 +1421,7 @@ bbn::common::integrand<6>(
 	//Exponential expression with neutrino
 	//
 	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1 + exp(x / tnu + xi[nu]));
+			1 + exp(x / Tnu + xi[nu]));
 }
 
 
@@ -1607,7 +1607,7 @@ void bbn::common::rate1(
 		//20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 		//
 		T9mev = tph * .086171f; //Convert photon temp to units of MeV.  TODO update to more digits
-		tnmev = tnu * .086171f; //Convert neutrino temp to units of Me
+		tnmev = Tnu * .086171f; //Convert neutrino temp to units of Me
 		//..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
 		_w[1] = (-(T9mev / .511f) * (-88.722f));
 		_w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
@@ -1772,7 +1772,7 @@ void bbn::common::start()
 	double& phie = U.phie;						/// Copy the reference.
 
 	T9 = T9i; 									/// Initial temperature.
-	tnu = T9; 									/// Initial neutrino temperature.
+	Tnu = T9; 									/// Initial neutrino temperature.
 	const double const1 = 0.09615f; 			/// Initial time (Ref 1).
 	t = 1 / fem::pow2((const1 * T9));
 	dt = dt1; 									/// Initial time step.
@@ -1804,7 +1804,7 @@ void bbn::common::start()
 	}
 	if (xi[1] != 0) { 								/// Electron neutrino degeneracy.
 		cnorm = 1.;
-		tnu = .00001f; 								/// Low temperature.
+		Tnu = .00001f; 								/// Low temperature.
 		rate1( 0.00001f); 						    /// Find normalization constant at low temperature.
 		//cnorm = 1 / tau / f(1);
 		cnorm = 1 / tau / f[1];
@@ -1932,20 +1932,20 @@ void bbn::common::nudens()
 	const int iter = 50;
 	if (abs(xi[nu]) <= 0.03f) {
 		//..........SMALL xi APPROXIMATION.
-		rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((tnu))
+		rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((Tnu))
 			* (7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(xi[nu]) 
 					+ (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(xi[nu]));
 	}
 	else {
 		if (abs(xi[nu]) >= 30.f) {
 			//..........LARGE xi APPROXIMATION.
-			rhonu = (fem::pow4((tnu))) / (8.f * fem::pow2(3.14159f)) *
+			rhonu = (fem::pow4((Tnu))) / (8.f * fem::pow2(3.14159f)) *
 				fem::pow4(xi[nu]) * (1 + 12.f * 1.645f / fem::pow2(xi[nu]));
 		}
 		else {
 			//..........DO INTEGRATION
-			uplim1 = (88.029f + xi[nu]) * tnu;
-			uplim2 = (88.029f - xi[nu]) * tnu;
+			uplim1 = (88.029f + xi[nu]) * Tnu;
+			uplim2 = (88.029f - xi[nu]) * Tnu;
 			if (uplim2 <= 0.) {
 				rhonu = xintd<5>( 0, uplim1, iter);
 			}
@@ -2048,7 +2048,7 @@ void bbn::common::therm()
 	double bn4 = getBesselN(4*z);
 	double bn5 = getBesselN(5*z);
 	//Neutrino temperature.
-	tnu = (pow((rnb), (1.f / 3.f))) * T9i;
+	Tnu = (pow((rnb), (1.f / 3.f))) * T9i;
 	//..........FACTORS OF z.
 	double z1 = z;
 	double z2 = z*z;
@@ -5146,28 +5146,32 @@ void common::program_new123()
 	//
 	//20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
 	//
-	FEM_DO_SAFE(i, 1, nrec) {
+	FEM_DO_SAFE(i, 1, nrec) 
+    {
 		//..........READ IN REACTION PARAMETERS.
+        reactions.push_back(Reaction(i));   // TODO Read from file.
 		/*
-		   iform(i) = reacpr(i, 2); 		/// Reaction type.
-		   ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
-		   jj(i) = reacpr(i, 4); 			/// Incoming nuclide type.
-		   kk(i) = reacpr(i, 5); 			/// Outgoing nuclide type.
-		   ll(i) = reacpr(i, 6); 			/// Outgoing nuclide type.
-		   rev(i) = reacpr(i, 7); 			/// Reverse reaction coefficient.
-		   q9(i) = reacpr(i, 8); 			/// Energy released.
-		 */
+		iform(i) = reacpr(i, 2); 		/// Reaction type.
+		ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
+		jj(i) = reacpr(i, 4); 			/// Incoming nuclide type.
+		kk(i) = reacpr(i, 5); 			/// Outgoing nuclide type.
+		ll(i) = reacpr(i, 6); 			/// Outgoing nuclide type.
+		rev(i) = reacpr(i, 7); 			/// Reverse reaction coefficient.
+		q9(i) = reacpr(i, 8); 			/// Energy released.
+		*/
 
-		iform(i) = reacpr[i-1][2-1]; 		/// Reaction type.
-		ii(i) = reacpr[i-1][3-1]; 			/// Incoming nuclide type.
-		jj(i) = reacpr[i-1][4-1]; 			/// Incoming nuclide type.
-		kk(i) = reacpr[i-1][5-1]; 			/// Outgoing nuclide type.
-		ll(i) = reacpr[i-1][6-1]; 			/// Outgoing nuclide type.
-		rev(i) = reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
-		q9(i) = reacpr[i-1][8-1]; 			/// Energy released.
+        /*
+		iform(i) = reacpr[i-1][2-1]; 	/// Reaction type.
+		ii(i) = reacpr[i-1][3-1]; 		/// Incoming nuclide type.
+		jj(i) = reacpr[i-1][4-1]; 		/// Incoming nuclide type.
+		kk(i) = reacpr[i-1][5-1]; 		/// Outgoing nuclide type.
+		ll(i) = reacpr[i-1][6-1]; 		/// Outgoing nuclide type.
+		rev(i) = reacpr[i-1][7-1]; 		/// Reverse reaction coefficient.
+		q9(i) = reacpr[i-1][8-1]; 		/// Energy released.
+        */
 		//..........INITIALIZE REACTION RATES.
-		f[i] = 0; 							/// Forward rate coefficient.
-		r[i] = 0; 							/// Reverse rate coefficient.
+		f[i] = 0; 						/// Forward rate coefficient.
+		r[i] = 0; 						/// Reverse rate coefficient.
 		//..........SET RUN OPTIONS TO DEFAULT.
 	}
 	irun = 1; 							/// Do full run.
