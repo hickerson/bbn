@@ -15,32 +15,56 @@
 template <class real> 
 class CosmologicalModel
 { 
+    public:
     real G;             /// Gravitational constant.
+    //real dG;            /// Variation of Gravitational constant.
     real tau;           /// Neutron lifetime.
-    real Nnu            /// Number of neutrinos.
-    real cosmo          /// Cosmological constant.
-    real c[3+1];
-    real xi[3+1];
+    real cosmo;         /// Cosmological constant.
+    real eta;           /// Baryon-to-photon ratio.
+    real Nnu;           /// Number of neutrinos.
+    real T9i;           /// Initial temperature.
+    real T9f;           /// Final temperature.
 
-	public: CosmologicalModel()
+    private:
+    real xi[3+1];       /// Neutrino degeneracy parameter.
+    real c[3+1];        /// Deprecated coefficients.
+
+    /*
+	public: CosmologicalModel():
+			G(0),
+			dG(0),
+			tau(0),
+			cosmo(0),
+			eta(0),
+			Nnu(0),
+			Ti(0),
+			Tf(0)
 	{
 		//verbose("Default constructor for CosmologicalModel");
-		printf("Default: Y address is: %p\n", _Y);
+		for (int i = 0; i <= 3; i++)
+        {
+			c[i] = 0;
+			xi[i] = 0;
+        }
 	}
+    */
 
 	public: CosmologicalModel(const CosmologicalModel & copy): 
 			G(copy.G),
+			dG(copy.dG),
 			tau(copy.tau),
-			Nnu(copy.Nnu)
-			cosmo(copy.cosmo)
+			cosmo(copy.cosmo),
+			eta(copy.eta),
+			Nnu(copy.Nnu),
+			Ti(copy.Ti),
+			Tf(copy.Tf)
 	{
 		//verbose("Copy constructor for CosmologicalModel");
-		for (int i = 1; i <= 3; i++)
+		for (int i = 0; i <= 3; i++)
         {
 			c[i] = copy.c[i];
 			xi[i] = copy.xi[i];
         }
-		printf("Copy: Y address is: %p\n", _Y);
 	}
 
 	public:~CosmologicalModel()				/// Does nothing.
