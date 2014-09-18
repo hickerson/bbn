@@ -10,14 +10,14 @@
  * CosmologicalModel
  *
  * Author: Kevin Peter Hickerson
- * Created: Sun Apr 20 17:11:14 PDT 2014
+ * Created: Sep 10, 2014
  */
 template <class real> 
 class CosmologicalModel
 { 
     public:
     real G;             /// Gravitational constant.
-    //real dG;            /// Variation of Gravitational constant.
+    real dG;            /// Variation of Gravitational constant. // TODO
     real tau;           /// Neutron lifetime.
     real cosmo;         /// Cosmological constant.
     real eta;           /// Baryon-to-photon ratio.
@@ -25,7 +25,7 @@ class CosmologicalModel
     real T9i;           /// Initial temperature.
     real T9f;           /// Final temperature.
 
-    private:
+    private:            /// TODO make dependent on number of neutrinos
     real xi[3+1];       /// Neutrino degeneracy parameter.
     real c[3+1];        /// Deprecated coefficients.
 
@@ -37,8 +37,8 @@ class CosmologicalModel
 			cosmo(0),
 			eta(0),
 			Nnu(0),
-			Ti(0),
-			Tf(0)
+			T9i(0),
+			T9f(0)
 	{
 		//verbose("Default constructor for CosmologicalModel");
 		for (int i = 0; i <= 3; i++)
@@ -56,14 +56,14 @@ class CosmologicalModel
 			cosmo(copy.cosmo),
 			eta(copy.eta),
 			Nnu(copy.Nnu),
-			Ti(copy.Ti),
-			Tf(copy.Tf)
+			T9i(copy.T9i),
+			T9f(copy.T9f)
 	{
 		//verbose("Copy constructor for CosmologicalModel");
 		for (int i = 0; i <= 3; i++)
         {
-			c[i] = copy.c[i];
 			xi[i] = copy.xi[i];
+			c[i] = copy.c[i];
         }
 	}
 
@@ -79,13 +79,14 @@ class CosmologicalModel
         if (this != &other) // protect against invalid self-assignment
         {
 			G = other.G;
+			dG = other.dG;
 			tau = other.tau;
 			Nnu = other.Nnu;
 			cosmo = other.cosmo;
             for (int i = 1; i <= 3; i++)
             {
-                c[i] = other.c[i];
                 xi[i] = other.xi[i];
+                c[i] = other.c[i];
             }
         }
         return *this;
@@ -107,20 +108,21 @@ class CosmologicalModel
     public: const void output(std::ostream& os) const
     {
         os << "G: " << G << "\n";
+        os << "dG: " << dG << "\n";
         os << "tau: " << tau << "\n";
         os << "Nnu: " << Nnu << "\n";
-        os << "cosmo: " << cosmolgical << "\nc:";
+        os << "cosmo: " << cosmo << "\nc:";
         for (int i = 1; i <= 3; i++)
             os << "\t" << c[i];
         os << "\nxi: ";
-        for (int i = 1; i <= nnuc; i++)
+        for (int i = 1; i <= 3; i++)
             os << "\t" << xi[i];
         os << "\n";
     }
 };
 
 template <class real, int n> 
-std::ostream& operator<<(std::ostream& os, const CosmologicalModel<real,n> & ep)
+std::ostream& operator<<(std::ostream& os, const CosmologicalModel<real> & ep)
 {
     ep.output(os);
     return os;

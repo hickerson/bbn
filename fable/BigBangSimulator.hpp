@@ -532,6 +532,7 @@ const int common_nucdat::nnuc;
 		common_runopt,
 		common_outopt,
 		common_tcheck
+        CosmologicalModel
 	{
 		static const int nrec = 88;
 		static const int nnuc = 26;
@@ -745,7 +746,7 @@ const int common_nucdat::nnuc;
 		.003070f, -.005085f
 	};
 
-	const double s[4][11] = {
+	const double common::s[4][11] = {
         {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2},
 	    {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0},
 	    {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2},
