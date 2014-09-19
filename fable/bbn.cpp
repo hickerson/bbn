@@ -965,7 +965,7 @@ void bbn::common::check()
 		//write(3, "(7(e13.5))"), Nnu, tau, etaout(it), xout(it, 3),
 		//write(3, "(7e13.5)"), Nnu, tau, etaout(it), xout(it, 3),
 		//	xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
-		std::cout << Nnu <<" "<< tau <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "<<
+		std::cout << M.Nnu <<" "<< M.tau <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "<<
 			xout(it,5) <<" "<< xout(it,6) <<" "<< xout(it,8) << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
 	}
 	//
@@ -1768,6 +1768,8 @@ void bbn::common::start()
 	//double* y0 = U0.Y;							/// Get the array pointer.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
+    double& tau = M.tau;
+    double& G = M.G;
 
 	T9 = T9i; 									/// Initial temperature.
 	Tnu = T9; 									/// Initial neutrino temperature.
@@ -1776,13 +1778,13 @@ void bbn::common::start()
 	dt = dt1; 									/// Initial time step.
 	//..........MODEL SETTINGS.
 	const double const2 = 6.6700e-8f; 			/// Modify gravitational constant.
-	g = const2 * dG;
+	G = const2 * dM.G;
 	//tau = tau; 								    /// Convert n half-life (min) to lifetime (secs).
-	tau = tau / 0.98f; 							/// Coulomb correction (Ref 2). 
+	tau = M0.tau / 0.98f; 							/// Coulomb correction (Ref 2). 
 												//  TODO <-- check this!
 												/// This does not have enough digits 
 												/// for today's lifetime measured values.
-	xnu = Nnu; 								/// Number of neutrino species.
+	//xnu = M.Nnu; 								/// Number of neutrino species.
 	//
 	//30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
 	//
@@ -1831,7 +1833,7 @@ void bbn::common::start()
 	   double bn4 = getBesselN(4*z);
 	   double bn5 = getBesselN(5*z);
 	 */
-	hv = 3.3683e+4f * eta * 2.75; 		/// (Ref 4 but with final eta).
+	hv = 3.3683e+4f * M.eta * 2.75; 		/// (Ref 4 but with final eta).
 	phie = hv * (1.784e-5f * y(2)) / 
 		(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
 	/// Chemical potential of electron (Ref 5).
@@ -1928,14 +1930,15 @@ void bbn::common::nudens()
 	double uplim1 = 0;
 	double uplim2 = 0;
 	const int iter = 50;
+    double* xi = M.xi;
 	if (abs(xi[nu]) <= 0.03f) {
 		//..........SMALL xi APPROXIMATION.
 		rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((Tnu))
-			* (7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(M.xi[nu]) 
-					+ (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(M.xi[nu]));
+			* (7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(xi[nu]) 
+					+ (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(xi[nu]));
 	}
 	else {
-		if (abs(M.xi[nu]) >= 30.f) {
+		if (abs(xi[nu]) >= 30.f) {
 			//..........LARGE xi APPROXIMATION.
 			rhonu = (fem::pow4((Tnu))) / (8.f * fem::pow2(3.14159f)) *
 				fem::pow4(xi[nu]) * (1 + 12.f * 1.645f / fem::pow2(xi[nu]));
@@ -2110,13 +2113,13 @@ void bbn::common::therm()
 			(5.f * z)); 									///(Ref 7)
 	//Nonde
 	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
-		thm(8) = xnu * rhone0 * (pow(rnb, (4.f / 3.f))); 	///(Ref 8)
+		thm(8) = M.Nnu * rhone0 * (pow(rnb, (4.f / 3.f))); 	///(Ref 8)
 		//Include effects of neutrino degenera
 	}
 	else {
 		thm(8) = 0.f;
 		//For every neutrino family.
-		FEM_DO_SAFE(nu, 1, xnu) {
+		FEM_DO_SAFE(nu, 1, M.Nnu) {
 			//Compute neutrino energy density.
 			nudens();
 			//Have 12.79264 from units ch
@@ -3541,13 +3544,15 @@ void bbn::common::derivs(
 	double& dT9 = dU.T9;						/// Copy the reference.
 	double& dhv = dU.hv;						/// Copy the reference.
 	double& dphie = dU.phie;					/// Copy the reference.
+    double& G = M.G;
+    double& cosmo = M.cosmo;
 
 	//Baryon mass density (ratio to init v
 	rnb = hv * T9 * T9 * T9 / rhob0;
 	//..........VARIOUS THERMODYNAMIC QUANTITIES.
 	therm();
 	//Expansion rate.
-	hubcst = sqrt((8.f / 3.f) * pi * g * (thm(10)) + (cosmo / 3.f));
+	hubcst = sqrt((8.f / 3.f) * pi * G * (thm(10)) + (cosmo / 3.f));
 	//Baryon mass density.
 	rhob = thm(9);
 	//..........COMPUTE REACTION RATE COEFFICIENTS.
@@ -4024,7 +4029,7 @@ statement_200:
    };
  */
 
-// Replaces the equivalence memory sharing used in the original Fortran. 
+// XXX Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
 // TODO make private
 void bbn::common::qvary(int index, double value)
@@ -4036,11 +4041,11 @@ void bbn::common::qvary(int index, double value)
 	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 	//
 	if (index >= 1 && index <= 3)
-		c[index] = value;
+		M.c[index] = value;
 	else if (index == 4)
-		cosmo = value;
+		M.cosmo = value;
 	else if (index >= 5 && index <= 7)
-		xi[index] = value;
+		M.xi[index] = value;
 	else
 	{
 		std::cerr << "index out of bounds." << std::endl;
@@ -4379,7 +4384,7 @@ statement_232:
 			if ((inum(1) >= 1) && (inum(1) <= 8)) {
 				if (inum(1) == 1) {
 					//Vary baryon-to-photon ratio.
-					eta = pow(10, rnumb1);
+					M.eta = pow(10, rnumb1);
 				}
 				else {
 					//Vary other quantities.
@@ -4393,7 +4398,7 @@ statement_232:
 				if ((inum(2) >= 1) && (inum(2) <= 8)) {
 					if (inum(2) == 1) {
 						//Vary baryon-to-photon ratio.
-						eta = pow(10, rnumb2);
+						M.eta = pow(10, rnumb2);
 					}
 					else {
 						//Vary other quantities.
@@ -4407,7 +4412,7 @@ statement_232:
 					if ((inum(3) >= 1) && (inum(3) <= 8)) {
 						if (inum(3) == 1) {
 							//Vary baryon-to-photon ratio.
-							eta = pow(10, rnumb3);
+							M.eta = pow(10, rnumb3);
 						}
 						else {
 							//Vary other quantities.
@@ -4583,7 +4588,7 @@ statement_200:
 			"(' Model parameters:',/,'   g = ',f5.2,'/  tau = ',f6.2,'/  # nu = ',"
 			"f5.2,'/  lambda = ',1p,e10.3,'/  xi-e = ',e10.3,'/  xi-m = ',e10.3,"
 			"'/  xi-t = ',e10.3,/)"),
-		dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
+		dM.G, M.tau, M.Nnu, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
 	//..........PRINT HEADINGS, ABUNDANCES FOR NEUTRON TO LI8.
 	write(2,
 			"(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
@@ -4802,15 +4807,15 @@ bbn::common::common() :
 	M0.T9f = 1.00e-02f;
 	ytmin0 = 1.00e-25f;			// TODO make smaller with double
 	inc0 = 30;
-	c0[1] = 1.00;
-	c0[2] = 885.7;
-	c0[3] = 3.0;
-	cosmo0 = 0.00f;
-	xi0[1] = 0;
-	xi0[2] = 0;
-	xi0[3] = 0;
+	M0.c[1] = 1.00;
+	M0.c[2] = 885.7;
+	M0.c[3] = 3.0;
+	M0.cosmo = 0.00f;
+	M0.xi[1] = 0;
+	M0.xi[2] = 0;
+	M0.xi[3] = 0;
 	dt0 = 1.00e-04f;
-	eta0 = 3.162e-10f;
+	M0.eta = 3.162e-10f;
 	for (int i = 0; i < nnuc+1; i++)
         for (int j = 0; j < nnuc+1; j++)
         {
@@ -5196,17 +5201,16 @@ void common::program_new123()
 	ytmin = ytmin0; 					/// Smallest abundances allowed.
 	inc = inc0; 						/// Accumulation increment.
 
-	T9i = M0.T9i; 						/// Initial temperature.
-	T9f = M0.T9f; 						/// Final temperature.
-	dM.G = dM0.c[1]; 						/// Variation of gravitational constant.
-	M.tau = M0.c[2]; 						/// Neutron lifetime.
-	M.std::cout << "ntau:"<<tau<<std::endl; 
-	M.Nnu = M0.c[3]; 						/// Number of neutrino species.
-	M.cosmo = M0.cosmo; 					/// Cosmological constant.
-	M.xi[1] = M0.xi[1]; 					/// Electron degeneracy parameter.
-	M.xi[2] = M0.xi[2]; 					/// Muon degeneracy parameter.
-	M.xi[3] = M0.xi[3]; 					/// Tau degeneracy parameter.
-	M.eta = eta0; 						/// Baryon-to-photon ratio.
+	M.T9i = M0.T9i; 					/// Initial temperature.
+	M.T9f = M0.T9f; 					/// Final temperature.
+	dM.G = M0.c[1]; 					/// Variation of gravitational constant.
+	M.tau = M0.c[2]; 					/// Neutron lifetime.
+	M.Nnu = M0.c[3]; 					/// Number of neutrino species.
+	M.cosmo = M0.cosmo; 				/// Cosmological constant.
+	M.xi[1] = M0.xi[1]; 				/// Electron degeneracy parameter.
+	M.xi[2] = M0.xi[2]; 				/// Muon degeneracy parameter.
+	M.xi[3] = M0.xi[3]; 				/// Tau degeneracy parameter.
+	M.eta = M0.eta; 						/// Baryon-to-photon ratio.
 	//..........ACCEPT RETURN TO CONTINUE.
 	read(ir, star); 					/// Pause.
 	//
