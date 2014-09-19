@@ -707,8 +707,8 @@ statement_270:
 statement_280:
 	write(iw, "(' ','Enter value for xi tauon: ',$)");
 	read(ir, star), M.xi[3];
-	if ((xi[3] != 0.f) && (Nnu < 3.f)) {
-		Nnu = 3.f;
+	if ((M.xi[3] != 0) && (M.Nnu < 3)) {
+		M.Nnu = 3;
 		write(iw, "(' ','Number of neutrinos set to 3')");
 		write(iw, "(' ','Press <RETURN> to continue: ',$)");
 		read(ir, star);
@@ -1218,7 +1218,7 @@ bbn::common::integrand<2>(
 	}
 	else {		// TODO remove cmn
 		double part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
-		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / tnmev) - xi[1]));
+		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / tnmev) - M.xi[1]));
 		return cnorm * x * fem::pow2((x + 2.531f)) 
 				* pow((fem::pow2(x) - 1), .5f) * part1 * part2;
 	}
@@ -1594,11 +1594,11 @@ void bbn::common::rate1(
 	double part2 = 0;
 	double part3 = 0;
 	double part4 = 0;
-	if (xi[1] == 0) {
+	if (M.xi[1] == 0) {
 		//f(1) = thm(13) / tau; 	/// Forward rate for weak np reaction.
-		f[1] = thm(13) / tau; 	/// Forward rate for weak np reaction.
+		f[1] = thm(13) / M.tau; 	/// Forward rate for weak np reaction.
 		//r(1) = thm(14) / tau; 	/// Reverse rate for weak np reaction.
-		r[1] = thm(14) / tau; 	/// Reverse rate for weak np reaction.
+		r[1] = thm(14) / M.tau; 	/// Reverse rate for weak np reaction.
 	}
 	else {
 		//
@@ -5198,15 +5198,15 @@ void common::program_new123()
 
 	T9i = M0.T9i; 						/// Initial temperature.
 	T9f = M0.T9f; 						/// Final temperature.
-	dG = c0[1]; 						/// Variation of gravitational constant.
-	tau = c0[2]; 						/// Neutron lifetime.
-	std::cout << "ntau:"<<tau<<std::endl; 
-	Nnu = c0[3]; 						/// Number of neutrino species.
-	cosmo = cosmo0; 					/// Cosmological constant.
-	xi[1] = xi0[1]; 					/// Electron degeneracy parameter.
-	xi[2] = xi0[2]; 					/// Muon degeneracy parameter.
-	xi[3] = xi0[3]; 					/// Tau degeneracy parameter.
-	eta = eta0; 						/// Baryon-to-photon ratio.
+	dM.G = dM0.c[1]; 						/// Variation of gravitational constant.
+	M.tau = M0.c[2]; 						/// Neutron lifetime.
+	M.std::cout << "ntau:"<<tau<<std::endl; 
+	M.Nnu = M0.c[3]; 						/// Number of neutrino species.
+	M.cosmo = M0.cosmo; 					/// Cosmological constant.
+	M.xi[1] = M0.xi[1]; 					/// Electron degeneracy parameter.
+	M.xi[2] = M0.xi[2]; 					/// Muon degeneracy parameter.
+	M.xi[3] = M0.xi[3]; 					/// Tau degeneracy parameter.
+	M.eta = eta0; 						/// Baryon-to-photon ratio.
 	//..........ACCEPT RETURN TO CONTINUE.
 	read(ir, star); 					/// Pause.
 	//

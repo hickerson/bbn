@@ -25,8 +25,8 @@ class CosmologicalModel
     real T9i;           /// Initial temperature.
     real T9f;           /// Final temperature.
 
-    private:            /// TODO make dependent on number of neutrinos
     real xi[3+1];       /// Neutrino degeneracy parameter.
+    //private:            /// TODO make dependent on number of neutrinos
     real c[3+1];        /// Deprecated coefficients.
 
     /*
