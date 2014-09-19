@@ -647,7 +647,7 @@ statement_100:
         "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
         "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
         "' Enter selection (1-10): ',$)"),
-		dG, tau, Nnu, eta, cosmo, xi[1], xi[2], xi[3];
+		dM.G, M.tau, M.Nnu, M.eta, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i2)"), inum;
 	//
@@ -671,42 +671,42 @@ statement_100:
 	//Change gravitational constant section.
 statement_210:
 	write(iw, "(' ','Enter value for variation of gravitational ','constant: ',$)");
-	read(ir, star), dG;
+	read(ir, star), dM.G;
 	goto statement_400;
 	//Change neutron lifetime section.
 statement_220:
 	write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
-	read(ir, star), tau;
+	read(ir, star), M.tau;
 	goto statement_400;
 	//Change number of neutrino species section.
 statement_230:
 	write(iw, "(' ','Enter value for number of neutrino species: ',$)");
-	read(ir, star), Nnu;
+	read(ir, star), M.Nnu;
 	goto statement_400;
 	//Change baryon-to-photon ratio section.
 statement_240:
 	write(iw, "(' ','Enter value for baryon-to-photon ratio: ',$)");
-	read(ir, star), eta;
+	read(ir, star), M.eta;
 	goto statement_400;
 	//Change cosmological constant section.
 statement_250:
 	write(iw, "(' ','Enter value for cosmological constant: ',$)");
-	read(ir, star), cosmo;
+	read(ir, star), M.cosmo;
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_260:
 	write(iw, "(' ','Enter value for xi electron: ',$)");
-	read(ir, star), xi[1];
+	read(ir, star), M.xi[1];
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_270:
 	write(iw, "(' ','Enter value for xi muon: ',$)");
-	read(ir, star), xi[2];
+	read(ir, star), M.xi[2];
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_280:
 	write(iw, "(' ','Enter value for xi tauon: ',$)");
-	read(ir, star), xi[3];
+	read(ir, star), M.xi[3];
 	if ((xi[3] != 0.f) && (Nnu < 3.f)) {
 		Nnu = 3.f;
 		write(iw, "(' ','Number of neutrinos set to 3')");
@@ -716,14 +716,14 @@ statement_280:
 	goto statement_400;
 	//Reset all to default values section.
 statement_290:
-	dG = c0[1];
-	tau = c0[2];
-	Nnu = c0[3];
-	cosmo = cosmo0;
-	xi[1] = xi0[1];
-	xi[2] = xi0[2];
-	xi[3] = xi0[3];
-	eta = eta0;
+	dM.G = M0.c[1];
+	M.tau = M0.c[2];
+	M.Nnu = M0.c[3];
+	M.cosmo = M0.cosmo;
+	M.xi[1] = M0.xi[1];
+	M.xi[2] = M0.xi[2];
+	M.xi[3] = M0.xi[3];
+	M.eta = M0.eta;
 	write(iw, "(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
 	read(ir, star);
 	goto statement_400;
@@ -1168,7 +1168,7 @@ bbn::common::integrand<1>(
 	else {
 		// TODO don't recompute 
 		double part1 = 1 / (1 + ex(-.511f * x / T9mev));
-		double part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - xi[1]));
+		double part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - M.xi[1]));
 		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), 0.5) * part1 * part2;
 	}
@@ -1268,7 +1268,7 @@ bbn::common::integrand<3>(
 	}
 	else {
 		double part1 = 1.f / (1.f + ex(-.511f * x / T9mev));
-		double part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + xi[1]));
+		double part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + M.xi[1]));
 		return cnorm * x * fem::pow2((x + 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
@@ -1318,7 +1318,7 @@ bbn::common::integrand<4>(
 	}
 	else {
 		double part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
-		double part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + xi[1]));
+		double part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + M.xi[1]));
 		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
@@ -1376,7 +1376,7 @@ bbn::common::integrand<5>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (1 + exp(x / Tnu - xi[nu]));
+	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (1 + exp(x / Tnu - M.xi[nu]));
 }
 
 
@@ -1419,7 +1419,7 @@ bbn::common::integrand<6>(
 	//Exponential expression with neutrino
 	//
 	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1 + exp(x / Tnu + xi[nu]));
+			1 + exp(x / Tnu + M.xi[nu]));
 }
 
 
@@ -1608,13 +1608,13 @@ void bbn::common::rate1(
 		tnmev = Tnu * .086171f; //Convert neutrino temp to units of Me
 		//..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
 		_w[1] = (-(T9mev / .511f) * (-88.722f));
-		_w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
+		_w[2] = ((tnmev / .511f) * (88.029f + M.xi[1]) + 2.531f);
 		_x[1] = ((T9mev / .511f) * (88.029f));
-		_x[2] = (-(tnmev / .511f) * (-88.722f + xi[1]) - 2.531f);
+		_x[2] = (-(tnmev / .511f) * (-88.722f + M.xi[1]) - 2.531f);
 		_y[1] = (-(T9mev / .511f) * (-88.722f));
-		_y[2] = ((tnmev / .511f) * (88.029f - xi[1]) - 2.531f);
+		_y[2] = ((tnmev / .511f) * (88.029f - M.xi[1]) - 2.531f);
 		_z[1] = ((T9mev / .511f) * (88.029f));
-		_z[2] = (-(tnmev / .511f) * (-88.722f - xi[1]) + 2.531f);
+		_z[2] = (-(tnmev / .511f) * (-88.722f - M.xi[1]) + 2.531f);
 		//..........COMPARE LIMITS AND TAKE LARGER OF THE TWO.
 		uplim1 = abs(_w[1]);
 		uplim2 = abs(_x[1]);
@@ -1786,21 +1786,21 @@ void bbn::common::start()
 	//
 	//30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
 	//
-	if ((15.011f / T9 + xi[1]) > 58.f) { 		    /// Overabundance of anti-neutrinos.
+	if ((15.011f / T9 + M.xi[1]) > 58.f) { 		    /// Overabundance of anti-neutrinos.
 		y(1) = 1.e-25f; 						    /// Very little of neutrons.
 		y(2) = 1.f; 							    /// Essentially all protons.
 	}
 	else {
-		if ((15.011f / T9 + xi[1]) <  - 58.f) {     /// Overabundance of neutrinos.
+		if ((15.011f / T9 + M.xi[1]) <  - 58.f) {     /// Overabundance of neutrinos.
 			y(1) = 1.f; 						    /// Essentially all neutrons.
 			y(2) = 1.e-25f; 					    /// Very little of protons.
 		}
 		else {
-			y(1) = 1/(ex(15.011/T9 + xi[1]) + 1); 	/// Initial n abundance (Ref 3).
-			y(2) = 1/(ex(-15.011/T9 - xi[1]) + 1);	/// Initial p abundance (Ref 3).
+			y(1) = 1/(ex(15.011/T9 + M.xi[1]) + 1); 	/// Initial n abundance (Ref 3).
+			y(2) = 1/(ex(-15.011/T9 - M.xi[1]) + 1);	/// Initial p abundance (Ref 3).
 		}
 	}
-	if (xi[1] != 0) { 								/// Electron neutrino degeneracy.
+	if (M.xi[1] != 0) { 								/// Electron neutrino degeneracy.
 		cnorm = 1.;
 		Tnu = .00001f; 								/// Low temperature.
 		rate1( 0.00001f); 						    /// Find normalization constant at low temperature.
@@ -1837,7 +1837,7 @@ void bbn::common::start()
 	/// Chemical potential of electron (Ref 5).
 	rhob0 = hv * fem::pow3(T9); 					/// TODO Baryon density. 
 	//Nonde
-	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
+	if ((M.xi[1] == 0) && (M.xi[2] == 0) && (M.xi[3] == 0)) {
 		rhone0 = 7.366f * fem::pow4(T9); 	/// Electron neutrino density (Ref 6).
 	}
 	//
@@ -1931,11 +1931,11 @@ void bbn::common::nudens()
 	if (abs(xi[nu]) <= 0.03f) {
 		//..........SMALL xi APPROXIMATION.
 		rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((Tnu))
-			* (7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(xi[nu]) 
-					+ (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(xi[nu]));
+			* (7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(M.xi[nu]) 
+					+ (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(M.xi[nu]));
 	}
 	else {
-		if (abs(xi[nu]) >= 30.f) {
+		if (abs(M.xi[nu]) >= 30.f) {
 			//..........LARGE xi APPROXIMATION.
 			rhonu = (fem::pow4((Tnu))) / (8.f * fem::pow2(3.14159f)) *
 				fem::pow4(xi[nu]) * (1 + 12.f * 1.645f / fem::pow2(xi[nu]));

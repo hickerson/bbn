@@ -506,7 +506,6 @@ const int common_nucdat::nnuc;
 	};
 
 	struct common :
-        CosmologicalModel,
 		fem::common,
 		common_compr0,
 		common_compr,
@@ -532,20 +531,38 @@ const int common_nucdat::nnuc;
 		common_runopt,
 		common_outopt,
 		common_tcheck
-        CosmologicalModel
 	{
 		static const int nrec = 88;
 		static const int nnuc = 26;
+		int Nreactions = 88;
+		int Nnuclide = 26;
+        
 		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 		//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 		//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 		//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 
-		// TODO put in a subclass.
+		// TODO put in Nuclide
+        //vector< Nuclide<double> > nuclides(nnuc+1);
 		static const double am[nnuc+1];
 		static const double zm[nnuc+1];
 		static const double dm[nnuc+1];
-		static const double reacpr[nrec][8];
+
+		// TODO put in a subclass?
+		double a[nnuc+1][nnuc+1];
+		double b[nnuc+1];
+		//double yx[nnuc+1];
+		/*
+        boost::numeric::ublas::matrix<double> a(nnuc,nnuc);
+        boost::numeric::ublas::vector<double> b(nnu);
+        boost::numeric::ublas::vector<double> y(nnuc);
+        *//*
+        using namespace boost::numeric::ublas {
+            matrix<double> a(nnuc,nnuc);
+            vector<double> b(nnu);
+            vector<double> y(nnuc);
+        }
+		*/
 
 		//arr<double> f;
 		//arr<double> r;
@@ -554,20 +571,18 @@ const int common_nucdat::nnuc;
 		//arr<double> yx;
 		double f[nrec+1];
 		double r[nrec+1];
-        vector< Reaction<double,2> > reactions;
+        Reaction<double,2> reactions[nrec+1];
+        //vector< Reaction<double,2> > reactions(nrec+1);
+        //vector<double> f(nrec+1);
+        //vector<double> r(nrec+1);
+		static const double reacpr[nrec][8];
 
-		// TODO put in a subclass.
-		double a[nnuc+1][nnuc+1];
-		double b[nnuc+1];
-		//double yx[nnuc+1];
 
-		/*
-		   boost::numeric::ublas::matrix<double> a;
-		   boost::numeric::ublas::vector<double> b;
-		   boost::numeric::ublas::vector<double> yx;
-		 */
+		void qvary(int, double);        // TODO remove?
 
-		void qvary(int, double);
+	private:
+		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
+        CosmologicalModel<double> M, M0, dM;
 
 	public: 
 		common();
@@ -620,8 +635,6 @@ const int common_nucdat::nnuc;
 		double getBesselM(double);
 		double getBesselN(double);
 
-	private:
-		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
 
         bool isNuclideIndex(int index) {
             if (index > 0 and index <= nnuc)
@@ -746,13 +759,14 @@ const int common_nucdat::nnuc;
 		.003070f, -.005085f
 	};
 
+/*
 	const double common::s[4][11] = {
         {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2},
 	    {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0},
 	    {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2},
 	    {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1}
     };
-
+*/
 	const double common::reacpr[88][8] = {
 		{1,	    1,	1,	0,	0,	2,	0,  	0},
 		{2,	    1,	4,	0,	0,	5,	0,  	0},
