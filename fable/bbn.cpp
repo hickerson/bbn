@@ -2097,6 +2097,7 @@ void bbn::common::therm()
 	//20--------COMPUTE THERMODYNAMIC VARIABLES--------------------------------------
 	//
 	double& T9 = U.T9;							/// Copy the reference.
+	double* xi = M.xi;							/// Copy the reference.
 	thm(1) = 8.418f * T9 * T9 * T9 * T9; 					///(Ref 1)
 	thm(2) = 4.f * thm(1) / T9; 							///(Ref 2)
 	thm(3) = thm(1) / 3.f; 									///(Ref 3)
@@ -2499,22 +2500,30 @@ void bbn::common::sol(
 		int k = kk(n); 					/// ID # of outgoing nuclide k.
 		int l = ll(n); 					/// ID # of outgoing nuclide l.
         */
-		Reaction<double,2> reaction = reactions[n-1];     
-        int type = reaction.type        /// Type of reaction.
+		const Reaction<double,2> & reaction = reactions[n-1];     
+        //int type = reaction.type;       /// Type of reaction.
+        /*
 		int i = reaction.in[0]; 		/// ID # of incoming nuclide i.
 		int j = reaction.in[1]; 		/// ID # of incoming nuclide j.
 		int k = reaction.out[0]; 		/// ID # of outgoing nuclide k.
 		int l = reaction.out[1]; 		/// ID # of outgoing nuclide l.
+        */
+        int i,j,k,l;
+        int type = reaction.getNuclideIndcies(i,j,k,l); /// Type of reaction.
 
 		//Reaction
-		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
-			std::cout << "reaction: "<< reaction << "\n";
+		if ((type != 0) && (i <= isize) && (l <= isize)) {
+			std::cout << "reaction type: "<< type << "\n";
+            /*
 			int ri = s[0][type-1]; 		/// # of incoming nuclide i.
 			int rj = s[1][type-1]; 		/// # of incoming nuclide j.
 			int rk = s[2][type-1]; 		/// # of outgoing nuclide k.
 			int rl = s[3][type-1]; 		/// # of outgoing nuclide l.
+            */
+            int ri,rj,rk,rl;
+            int total = reaction.getNuclideCounts(ri,rj,rk,rl);
 			//..........COMPUTE DIFFERENT REACTION RATES.
-			switch (reaction) {
+			switch (type) {
 				case 1: /// 1-0-0-1 configuration.
 					ci = f[n]; 			/// (Ref 1).
 					cj = 0;
@@ -2660,8 +2669,8 @@ void bbn::common::sol(
 			}
 			a[i][l] -= ri * cl;
 			a[l][l] += rl * cl;
-		} //((reaction.ne.0).and.(i.le.isize).and.(l.le.isize))
-	} //n = 1,jsize
+		} //((reaction != 0) and (i <= isize) and (l <= isize))
+	} //n = 1...jsize
 	//
 	//40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
 	//

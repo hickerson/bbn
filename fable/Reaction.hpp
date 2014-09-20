@@ -20,6 +20,9 @@ using namespace std;
 template <class real, int n> 
 class Reaction
 {
+    const static double reaction_data[88][8];
+    const static double reaction_type[4][11];
+
     public: 
         string name;    /// Reaction name;
         int type;       /// Reaction type.
@@ -99,6 +102,24 @@ class Reaction
         return *this;
     }
 
+    int getNuclideIndicies(double i, double j, double k, double l)
+    {
+		i = in[0]; 		    /// ID # of incoming nuclide i.
+		j = in[1]; 		    /// ID # of incoming nuclide j.
+		k = out[0]; 		/// ID # of outgoing nuclide k.
+		l = out[1]; 		/// ID # of outgoing nuclide l.
+        return type;
+    }
+
+    int getNuclideCounts(double i, double j, double k, double l)
+    {
+        i = s[0][type-1]; 		/// # of incoming nuclide i.
+        j = s[1][type-1]; 		/// # of incoming nuclide j.
+        k = s[2][type-1]; 		/// # of outgoing nuclide k.
+        l = s[3][type-1]; 		/// # of outgoing nuclide l.
+        return i + j + k + l;
+    }
+
     public: const void output(std::ostream& os) const
     {
         os << "name: " << name << "\n";
@@ -124,9 +145,8 @@ std::ostream& operator<<(std::ostream& os, const Reaction<real,n> & ep)
 }
 
 
-//template <class real, int n> 
-//const double Reaction<real,n>::s[4][11] = {
-const static double s[4][11] = {
+template <class real, int n> 
+const real Reaction<real,n>::reaction_type[4][11] = {
     {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2},
     {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0},
     {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2},
@@ -134,9 +154,8 @@ const static double s[4][11] = {
 };
 
 
-//template <class real, int n> 
-//const double Reaction<real,n>::reaction_data[88][8] = {
-const static double reaction_data[88][8] = {
+template <class real, int n> 
+const real Reaction<real,n>::reaction_data[88][8] = {
     {1,	    1,	1,	0,	0,	2,	0,  	0},
     {2,	    1,	4,	0,	0,	5,	0,  	0},
     {3,	    4,	10,	0,	0,	6,	0,  	0},
