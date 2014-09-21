@@ -113,17 +113,16 @@ class Reaction
 
     int getNuclideCounts(double i, double j, double k, double l)
     {
-        i = s[0][type-1]; 		/// # of incoming nuclide i.
-        j = s[1][type-1]; 		/// # of incoming nuclide j.
-        k = s[2][type-1]; 		/// # of outgoing nuclide k.
-        l = s[3][type-1]; 		/// # of outgoing nuclide l.
+        i = reaction_type[0][type-1]; 		/// # of incoming nuclide i.
+        j = reaction_type[1][type-1]; 		/// # of incoming nuclide j.
+        k = reaction_type[2][type-1]; 		/// # of outgoing nuclide k.
+        l = reaction_type[3][type-1]; 		/// # of outgoing nuclide l.
         return i + j + k + l;
     }
 
     public: const void output(std::ostream& os) const
     {
         os << "name: " << name << "\n";
-        os << "type: " << type << "\n";
         os << "type: " << type << "\n";
         os << "in: ";
         for (int i = 0; i < n; i++)
