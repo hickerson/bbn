@@ -2509,7 +2509,7 @@ void bbn::common::sol(
 		int l = reaction.out[1]; 		/// ID # of outgoing nuclide l.
         */
         int i,j,k,l;
-        int type = reaction.getNuclideIndcies(i,j,k,l); /// Type of reaction.
+        int type = reaction.getNuclideIndicies(i,j,k,l); /// Type of reaction.
 
 		//Reaction
 		if ((type != 0) && (i <= isize) && (l <= isize)) {

@@ -14,17 +14,17 @@ using namespace std;
  * Created: Sep 13, 2014
  * 
  * Template parameters:
- *      real: the mathematical type to represent a number.
+ *      real: the mathematical type to represent a real number.
  *      n:    maximum number of nuclide types in or out of the reaction.
  */
 template <class real, int n> 
 class Reaction
 {
-    const static double reaction_data[88][8];
-    const static double reaction_type[4][11];
+    const static real reaction_data[88][8];
+    const static real reaction_type[4][11];
 
     public: 
-        string name;    /// Reaction name;
+        string name;    /// Reaction name.
         int type;       /// Reaction type.
         int in[n];      /// Incoming nuclide types.
         int out[n];     /// Outgoing nuclide types.
