@@ -1,12 +1,16 @@
-#ifndef BBN_CMN_HPP
-#define BBN_CMN_HPP
+#ifndef __BIGBANGSIMULATOR_HPP__
+#define __BIGBANGSIMULATOR_HPP__
 
 #include <fem.hpp> // Fortran EMulation library of fable module
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <vector>
 
 #include "EvolutionParameters.hpp"
+//#include "NuclearParameters.hpp"
+#include "CosmologicalModel.hpp"
+#include "Reaction.hpp"
 
 namespace bbn {
 
@@ -75,6 +79,21 @@ namespace bbn {
 		{}
 	};
 
+/*
+    class ModelParameters
+    {
+      public:
+		double g;
+		double tau;
+		double xnu;
+
+      private:
+		double _c[3+1];
+		double _cosmo;
+		double _xi[3+1];
+    }
+
+    
 	struct common_modpr0
 	{
 		//arr<double> c0;
@@ -98,9 +117,10 @@ namespace bbn {
 
 	struct common_modpr
 	{
-		double g;
-		double tau;
-		double xnu;
+		//double g;
+		//double tau;
+		//double xnu;
+
 		//arr<double> c;
 		double c[3+1];
 		double cosmo;
@@ -115,7 +135,10 @@ namespace bbn {
 			cosmo(0)//,
 			//xi(dimension(3), fem::fill0)
 		{}
+
+	    // TODO public: double & Y(const unsigned index)
 	};
+    */
 
 	/*
 	   struct common_recpr0
@@ -134,6 +157,7 @@ const int common_recpr0::nrec;
 #endif
 	 */
 
+/*
 	struct common_recpr
 	{
 		static const int nrec = 88;
@@ -156,6 +180,7 @@ const int common_recpr0::nrec;
 			q9(dimension(nrec), fem::fill0)
 		{}
 	};
+    */
 
 	/*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
@@ -163,7 +188,7 @@ const int common_recpr::nrec;
 #endif
 	 */
 
-#if 0
+/*
 	struct common_evolp1
 	{
 		static const int nnuc = 26;
@@ -253,8 +278,7 @@ const int common_recpr::nrec;
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 	const int common_evolp3::nnuc;
 #endif
-
-#endif
+*/
 
 
 	struct common_ttime
@@ -433,7 +457,7 @@ const int common_nucdat::nnuc;
 	{
 		double T9mev;
 		double tnmev;
-		double tnu;
+		double Tnu;
 		double cnorm;
 		double rhonu;
 		int nu;
@@ -441,7 +465,7 @@ const int common_nucdat::nnuc;
 		common_nupar() :
 			T9mev(0),
 			tnmev(0),
-			tnu(0),
+			Tnu(0),
 			cnorm(0),
 			rhonu(0),
 			nu(0)
@@ -487,10 +511,10 @@ const int common_nucdat::nnuc;
 		common_compr,
 		common_varpr0,
 		common_varpr,
-		common_modpr0,
-		common_modpr,
+		//common_modpr0,
+		//common_modpr,
 		//common_recpr0,
-		common_recpr,
+		//common_recpr,
 		//common_evolp1,
 		//common_evolp2,
 		//common_evolp3,
@@ -510,16 +534,35 @@ const int common_nucdat::nnuc;
 	{
 		static const int nrec = 88;
 		static const int nnuc = 26;
+		int Nreactions = 88;
+		int Nnuclide = 26;
+        
 		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 		//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 		//static const int sk[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 		//static const int sl[] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 
-		// TODO put in a subclass.
+		// TODO put in Nuclide
+        //vector< Nuclide<double> > nuclides(nnuc+1);
 		static const double am[nnuc+1];
 		static const double zm[nnuc+1];
 		static const double dm[nnuc+1];
-		static const double reacpr[nrec][8];
+
+		// TODO put in a subclass?
+		double a[nnuc+1][nnuc+1];
+		double b[nnuc+1];
+		//double yx[nnuc+1];
+		/*
+        boost::numeric::ublas::matrix<double> a(nnuc,nnuc);
+        boost::numeric::ublas::vector<double> b(nnu);
+        boost::numeric::ublas::vector<double> y(nnuc);
+        *//*
+        using namespace boost::numeric::ublas {
+            matrix<double> a(nnuc,nnuc);
+            vector<double> b(nnu);
+            vector<double> y(nnuc);
+        }
+		*/
 
 		//arr<double> f;
 		//arr<double> r;
@@ -528,20 +571,18 @@ const int common_nucdat::nnuc;
 		//arr<double> yx;
 		double f[nrec+1];
 		double r[nrec+1];
+        Reaction<double,2> reactions[nrec+1];
+        //vector< Reaction<double,2> > reactions(nrec+1);
+        //vector<double> f(nrec+1);
+        //vector<double> r(nrec+1);
+		static const double reacpr[nrec][8];
 
-		// TODO put in a subclass.
-		double a[nnuc+1][nnuc+1];
-		double b[nnuc+1];
-		//double yx[nnuc+1];
 
+		void qvary(int, double);        // TODO remove?
 
-		/*
-		   boost::numeric::ublas::matrix<double> a;
-		   boost::numeric::ublas::vector<double> b;
-		   boost::numeric::ublas::vector<double> yx;
-		 */
-
-		void qvary(int, double);
+	private:
+		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
+        CosmologicalModel<double> M, M0, dM;
 
 	public: 
 		common();
@@ -594,20 +635,106 @@ const int common_nucdat::nnuc;
 		double getBesselM(double);
 		double getBesselN(double);
 
-	private:
-		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
 
-		double& y(unsigned index) { return U.Y[index]; }
-		double& y0(unsigned index) { return U.Y[index]; }
-		double& dy(unsigned index) { return U.Y[index]; }
-		double& dydt(unsigned index) { return U.Y[index]; }
+        bool isNuclideIndex(int index) {
+            if (index > 0 and index <= nnuc)
+                return true;
+            exit(1);
+            return false;
+        }
+		double& y(unsigned index) { 
+            isNuclideIndex(index);
+            return U.Y(index); 
+        }
+		double& y0(unsigned index) { 
+            isNuclideIndex(index);
+            return U0.Y(index); 
+        }
+		double& dy(unsigned index) { 
+            isNuclideIndex(index);
+            return dU.Y(index); 
+        }
+		double& dydt(unsigned index) { 
+            isNuclideIndex(index);
+            return dUdt.Y(index); 
+        }
+		double& dydt0(unsigned index) { 
+            isNuclideIndex(index);
+            return dUdt0.Y(index); 
+        }
 
-		double& v(unsigned index) { return index < 4? U.V[index] : U.Y[index-3]; }
-		double& v0(unsigned index) { return index < 4? U0.V[index] : U0.Y[index-3]; }
-		double& dv(unsigned index) { return index < 4? dU.V[index] : dU.Y[index-3]; }
-		double& dvdt(unsigned index) { return index < 4? dUdt.V[index] : dUdt.Y[index-3]; }
-		double& dvdt0(unsigned index) { return index < 4? dUdt0.V[index] : dUdt0.Y[index-3]; }
+		double y(unsigned index) const { 
+            isNuclideIndex(index);
+            return U.Y(index); 
+        }
+		double y0(unsigned index) const { 
+            isNuclideIndex(index);
+            return U0.Y(index); 
+        }
+		double dy(unsigned index) const { 
+            isNuclideIndex(index);
+            return dU.Y(index); 
+        }
+		double dydt(unsigned index) const { 
+            isNuclideIndex(index);
+            return dUdt.Y(index); 
+        }
+		double dydt0(unsigned index) const { 
+            isNuclideIndex(index);
+            return dUdt0.Y(index); 
+        }
+
+
+        bool isVIndex(int index) {
+            if (index > 0 and index <= nnuc + 3)
+                return true;
+            exit(1);
+            return false;
+        }
+		double& v(unsigned index) { 
+            isVIndex(index);
+            return index < 4? U.V(index) : U.Y(index-3); 
+        }
+		double& v0(unsigned index) { 
+            isVIndex(index);
+            return index < 4? U0.V(index) : U0.Y(index-3); 
+        }
+		double& dv(unsigned index) { 
+            isVIndex(index);
+            return index < 4? dU.V(index) : dU.Y(index-3); 
+        }
+		double& dvdt(unsigned index) { 
+            isVIndex(index);
+            return index < 4? dUdt.V(index) : dUdt.Y(index-3); 
+        }
+		double& dvdt0(unsigned index) { 
+            isVIndex(index);
+            return index < 4? dUdt0.V(index) : dUdt0.Y(index-3); 
+        }
+
+        public: void output(std::ostream& os) const
+        {
+            os << "Current state (U):\n"; 
+            os << U << "\n";
+            os << "Initial state (U0):\n"; 
+            os << U0 << "\n";
+            os << "Differential (dU):\n"; 
+            os << dU << "\n";
+            os << "Time derivative (dUdt):\n"; 
+            os << dUdt << "\n";
+            os << "Initial time derivative (dUdt0):\n"; 
+            os << dUdt0 << "\n";
+
+            return os;
+        }
 	};
+
+
+    std::ostream& operator<<(std::ostream& os, const common & BBN)
+    {
+        BBN.output(os);
+        return os;
+    }
 
 	const double common::am[26+1] = {
 		NOT_USED,
@@ -632,18 +759,26 @@ const int common_nucdat::nnuc;
 		.003070f, -.005085f
 	};
 
+/*
+	const double common::s[4][11] = {
+        {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2},
+	    {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0},
+	    {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2},
+	    {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1}
+    };
+*/
 	const double common::reacpr[88][8] = {
-		{1,	1,	1,	0,	0,	2,	0,	0},
-		{2,	1,	4,	0,	0,	5,	0,	0},
-		{3,	4,	10,	0,	0,	6,	0,	0},
-		{4,	1,	16,	0,	0,	17,	0,	0},
-		{5,	1,	21,	0,	0,	22,	0,	0},
-		{6,	4,	11,	0,	0,	6,	0,	0},
-		{7,	1,	15,	0,	0,	14,	0,	0},
-		{8,	1,	18,	0,	0,	17,	0,	0},
-		{9,	1,	20,	0,	0,	19,	0,	0},
-		{10,	1,	23,	0,	0,	22,	0,	0},
-		{11,	1,	25,	0,	0,	24,	0,	0},
+		{1,	    1,	1,	0,	0,	2,	0,  	0},
+		{2,	    1,	4,	0,	0,	5,	0,  	0},
+		{3,	    4,	10,	0,	0,	6,	0,  	0},
+		{4,	    1,	16,	0,	0,	17,	0,  	0},
+		{5,	    1,	21,	0,	0,	22,	0,  	0},
+		{6,	    4,	11,	0,	0,	6,	0,  	0},
+		{7,	    1,	15,	0,	0,	14,	0,  	0},
+		{8,	    1,	18,	0,	0,	17,	0,  	0},
+		{9,	    1,	20,	0,	0,	19,	0,  	0},
+		{10,	1,	23,	0,	0,	22,	0,  	0},
+		{11,	1,	25,	0,	0,	24,	0,	    0},
 		{12,	2,	2,	1,	0,	3,	0.471,	25.82},
 		{13,	2,	3,	1,	0,	4,	1.63,	72.62},
 		{14,	2,	5,	1,	0,	6,	2.61,	238.81},

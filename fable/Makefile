@@ -29,8 +29,8 @@ LIBS = -lm $(GSLLIBS)
 # sources
 #
 MAIN = bbn
-SRCS = bbn.cpp EvolutionParameters.cpp
-INCS = BigBangModel.hpp EvolutionParameters.hpp
+SRCS = bbn.cpp EvolutionParameters.cpp CosmologicalModel.cpp NuclearParameters.cpp Reaction.cpp
+INCS = BigBangSimulator.hpp EvolutionParameters.cpp CosmologicalModel.hpp NuclearParameters.hpp Reaction.hpp
 OBJS = $(SRCS:.cpp=.o)
 
 
@@ -38,10 +38,9 @@ OBJS = $(SRCS:.cpp=.o)
 #
 # flags
 #
-DEBUG = -g -Wall
+DEBUG = -g -O1
 CFLAGS = $(DEBUG) -std=c++11 -fpermissive
 IFLAGS = -Ifable_sources/fable -I/usr/include/gsl
-LFLAGS = 
 
 
 #-------------------------------------------------------------------

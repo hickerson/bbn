@@ -1,23 +1,23 @@
-#ifndef __EVOLUTIONPARAMETERS_HH__
-#define __EVOLUTIONPARAMETERS_HH__
+#ifndef __NUCLEARPARAMETERS_HH__
+#define __NUCLEARPARAMETERS_HH__
 
 #include <string>
 #include <iostream>
 #include <ostream>
 
 
-static const double NOT_USED = -5555555.5555555;
+//static const double NOT_USED = -5555555.5555555;
 
 //using namespace std;
 
 /**
- * EvolutionParameters
+ * NuclearParameters
  *
  * Author: Kevin Peter Hickerson
- * Created: Sun Apr 20 17:11:14 PDT 2014
+ * Created: Sep 12, 2014
  */
 template <class real, int n> 
-class EvolutionParameters
+class NuclearParameters
 {
 	//public: static const double Ydefault = 0;
 	public: static const unsigned nnuc = n;
@@ -34,13 +34,13 @@ class EvolutionParameters
 			real _V[nvar-nnuc+1]; 
 			real _Y[nnuc+1];        // abundances in mass fraction
 
-	public: EvolutionParameters(): 
+	public: NuclearParameters(): 
 			T9(0),
 			hv(0),
 			phie(0)
 			//Y(&(v[4]))
 	{
-		//verbose("Default constructor for EvolutionParameters");
+		//verbose("Default constructor for NuclearParameters");
 		for (int i = 1; i <= 3; i++)
 			;//_V[i] = 0;
 		for (int i = 1; i <= nnuc; i++)
@@ -48,13 +48,13 @@ class EvolutionParameters
 		printf("Default: Y address is: %p\n", _Y);
 	}
 
-	public: EvolutionParameters(const EvolutionParameters & copy): 
+	public: NuclearParameters(const NuclearParameters & copy): 
 			T9(copy.T9),
 			hv(copy.hv),
 			phie(copy.phie)
 			//Y(&(v[4]))
 	{
-		//verbose("Copy constructor for EvolutionParameters");
+		//verbose("Copy constructor for NuclearParameters");
 		for (int i = 1; i <= 3; i++)
 			_V[i] = copy._V[i];
 		for (int i = 1; i <= nnuc; i++)
@@ -62,15 +62,15 @@ class EvolutionParameters
 		printf("Copy: Y address is: %p\n", _Y);
 	}
 
-	public:~EvolutionParameters()				/// Does nothing.
+	public:~NuclearParameters()				/// Does nothing.
 	{
-		//verbose("Empty destructor for EvolutionParameters");
-		printf("Empty destructor for EvolutionParameters\n");
+		//verbose("Empty destructor for NuclearParameters");
+		printf("Empty destructor for NuclearParameters\n");
 	}
 	
-	public: EvolutionParameters & operator = (const EvolutionParameters & other)
+	public: NuclearParameters & operator = (const NuclearParameters & other)
     {
-		//verbose("Copy operator for EvolutionParameters");
+		//verbose("Copy operator for NuclearParameters");
         if (this != &other) // protect against invalid self-assignment
         {
 			T9 = other.T9;
@@ -89,7 +89,7 @@ class EvolutionParameters
     {
         if (index <= 0 or index > nnuc)
         {
-            std::cout << "Error in EvolutionParameters abundances.\n";
+            std::cout << "Error in NuclearParameters abundances.\n";
             std::cout << "Index out of bounds. (index = " << index << ")\n";
             exit(1);
         }
@@ -101,7 +101,7 @@ class EvolutionParameters
         if (index > 0 and index <= 3)
             return _V[index];
 
-        std::cout << "Error in EvolutionParameters temporaries.\n";
+        std::cout << "Error in NuclearParameters temporaries.\n";
         std::cout << "Index out of bounds. (index = " << index << ")\n";
         exit(1);
     }
@@ -123,7 +123,7 @@ class EvolutionParameters
 };
 
 template <class real, int n> 
-std::ostream& operator<<(std::ostream& os, const EvolutionParameters<real,n> & ep)
+std::ostream& operator<<(std::ostream& os, const NuclearParameters<real,n> & ep)
 {
     ep.output(os);
     return os;

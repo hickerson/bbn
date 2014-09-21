@@ -1,6 +1,6 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
-#include "BigBangModel.hpp"
+#include "BigBangSimulator.hpp"
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <iostream>
@@ -15,7 +15,7 @@ using namespace boost::math;
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::help()
+void bbn::common::help()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -254,19 +254,19 @@ statement_240:
 	read(ir, format_1001), inum;
 	if (inum == 1) {
 		write(iw,
-				"(/,'II.  Request output on screen.         										',/,"
-				"'   Instead of waiting to print out an output file, the user can immediately 	',/,"
-				"'   access the results of the latest run by requesting the output on the     	',/,"
-				"'   screen.  There are four screens on each of which are displayed the       	',/,"
-				"'   computational and model parameters and the temperature:                  	',/,"
-				"'    A. Abundances for d, t, He3, He4, and Li7                               	',/,"
-				"'       (He4 in mass fraction, rest as a ratio with the p abundance)         	',/,"
-				"'    B. Abundances for n, p, Li6, Be7, and Li8 & up                          	',/,"
-				"'       (p in mass fraction, rest as a ratio with the p abundance)           	',/,"
-				"'    C. Energy densities for photons, electrons, electron neutrinos, & baryons 	',/,"
-				"'    D. Time, time interval, chemical potential of the electron,             	',/,"
-				"'       baryon-to-photon ratio, and expansion rate of the universe           	',11(/),"
-				"'(Enter <RETURN> to go back to help menu): ',$)");
+            "(/,'II.  Request output on screen.         										',/,"
+            "'   Instead of waiting to print out an output file, the user can immediately 	',/,"
+            "'   access the results of the latest run by requesting the output on the     	',/,"
+            "'   screen.  There are four screens on each of which are displayed the       	',/,"
+            "'   computational and model parameters and the temperature:                  	',/,"
+            "'    A. Abundances for d, t, He3, He4, and Li7                               	',/,"
+            "'       (He4 in mass fraction, rest as a ratio with the p abundance)         	',/,"
+            "'    B. Abundances for n, p, Li6, Be7, and Li8 & up                          	',/,"
+            "'       (p in mass fraction, rest as a ratio with the p abundance)           	',/,"
+            "'    C. Energy densities for photons, electrons, electron neutrinos, & baryons 	',/,"
+            "'    D. Time, time interval, chemical potential of the electron,             	',/,"
+            "'       baryon-to-photon ratio, and expansion rate of the universe           	',11(/),"
+            "'(Enter <RETURN> to go back to help menu): ',$)");
 		read(ir, star);
 		goto statement_300;
 	}
@@ -280,48 +280,48 @@ statement_240:
 	//General method of computation sectio
 statement_250:
 	write(iw,
-			"(/,22x,"
-			"'GENERAL METHOD OF COMPUTATION',/,22x,"
-			"'------- ------ -- -----------',2(/),"
-			"'I. Time evolution algorithm.            ',/,"
-			"'   The program utilizes a 2-point Runge-Kutta scheme (located in subroutine     ',/,"
-			"'   DRIVER) to time-evolve the temperature, the quantity hv (the ratio of the    ',/,"
-			"'   baryon density to T**3), the chemical potential of the electron, and the     ',/,"
-			"'   nuclide abundances.  In the 2-point Runge-Kutta routine, a variable v at time',/,"
-			"'   t0 (= v0) is evolved to a time t1 by adding to v0 the average of the         ',/,"
-			"'   derivatives evaluated at t0 and at t1 multiplied by dt:                      ',/,"
-			"'       v1 = v0 + 0.5(dvdt(t0)+dvdt(t1)) ',/,"
-			"'   where dvdt(t1) is gotten by first finding v1'' = v0 + dvdt(t0).  The         ',/,"
-			"'   derivatives of the nuclide abundances are first computed and these are used  ',/,"
-			"'   to find the derivatives of T9, hv, and phie (this is done in subroutine      ',/,"
-			"'   DERIVS).  To compute the time derivatives of the nuclide abundances, a matrix',/,"
-			"'   equation is set up (in subroutine SOL) and is solved (in subroutine EQSLIN)  ',/,"
-			"'   by gaussian elimination utilizing implicit differentiation.                  ',6(/),"
-			"'(Enter 1 to continue, <RETURN> to end): ',$)");
+        "(/,22x,"
+        "'GENERAL METHOD OF COMPUTATION',/,22x,"
+        "'------- ------ -- -----------',2(/),"
+        "'I. Time evolution algorithm.            ',/,"
+        "'   The program utilizes a 2-point Runge-Kutta scheme (located in subroutine     ',/,"
+        "'   DRIVER) to time-evolve the temperature, the quantity hv (the ratio of the    ',/,"
+        "'   baryon density to T**3), the chemical potential of the electron, and the     ',/,"
+        "'   nuclide abundances.  In the 2-point Runge-Kutta routine, a variable v at time',/,"
+        "'   t0 (= v0) is evolved to a time t1 by adding to v0 the average of the         ',/,"
+        "'   derivatives evaluated at t0 and at t1 multiplied by dt:                      ',/,"
+        "'       v1 = v0 + 0.5(dvdt(t0)+dvdt(t1)) ',/,"
+        "'   where dvdt(t1) is gotten by first finding v1'' = v0 + dvdt(t0).  The         ',/,"
+        "'   derivatives of the nuclide abundances are first computed and these are used  ',/,"
+        "'   to find the derivatives of T9, hv, and phie (this is done in subroutine      ',/,"
+        "'   DERIVS).  To compute the time derivatives of the nuclide abundances, a matrix',/,"
+        "'   equation is set up (in subroutine SOL) and is solved (in subroutine EQSLIN)  ',/,"
+        "'   by gaussian elimination utilizing implicit differentiation.                  ',6(/),"
+        "'(Enter 1 to continue, <RETURN> to end): ',$)");
 	read(ir, format_1001), inum;
 	if (inum == 1) {
 		write(iw,
-				"(/,"
-				"'II. Hierarchy of Subroutines.   ',/,"
-				"'        NUC123    Main program (main menu)    ',/,"
-				"'        HELP      Help option                 ',/,"
-				"'        SETCOM    Set computational parameters',/,"
-				"'        SETMOD    Set model parameters        ',/,"
-				"'        RUN       Run computation code        ',/,"
-				"'        DRIVER    Main routine (Runge-Kutta loop)    ',/,"
-				"'        START     Initialization routine      ',/,"
-				"'        RATE0     Computes weak decay rates   ',/,"
-				"'        DERIVS    Computes time derivatives   ',/,"
-				"'        THERM     Computes energy densities   ',/,"
-				"'        BESSEL    Gives functions of Kn       ',/,"
-				"'        KNUX      Computes modified Bessel fcn Kn    ',/,"
-				"'        NUDENS    Computes neutrino energy density   ',/,"
-				"'        RATE1-4   Computes rates for reactions',/,"
-				"'        SOL       Builds A matrix for eqn dy/dt = Ay ',/,"
-				"'        EQSLIN    Solves dy/dt=Ay by gaussian elim   ',/,"
-				"'        ACCUM     Output accumulator          ',/,"
-				"'        OUTPUT    Allows user to output result',4(/),"
-				"'(Enter <RETURN> to go back to help menu): ',$)");
+            "(/,"
+            "'II. Hierarchy of Subroutines.   ',/,"
+            "'        NUC123    Main program (main menu)    ',/,"
+            "'        HELP      Help option                 ',/,"
+            "'        SETCOM    Set computational parameters',/,"
+            "'        SETMOD    Set model parameters        ',/,"
+            "'        RUN       Run computation code        ',/,"
+            "'        DRIVER    Main routine (Runge-Kutta loop)    ',/,"
+            "'        START     Initialization routine      ',/,"
+            "'        RATE0     Computes weak decay rates   ',/,"
+            "'        DERIVS    Computes time derivatives   ',/,"
+            "'        THERM     Computes energy densities   ',/,"
+            "'        BESSEL    Gives functions of Kn       ',/,"
+            "'        KNUX      Computes modified Bessel fcn Kn    ',/,"
+            "'        NUDENS    Computes neutrino energy density   ',/,"
+            "'        RATE1-4   Computes rates for reactions',/,"
+            "'        SOL       Builds A matrix for eqn dy/dt = Ay ',/,"
+            "'        EQSLIN    Solves dy/dt=Ay by gaussian elim   ',/,"
+            "'        ACCUM     Output accumulator          ',/,"
+            "'        OUTPUT    Allows user to output result',4(/),"
+            "'(Enter <RETURN> to go back to help menu): ',$)");
 		read(ir, star);
 		goto statement_300;
 	}
@@ -335,59 +335,59 @@ statement_250:
 	//Using the interface subroutine secti
 statement_260:
 	write(iw,
-			"(/,22x,"
-			"'USING THE INTERFACE SUBROUTINE',/,22x,"
-			"'----- --- --------- ----------',2(/),"
-			"'I. Purpose.                             ',/,"
-			"'   The interface subroutine CHECK is designed to be an outlet of the program    ',/,"
-			"'   into which alterations can be easily plugged.  Programs are normally modified',/,"
-			"'   by searching through the program, identifying the appropriate areas for      ',/,"
-			"'   alterations, and interspersing new commands while deleting some old ones.    ',/,"
-			"'   This process can get tricky unless one actively documents the alterations:   ',/,"
-			"'   one might lose track of all of the modifications and deletions.  Thus, it is ',/,"
-			"'   worthwhile to put most if not all of the necessary changes into one          ',/,"
-			"'   subroutine which is to be called from strategic locations in the main        ',/,"
-			"'   program.  Furthermore, by putting changes into one small subroutine, one need',/,"
-			"'   only to compile the subroutine CHECK each time instead of the entire nucleo- ',/,"
-			"'   synthesis code.                      ',8(/),"
-			"'(Enter 1 to continue, <RETURN> to end): ',$)");
+        "(/,22x,"
+        "'USING THE INTERFACE SUBROUTINE',/,22x,"
+        "'----- --- --------- ----------',2(/),"
+        "'I. Purpose.                             ',/,"
+        "'   The interface subroutine CHECK is designed to be an outlet of the program    ',/,"
+        "'   into which alterations can be easily plugged.  Programs are normally modified',/,"
+        "'   by searching through the program, identifying the appropriate areas for      ',/,"
+        "'   alterations, and interspersing new commands while deleting some old ones.    ',/,"
+        "'   This process can get tricky unless one actively documents the alterations:   ',/,"
+        "'   one might lose track of all of the modifications and deletions.  Thus, it is ',/,"
+        "'   worthwhile to put most if not all of the necessary changes into one          ',/,"
+        "'   subroutine which is to be called from strategic locations in the main        ',/,"
+        "'   program.  Furthermore, by putting changes into one small subroutine, one need',/,"
+        "'   only to compile the subroutine CHECK each time instead of the entire nucleo- ',/,"
+        "'   synthesis code.                      ',8(/),"
+        "'(Enter 1 to continue, <RETURN> to end): ',$)");
 	read(ir, format_1001), inum;
 	if (inum == 1) {
 		write(iw,
-				"(/,"
-				"'II. Description.                        ',/,"
-				"'   Subroutine CHECK is an empty subroutine with a large COMMON area, giving the ',/,"
-				"'   user ready access to all of the important variables in the computations.  The',/,"
-				"'   routine is called from various locations in the main program and the location',/,"
-				"'   spot in the program is labeled by the flag \"itime\".  The set call locations  ',/,"
-				"'   are given below:                     ',/,"
-				"'    A. itime = 1 (NUC123, very beginning of program run)                        ',/,"
-				"'       (appropriate for opening files, initializing variables)                  ',/,"
-				"'    B. itime = 2 (NUC123, right before going into the RUN section)              ',/,"
-				"'    C. itime = 3 (RUN, right before going into DRIVER to do the computations)   ',/,"
-				"'    D. itime = 4 (DRIVER, in 1st R-K loop after computing derivatives in DERIVS)',/,"
-				"'    E. itime = 7 (DRIVER, in 2nd R-K loop after computing derivatives in DERIVS)',/,"
-				"'    F. itime = 8 (RUN, right after coming back from DRIVER)                     ',/,"
-				"'    G. itime = 9 (NUC123, right after coming back from the RUN section)         ',/,"
-				"'    H. itime =10 (NUC123, very end of program run)                              ',/,"
-				"'       (appropriate for closing files)  ',/,"
-				"'   The difference between the (2,9) pairing and the (3,8) pairing is that for a ',/,"
-				"'   multiple run, the (3,8) pairing would be called before and after every run   ',/,"
-				"'   but the (2,9) pairing would be called before and after the entire sequence.  ',4(/),"
-				"'(Enter 1 to continue, <RETURN> to end): ',$)");
+            "(/,"
+            "'II. Description.                        ',/,"
+            "'   Subroutine CHECK is an empty subroutine with a large COMMON area, giving the ',/,"
+            "'   user ready access to all of the important variables in the computations.  The',/,"
+            "'   routine is called from various locations in the main program and the location',/,"
+            "'   spot in the program is labeled by the flag \"itime\".  The set call locations  ',/,"
+            "'   are given below:                     ',/,"
+            "'    A. itime = 1 (NUC123, very beginning of program run)                        ',/,"
+            "'       (appropriate for opening files, initializing variables)                  ',/,"
+            "'    B. itime = 2 (NUC123, right before going into the RUN section)              ',/,"
+            "'    C. itime = 3 (RUN, right before going into DRIVER to do the computations)   ',/,"
+            "'    D. itime = 4 (DRIVER, in 1st R-K loop after computing derivatives in DERIVS)',/,"
+            "'    E. itime = 7 (DRIVER, in 2nd R-K loop after computing derivatives in DERIVS)',/,"
+            "'    F. itime = 8 (RUN, right after coming back from DRIVER)                     ',/,"
+            "'    G. itime = 9 (NUC123, right after coming back from the RUN section)         ',/,"
+            "'    H. itime =10 (NUC123, very end of program run)                              ',/,"
+            "'       (appropriate for closing files)  ',/,"
+            "'   The difference between the (2,9) pairing and the (3,8) pairing is that for a ',/,"
+            "'   multiple run, the (3,8) pairing would be called before and after every run   ',/,"
+            "'   but the (2,9) pairing would be called before and after the entire sequence.  ',4(/),"
+            "'(Enter 1 to continue, <RETURN> to end): ',$)");
 		read(ir, format_1001), inum;
 		if (inum == 1) {
 			write(iw,
-					"(/,"
-					"'III. Implementation.                   ',/,"
-					"'   The additional program statements are needed in the subroutine CHECK.  If a',/,"
-					"'   particular command is to be executed when the computer is at a certain     ',/,"
-					"'   location in the program -- say labeled by itime = 8 -- then in CHECK, one  ',/,"
-					"'   must place the command under the statement, IF (itime.eq.8)....  The user  ',/,"
-					"'   is at leisure to place his own location indicators (5,6) and CALL CHECK    ',/,"
-					"'   statements anywhere in the program as long as there is a COMMON /checkcb/    ',/,"
-					"'   statement in the particular subroutine to carry the value of itime along.  ',15(/),"
-					"'(Enter <RETURN> to go back to help menu): ',$)");
+                "(/,"
+                "'III. Implementation.                   ',/,"
+                "'   The additional program statements are needed in the subroutine CHECK.  If a',/,"
+                "'   particular command is to be executed when the computer is at a certain     ',/,"
+                "'   location in the program -- say labeled by itime = 8 -- then in CHECK, one  ',/,"
+                "'   must place the command under the statement, IF (itime.eq.8)....  The user  ',/,"
+                "'   is at leisure to place his own location indicators (5,6) and CALL CHECK    ',/,"
+                "'   statements anywhere in the program as long as there is a COMMON /checkcb/    ',/,"
+                "'   statement in the particular subroutine to carry the value of itime along.  ',15(/),"
+                "'(Enter <RETURN> to go back to help menu): ',$)");
 			read(ir, star);
 			goto statement_300;
 		}
@@ -417,7 +417,7 @@ statement_300:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::setcom()
+void bbn::common::setcom()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -477,19 +477,19 @@ void common::setcom()
 statement_100:
 	//..........DISPLAY RESET SELECTIONS.
 	write(iw,
-			"(8(/),21x,"
-			"'SET COMPUTATION PARAMETERS SELECTION',/,21x,"
-			"'--- ----------- ---------- ---------',/,/,10x,"
-			"' 1. CHANGE TIME-STEP LIMITING CONSTANT 1  FROM ',f5.3,/,10x,"
-			"' 2. CHANGE TIME-STEP LIMITING CONSTANT 2  FROM ',f5.3,/,10x,"
-			"' 3. CHANGE INITIAL TIME-STEP              FROM ',1p,e8.2,' SECONDS',/,10x,"
-			"' 4. CHANGE INITIAL TEMPERATURE            FROM ',1p,e8.2,' (10**9 K)',/,10x,"
-			"' 5. CHANGE FINAL TEMPERATURE              FROM ',1p,e8.2,' (10**9 K)',/,10x,"
-			"' 6. CHANGE SMALLEST ABUNDANCES ALLOWED    FROM ',1p,e8.2,/,10x,"
-			"' 7. CHANGE ACCUMULATION INCREMENT         FROM ',1p,e8.2,' ITERATIONS',/,10x,"
-			"' 8. RESET ALL TO DEFAULT VALUES',/,10x,"
-			"' 9. EXIT',5(/),10x,"
-			"'Enter selection (1-9): ',$)"),
+        "(8(/),21x,"
+        "'SET COMPUTATION PARAMETERS SELECTION',/,21x,"
+        "'--- ----------- ---------- ---------',/,/,10x,"
+        "' 1. CHANGE TIME-STEP LIMITING CONSTANT 1  FROM ',f5.3,/,10x,"
+        "' 2. CHANGE TIME-STEP LIMITING CONSTANT 2  FROM ',f5.3,/,10x,"
+        "' 3. CHANGE INITIAL TIME-STEP              FROM ',1p,e8.2,' SECONDS',/,10x,"
+        "' 4. CHANGE INITIAL TEMPERATURE            FROM ',1p,e8.2,' (10**9 K)',/,10x,"
+        "' 5. CHANGE FINAL TEMPERATURE              FROM ',1p,e8.2,' (10**9 K)',/,10x,"
+        "' 6. CHANGE SMALLEST ABUNDANCES ALLOWED    FROM ',1p,e8.2,/,10x,"
+        "' 7. CHANGE ACCUMULATION INCREMENT         FROM ',1p,e8.2,' ITERATIONS',/,10x,"
+        "' 8. RESET ALL TO DEFAULT VALUES',/,10x,"
+        "' 9. EXIT',5(/),10x,"
+        "'Enter selection (1-9): ',$)"),
 		cy, ct, dt1, T9i, T9f, ytmin, fem::ffloat(inc);
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i1)"), inum;
@@ -554,9 +554,9 @@ statement_280:
 	//Time step.
 	dt1 = dt0;
 	//Initial temperature.
-	T9i = T9i0;
+	T9i = M0.T9i;
 	//Final temperature.
-	T9f = T9f0;
+	T9f = M0.T9f;
 	//Smallest abundances allowed.
 	ytmin = ytmin0;
 	//Accumulation increment.
@@ -579,7 +579,7 @@ statement_400:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::setmod()
+void bbn::common::setmod()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -612,9 +612,9 @@ void common::setmod()
 	//Default neutrino degeneracy parameter
 	//
 	//----------EARLY UNIVERSE MODEL PARAMETERS.
-	//c[1] is variation of gravitational con
-	//c[2] is neutron lifetime (sec).
-	//c[3] is number of neutrino species.
+	//dG is variation of gravitational con
+	//tau is neutron lifetime (sec).
+	//Nnu is number of neutrino species.
 	//Cosmological constant.
 	//Neutrino degeneracy parameters.
 	//
@@ -635,19 +635,19 @@ void common::setmod()
 statement_100:
 	//..........DISPLAY RESET SELECTIONS.
 	write(iw,
-			"(8(/),24x,'SET MODEL PARAMETERS SELECTION',/,24x,"
-			"'--- ----- ---------- ---------',/,/,10x,"
-			"' 1. CHANGE GRAVITATIONAL CONSTANT         FROM ',1p,e10.3,/,10x,"
-			"' 2. CHANGE NEUTRON LIFETIME               FROM ',1p,e10.3,' SECONDS',/,10x,"
-			"' 3. CHANGE NUMBER OF NEUTRINO SPECIES     FROM ',1p,e10.3,/,10x,"
-			"' 4. CHANGE FINAL BARYON-TO-PHOTON RATIO   FROM ',1p,e10.3,/,10x,"
-			"' 5. CHANGE COSMOLOGICAL CONSTANT          FROM ',1p,e10.3,/,10x,"
-			"' 6. CHANGE XI-ELECTRON                    FROM ',1p,e10.3,/,10x,"
-			"' 7. CHANGE XI-MUON                        FROM ',1p,e10.3,/,10x,"
-			"' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
-			"' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
-			"' Enter selection (1-10): ',$)"),
-		c[1], c[2], c[3], eta1, cosmo, xi[1], xi[2], xi[3];
+        "(8(/),24x,'SET MODEL PARAMETERS SELECTION',/,24x,"
+        "'--- ----- ---------- ---------',/,/,10x,"
+        "' 1. CHANGE GRAVITATIONAL CONSTANT         FROM ',1p,e10.3,/,10x,"
+        "' 2. CHANGE NEUTRON LIFETIME               FROM ',1p,e10.3,' SECONDS',/,10x,"
+        "' 3. CHANGE NUMBER OF NEUTRINO SPECIES     FROM ',1p,e10.3,/,10x,"
+        "' 4. CHANGE FINAL BARYON-TO-PHOTON RATIO   FROM ',1p,e10.3,/,10x,"
+        "' 5. CHANGE COSMOLOGICAL CONSTANT          FROM ',1p,e10.3,/,10x,"
+        "' 6. CHANGE XI-ELECTRON                    FROM ',1p,e10.3,/,10x,"
+        "' 7. CHANGE XI-MUON                        FROM ',1p,e10.3,/,10x,"
+        "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
+        "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
+        "' Enter selection (1-10): ',$)"),
+		dM.G, M.tau, M.Nnu, M.eta, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i2)"), inum;
 	//
@@ -670,46 +670,45 @@ statement_100:
 	goto statement_300;
 	//Change gravitational constant section.
 statement_210:
-	write(iw,
-			"(' ','Enter value for variation of gravitational ','constant: ',$)");
-	read(ir, star), c[1];
+	write(iw, "(' ','Enter value for variation of gravitational ','constant: ',$)");
+	read(ir, star), dM.G;
 	goto statement_400;
 	//Change neutron lifetime section.
 statement_220:
 	write(iw, "(' ','Enter value for neutron lifetime (sec): ',$)");
-	read(ir, star), c[2];
+	read(ir, star), M.tau;
 	goto statement_400;
 	//Change number of neutrino species section.
 statement_230:
 	write(iw, "(' ','Enter value for number of neutrino species: ',$)");
-	read(ir, star), c[3];
+	read(ir, star), M.Nnu;
 	goto statement_400;
 	//Change baryon-to-photon ratio section.
 statement_240:
 	write(iw, "(' ','Enter value for baryon-to-photon ratio: ',$)");
-	read(ir, star), eta1;
+	read(ir, star), M.eta;
 	goto statement_400;
 	//Change cosmological constant section.
 statement_250:
 	write(iw, "(' ','Enter value for cosmological constant: ',$)");
-	read(ir, star), cosmo;
+	read(ir, star), M.cosmo;
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_260:
 	write(iw, "(' ','Enter value for xi electron: ',$)");
-	read(ir, star), xi[1];
+	read(ir, star), M.xi[1];
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_270:
 	write(iw, "(' ','Enter value for xi muon: ',$)");
-	read(ir, star), xi[2];
+	read(ir, star), M.xi[2];
 	goto statement_400;
 	//Change neutrino degeneracy section.
 statement_280:
 	write(iw, "(' ','Enter value for xi tauon: ',$)");
-	read(ir, star), xi[3];
-	if ((xi[3] != 0.f) && (c[3] < 3.f)) {
-		c[3] = 3.f;
+	read(ir, star), M.xi[3];
+	if ((M.xi[3] != 0) && (M.Nnu < 3)) {
+		M.Nnu = 3;
 		write(iw, "(' ','Number of neutrinos set to 3')");
 		write(iw, "(' ','Press <RETURN> to continue: ',$)");
 		read(ir, star);
@@ -717,16 +716,15 @@ statement_280:
 	goto statement_400;
 	//Reset all to default values section.
 statement_290:
-	c[1] = c0[1];
-	c[2] = c0[2];
-	c[3] = c0[3];
-	cosmo = cosmo0;
-	xi[1] = xi0[1];
-	xi[2] = xi0[2];
-	xi[3] = xi0[3];
-	eta1 = eta0;
-	write(iw,
-			"(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
+	dM.G = M0.c[1];
+	M.tau = M0.c[2];
+	M.Nnu = M0.c[3];
+	M.cosmo = M0.cosmo;
+	M.xi[1] = M0.xi[1];
+	M.xi[2] = M0.xi[2];
+	M.xi[3] = M0.xi[3];
+	M.eta = M0.eta;
+	write(iw, "(' ','All values reset to default - Press <RETURN> ','to continue: ',$)");
 	read(ir, star);
 	goto statement_400;
 	//Exit section.
@@ -759,7 +757,7 @@ statement_400:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::check()
+void bbn::common::check()
 {
 	common_write write(*this);
 	//
@@ -863,9 +861,9 @@ void common::check()
 	//Gravitational constant.
 	//Neutron lifetime (sec).
 	//Number of neutrino species.
-	//c[1] is variation of gravitational constant.
-	//c[2] is neutron half-life (min).
-	//c[3] is number of neutrino species.
+	//dG is variation of gravitational constant.
+	//tau is neutron half-life (min).
+	//Nnu is number of neutrino species.
 	//Cosmological constant.
 	//Neutrino degeneracy parameters.
 	//xi[1] is e neutrino degeneracy parameter.
@@ -964,8 +962,11 @@ void common::check()
 		xout(it,8) += xout(it,9); 				/// Add beryllium to lithium.
 		xout(it,5) += xout(it,4); 				/// Add tritium to helium-3.
 		xout(it,6) -= 0.0003f; 					/// my correction for fitted rates+coarse steps
-		write(3, "(7(e13.5))"), c[3], c[2], etaout(it), xout(it, 3),
-			xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
+		//write(3, "(7(e13.5))"), Nnu, tau, etaout(it), xout(it, 3),
+		//write(3, "(7e13.5)"), Nnu, tau, etaout(it), xout(it, 3),
+		//	xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
+		std::cout << M.Nnu <<" "<< M.tau <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "<<
+			xout(it,5) <<" "<< xout(it,6) <<" "<< xout(it,8) << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
 	}
 	//
 	//30--------CLOSE FILE-----------------------------------------------------------
@@ -1026,20 +1027,20 @@ double ex( double const& x)
 }
 
 
-double common::getBesselL(double r)
+double bbn::common::getBesselL(double r)
 {
-	double K2r = cyl_bessel_k(2,r); 			/// Irregular modified cylindrical Bessel functions.
+	double K2r = cyl_bessel_k(2,r); 		/// Irregular modified cylindrical Bessel functions.
 	return K2r/r;
 }
 
-double common::getBesselM(double r)
+double bbn::common::getBesselM(double r)
 {
 	double K3r = cyl_bessel_k(3,r);			/// Irregular modified cylindrical Bessel functions.
 	double K1r = cyl_bessel_k(1,r);			/// Irregular modified cylindrical Bessel functions.
 	return (3*K3r + K1r)/4/r;				/// (Ref ?).
 }
 
-double common::getBesselN(double r)
+double bbn::common::getBesselN(double r)
 {
 	double K4r = cyl_bessel_k(4,r);			/// Irregular modified cylindrical Bessel functions.
 	double K2r = cyl_bessel_k(2,r);			/// Irregular modified cylindrical Bessel functions.
@@ -1055,7 +1056,7 @@ double common::getBesselN(double r)
 //
 //     Default neutron lifetime 888.54 -> 885.7 (+- 0.8) - PDG 2002/3
 //
-void common::rate0()
+void bbn::common::rate0()
 {
 	//
 	//----------LINKAGES.
@@ -1129,7 +1130,7 @@ void common::rate0()
 //
 template <>
 double
-common::integrand<1>(
+bbn::common::integrand<1>(
 //common::func1(
 		double const& x)
 {
@@ -1162,14 +1163,12 @@ common::integrand<1>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	double part1 = 0; //TODO move down inside loop
-	double part2 = 0;
 	if (x <= 0)
 		return 0;
 	else {
 		// TODO don't recompute 
-		part1 = 1 / (1 + ex(-.511f * x / T9mev));
-		part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - xi[1]));
+		double part1 = 1 / (1 + ex(-.511f * x / T9mev));
+		double part2 = 1 / (1 + ex(+(x - 2.531f) * (.511f / tnmev) - M.xi[1]));
 		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), 0.5) * part1 * part2;
 	}
@@ -1181,7 +1180,7 @@ common::integrand<1>(
 //
 template <>
 double
-common::integrand<2>(
+bbn::common::integrand<2>(
 //common::func2(
 		double const& x)
 {
@@ -1219,7 +1218,7 @@ common::integrand<2>(
 	}
 	else {		// TODO remove cmn
 		double part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
-		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / tnmev) - xi[1]));
+		double part2 = 1.f / (1.f + ex(-(x + 2.531f) * (.511f / tnmev) - M.xi[1]));
 		return cnorm * x * fem::pow2((x + 2.531f)) 
 				* pow((fem::pow2(x) - 1), .5f) * part1 * part2;
 	}
@@ -1231,11 +1230,10 @@ common::integrand<2>(
 //
 template <>
 double
-common::integrand<3>(
+bbn::common::integrand<3>(
 //common::func3(
 		double const& x)
 {
-	double return_value = 0; // TODO move inside?
 	//
 	//
 	//----------LINKAGES.
@@ -1265,18 +1263,15 @@ common::integrand<3>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	double part1 = 0;
-	double part2 = 0;
 	if (x <= 1.f) {
-		return_value = 0.f;
+        return 0;
 	}
 	else {
-		part1 = 1.f / (1.f + ex(-.511f * x / T9mev));
-		part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + xi[1]));
-		return_value = cnorm * x * fem::pow2((x + 2.531f)) * pow(
+		double part1 = 1.f / (1.f + ex(-.511f * x / T9mev));
+		double part2 = 1.f / (1.f + ex(+(x + 2.531f) * (.511f / tnmev) + M.xi[1]));
+		return cnorm * x * fem::pow2((x + 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
-	return return_value;
 }
 
 
@@ -1285,11 +1280,10 @@ common::integrand<3>(
 //
 template <>
 double
-common::integrand<4>(
+bbn::common::integrand<4>(
 //common::func4(
 		double const& x)
 {
-	double return_value = 0;
 	//
 	//
 	//----------LINKAGES.
@@ -1319,19 +1313,15 @@ common::integrand<4>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	double part1 = 0;
-	double part2 = 0;
 	if (x <= 1.f) {
-		return_value = 0.f;
 		return 0;
 	}
 	else {
-		part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
-		part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + xi[1]));
-		return_value = cnorm * x * fem::pow2((x - 2.531f)) * pow(
+		double part1 = 1.f / (1.f + ex(+.511f * x / T9mev));
+		double part2 = 1.f / (1.f + ex(-(x - 2.531f) * (.511f / tnmev) + M.xi[1]));
+		return cnorm * x * fem::pow2((x - 2.531f)) * pow(
 				(fem::pow2(x) - 1), .5f) * part1 * part2;	// TODO change to sqrt.
 	}
-	return return_value;
 	// TODO test and uncomment
 	/*
 	   if (x <= 1.f) {
@@ -1353,11 +1343,10 @@ common::integrand<4>(
 //
 template <>
 double
-common::integrand<5>(
+bbn::common::integrand<5>(
 //common::func5(
 		double const& x)
 {
-	double return_value = 0;
 	//
 	//
 	//----------LINKAGES.
@@ -1387,9 +1376,7 @@ common::integrand<5>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	return_value = 1.f / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1.f + exp(x / tnu - xi[nu]));
-	return return_value;
+	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (1 + exp(x / Tnu - M.xi[nu]));
 }
 
 
@@ -1398,11 +1385,10 @@ common::integrand<5>(
 //
 template <>
 double
-common::integrand<6>(
+bbn::common::integrand<6>(
 //common::func6(
 		double const& x)
 {
-	double return_value = 0;
 	//
 	//
 	//----------LINKAGES.
@@ -1432,9 +1418,8 @@ common::integrand<6>(
 	//Exponential expression with photon t
 	//Exponential expression with neutrino
 	//
-	return_value = 1.f / (2 * fem::pow2(3.14159f)) * x*x*x / (
-			1.f + exp(x / tnu + xi[nu]));
-	return return_value;
+	return 1. / (2 * fem::pow2(3.14159f)) * x*x*x / (
+			1 + exp(x / Tnu + M.xi[nu]));
 }
 
 
@@ -1448,7 +1433,7 @@ common::integrand<6>(
 //
 template <int n>
 double
-common::xintd(
+bbn::common::xintd(
 //common::xintd(
 		double const& xlow,
 		double const& xhi,
@@ -1516,7 +1501,7 @@ common::xintd(
 			//x = cent + 0.5f * dist * u(npnt); 					/// Integration point.
 			double x = cent + 0.5 * dist * u[npnt]; 				/// Integration point.
 			//double y = func( x); 								/// Evaluate function x(1).
-			double y = integrand<n>( x); 								/// Evaluate function x(1).
+			double y = integrand<n>(x); 								/// Evaluate function x(1).
 			//sum += f * w(npnt); 								/// Add up sum.
 			sum += y * w[npnt]; 								/// Add up sum.
 		}
@@ -1532,7 +1517,7 @@ common::xintd(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate1(
+void bbn::common::rate1(
 		double const& tph)
 {
 	//
@@ -1609,27 +1594,27 @@ void common::rate1(
 	double part2 = 0;
 	double part3 = 0;
 	double part4 = 0;
-	if (xi[1] == 0) {
+	if (M.xi[1] == 0) {
 		//f(1) = thm(13) / tau; 	/// Forward rate for weak np reaction.
-		f[1] = thm(13) / tau; 	/// Forward rate for weak np reaction.
+		f[1] = thm(13) / M.tau; 	/// Forward rate for weak np reaction.
 		//r(1) = thm(14) / tau; 	/// Reverse rate for weak np reaction.
-		r[1] = thm(14) / tau; 	/// Reverse rate for weak np reaction.
+		r[1] = thm(14) / M.tau; 	/// Reverse rate for weak np reaction.
 	}
 	else {
 		//
 		//20--------COMPUTE WEAK REACTION RATES (DEGENERATE)-----------------------------
 		//
-		T9mev = tph * .086171f; //Convert photon temp to units of MeV.
-		tnmev = tnu * .086171f; //Convert neutrino temp to units of Me
+		T9mev = tph * .086171f; //Convert photon temp to units of MeV.  TODO update to more digits
+		tnmev = Tnu * .086171f; //Convert neutrino temp to units of Me
 		//..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2).
 		_w[1] = (-(T9mev / .511f) * (-88.722f));
-		_w[2] = ((tnmev / .511f) * (88.029f + xi[1]) + 2.531f);
+		_w[2] = ((tnmev / .511f) * (88.029f + M.xi[1]) + 2.531f);
 		_x[1] = ((T9mev / .511f) * (88.029f));
-		_x[2] = (-(tnmev / .511f) * (-88.722f + xi[1]) - 2.531f);
+		_x[2] = (-(tnmev / .511f) * (-88.722f + M.xi[1]) - 2.531f);
 		_y[1] = (-(T9mev / .511f) * (-88.722f));
-		_y[2] = ((tnmev / .511f) * (88.029f - xi[1]) - 2.531f);
+		_y[2] = ((tnmev / .511f) * (88.029f - M.xi[1]) - 2.531f);
 		_z[1] = ((T9mev / .511f) * (88.029f));
-		_z[2] = (-(tnmev / .511f) * (-88.722f - xi[1]) + 2.531f);
+		_z[2] = (-(tnmev / .511f) * (-88.722f - M.xi[1]) + 2.531f);
 		//..........COMPARE LIMITS AND TAKE LARGER OF THE TWO.
 		uplim1 = abs(_w[1]);
 		uplim2 = abs(_x[1]);
@@ -1674,7 +1659,7 @@ struct start_save
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::start()
+void bbn::common::start()
 {
 	//
 	//----------LINKAGES.
@@ -1728,9 +1713,9 @@ void common::start()
 	//Gravitational constant.
 	//Neutron lifetime.
 	//Number of neutrino species.
-	//c[1] is variation of gravitational constant.
-	//c[2] is neutron lifetime (sec).
-	//c[3] is number of neutrino species.
+	//dG is variation of gravitational constant.
+	//tau is neutron lifetime (sec).
+	//Nnu is number of neutrino species.
 	//Neutrino degeneracy parameters.
 	//
 	//----------VARIATIONAL PARAMETERS.
@@ -1779,51 +1764,53 @@ void common::start()
 	//
 	//..........COMPUTATIONAL SETTINGS.
 	double& T9 = U.T9;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
-	double* y0 = U0.Y;							/// Get the array pointer.
+	//double* const y = U.Y;							/// Get the array pointer.
+	//double* y0 = U0.Y;							/// Get the array pointer.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
+    double& tau = M.tau;
+    double& G = M.G;
 
 	T9 = T9i; 									/// Initial temperature.
-	tnu = T9; 									/// Initial neutrino temperature.
+	Tnu = T9; 									/// Initial neutrino temperature.
 	const double const1 = 0.09615f; 			/// Initial time (Ref 1).
 	t = 1 / fem::pow2((const1 * T9));
 	dt = dt1; 									/// Initial time step.
 	//..........MODEL SETTINGS.
 	const double const2 = 6.6700e-8f; 			/// Modify gravitational constant.
-	g = const2 * c[1];
-	tau = c[2]; 								/// Convert n half-life (min) to lifetime (secs).
-	tau = tau / 0.98f; 							/// Coulomb correction (Ref 2). 
+	G = const2 * dM.G;
+	//tau = tau; 								    /// Convert n half-life (min) to lifetime (secs).
+	tau = M0.tau / 0.98f; 							/// Coulomb correction (Ref 2). 
 												//  TODO <-- check this!
 												/// This does not have enough digits 
 												/// for today's lifetime measured values.
-	xnu = c[3]; 								/// Number of neutrino species.
+	//xnu = M.Nnu; 								/// Number of neutrino species.
 	//
 	//30--------COMPUTE INITIAL ABUNDANCES FOR NEUTRON AND PROTON--------------------
 	//
-	if ((15.011f / T9 + xi[1]) > 58.f) { 		/// Overabundance of anti-neutrinos.
-		y[1] = 1.e-25f; 						/// Very little of neutrons.
-		y[2] = 1.f; 							/// Essentially all protons.
+	if ((15.011f / T9 + M.xi[1]) > 58.f) { 		    /// Overabundance of anti-neutrinos.
+		y(1) = 1.e-25f; 						    /// Very little of neutrons.
+		y(2) = 1.f; 							    /// Essentially all protons.
 	}
 	else {
-		if ((15.011f / T9 + xi[1]) <  - 58.f) { 	/// Overabundance of neutrinos.
-			y[1] = 1.f; 							/// Essentially all neutrons.
-			y[2] = 1.e-25f; 						/// Very little of protons.
+		if ((15.011f / T9 + M.xi[1]) <  - 58.f) {     /// Overabundance of neutrinos.
+			y(1) = 1.f; 						    /// Essentially all neutrons.
+			y(2) = 1.e-25f; 					    /// Very little of protons.
 		}
 		else {
-			y[1] = 1/(ex(15.011/T9 + xi[1]) + 1); 	/// Initial n abundance (Ref 3).
-			y[2] = 1/(ex(-15.011/T9 - xi[1]) + 1);	/// Initial p abundance (Ref 3).
+			y(1) = 1/(ex(15.011/T9 + M.xi[1]) + 1); 	/// Initial n abundance (Ref 3).
+			y(2) = 1/(ex(-15.011/T9 - M.xi[1]) + 1);	/// Initial p abundance (Ref 3).
 		}
 	}
-	if (xi[1] != 0) { 								/// Electron neutrino degeneracy.
+	if (M.xi[1] != 0) { 								/// Electron neutrino degeneracy.
 		cnorm = 1.;
-		tnu = .00001f; 								/// Low temperature.
-		rate1( 0.00001f); 						/// Find normalization constant at low temperature.
+		Tnu = .00001f; 								/// Low temperature.
+		rate1( 0.00001f); 						    /// Find normalization constant at low temperature.
 		//cnorm = 1 / tau / f(1);
 		cnorm = 1 / tau / f[1];
 	}
-	y0[1] = y[1];
-	y0[2] = y[2];
+	y0(1) = y(1);
+	y0(2) = y(2);
 	//
 	//40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED--------------------
 	//
@@ -1846,24 +1833,24 @@ void common::start()
 	   double bn4 = getBesselN(4*z);
 	   double bn5 = getBesselN(5*z);
 	 */
-	hv = 3.3683e+4f * eta1 * 2.75; 		/// (Ref 4 but with final eta).
-	phie = hv * (1.784e-5f * y[2]) / 
+	hv = 3.3683e+4f * M.eta * 2.75; 		/// (Ref 4 but with final eta).
+	phie = hv * (1.784e-5f * y(2)) / 
 		(0.5*z*z*z*(bl1 - 2*bl2 + 3*bl3 - 4*bl4 + 5*bl5));
 	/// Chemical potential of electron (Ref 5).
 	rhob0 = hv * fem::pow3(T9); 					/// TODO Baryon density. 
 	//Nonde
-	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
+	if ((M.xi[1] == 0) && (M.xi[2] == 0) && (M.xi[3] == 0)) {
 		rhone0 = 7.366f * fem::pow4(T9); 	/// Electron neutrino density (Ref 6).
 	}
 	//
 	//50--------SET ABUNDANCES FOR REST OF NUCLIDES----------------------------------
 	//
-	y[3] = y[1] * y[2] * rhob0 * ex(25.82f / T9) / (.471e+10f * pow(T9, 1.5f)); /// (Ref 7).
-	y0[3] = y[3];
+	y(3) = y(1) * y(2) * rhob0 * ex(25.82f / T9) / (.471e+10f * pow(T9, 1.5f)); /// (Ref 7).
+	y0(3) = y(3);
 	int i = 0;
 	FEM_DO_SAFE(i, 4, isize) {
-		y[i] = ytmin; 						/// Set rest to minimum abundance.
-		y0[i] = y[i]; 						/// Initialize abundances at beginning of iter
+		y(i) = ytmin; 						/// Set rest to minimum abundance.
+		y0(i) = y(i); 						/// Initialize abundances at beginning of iter
 	}
 	//Compute weak decay rates.
 	rate0();
@@ -1900,7 +1887,7 @@ void common::start()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::nudens()
+void bbn::common::nudens()
 {
 	//
 	//
@@ -1943,22 +1930,23 @@ void common::nudens()
 	double uplim1 = 0;
 	double uplim2 = 0;
 	const int iter = 50;
+    double* xi = M.xi;
 	if (abs(xi[nu]) <= 0.03f) {
 		//..........SMALL xi APPROXIMATION.
-		rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((tnu))
+		rhonu = 2.f * (fem::pow2(3.14159f) / 30.f) * fem::pow4((Tnu))
 			* (7.f / 8.f + (15.f / (4 * fem::pow2(3.14159f))) * fem::pow2(xi[nu]) 
 					+ (15.f / (8.f * fem::pow4(3.14159f))) * fem::pow4(xi[nu]));
 	}
 	else {
 		if (abs(xi[nu]) >= 30.f) {
 			//..........LARGE xi APPROXIMATION.
-			rhonu = (fem::pow4((tnu))) / (8.f * fem::pow2(3.14159f)) *
+			rhonu = (fem::pow4((Tnu))) / (8.f * fem::pow2(3.14159f)) *
 				fem::pow4(xi[nu]) * (1 + 12.f * 1.645f / fem::pow2(xi[nu]));
 		}
 		else {
 			//..........DO INTEGRATION
-			uplim1 = (88.029f + xi[nu]) * tnu;
-			uplim2 = (88.029f - xi[nu]) * tnu;
+			uplim1 = (88.029f + xi[nu]) * Tnu;
+			uplim2 = (88.029f - xi[nu]) * Tnu;
 			if (uplim2 <= 0.) {
 				rhonu = xintd<5>( 0, uplim1, iter);
 			}
@@ -1981,7 +1969,7 @@ void common::nudens()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::therm()
+void bbn::common::therm()
 {
 	//
 	//
@@ -2061,7 +2049,7 @@ void common::therm()
 	double bn4 = getBesselN(4*z);
 	double bn5 = getBesselN(5*z);
 	//Neutrino temperature.
-	tnu = (pow((rnb), (1.f / 3.f))) * T9i;
+	Tnu = (pow((rnb), (1.f / 3.f))) * T9i;
 	//..........FACTORS OF z.
 	double z1 = z;
 	double z2 = z*z;
@@ -2109,6 +2097,7 @@ void common::therm()
 	//20--------COMPUTE THERMODYNAMIC VARIABLES--------------------------------------
 	//
 	double& T9 = U.T9;							/// Copy the reference.
+	double* xi = M.xi;							/// Copy the reference.
 	thm(1) = 8.418f * T9 * T9 * T9 * T9; 					///(Ref 1)
 	thm(2) = 4.f * thm(1) / T9; 							///(Ref 2)
 	thm(3) = thm(1) / 3.f; 									///(Ref 3)
@@ -2125,13 +2114,13 @@ void common::therm()
 			(5.f * z)); 									///(Ref 7)
 	//Nonde
 	if ((xi[1] == 0) && (xi[2] == 0) && (xi[3] == 0)) {
-		thm(8) = xnu * rhone0 * (pow(rnb, (4.f / 3.f))); 	///(Ref 8)
+		thm(8) = M.Nnu * rhone0 * (pow(rnb, (4.f / 3.f))); 	///(Ref 8)
 		//Include effects of neutrino degenera
 	}
 	else {
 		thm(8) = 0.f;
 		//For every neutrino family.
-		FEM_DO_SAFE(nu, 1, xnu) {
+		FEM_DO_SAFE(nu, 1, M.Nnu) {
 			//Compute neutrino energy density.
 			nudens();
 			//Have 12.79264 from units ch
@@ -2203,7 +2192,7 @@ void common::therm()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::eqslin(
+void bbn::common::eqslin(
 		int const& icnvm,
 		int& ierror)
 {
@@ -2219,7 +2208,7 @@ void common::eqslin(
 	const double eps = 2.e-4f;
 	const int mord = 1;
 	double r = 0;
-	double* const y = U.Y;				/// Get the array pointer.
+	//double* const y = U.Y;				/// Get the array pointer.
 	//
 	//----------LINKAGES.
 	//     CALLED BY - [subroutine] sol
@@ -2282,7 +2271,7 @@ void common::eqslin(
 	//..........SET RIGHT-HAND AND SOLUTION VECTORS TO INITIAL VALUES.
 	FEM_DO_SAFE(i, 1, isize) {
 		x[i] = b[i]; 		/// Right-hand vector.
-		y[i] = 0; 			/// Solution vector.
+		y(i) = 0; 			/// Solution vector.
 	}
 	//..........SAVE MATRIX.
 	//Monitor convergence.
@@ -2321,22 +2310,22 @@ void common::eqslin(
 	//
 statement_300:
 	x[isize] = x[isize] / a[isize][isize]; 		/// Solution for ultimate position.
-	y[isize] += x[isize];
+	y(isize) += x[isize];
 	FEM_DOSTEP(i, isize - 1, 1, -1) { 			/// From i = penultimate to i = 1.
 		sum = 0;
 		FEM_DO_SAFE(j, i + 1, isize) {
 			sum += a[i][j] * x[j]; 				/// Sum up all previous terms.
 		}
 		x[i] = (x[i] - sum) / a[i][i];
-		y[i] += x[i]; 							/// Add difference to initial value.
+		y(i) += x[i]; 							/// Add difference to initial value.
 	}
 	//
 	//40--------TESTS AND EXITS------------------------------------------------------
 	//
 	if (icnvm == inc) {
 		FEM_DO_SAFE(i, 1, isize) {
-			if (y[i] != 0.) {
-				xdy = fem::dabs(x[i] / y[i]); 			/// Relative error.
+			if (y(i) != 0.) {
+				xdy = fem::dabs(x[i] / y(i)); 			/// Relative error.
 				if (xdy > eps) {
 					if (nord < mord) { 					/// Continue to higher orders.
 						nord++;
@@ -2344,7 +2333,7 @@ statement_300:
 						FEM_DO_SAFE(j, 1, isize) {
 							r = 0; 						/// Initialize r.
 							FEM_DO_SAFE(k, 1, isize) {
-								r += a0[j][k] * y[k]; 	/// Left side with approximate sol
+								r += a0[j][k] * y(k); 	/// Left side with approximate sol
 							}
 							x[j] = b[j] - r; 			/// Subtract difference from right side.
 						}
@@ -2464,25 +2453,21 @@ statement_300:
  * 
  * ===========================PROCEDURE DIVISION==================================
  */
-void common::sol(
+void bbn::common::sol(
 		int const& loop)
 {
 	common_write write(*this);
 	//
 	//----------NUMBER OF NUCLIDES IN REACTION TYPES 1-11.
 	//
-	const double si[] = {NOT_USED, 1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
-	const double sj[] = {NOT_USED, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
-	const double sk[] = {NOT_USED, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
-	const double sl[] = {NOT_USED, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 	double ci, cj, ck, cl;
 	double bdln = 0;
 	int ierror = 0;
 	const int iw = 6;
 
 	// Short hand for evolution parameters
-	double* const y = U.Y;						/// Get the array pointer.
-	double* const y0 = U0.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
+	//double* const y0 = U0.Y;						/// Get the array pointer.
 
 	//10--------TEMPERATURE FACTORS AND INITIAL VALUES-------------------------------
 	//
@@ -2508,23 +2493,39 @@ void common::sol(
 	//FEM_DO_SAFE(n, 1, jsize) {
 	for (int n = 1; n <= jsize; n++) {
 		//..........EQUATE VARIABLES TO ARRAYS.
-		unsigned reaction = iform(n); 					/// Type of reaction.
-		unsigned i = ii(n); 							/// ID # of incoming nuclide i.
-		unsigned j = jj(n); 							/// ID # of incoming nuclide j.
-		unsigned k = kk(n); 							/// ID # of outgoing nuclide k.
-		unsigned l = ll(n); 							/// ID # of outgoing nuclide l.
+        /*
+		int reaction = iform(n); 		/// Type of reaction.
+		int i = ii(n); 					/// ID # of incoming nuclide i.
+		int j = jj(n); 					/// ID # of incoming nuclide j.
+		int k = kk(n); 					/// ID # of outgoing nuclide k.
+		int l = ll(n); 					/// ID # of outgoing nuclide l.
+        */
+		const Reaction<double,2> & reaction = reactions[n-1];     
+        //int type = reaction.type;       /// Type of reaction.
+        /*
+		int i = reaction.in[0]; 		/// ID # of incoming nuclide i.
+		int j = reaction.in[1]; 		/// ID # of incoming nuclide j.
+		int k = reaction.out[0]; 		/// ID # of outgoing nuclide k.
+		int l = reaction.out[1]; 		/// ID # of outgoing nuclide l.
+        */
+        int i,j,k,l;
+        int type = reaction.getNuclideIndcies(i,j,k,l); /// Type of reaction.
 
-		//Reactio
-		if ((reaction != 0) && (i <= isize) && (l <= isize)) {
-			std::cout << "reaction:"<< reaction << "\n";
-			unsigned ri = si[reaction]; 					/// # of incoming nuclide i.
-			unsigned rj = sj[reaction]; 					/// # of incoming nuclide j.
-			unsigned rk = sk[reaction]; 					/// # of outgoing nuclide k.
-			unsigned rl = sl[reaction]; 					/// # of outgoing nuclide l.
+		//Reaction
+		if ((type != 0) && (i <= isize) && (l <= isize)) {
+			std::cout << "reaction type: "<< type << "\n";
+            /*
+			int ri = s[0][type-1]; 		/// # of incoming nuclide i.
+			int rj = s[1][type-1]; 		/// # of incoming nuclide j.
+			int rk = s[2][type-1]; 		/// # of outgoing nuclide k.
+			int rl = s[3][type-1]; 		/// # of outgoing nuclide l.
+            */
+            int ri,rj,rk,rl;
+            int total = reaction.getNuclideCounts(ri,rj,rk,rl);
 			//..........COMPUTE DIFFERENT REACTION RATES.
-			switch (reaction) {
+			switch (type) {
 				case 1: /// 1-0-0-1 configuration.
-					ci = f[n]; 				/// (Ref 1).
+					ci = f[n]; 			/// (Ref 1).
 					cj = 0;
 					ck = 0;
 					cl = r[n];
@@ -2533,8 +2534,8 @@ void common::sol(
 				case 2: /// 1-1-0-1 configuration.
 					r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
 					f[n] = rhob * f[n];
-					ci = y[j] * f[n] / 2.;
-					cj = y[i] * f[n] / 2.;
+					ci = y(j) * f[n] / 2.;
+					cj = y(i) * f[n] / 2.;
 					ck = 0;
 					cl = r[n];
 					break;
@@ -2542,42 +2543,42 @@ void common::sol(
 				case 3: /// 1-1-1-1 configuration.
 					f[n] = rhob * f[n]; 			/// (Ref 3).
 					r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
-					ci = y[j] * f[n] / 2;
-					cj = y[i] * f[n] / 2;
-					ck = y[l] * r[n] / 2;
-					cl = y[k] * r[n] / 2;
+					ci = y(j) * f[n] / 2;
+					cj = y(i) * f[n] / 2;
+					ck = y(l) * r[n] / 2;
+					cl = y(k) * r[n] / 2;
 					break;
 
 				case 4: /// 1-0-0-2 configuration.
 					ci = f[n];
 					cj = 0;
 					ck = 0;
-					cl = y[l] * r[n] / 2;
+					cl = y(l) * r[n] / 2;
 					break;
 
 				case 5: /// 1-1-0-2 configuration.
 					f[n] = rhob * f[n];
 					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-					ci = y[j] * f[n] / 2;
-					cj = y[i] * f[n] / 2;
+					ci = y(j) * f[n] / 2;
+					cj = y(i) * f[n] / 2;
 					ck = 0;
-					cl = y[l] * r[n] / 2;
+					cl = y(l) * r[n] / 2;
 					break;
 
 				case 6: /// 2-0-1-1 configuration.
 					f[n] = rhob * f[n];
 					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
-					ci = y[i] * f[n] / 2;
+					ci = y(i) * f[n] / 2;
 					cj = 0;
-					ck = y[l] * r[n] / 2;
-					cl = y[k] * r[n] / 2;
+					ck = y(l) * r[n] / 2;
+					cl = y(k) * r[n] / 2;
 					break;
 
 				case 7: /// 3-0-0-1 configuration.
 					//(Ref 4).
 					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
-					ci = y[i] * y[i] * f[n] / 6;
+					ci = y(i) * y(i) * f[n] / 6;
 					cj = 0;
 					ck = 0;
 					cl = r[n];
@@ -2587,8 +2588,8 @@ void common::sol(
 					//(Ref 4).
 					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
-					ci = y[j] * y[i] * f[n] / 3.;
-					cj = y[i] * y[i] * f[n] / 6.;
+					ci = y(j) * y(i) * f[n] / 3.;
+					cj = y(i) * y(i) * f[n] / 6.;
 					ck = 0.;
 					cl = r[n];
 					break;
@@ -2597,30 +2598,30 @@ void common::sol(
 					f[n] = rhob * f[n];
 					//(Ref 5)
 					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-					ci = y[j] * f[n] / 2.;
-					cj = y[i] * f[n] / 2.;
-					ck = y[l] * y[l] * r[n] / 6.;
-					cl = y[k] * y[l] * r[n] / 3.;
+					ci = y(j) * f[n] / 2.;
+					cj = y(i) * f[n] / 2.;
+					ck = y(l) * y(l) * r[n] / 6.;
+					cl = y(k) * y(l) * r[n] / 3.;
 					break;
 
 				case 10: /// 1-1-0-3 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
 					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-					ci = y[j] * f[n] / 2.;
-					cj = y[i] * f[n] / 2.;
+					ci = y(j) * f[n] / 2.;
+					cj = y(i) * f[n] / 2.;
 					ck = 0.;
-					cl = y[l] * y[l] * r[n] / 6.;
+					cl = y(l) * y(l) * r[n] / 6.;
 					break;
 
 				case 11: /// 2-0-2-1 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
 					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
-					ci = y[i] * f[n] / 2.;
+					ci = y(i) * f[n] / 2.;
 					cj = 0.;
-					ck = y[l] * y[k] * r[n] / 3.;
-					cl = y[k] * y[k] * r[n] / 6.;
+					ck = y(l) * y(k) * r[n] / 3.;
+					cl = y(k) * y(k) * r[n] / 6.;
 					break;
 
 				default: break;
@@ -2668,8 +2669,8 @@ void common::sol(
 			}
 			a[i][l] -= ri * cl;
 			a[l][l] += rl * cl;
-		} //((reaction.ne.0).and.(i.le.isize).and.(l.le.isize))
-	} //n = 1,jsize
+		} //((reaction != 0) and (i <= isize) and (l <= isize))
+	} //n = 1...jsize
 	//
 	//40--------PUT A-MATRIX AND B-VECTOR IN FINAL FORM OF MATRIX EQUATION-----------
 	//
@@ -2682,17 +2683,17 @@ void common::sol(
 		for (int j = 1; j <= isize; j++) {
 			int j1 = isize1 - j; 		/// Invert the columns.
 			//std::cout << "i:"<<i<<" j:"<<j<<" i1:"<<i1<<" j1:"<<j1<<std::endl;
-			if (y0[i1] == NOT_USED) exit(0);
-			if (y0[j1] == NOT_USED) exit(0);
+			if (y0(i1) == NOT_USED) exit(0);
+			if (y0(j1) == NOT_USED) exit(0);
 			if (a[j][i] == NOT_USED) exit(0);
 
-			if (abs(a[j][i]) < bdln * y0[j1] / y0[i1])
+			if (abs(a[j][i]) < bdln * y0(j1) / y0(i1))
 				a[j][i] = 0; 			/// Set 0 if tiny.
 			else
 				a[j][i] *= dt; 			/// Bring dt over to other side.
 		}
 		a[i][i] += 1; 					/// Add identity matrix to a-matrix.
-		b[i1] = y0[i]; 					/// Initial abundances.
+		b[i1] = y0(i); 					/// Initial abundances.
 	}
 	//
 	//50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------
@@ -2712,7 +2713,8 @@ void common::sol(
 		//dydt[i] = (yy[i] - y0[i]) / dt; 			/// Take derivative.
 		//dydt[i] = (y[isize1-i] - y0[i]) / dt; 		/// Take derivative.
 		//dydt[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
-		dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
+		//dUdt.Y[i] = (y[i] - y0[i]) / dt; 		/// Take derivative.
+		dydt(i) = (y(i) - y0(i)) / dt; 		/// Take derivative.
 	}
 	//
 	//60--------POSSIBLE ERROR MESSAGES AND EXIT-------------------------------------
@@ -2721,11 +2723,13 @@ void common::sol(
 	if (mbad != 0) {
 		//Error message.
 		if (mbad ==  - 1) {
-			write(iw, "(' ','** y(',i2,') fails to converge **')"), ierror;
+			//write(iw, "(' ','** y(',i2,') fails to converge **')"), ierror;
+			std::cout << "(** " << ierror << " fails to converge **)\n";
 		}
 		//Error message.
 		if (mbad >= 1) {
-			write(iw, "(' ','** ',i2,' th diagonal term equals zero **')"), mbad;
+			//write(iw, "(' ','** ',i2,' th diagonal term equals zero **')"), mbad;
+			std::cout << "(** " << mbad << "th diagonal term equals zero **)\n";
 		}
 	}
 	//
@@ -2765,7 +2769,7 @@ void common::sol(
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate2()
+void bbn::common::rate2()
 {
 	//
 	//----------LINKAGES.
@@ -2991,7 +2995,7 @@ void common::rate2()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate3()
+void bbn::common::rate3()
 {
 	//
 	//----------LINKAGES.
@@ -3024,7 +3028,7 @@ void common::rate3()
 	//
 	double& T9 = U.T9;
 	//T9**(1/3)
-	double T913 = pow(U.T9, (.33333333f));
+	double T913 = pow(T9, (.33333333f));
 	//T9**(2/3)
 	double T923 = T913 * T913;
 	//T9**(4/3)
@@ -3229,7 +3233,7 @@ void common::rate3()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::rate4()
+void bbn::common::rate4()
 {
 	//
 	//----------LINKAGES.
@@ -3253,7 +3257,7 @@ void common::rate4()
 	//Forward reaction rate coefficients.
 	//
 	//----------EVOLUTION PARAMETER.
-	//Temperature of photons (units of 10*
+	//Temperature of photons (units of GK = 10^9 K)
 	//
 	//===========================PROCEDURE DIVISION==================================
 	//
@@ -3439,7 +3443,7 @@ void common::rate4()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::derivs(
+void bbn::common::derivs(
 		int const& loop)
 {
 	const double pi = constants::pi<double>();
@@ -3542,20 +3546,22 @@ void common::derivs(
 	//
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
+	//double* const y = U.Y;							/// Get the array pointer.
 
-	double* dydt = dUdt.Y;						/// Get the array pointer.
+	//double* dydt = dUdt.Y;						/// Get the array pointer.
 
 	double& dT9 = dU.T9;						/// Copy the reference.
 	double& dhv = dU.hv;						/// Copy the reference.
 	double& dphie = dU.phie;					/// Copy the reference.
+    double& G = M.G;
+    double& cosmo = M.cosmo;
 
 	//Baryon mass density (ratio to init v
 	rnb = hv * T9 * T9 * T9 / rhob0;
 	//..........VARIOUS THERMODYNAMIC QUANTITIES.
 	therm();
 	//Expansion rate.
-	hubcst = sqrt((8.f / 3.f) * pi * g * (thm(10)) + (cosmo / 3.f));
+	hubcst = sqrt((8.f / 3.f) * pi * G * (thm(10)) + (cosmo / 3.f));
 	//Baryon mass density.
 	rhob = thm(9);
 	//..........COMPUTE REACTION RATE COEFFICIENTS.
@@ -3593,11 +3599,11 @@ statement_120:
 	double sumzdy = 0;
 	//..........ACCUMULATE TO GET SUM.
 	FEM_DO_SAFE(i, 1, isize) {
-		sumy += y[i]; 					/// Sum of abundance.
-		sumzy += zm[i] * y[i]; 			/// Sum of charge*abundance.
-		sumdy += dydt[i]; 				/// Sum of abundance flow.
-		summdy += dm[i] * dydt[i]; 		/// Sum of (mass excess)*(abundanc
-		sumzdy += zm[i] * dydt[i]; 		/// Sum of (charge)*(abundance flo
+		sumy += y(i); 					/// Sum of abundance.
+		sumzy += zm[i] * y(i); 			/// Sum of charge*abundance.
+		sumdy += dydt(i); 				/// Sum of abundance flow.
+		summdy += dm[i] * dydt(i); 		/// Sum of (mass excess)*(abundanc
+		sumzdy += zm[i] * dydt(i); 		/// Sum of (charge)*(abundance flo
 	}
 	//..........CHANGES IN TEMPERATURE, hv, AND CHEMICAL POTENTIAL.
 	dphdT9 = thm(12) * (-1.070e-4f * hv * sumzy / T9 - thm(11));
@@ -3628,7 +3634,7 @@ statement_120:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::accum()
+void bbn::common::accum()
 {
 	//
 	//
@@ -3704,22 +3710,24 @@ void common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
 
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
-		xout(it, i) = y[i] / y[2];
+		xout(it, i) = y(i) / y(2);
 	}
 	//xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
-	xout(it, 2) = y[2] * am[2]; 			/// Exception for proton.
+	xout(it, 2) = y(2) * am[2]; 			/// Exception for proton.
 	//xout(it, 6) = y(6) * am(6); 		/// Exception for helium.
-	xout(it, 6) = y[6] * am[6]; 			/// Exception for helium.
+	xout(it, 6) = y(6) * am[6]; 			/// Exception for helium.
 	//..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
 	//Li8 to O16.
-	xout(it, 10) += xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) 
-		+ xout(it,15) + xout(it,16) + xout(it,17) + xout(it,18) 
-		+ xout(it,19) + xout(it,20) + xout(it,21) + xout(it,22) 
-		+ xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
+	xout(it, 10) += 
+        xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) +
+		xout(it,15) + xout(it,16) + xout(it,17) + xout(it,18) +
+		xout(it,19) + xout(it,20) + xout(it,21) + xout(it,22) +
+		xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
+
 	//..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
 	//Temperature.
 	T9out(it) = T9;
@@ -3764,11 +3772,11 @@ void common::accum()
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::driver()
+void bbn::common::driver()
 {
 	double& T9 = U.T9;							/// Copy the reference.
-	double* const y = U.Y;							/// Get the array pointer.
-	double* dydt = dUdt.Y;						/// Get the array pointer.
+	//double* const y = U.Y;						/// Get the array pointer.
+	//double* dydt = dUdt.Y;						/// Get the array pointer.
 
 	int mvar = 0;
 	int loop = 0;
@@ -3783,10 +3791,11 @@ void common::driver()
 	double dvdt[nvar+1];
 	double dvdt0[nvar+1];
 	*/
-	double* v = U.V;
-	double* v0 = U0.V;
-	double* dvdt = dUdt.V;
-	double* dvdt0 = dUdt0.V;
+    // TODO this overides the call to 
+	//double* v = U.V; 
+	//double* v0 = U0.V;
+	//double* dvdt = dUdt.V;
+	//double* dvdt0 = dUdt0.V;
 	
 	/*
 	FEM_DO_SAFE(i, 1, nvar) {
@@ -3926,16 +3935,16 @@ statement_200:
 
 		// test -->
 		FEM_DO_SAFE(i, 1, isize)
-			std::cout<<"dydt["<<i<<"]:"<<dydt[i]<<" y["<<i<<"]:"<<y[i]<<"\n";
+			std::cout<<"dydt("<<i<<"):"<<dydt(i)<<" y("<<i<<"):"<<y(i)<<"\n";
 		// <-- test
 
 		//Trial value for minimum time step (R
 		dtmin = abs(1. / dlT9dt) * ct;
 		//Go through all abundance changes.
 		FEM_DO_SAFE(i, 1, isize) {
-			if ((dydt[i] != 0) && (y[i] > ytmin)) {
-				dtl = abs(y[i] / dydt[i]) * cy 
-					* (1.f + fem::pow2(( fem::alog10(y[i]) / fem::alog10(ytmin))));  /// (Ref 2).
+			if ((dydt(i) != 0) && (y(i) > ytmin)) {
+				dtl = abs(y(i) / dydt(i)) * cy 
+					* (1.f + fem::pow2(( fem::alog10(y(i)) / fem::alog10(ytmin))));  /// (Ref 2).
 				if (dtl < dtmin) { 												/// Find smallest time st
 					dtmin = dtl;
 				}
@@ -3960,15 +3969,31 @@ statement_200:
 	}
 	}
 	 */
+     /*
 	FEM_DO_SAFE(i, 1, mvar) {
 		v0[i] = v[i];
 		dvdt0[i] = dvdt[i];
 		v[i] = v0[i] + dvdt0[i] * dt;
 		//Set at minimum
-		if ((i >= 4) && (v[i] < ytmin)) {
+		if (ytmin < 0)
+            ; 
+		if (i >= 4) {
+            std::cout << "Found i >= 4 where i = " << i << std::endl; 
+        }
+		if (i >= 4 and v[i] < ytmin) {
 			v[i] = ytmin;
 		}
 	}
+    */
+    for (int i = 1; i <= mvar; i++) {
+        v0(i) = v(i);
+		dvdt0(i) = dvdt(i);
+		v(i) = v0(i) + dvdt0(i) * dt;
+    }
+    for (int i = 1; i <= nnuc; i++)
+        if (ytmin < 0)
+            y(i) = ytmin;
+
 	//
 	//30--------LOOP TWO-------------------------------------------------------------
 	//
@@ -3982,12 +4007,13 @@ statement_200:
 	check();
 	//..........INCREMENT VALUES.
 	FEM_DO_SAFE(i, 1, mvar) {
-		v[i] = v0[i] + .5f * (dvdt[i] + dvdt0[i]) * dt;
+		v(i) = v0(i) + .5f * (dvdt(i) + dvdt0(i)) * dt;
 		//Set at minimum
-		if ((i >= 4) && (v[i] < ytmin)) {
-			v[i] = ytmin;
+		if ((i >= 4) && (v(i) < ytmin)) {
+			v(i) = ytmin;
 		}
 	}
+    // TODO <-- put into two loops without calling v
 	goto statement_200;
 	//
 	//----------REFERENCES-----------------------------------------------------------
@@ -4012,10 +4038,10 @@ statement_200:
    };
  */
 
-// Replaces the equivalence memory sharing used in the original Fortran. 
+// XXX Replaces the equivalence memory sharing used in the original Fortran. 
 // TODO add to class
 // TODO make private
-void common::qvary(int index, double value)
+void bbn::common::qvary(int index, double value)
 {
 	//----------EQUIVALENCE VARIABLE.
 	//     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
@@ -4024,11 +4050,11 @@ void common::qvary(int index, double value)
 	//     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 	//
 	if (index >= 1 && index <= 3)
-		c[index] = value;
+		M.c[index] = value;
 	else if (index == 4)
-		cosmo = value;
+		M.cosmo = value;
 	else if (index >= 5 && index <= 7)
-		xi[index] = value;
+		M.xi[index] = value;
 	else
 	{
 		std::cerr << "index out of bounds." << std::endl;
@@ -4040,7 +4066,7 @@ void common::qvary(int index, double value)
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::run()
+void bbn::common::run()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -4111,9 +4137,9 @@ void common::run()
 	//
 	//----------MODEL PARAMETERS.
 	//Baryon-to-photon ratio.
-	//c[1] is variation of gravitational constant.
-	//c[2] is neutron lifetime (sec).
-	//c[3] is number of neutrino species.
+	//dG is variation of gravitational constant.
+	//tau is neutron lifetime (sec).
+	//Nnu is number of neutrino species.
 	//Cosmological constant.
 	//Neutrino degeneracy parameters.
 	//
@@ -4367,7 +4393,7 @@ statement_232:
 			if ((inum(1) >= 1) && (inum(1) <= 8)) {
 				if (inum(1) == 1) {
 					//Vary baryon-to-photon ratio.
-					eta1 = pow(10, rnumb1);
+					M.eta = pow(10, rnumb1);
 				}
 				else {
 					//Vary other quantities.
@@ -4381,7 +4407,7 @@ statement_232:
 				if ((inum(2) >= 1) && (inum(2) <= 8)) {
 					if (inum(2) == 1) {
 						//Vary baryon-to-photon ratio.
-						eta1 = pow(10, rnumb2);
+						M.eta = pow(10, rnumb2);
 					}
 					else {
 						//Vary other quantities.
@@ -4395,7 +4421,7 @@ statement_232:
 					if ((inum(3) >= 1) && (inum(3) <= 8)) {
 						if (inum(3) == 1) {
 							//Vary baryon-to-photon ratio.
-							eta1 = pow(10, rnumb3);
+							M.eta = pow(10, rnumb3);
 						}
 						else {
 							//Vary other quantities.
@@ -4442,7 +4468,7 @@ statement_300:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-void common::output()
+void bbn::common::output()
 {
 	common_read read(*this);
 	common_write write(*this);
@@ -4495,9 +4521,9 @@ void common::output()
 	//Smallest abundances allowed.
 	//
 	//----------EARLY UNIVERSE MODEL PARAMETERS.
-	//c[1] is variation of gravitational c
-	//c[2] is neutron lifetime (sec).
-	//c[3] is number of neutrino species.
+	//dG is variation of gravitational c
+	//tau is neutron lifetime (sec).
+	//Nnu is number of neutrino species.
 	//Cosmological constant.
 	//Neutrino degeneracy parameters.
 	//
@@ -4571,7 +4597,7 @@ statement_200:
 			"(' Model parameters:',/,'   g = ',f5.2,'/  tau = ',f6.2,'/  # nu = ',"
 			"f5.2,'/  lambda = ',1p,e10.3,'/  xi-e = ',e10.3,'/  xi-m = ',e10.3,"
 			"'/  xi-t = ',e10.3,/)"),
-		c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
+		dM.G, M.tau, M.Nnu, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
 	//..........PRINT HEADINGS, ABUNDANCES FOR NEUTRON TO LI8.
 	write(2,
 			"(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
@@ -4645,7 +4671,7 @@ statement_310:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
 	//..........PRINT HEADINGS, ABUNDANCES FOR D,T,HE3,HE4,LI7.
 	write(iw,
 			"(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
@@ -4667,7 +4693,7 @@ statement_320:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
 	//..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
 	write(iw,
 			"(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
@@ -4694,7 +4720,7 @@ statement_330:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
 	//..........PRINT ENERGY DENSITIES.
 	write(iw,
 			"(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
@@ -4716,7 +4742,7 @@ statement_340:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), c[1], c[2], c[3], cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
 	//..........PRINT THERMODYNAMIC QUANTITIES.
 	write(iw,
 			"(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
@@ -4755,16 +4781,17 @@ statement_500:
 //
 //========================IDENTIFICATION DIVISION================================
 //
-common::common() :
+bbn::common::common() :
+    CosmologicalModel(),
 	fem::common(),
 	common_compr0(),
 	common_compr(),
 	common_varpr0(),
 	common_varpr(),
-	common_modpr0(),
-	common_modpr(),
+	//common_modpr0(),
+	//common_modpr(),
 	//common_recpr0(),
-	common_recpr(),
+	//common_recpr(),
 	//common_evolp1(),
 	//common_evolp2(),
 	//common_evolp3(),
@@ -4785,25 +4812,27 @@ common::common() :
 {
 	cy0 = .300f;
 	ct0 = .030f;
-	T9i0 = 1.00e+02f;
-	T9f0 = 1.00e-02f;
+	M0.T9i = 1.00e+02f;
+	M0.T9f = 1.00e-02f;
 	ytmin0 = 1.00e-25f;			// TODO make smaller with double
 	inc0 = 30;
-	c0[1] = 1.00;
-	c0[2] = 885.7;
-	c0[3] = 3.0;
-	cosmo0 = 0.00f;
-	xi0[1] = 0;
-	xi0[2] = 0;
-	xi0[3] = 0;
+	M0.c[1] = 1.00;
+	M0.c[2] = 885.7;
+	M0.c[3] = 3.0;
+	M0.cosmo = 0.00f;
+	M0.xi[1] = 0;
+	M0.xi[2] = 0;
+	M0.xi[3] = 0;
 	dt0 = 1.00e-04f;
-	eta0 = 3.162e-10f;
+	M0.eta = 3.162e-10f;
 	for (int i = 0; i < nnuc+1; i++)
-	for (int j = 0; j < nnuc+1; j++)
-		if (i == 0 or j == 0)
-			a[i][j] = NOT_USED;
-		else
-			a[i][j] = 0;
+        for (int j = 0; j < nnuc+1; j++)
+        {
+            if (i == 0 or j == 0)
+                a[i][j] = NOT_USED;
+            else
+                a[i][j] = 0;
+        }
 
 	// } if called for first time
 	//
@@ -5087,9 +5116,9 @@ void common::program_new123()
 	//Default neutrino degeneracy paramete
 	//
 	//----------EARLY UNIVERSE MODEL PARAMETERS.
-	//c[1] is variation of gravitational c
-	//c[2] is neutron lifetime (sec).
-	//c[3] is number of neutrino species.
+	//dG is variation of gravitational c
+	//tau is neutron lifetime (sec).
+	//Nnu is number of neutrino species.
 	//Cosmological constant.
 	//Neutrino degeneracy parameters.
 	//
@@ -5140,27 +5169,32 @@ void common::program_new123()
 	//
 	//20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
 	//
-	FEM_DO_SAFE(i, 1, nrec) {
+	FEM_DO_SAFE(i, 1, nrec) 
+    {
 		//..........READ IN REACTION PARAMETERS.
+        reactions.push_back(Reaction<double,2>(i));   // TODO Read from file.
 		/*
-		   iform(i) = reacpr(i, 2); 		/// Reaction type.
-		   ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
-		   jj(i) = reacpr(i, 4); 			/// Incoming nuclide type.
-		   kk(i) = reacpr(i, 5); 			/// Outgoing nuclide type.
-		   ll(i) = reacpr(i, 6); 			/// Outgoing nuclide type.
-		   rev(i) = reacpr(i, 7); 			/// Reverse reaction coefficient.
-		   q9(i) = reacpr(i, 8); 			/// Energy released.
-		 */
-		iform(i) = reacpr[i-1][2-1]; 		/// Reaction type.
-		ii(i) = reacpr[i-1][3-1]; 			/// Incoming nuclide type.
-		jj(i) = reacpr[i-1][4-1]; 			/// Incoming nuclide type.
-		kk(i) = reacpr[i-1][5-1]; 			/// Outgoing nuclide type.
-		ll(i) = reacpr[i-1][6-1]; 			/// Outgoing nuclide type.
-		rev(i) = reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
-		q9(i) = reacpr[i-1][8-1]; 			/// Energy released.
+		iform(i) = reacpr(i, 2); 		/// Reaction type.
+		ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
+		jj(i) = reacpr(i, 4); 			/// Incoming nuclide type.
+		kk(i) = reacpr(i, 5); 			/// Outgoing nuclide type.
+		ll(i) = reacpr(i, 6); 			/// Outgoing nuclide type.
+		rev(i) = reacpr(i, 7); 			/// Reverse reaction coefficient.
+		q9(i) = reacpr(i, 8); 			/// Energy released.
+		*/
+
+        /*
+		iform(i) = reacpr[i-1][2-1]; 	/// Reaction type.
+		ii(i) = reacpr[i-1][3-1]; 		/// Incoming nuclide type.
+		jj(i) = reacpr[i-1][4-1]; 		/// Incoming nuclide type.
+		kk(i) = reacpr[i-1][5-1]; 		/// Outgoing nuclide type.
+		ll(i) = reacpr[i-1][6-1]; 		/// Outgoing nuclide type.
+		rev(i) = reacpr[i-1][7-1]; 		/// Reverse reaction coefficient.
+		q9(i) = reacpr[i-1][8-1]; 		/// Energy released.
+        */
 		//..........INITIALIZE REACTION RATES.
-		f[i] = 0; 							/// Forward rate coefficient.
-		r[i] = 0; 							/// Reverse rate coefficient.
+		f[i] = 0; 						/// Forward rate coefficient.
+		r[i] = 0; 						/// Reverse rate coefficient.
 		//..........SET RUN OPTIONS TO DEFAULT.
 	}
 	irun = 1; 							/// Do full run.
@@ -5172,20 +5206,20 @@ void common::program_new123()
 	//..........SET VALUES TO DEFAULT.
 	cy = cy0; 							/// Time step limiting constant on abundance.
 	ct = ct0; 							/// Time step limiting constant on temperature.
-	T9i = T9i0; 						/// Initial temperature.
-	T9f = T9f0; 						/// Final temperature.
+	dt1 = dt0; 							/// Initial time step.
 	ytmin = ytmin0; 					/// Smallest abundances allowed.
 	inc = inc0; 						/// Accumulation increment.
-	c[1] = c0[1]; 						/// Variation of gravitational constant.
-	c[2] = c0[2]; 						/// Neutron lifetime.
-	std::cout << "ntau:"<<c[2]<<std::endl; 
-	c[3] = c0[3]; 						/// Number of neutrino species.
-	cosmo = cosmo0; 					/// Cosmological constant.
-	xi[1] = xi0[1]; 					/// Electron degeneracy parameter.
-	xi[2] = xi0[2]; 					/// Muon degeneracy parameter.
-	xi[3] = xi0[3]; 					/// Tau degeneracy parameter.
-	dt1 = dt0; 							/// Initial time step.
-	eta1 = eta0; 						/// Baryon-to-photon ratio.
+
+	M.T9i = M0.T9i; 					/// Initial temperature.
+	M.T9f = M0.T9f; 					/// Final temperature.
+	dM.G = M0.c[1]; 					/// Variation of gravitational constant.
+	M.tau = M0.c[2]; 					/// Neutron lifetime.
+	M.Nnu = M0.c[3]; 					/// Number of neutrino species.
+	M.cosmo = M0.cosmo; 				/// Cosmological constant.
+	M.xi[1] = M0.xi[1]; 				/// Electron degeneracy parameter.
+	M.xi[2] = M0.xi[2]; 				/// Muon degeneracy parameter.
+	M.xi[3] = M0.xi[3]; 				/// Tau degeneracy parameter.
+	M.eta = M0.eta; 						/// Baryon-to-photon ratio.
 	//..........ACCEPT RETURN TO CONTINUE.
 	read(ir, star); 					/// Pause.
 	//
@@ -5195,16 +5229,16 @@ void common::program_new123()
 statement_300:
 	//..........DISPLAY MENU.
 	write(iw,
-			"(8(/),32x,"
-			"'MENU SELECTION',/,32x,"
-			"'---- ---------',/,/,24x,"
-			"'1. HELP',/,24x,"
-			"'2. SET COMPUTATION PARAMETERS',/,24x,"
-			"'3. SET MODEL PARAMETERS',/,24x,"
-			"'4. RUN',/,24x,"
-			"'5. OUTPUT',/,24x,"
-			"'6. EXIT',8(/),24x,"
-			"'Enter selection (1-6): ',$)");
+        "(8(/),32x,"
+        "'MENU SELECTION',/,32x,"
+        "'---- ---------',/,/,24x,"
+        "'1. HELP',/,24x,"
+        "'2. SET COMPUTATION PARAMETERS',/,24x,"
+        "'3. SET MODEL PARAMETERS',/,24x,"
+        "'4. RUN',/,24x,"
+        "'5. OUTPUT',/,24x,"
+        "'6. EXIT',8(/),24x,"
+        "'Enter selection (1-6): ',$)");
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i1)"), inum;
 	//
