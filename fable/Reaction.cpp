@@ -6,6 +6,7 @@
  */
 #include "Reaction.hpp"
 
+/*
     std::cout << "reaction type: "<< type << "\n";
     int ri = s[0][type-1]; 		/// # of incoming nuclide i.
     int rj = s[1][type-1]; 		/// # of incoming nuclide j.
@@ -115,3 +116,4 @@
 
         default: break;
     }
+*/
