@@ -2500,8 +2500,8 @@ void bbn::common::sol(
 		int k = kk(n); 					/// ID # of outgoing nuclide k.
 		int l = ll(n); 					/// ID # of outgoing nuclide l.
         */
-		const Reaction<double,2> & reaction = reactions[n-1];     
-        //int type = reaction.type;       /// Type of reaction.
+		const Reaction<double,2> & reaction = reactions[n];     
+        int type = reaction.type;       /// Type of reaction.
         /*
 		int i = reaction.in[0]; 		/// ID # of incoming nuclide i.
 		int j = reaction.in[1]; 		/// ID # of incoming nuclide j.
@@ -2509,7 +2509,9 @@ void bbn::common::sol(
 		int l = reaction.out[1]; 		/// ID # of outgoing nuclide l.
         */
         int i,j,k,l;
-        int type = reaction.getNuclideIndicies(i,j,k,l); /// Type of reaction.
+        reaction.getNuclideIndicies(i,j,k,l); /// Type of reaction.
+		double R = reaction.reverse;
+		double Q9 = reaction.energy;
 
 		//Reaction
 		if ((type != 0) && (i <= isize) && (l <= isize)) {
@@ -2521,7 +2523,7 @@ void bbn::common::sol(
 			int rl = s[3][type-1]; 		/// # of outgoing nuclide l.
             */
             int ri,rj,rk,rl;
-            int total = reaction.getNuclideCounts(ri,rj,rk,rl);
+            reaction.getNuclideCounts(ri,rj,rk,rl);
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (type) {
 				case 1: /// 1-0-0-1 configuration.
@@ -2532,7 +2534,7 @@ void bbn::common::sol(
 					break;
 
 				case 2: /// 1-1-0-1 configuration.
-					r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
+					r[n] = R * 1.e+10f * T932 * ex(-Q9 / T9) * f[n]; 	/// (Ref 2).
 					f[n] = rhob * f[n];
 					ci = y(j) * f[n] / 2.;
 					cj = y(i) * f[n] / 2.;
@@ -2542,7 +2544,7 @@ void bbn::common::sol(
 
 				case 3: /// 1-1-1-1 configuration.
 					f[n] = rhob * f[n]; 			/// (Ref 3).
-					r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
+					r[n] = R * ex(-Q9 / T9) * f[n];
 					ci = y(j) * f[n] / 2;
 					cj = y(i) * f[n] / 2;
 					ck = y(l) * r[n] / 2;
@@ -2558,7 +2560,7 @@ void bbn::common::sol(
 
 				case 5: /// 1-1-0-2 configuration.
 					f[n] = rhob * f[n];
-					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+					r[n] = R * ex(-Q9 / T9) * f[n]; 	/// (Ref 3).
 					ci = y(j) * f[n] / 2;
 					cj = y(i) * f[n] / 2;
 					ck = 0;
@@ -2567,7 +2569,7 @@ void bbn::common::sol(
 
 				case 6: /// 2-0-1-1 configuration.
 					f[n] = rhob * f[n];
-					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+					r[n] = R * ex(-Q9 / T9) * f[n]; 	/// (Ref 3).
 					ci = y(i) * f[n] / 2;
 					cj = 0;
 					ck = y(l) * r[n] / 2;
@@ -2576,7 +2578,7 @@ void bbn::common::sol(
 
 				case 7: /// 3-0-0-1 configuration.
 					//(Ref 4).
-					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e+20f * T932 * T932 * ex(-Q9 / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
 					ci = y(i) * y(i) * f[n] / 6;
 					cj = 0;
@@ -2586,7 +2588,7 @@ void bbn::common::sol(
 
 				case 8: /// 2-1-0-1 configuration.
 					//(Ref 4).
-					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e+20f * T932 * T932 * ex(-Q9 / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
 					ci = y(j) * y(i) * f[n] / 3.;
 					cj = y(i) * y(i) * f[n] / 6.;
@@ -2597,7 +2599,7 @@ void bbn::common::sol(
 				case 9: /// 1-1-1-2 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
-					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e-10f * T9m32 * rhob * ex(-Q9 / T9) * f[n];
 					ci = y(j) * f[n] / 2.;
 					cj = y(i) * f[n] / 2.;
 					ck = y(l) * y(l) * r[n] / 6.;
@@ -2607,7 +2609,7 @@ void bbn::common::sol(
 				case 10: /// 1-1-0-3 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
-					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e-10f * T9m32 * rhob * ex(-Q9 / T9) * f[n];
 					ci = y(j) * f[n] / 2.;
 					cj = y(i) * f[n] / 2.;
 					ck = 0.;
@@ -2617,7 +2619,7 @@ void bbn::common::sol(
 				case 11: /// 2-0-2-1 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
-					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e-10f * T9m32 * rhob * ex(-Q9 / T9) * f[n];
 					ci = y(i) * f[n] / 2.;
 					cj = 0.;
 					ck = y(l) * y(k) * r[n] / 3.;
