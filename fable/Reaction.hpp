@@ -102,21 +102,21 @@ class Reaction
         return *this;
     }
 
-    int getNuclideIndicies(double i, double j, double k, double l)
+    int getNuclideIndicies(int& i, int& j, int& k, int& l)
     {
-		i = in[0]; 		    /// ID # of incoming nuclide i.
-		j = in[1]; 		    /// ID # of incoming nuclide j.
-		k = out[0]; 		/// ID # of outgoing nuclide k.
-		l = out[1]; 		/// ID # of outgoing nuclide l.
+		i = in[0]; 		    /// ID of incoming nuclide i.
+		j = in[1]; 		    /// ID of incoming nuclide j.
+		k = out[0]; 		/// ID of outgoing nuclide k.
+		l = out[1]; 		/// ID of outgoing nuclide l.
         return type;
     }
 
-    int getNuclideCounts(double i, double j, double k, double l)
+    int getNuclideCounts(int& i, int& j, int& k, int& l)
     {
-        i = reaction_type[0][type-1]; 		/// # of incoming nuclide i.
-        j = reaction_type[1][type-1]; 		/// # of incoming nuclide j.
-        k = reaction_type[2][type-1]; 		/// # of outgoing nuclide k.
-        l = reaction_type[3][type-1]; 		/// # of outgoing nuclide l.
+        i = reaction_type[0][type-1]; 	/// # of incoming nuclide i.
+        j = reaction_type[1][type-1]; 	/// # of incoming nuclide j.
+        k = reaction_type[2][type-1]; 	/// # of outgoing nuclide k.
+        l = reaction_type[3][type-1]; 	/// # of outgoing nuclide l.
         return i + j + k + l;
     }
 
