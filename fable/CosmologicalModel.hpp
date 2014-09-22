@@ -29,7 +29,6 @@ class CosmologicalModel
     //private:            /// TODO make dependent on number of neutrinos
     real c[3+1];        /// Deprecated coefficients.
 
-    /*
 	public: CosmologicalModel():
 			G(0),
 			dG(0),
@@ -47,7 +46,6 @@ class CosmologicalModel
 			xi[i] = 0;
         }
 	}
-    */
 
 	public: CosmologicalModel(const CosmologicalModel & copy): 
 			G(copy.G),
