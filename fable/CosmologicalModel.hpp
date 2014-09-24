@@ -68,7 +68,7 @@ class CosmologicalModel
 	public:~CosmologicalModel()				/// Does nothing.
 	{
 		//verbose("Empty destructor for CosmologicalModel");
-		printf("Empty destructor for CosmologicalModel\n");
+		//printf("Empty destructor for CosmologicalModel\n");
 	}
 	
 	public: CosmologicalModel & operator = (const CosmologicalModel & other)
@@ -90,26 +90,14 @@ class CosmologicalModel
         return *this;
     }
 
-
-    /*
-	public: double & V(const unsigned index)
+    public: const void output(std::ostream& os, string sep) const
     {
-        if (index > 0 and index <= 3)
-            return _V[index];
-
-        std::cout << "Error in CosmologicalModel temporaries.\n";
-        std::cout << "Index out of bounds. (index = " << index << ")\n";
-        exit(1);
-    }
-    */
-
-    public: const void output(std::ostream& os) const
-    {
-        os << "G: " << G << "\n";
-        os << "dG: " << dG << "\n";
-        os << "tau: " << tau << "\n";
-        os << "Nnu: " << Nnu << "\n";
-        os << "cosmo: " << cosmo << "\nc:";
+        os << "G: " << G << sep;
+        os << "dG: " << dG << sep;
+        os << "tau: " << tau << sep;
+        os << "Nnu: " << Nnu << sep;
+        os << "cosmo: " << cosmo << sep;
+        os << "c: ";
         for (int i = 1; i <= 3; i++)
             os << "\t" << c[i];
         os << "\nxi: ";

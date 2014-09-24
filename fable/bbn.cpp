@@ -4696,8 +4696,8 @@ statement_320:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, 
-							M.xi[1], M.xi[2], M.xi[3];
+	//write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
+	std::cout << M;
 	//..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
 	write(iw,
 			"(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
@@ -4726,6 +4726,7 @@ statement_330:
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
 	write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, 
 							M.xi[1], M.xi[2], M.xi[3];
+	std::cout << M;
 	//..........PRINT ENERGY DENSITIES.
 	write(iw,
 			"(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
@@ -4749,6 +4750,7 @@ statement_340:
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
 	write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, 
 							M.xi[1], M.xi[2], M.xi[3];
+	std::cout << M;
 	//..........PRINT THERMODYNAMIC QUANTITIES.
 	write(iw,
 			"(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
