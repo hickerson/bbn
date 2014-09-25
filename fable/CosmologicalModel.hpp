@@ -105,12 +105,14 @@ class CosmologicalModel
             os << "\t" << xi[i];
         os << "\n";
     }
+    
+    //friend std::ostream& operator<<(std::ostream& os, const CosmologicalModel<real> & ep)
 };
 
-template <class real, int n> 
+template <class real> 
 std::ostream& operator<<(std::ostream& os, const CosmologicalModel<real> & ep)
 {
-    ep.output(os);
+    ep.output(os,"\n");
     return os;
 }
 
