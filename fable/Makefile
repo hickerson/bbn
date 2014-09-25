@@ -11,7 +11,7 @@ FOPTS = --common-equivalence-simple
 #
 # commands
 #
-CC = g++
+CC = colorg++
 RM = rm -rf
 FCC = fable.out
 
