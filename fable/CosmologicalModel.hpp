@@ -90,7 +90,7 @@ class CosmologicalModel
         return *this;
     }
 
-    public: const void output(std::ostream& os, string sep) const
+    public: const void output(std::ostream& os, std::string sep) const
     {
         os << "G: " << G << sep;
         os << "dG: " << dG << sep;
