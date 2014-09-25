@@ -582,7 +582,7 @@ const int common_nucdat::nnuc;
 
 	private:
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
-        CosmologicalModel<double> M, M0, dM;
+        CosmologicalModel<double> M, M0;//, dM;
 
 	public: 
 		common();

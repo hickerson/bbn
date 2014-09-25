@@ -14,17 +14,17 @@ using namespace std;
  * Created: Sep 13, 2014
  * 
  * Template parameters:
- *      real: the mathematical type to represent a number.
+ *      real: the mathematical type to represent a real number.
  *      n:    maximum number of nuclide types in or out of the reaction.
  */
 template <class real, int n> 
 class Reaction
 {
-    const static double reaction_data[88][8];
-    const static double reaction_type[4][11];
+    const static real reaction_data[88][8];
+    const static real reaction_type[4][11];
 
     public: 
-        string name;    /// Reaction name;
+        string name;    /// Reaction name.
         int type;       /// Reaction type.
         int in[n];      /// Incoming nuclide types.
         int out[n];     /// Outgoing nuclide types.
@@ -102,21 +102,21 @@ class Reaction
         return *this;
     }
 
-    int getNuclideIndicies(double i, double j, double k, double l)
+    int getNuclideIndicies(int& i, int& j, int& k, int& l)
     {
-		i = in[0]; 		    /// ID # of incoming nuclide i.
-		j = in[1]; 		    /// ID # of incoming nuclide j.
-		k = out[0]; 		/// ID # of outgoing nuclide k.
-		l = out[1]; 		/// ID # of outgoing nuclide l.
+		i = in[0]; 		    /// ID of incoming nuclide i.
+		j = in[1]; 		    /// ID of incoming nuclide j.
+		k = out[0]; 		/// ID of outgoing nuclide k.
+		l = out[1]; 		/// ID of outgoing nuclide l.
         return type;
     }
 
-    int getNuclideCounts(double i, double j, double k, double l)
+    int getNuclideCounts(int& i, int& j, int& k, int& l)
     {
-        i = reaction_type[0][type-1]; 		/// # of incoming nuclide i.
-        j = reaction_type[1][type-1]; 		/// # of incoming nuclide j.
-        k = reaction_type[2][type-1]; 		/// # of outgoing nuclide k.
-        l = reaction_type[3][type-1]; 		/// # of outgoing nuclide l.
+        i = reaction_type[0][type-1]; 	/// # of incoming nuclide i.
+        j = reaction_type[1][type-1]; 	/// # of incoming nuclide j.
+        k = reaction_type[2][type-1]; 	/// # of outgoing nuclide k.
+        l = reaction_type[3][type-1]; 	/// # of outgoing nuclide l.
         return i + j + k + l;
     }
 

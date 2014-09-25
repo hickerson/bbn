@@ -647,7 +647,7 @@ statement_100:
         "' 8. CHANGE XI-TAUON                       FROM ',1p,e10.3,/,10x,"
         "' 9. RESET ALL TO DEFAULT VALUES',/,10x,'10. EXIT',4(/),10x,"
         "' Enter selection (1-10): ',$)"),
-		dM.G, M.tau, M.Nnu, M.eta, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
+		M.dG, M.tau, M.Nnu, M.eta, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
 	//..........READ IN SELECTION NUMBER.
 	read(ir, "(i2)"), inum;
 	//
@@ -671,7 +671,7 @@ statement_100:
 	//Change gravitational constant section.
 statement_210:
 	write(iw, "(' ','Enter value for variation of gravitational ','constant: ',$)");
-	read(ir, star), dM.G;
+	read(ir, star), M.dG;
 	goto statement_400;
 	//Change neutron lifetime section.
 statement_220:
@@ -716,7 +716,7 @@ statement_280:
 	goto statement_400;
 	//Reset all to default values section.
 statement_290:
-	dM.G = M0.c[1];
+	M.dG = M0.c[1];
 	M.tau = M0.c[2];
 	M.Nnu = M0.c[3];
 	M.cosmo = M0.cosmo;
@@ -1778,7 +1778,7 @@ void bbn::common::start()
 	dt = dt1; 									/// Initial time step.
 	//..........MODEL SETTINGS.
 	const double const2 = 6.6700e-8f; 			/// Modify gravitational constant.
-	G = const2 * dM.G;
+	G = const2 * M.dG;
 	//tau = tau; 								    /// Convert n half-life (min) to lifetime (secs).
 	tau = M0.tau / 0.98f; 							/// Coulomb correction (Ref 2). 
 												//  TODO <-- check this!
@@ -2500,8 +2500,8 @@ void bbn::common::sol(
 		int k = kk(n); 					/// ID # of outgoing nuclide k.
 		int l = ll(n); 					/// ID # of outgoing nuclide l.
         */
-		const Reaction<double,2> & reaction = reactions[n-1];     
-        //int type = reaction.type;       /// Type of reaction.
+		const Reaction<double,2> & reaction = reactions[n];     
+        int type = reaction.type;       /// Type of reaction.
         /*
 		int i = reaction.in[0]; 		/// ID # of incoming nuclide i.
 		int j = reaction.in[1]; 		/// ID # of incoming nuclide j.
@@ -2509,7 +2509,9 @@ void bbn::common::sol(
 		int l = reaction.out[1]; 		/// ID # of outgoing nuclide l.
         */
         int i,j,k,l;
-        int type = reaction.getNuclideIndcies(i,j,k,l); /// Type of reaction.
+        reaction.getNuclideIndicies(i,j,k,l); /// Type of reaction.
+		double R = reaction.reverse;
+		double Q9 = reaction.energy;
 
 		//Reaction
 		if ((type != 0) && (i <= isize) && (l <= isize)) {
@@ -2521,7 +2523,7 @@ void bbn::common::sol(
 			int rl = s[3][type-1]; 		/// # of outgoing nuclide l.
             */
             int ri,rj,rk,rl;
-            int total = reaction.getNuclideCounts(ri,rj,rk,rl);
+            reaction.getNuclideCounts(ri,rj,rk,rl);
 			//..........COMPUTE DIFFERENT REACTION RATES.
 			switch (type) {
 				case 1: /// 1-0-0-1 configuration.
@@ -2532,7 +2534,7 @@ void bbn::common::sol(
 					break;
 
 				case 2: /// 1-1-0-1 configuration.
-					r[n] = rev(n) * 1.e+10f * T932 * ex(-q9(n) / T9) * f[n]; 	/// (Ref 2).
+					r[n] = R * 1.e+10f * T932 * ex(-Q9 / T9) * f[n]; 	/// (Ref 2).
 					f[n] = rhob * f[n];
 					ci = y(j) * f[n] / 2.;
 					cj = y(i) * f[n] / 2.;
@@ -2542,7 +2544,7 @@ void bbn::common::sol(
 
 				case 3: /// 1-1-1-1 configuration.
 					f[n] = rhob * f[n]; 			/// (Ref 3).
-					r[n] = rev(n) * ex(-q9(n) / T9) * f[n];
+					r[n] = R * ex(-Q9 / T9) * f[n];
 					ci = y(j) * f[n] / 2;
 					cj = y(i) * f[n] / 2;
 					ck = y(l) * r[n] / 2;
@@ -2558,7 +2560,7 @@ void bbn::common::sol(
 
 				case 5: /// 1-1-0-2 configuration.
 					f[n] = rhob * f[n];
-					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+					r[n] = R * ex(-Q9 / T9) * f[n]; 	/// (Ref 3).
 					ci = y(j) * f[n] / 2;
 					cj = y(i) * f[n] / 2;
 					ck = 0;
@@ -2567,7 +2569,7 @@ void bbn::common::sol(
 
 				case 6: /// 2-0-1-1 configuration.
 					f[n] = rhob * f[n];
-					r[n] = rev(n) * ex(-q9(n) / T9) * f[n]; 	/// (Ref 3).
+					r[n] = R * ex(-Q9 / T9) * f[n]; 	/// (Ref 3).
 					ci = y(i) * f[n] / 2;
 					cj = 0;
 					ck = y(l) * r[n] / 2;
@@ -2576,7 +2578,7 @@ void bbn::common::sol(
 
 				case 7: /// 3-0-0-1 configuration.
 					//(Ref 4).
-					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e+20f * T932 * T932 * ex(-Q9 / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
 					ci = y(i) * y(i) * f[n] / 6;
 					cj = 0;
@@ -2586,7 +2588,7 @@ void bbn::common::sol(
 
 				case 8: /// 2-1-0-1 configuration.
 					//(Ref 4).
-					r[n] = rev(n) * 1.e+20f * T932 * T932 * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e+20f * T932 * T932 * ex(-Q9 / T9) * f[n];
 					f[n] = rhob * rhob * f[n];
 					ci = y(j) * y(i) * f[n] / 3.;
 					cj = y(i) * y(i) * f[n] / 6.;
@@ -2597,7 +2599,7 @@ void bbn::common::sol(
 				case 9: /// 1-1-1-2 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
-					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e-10f * T9m32 * rhob * ex(-Q9 / T9) * f[n];
 					ci = y(j) * f[n] / 2.;
 					cj = y(i) * f[n] / 2.;
 					ck = y(l) * y(l) * r[n] / 6.;
@@ -2607,7 +2609,7 @@ void bbn::common::sol(
 				case 10: /// 1-1-0-3 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
-					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e-10f * T9m32 * rhob * ex(-Q9 / T9) * f[n];
 					ci = y(j) * f[n] / 2.;
 					cj = y(i) * f[n] / 2.;
 					ck = 0.;
@@ -2617,7 +2619,7 @@ void bbn::common::sol(
 				case 11: /// 2-0-2-1 configuration.
 					f[n] = rhob * f[n];
 					//(Ref 5)
-					r[n] = rev(n) * 1.e-10f * T9m32 * rhob * ex(-q9(n) / T9) * f[n];
+					r[n] = R * 1.e-10f * T9m32 * rhob * ex(-Q9 / T9) * f[n];
 					ci = y(i) * f[n] / 2.;
 					cj = 0.;
 					ck = y(l) * y(k) * r[n] / 3.;
@@ -4597,7 +4599,7 @@ statement_200:
 			"(' Model parameters:',/,'   g = ',f5.2,'/  tau = ',f6.2,'/  # nu = ',"
 			"f5.2,'/  lambda = ',1p,e10.3,'/  xi-e = ',e10.3,'/  xi-m = ',e10.3,"
 			"'/  xi-t = ',e10.3,/)"),
-		dM.G, M.tau, M.Nnu, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
+		M.dG, M.tau, M.Nnu, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
 	//..........PRINT HEADINGS, ABUNDANCES FOR NEUTRON TO LI8.
 	write(2,
 			"(4x,'Temp',8x,'N/H',10x,'P',10x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,"
@@ -4671,7 +4673,8 @@ statement_310:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, 
+							M.xi[1], M.xi[2], M.xi[3];
 	//..........PRINT HEADINGS, ABUNDANCES FOR D,T,HE3,HE4,LI7.
 	write(iw,
 			"(4x,'Temp',8x,'D/H',9x,'T/H',8x,'He3/H',8x,'He4',8x,'Li7/H',/,"
@@ -4693,7 +4696,8 @@ statement_320:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
+	//write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, M.xi[1], M.xi[2], M.xi[3];
+	std::cout << M;
 	//..........PRINT HEADINGS, ABUNDANCES FOR N,P,LI6,BE7,LI8&UP.
 	write(iw,
 			"(4x,'Temp',8x,'N/H',10x,'P',9x,'Li6/H',7x,'Be7/H',6x,'Li8/H&up',/,"
@@ -4720,7 +4724,9 @@ statement_330:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, 
+							M.xi[1], M.xi[2], M.xi[3];
+	std::cout << M;
 	//..........PRINT ENERGY DENSITIES.
 	write(iw,
 			"(4x,'Temp',8x,'rhog',8x,'rhoe',7x,'rhone',8x,'rhob',/,80('-'))");
@@ -4742,7 +4748,9 @@ statement_340:
 	//..........PRINT CAPTION.
 	write(iw, format_2014);
 	write(iw, format_3100), cy, ct, T9i, T9f, ytmin;
-	write(iw, format_3102), dG, tau, Nnu, cosmo, xi[1], xi[2], xi[3];
+	write(iw, format_3102), M.dG, M.tau, M.Nnu, M.cosmo, 
+							M.xi[1], M.xi[2], M.xi[3];
+	std::cout << M;
 	//..........PRINT THERMODYNAMIC QUANTITIES.
 	write(iw,
 			"(4x,'Temp',8x,'time',8x,'phie',9x,'dt',9x,'eta',10x,'H',/,80('-'))");
@@ -4782,7 +4790,6 @@ statement_500:
 //========================IDENTIFICATION DIVISION================================
 //
 bbn::common::common() :
-    CosmologicalModel(),
 	fem::common(),
 	common_compr0(),
 	common_compr(),
@@ -4808,7 +4815,8 @@ bbn::common::common() :
 	common_runopt(),
 	common_outopt(),
 	common_tcheck(),
-	U(), U0(), dU(), dUdt(), dUdt0()
+	U(), U0(), dU(), dUdt(), dUdt0(),
+	M(), M0()
 {
 	cy0 = .300f;
 	ct0 = .030f;
@@ -5172,7 +5180,8 @@ void common::program_new123()
 	FEM_DO_SAFE(i, 1, nrec) 
     {
 		//..........READ IN REACTION PARAMETERS.
-        reactions.push_back(Reaction<double,2>(i));   // TODO Read from file.
+        //reactions.push_back(Reaction<double,2>(i));   // TODO Read from file.
+        reactions[i] = Reaction<double,2>(i);   // TODO Read from file.
 		/*
 		iform(i) = reacpr(i, 2); 		/// Reaction type.
 		ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
@@ -5212,7 +5221,7 @@ void common::program_new123()
 
 	M.T9i = M0.T9i; 					/// Initial temperature.
 	M.T9f = M0.T9f; 					/// Final temperature.
-	dM.G = M0.c[1]; 					/// Variation of gravitational constant.
+	M.dG = M0.c[1]; 					/// Variation of gravitational constant.
 	M.tau = M0.c[2]; 					/// Neutron lifetime.
 	M.Nnu = M0.c[3]; 					/// Number of neutrino species.
 	M.cosmo = M0.cosmo; 				/// Cosmological constant.
