@@ -5037,7 +5037,7 @@ void common::program_new123()
 	common_read read(*this);
 	common_write write(*this);
 	const int iw = 6;
-	int i = 0;
+	//int i = 0;
 	const int ir = 5;
 	int inum = 0;
 	//
@@ -5177,11 +5177,13 @@ void common::program_new123()
 	//
 	//20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
 	//
-	FEM_DO_SAFE(i, 1, nrec) 
+	//FEM_DO_SAFE(i, 1, nrec) 
+    for (int n = 1; n < nrec; n++)
     {
+        std::cout << n << " <- i, nrec -> " << nrec << " " << int(n < nrec) <<"\n";
 		//..........READ IN REACTION PARAMETERS.
-        //reactions.push_back(Reaction<double,2>(i));   // TODO Read from file.
-        reactions[i] = Reaction<double,2>(i);   // TODO Read from file.
+        //reactions.push_back(Reaction<double,2>(n));   // TODO Read from file.
+        reactions[n] = Reaction<double,2>(n);   // TODO Read from file.
 		/*
 		iform(i) = reacpr(i, 2); 		/// Reaction type.
 		ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
@@ -5202,8 +5204,8 @@ void common::program_new123()
 		q9(i) = reacpr[i-1][8-1]; 		/// Energy released.
         */
 		//..........INITIALIZE REACTION RATES.
-		f[i] = 0; 						/// Forward rate coefficient.
-		r[i] = 0; 						/// Reverse rate coefficient.
+		f[n] = 0; 						/// Forward rate coefficient.
+		r[n] = 0; 						/// Reverse rate coefficient.
 		//..........SET RUN OPTIONS TO DEFAULT.
 	}
 	irun = 1; 							/// Do full run.
