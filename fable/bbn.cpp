@@ -5158,12 +5158,12 @@ void common::program_new123()
 	//10--------OPEN FILES AND PRINT GREETING----------------------------------------
 	//
 	//Output file.
-	io.open(2, "new123.dat")
-		.status("new");
+	io.open(2, "new123.dat").status("new");
 	//Time = beginning of program.
 	itime = 1;
 	//Check interface subroutine.
 	check();
+    /*
 	write(iw,
 			"(6(/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU',4x,8('C'),6x,'11',8x,6('2'),6x,"
 			"6('3'),/),2(' ',4x,'NN',6x,'NN  UU',6x,'UU  CC',12x,'1111',6x,'22',6x,"
@@ -5174,16 +5174,17 @@ void common::program_new123()
 			"6x,'33',/),2(' ',4x,'NN',6x,'NN  ',10('U'),4x,8('C'),4x,6('1'),4x,"
 			"10('2'),4x,6('3'),/),/,26x,'MODIFIED APRIL 1994',/,/,/,"
 			"'(Press <RETURN> to continue): ',$)");
+    */
 	//
 	//20--------INPUT INITIALIZATION INFORMATION AND PAUSE---------------------------
 	//
 	//FEM_DO_SAFE(i, 1, nrec) 
-    for (int n = 1; n < nrec; n++)
+    for (int i = 1; i <= nrec; i++)
     {
-        std::cout << n << " <- i, nrec -> " << nrec << " " << int(n < nrec) <<"\n";
+        std::cout << i << " <- i, nrec -> " << nrec << " " << bool(i <= nrec) <<"\n";
 		//..........READ IN REACTION PARAMETERS.
         //reactions.push_back(Reaction<double,2>(n));   // TODO Read from file.
-        reactions[n] = Reaction<double,2>(n);   // TODO Read from file.
+        reactions[i] = Reaction<double,2>(i);   // TODO Read from file.
 		/*
 		iform(i) = reacpr(i, 2); 		/// Reaction type.
 		ii(i) = reacpr(i, 3); 			/// Incoming nuclide type.
@@ -5204,8 +5205,8 @@ void common::program_new123()
 		q9(i) = reacpr[i-1][8-1]; 		/// Energy released.
         */
 		//..........INITIALIZE REACTION RATES.
-		f[n] = 0; 						/// Forward rate coefficient.
-		r[n] = 0; 						/// Reverse rate coefficient.
+		f[i] = 0; 						/// Forward rate coefficient.
+		r[i] = 0; 						/// Reverse rate coefficient.
 		//..........SET RUN OPTIONS TO DEFAULT.
 	}
 	irun = 1; 							/// Do full run.
