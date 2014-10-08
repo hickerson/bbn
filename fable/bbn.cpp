@@ -965,8 +965,9 @@ void bbn::common::check()
 		//write(3, "(7(e13.5))"), Nnu, tau, etaout(it), xout(it, 3),
 		//write(3, "(7e13.5)"), Nnu, tau, etaout(it), xout(it, 3),
 		//	xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
-		std::cout << M.Nnu <<" "<< M.tau <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "<<
-			xout(it,5) <<" "<< xout(it,6) <<" "<< xout(it,8) << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
+		std::cout << "writing info to file: "
+            << M.Nnu <<" "<< M.tau <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "
+			<< xout(it,5) <<" "<< xout(it,6) <<" "<< xout(it,8) << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
 	}
 	//
 	//30--------CLOSE FILE-----------------------------------------------------------
@@ -2500,7 +2501,7 @@ void bbn::common::sol(
 		int k = kk(n); 					/// ID # of outgoing nuclide k.
 		int l = ll(n); 					/// ID # of outgoing nuclide l.
         */
-		const Reaction<double,2> & reaction = reactions[n];     
+		Reaction<double,2> & reaction = reactions[n];     
         int type = reaction.type;       /// Type of reaction.
         /*
 		int i = reaction.in[0]; 		/// ID # of incoming nuclide i.
