@@ -584,6 +584,7 @@ const int common_nucdat::nnuc;
 		static const int nnuc = 26;
 		int Nreactions = 88;
 		int Nnuclide = 26;
+		int Niterations = 40;
         
 		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 		//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
@@ -599,6 +600,8 @@ const int common_nucdat::nnuc;
 		// TODO put in a subclass?
 		double a[nnuc+1][nnuc+1];
 		double b[nnuc+1];
+
+        OutputDatum outputs[itmax+1];
 		//double yx[nnuc+1];
 		/*
         boost::numeric::ublas::matrix<double> a(nnuc,nnuc);
@@ -627,6 +630,7 @@ const int common_nucdat::nnuc;
 
 
 		void qvary(int, double);        // TODO remove?
+
 
 	private:
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 

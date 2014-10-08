@@ -3720,44 +3720,47 @@ void bbn::common::accum()
 		xout(it, i) = y(i) / y(2);
 	}
 	//xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
-	xout(it, 2) = y(2) * am[2]; 			/// Exception for proton.
+	outputs.X[2] = y(2) * am[2]; 			/// Exception for proton.
 	//xout(it, 6) = y(6) * am(6); 		/// Exception for helium.
-	xout(it, 6) = y(6) * am[6]; 			/// Exception for helium.
+	outputs.X[6] = y(6) * am[6]; 			/// Exception for helium.
 	//..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
 	//Li8 to O16.
-	xout(it, 10) += 
-        xout(it,11) + xout(it,12) + xout(it,13) + xout(it,14) +
-		xout(it,15) + xout(it,16) + xout(it,17) + xout(it,18) +
-		xout(it,19) + xout(it,20) + xout(it,21) + xout(it,22) +
-		xout(it,23) + xout(it,24) + xout(it,25) + xout(it,26);
+	outputs.X[10] += 
+        outputs.X[11] + outputs.X[12] + outputs.X[13] + outputs.X[14] +
+		outputs.X[15] + outputs.X[16] + outputs.X[17] + outputs.X[18] +
+		outputs.X[19] + outputs.X[20] + outputs.X[21] + outputs.X[22] +
+		outputs.X[23] + outputs.X[24] + outputs.X[25] + outputs.X[26];
 
 	//..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
-	//Temperature.
-	T9out(it) = T9;
-	//Time.
-	tout(it) = t;
-	//rho photon.
-	thmout(it, 1) = thm(1);
-	//rho electron.
-	thmout(it, 2) = thm(4);
-	//rho neutrino.
-	thmout(it, 3) = thm(8);
-	//rho baryon.
-	thmout(it, 4) = thm(9);
-	//Chemical potential.
-	thmout(it, 5) = phie;
-	//rho total.
-	thmout(it, 6) = thm(10);
-	//Time step.
-	dtout(it) = dt;
-	//Baryon to photon ratio.
-	etaout(it) = hv / (3.3683e+4f);
-	//Expansion rate.
-	hubout(it) = hubcst;
+	outputs[it].T9 = T9;                 /// Temperature.
+	outputs[it].t = t;                   /// Time.
+	outputs[it].thm[1] = thm(1);         /// rho photon.
+	outputs[it].thm[2] = thm(4);         /// rho electron.
+	outputs[it].thm[3] = thm(8);         /// rho neutrino.
+	outputs[it].thm[4] = thm(9);         /// rho baryon.
+	outputs[it].thm[5] = phie;           /// Chemical potential.
+	outputs[it].thm[6] = thm(10);        /// rho total.
+	outputs[it].dt = dt;                 /// Time step.
+	outputs[it].eta = hv / (3.3683e+4f); /// Baryon to photon ratio.
+	outputs[it].hub = hubcst;            /// Expansion rate.
+    /*
+	T9out(it) = T9;                 /// Temperature.
+	tout(it) = t;                   /// Time.
+	thmout(it, 1) = thm(1);         /// rho photon.
+	thmout(it, 2) = thm(4);         /// rho electron.
+	thmout(it, 3) = thm(8);         /// rho neutrino.
+	thmout(it, 4) = thm(9);         /// rho baryon.
+	thmout(it, 5) = phie;           /// Chemical potential.
+	thmout(it, 6) = thm(10);        /// rho total.
+	dtout(it) = dt;                 /// Time step.
+	etaout(it) = hv / (3.3683e+4f); /// Baryon to photon ratio.
+	hubout(it) = hubcst;            /// Expansion rate.
+    */
 	//
 	//20--------INDICATE TERMINATION OF ACCUMULATION IF APPROPRIATE------------------
 	//
-	if ((it == itmax) || (ip < inc)) {
+	//if ((it == itmax) || (ip < inc)) {
+	if ((it == Niterations) || (ip < inc)) {
 		ltime = 1;
 	}
 	//
