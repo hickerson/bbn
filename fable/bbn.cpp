@@ -958,16 +958,17 @@ void bbn::common::check()
 	//
 	//20--------WRITE INTO FILE------------------------------------------------------
 	//
-	if (itime == 8) { 							/// Right after a run.
-		xout(it,8) += xout(it,9); 				/// Add beryllium to lithium.
-		xout(it,5) += xout(it,4); 				/// Add tritium to helium-3.
-		xout(it,6) -= 0.0003f; 					/// my correction for fitted rates+coarse steps
+	if (itime == 8) { 						/// Right after a run.
+        double* Xout = outputs[it].X;
+		Xout[8] += Xout[9]; 				/// Add beryllium to lithium.
+		Xout[5] += Xout[4]; 				/// Add tritium to helium-3.
+		Xout[6] -= 0.0003f; 				/// my correction for fitted rates+coarse steps
 		//write(3, "(7(e13.5))"), Nnu, tau, etaout(it), xout(it, 3),
 		//write(3, "(7e13.5)"), Nnu, tau, etaout(it), xout(it, 3),
 		//	xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
 		std::cout << "writing info to file: "
-            << M.Nnu <<" "<< M.tau <<" "<< etaout(it) <<" "<< xout(it, 3) <<" "
-			<< xout(it,5) <<" "<< xout(it,6) <<" "<< xout(it,8) << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
+            << M.Nnu <<" "<< M.tau <<" "<< outputs[it].eta <<" "<< Xout[3] <<" "
+			<< Xout[5] <<" "<< Xout[6] <<" "<< Xout[8] << "\n";	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
 	}
 	//
 	//30--------CLOSE FILE-----------------------------------------------------------
@@ -3713,36 +3714,37 @@ void bbn::common::accum()
 	double& T9 = U.T9;							/// Copy the reference.
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
-	//double* const y = U.Y;						/// Get the array pointer.
 
+    OutputDatum& out = outputs[it];
+    double* Xout = out.X;
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
-		xout(it, i) = y(i) / y(2);
+		Xout[i] = y(i) / y(2);
 	}
 	//xout(it, 2) = y(2) * am(2); 		/// Exception for proton.
-	outputs.X[2] = y(2) * am[2]; 			/// Exception for proton.
+	Xout[2] = y(2) * am[2]; 			/// Exception for proton.
 	//xout(it, 6) = y(6) * am(6); 		/// Exception for helium.
-	outputs.X[6] = y(6) * am[6]; 			/// Exception for helium.
+	Xout[6] = y(6) * am[6]; 			/// Exception for helium.
 	//..........SUM UP ABUNDANCES OF HEAVY NUCLIDES.
 	//Li8 to O16.
-	outputs.X[10] += 
-        outputs.X[11] + outputs.X[12] + outputs.X[13] + outputs.X[14] +
-		outputs.X[15] + outputs.X[16] + outputs.X[17] + outputs.X[18] +
-		outputs.X[19] + outputs.X[20] + outputs.X[21] + outputs.X[22] +
-		outputs.X[23] + outputs.X[24] + outputs.X[25] + outputs.X[26];
+	Xout[10] += 
+        Xout[11] + Xout[12] + Xout[13] + Xout[14] +
+		Xout[15] + Xout[16] + Xout[17] + Xout[18] +
+		Xout[19] + Xout[20] + Xout[21] + Xout[22] +
+		Xout[23] + Xout[24] + Xout[25] + Xout[26];
 
 	//..........RELABEL TEMPERATURE, TIME, THERMODYNAMIC VARIABLES, ETC.
-	outputs[it].T9 = T9;                 /// Temperature.
-	outputs[it].t = t;                   /// Time.
-	outputs[it].thm[1] = thm(1);         /// rho photon.
-	outputs[it].thm[2] = thm(4);         /// rho electron.
-	outputs[it].thm[3] = thm(8);         /// rho neutrino.
-	outputs[it].thm[4] = thm(9);         /// rho baryon.
-	outputs[it].thm[5] = phie;           /// Chemical potential.
-	outputs[it].thm[6] = thm(10);        /// rho total.
-	outputs[it].dt = dt;                 /// Time step.
-	outputs[it].eta = hv / (3.3683e+4f); /// Baryon to photon ratio.
-	outputs[it].hub = hubcst;            /// Expansion rate.
+	out.T9 = T9;                 /// Temperature.
+	out.t = t;                   /// Time.
+	out.thm[1] = thm(1);         /// rho photon.
+	out.thm[2] = thm(4);         /// rho electron.
+	out.thm[3] = thm(8);         /// rho neutrino.
+	out.thm[4] = thm(9);         /// rho baryon.
+	out.thm[5] = phie;           /// Chemical potential.
+	out.thm[6] = thm(10);        /// rho total.
+	out.dt = dt;                 /// Time step.
+	out.eta = hv / (3.3683e+4f); /// Baryon to photon ratio.
+	out.hub = hubcst;            /// Expansion rate.
     /*
 	T9out(it) = T9;                 /// Temperature.
 	tout(it) = t;                   /// Time.
@@ -4814,7 +4816,7 @@ bbn::common::common() :
 	//common_kays(),
 	common_flags(),
 	//common_checkcb(),
-	common_outdat(),
+	//common_outdat(),
 	common_nupar(),
 	common_runopt(),
 	common_outopt(),
@@ -5235,7 +5237,7 @@ void common::program_new123()
 	M.xi[1] = M0.xi[1]; 				/// Electron degeneracy parameter.
 	M.xi[2] = M0.xi[2]; 				/// Muon degeneracy parameter.
 	M.xi[3] = M0.xi[3]; 				/// Tau degeneracy parameter.
-	M.eta = M0.eta; 						/// Baryon-to-photon ratio.
+	M.eta = M0.eta; 					/// Baryon-to-photon ratio.
 	//..........ACCEPT RETURN TO CONTINUE.
 	read(ir, star); 					/// Pause.
 	//

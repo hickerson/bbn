@@ -424,6 +424,7 @@ const int common_nucdat::nnuc;
 	};
 
 	// TODO make a class that is arrayed.
+    /*
 	struct common_outdat
 	{
 		static const int itmax = 40;
@@ -447,6 +448,7 @@ const int common_nucdat::nnuc;
 			hubout(dimension(itmax), fem::fill0)
 		{}
 	};
+    */
 
 /*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
@@ -582,9 +584,10 @@ const int common_nucdat::nnuc;
 	{
 		static const int nrec = 88;
 		static const int nnuc = 26;
-		int Nreactions = 88;
-		int Nnuclide = 26;
-		int Niterations = 40;
+		static const int itmax = 40;
+		int Nreactions = nrec;
+		int Nnuclide = nnuc;
+		int Niterations = itmax;
         
 		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 		//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
