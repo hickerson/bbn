@@ -1283,7 +1283,7 @@ L120:
     real r__1, r__2, r__3;
 
     /* Local variables */
-    extern /* Subroutine */ int func5_(), func6_();
+    extern /* Subroutine */ doublereal func5_(), func6_();
     extern doublereal xintd_(real *, real *, U_fp, integer *);
     static real uplim1, uplim2;
 
@@ -1655,7 +1655,7 @@ doublereal func6_(real *x)
 /*       Scherrer,R.J., 1983, Mon.Not.R.astr.Soc., 205, 683. */
 /*       Beaudet,G. and Goret,P., 1976, Astron. & Astrophys., 49, 415. */
 /* ========================IDENTIFICATION DIVISION================================ */
-doublereal xintd_(real *xlow, real *xhi, E_fp func, integer *nq)
+doublereal xintd_(real *xlow, real *xhi, U_fp func, integer *nq)
 {
     /* Initialized data */
 
