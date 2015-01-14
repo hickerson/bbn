@@ -49,7 +49,7 @@ C----------COMMON AREAS.
       COMMON /compr0/ cy0,ct0,t9i0,t9f0,ytmin0,inc0  !Default comp parameters.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
       COMMON /modpr0/ c0,cosmo0,xi0                  !Default model parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
       COMMON /varpr0/ dt0,eta0                       !Default variationl params.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /checkcb/  itime                        !Computation location.
@@ -126,13 +126,8 @@ C----------OUTPUT FILE STATUS.
 C----------USER RESPONSE VARIABLES.
       INTEGER inum                 !Selection number.
 
-C declare b
-      REAL b
 
 C===========================PROCEDURE DIVISION==================================
-
-C set b Fierz term
-      b = -0.20                    !Fierz parameter. Extern.
 
 C10--------OPEN FILES AND PRINT GREETING----------------------------------------
 
@@ -934,7 +929,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /modpr0/ c0,cosmo0,xi0                  !Default model parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
       COMMON /varpr0/ dt0,eta0                       !Default variationl params.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
 
@@ -1098,7 +1093,7 @@ C----------PARAMETERS.
       PARAMETER (knuc=9)           !Total # of nuclides for irun = 3.
 
 C----------COMMON AREAS.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b          !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
       COMMON /varpr/  dt1,eta1                       !Variational parameters.
       COMMON /checkcb/  itime                        !Computation location.
       COMMON /runopt/ irun,isize,jsize               !Run options.
@@ -1141,10 +1136,10 @@ C----------FLAG AND LABELS.
       CHARACTER*22 vtype(8)        !Label for quantities being varied.
 
 C----------EQUIVALENCE VARIABLE.
-      REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
+C     REAL    qvary(7)             !Array set equal to c, cosmo, and xi.
 
 C----------EQUIVALENCE STATEMENTS.
-      EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
+C     EQUIVALENCE (qvary(1),c(1)), (qvary(4),cosmo), (qvary(5),xi(1))
 
 
 C==============================DATA DIVISION====================================
@@ -1409,7 +1404,7 @@ C----------PARAMETERS.
 
 C----------COMMON AREAS.
       COMMON /compr/  cy,ct,t9i,t9f,ytmin,inc        !Computation parameters.
-      COMMON /modpr/  g,tau,xnu,c,cosmo,xi,b         !Model parameters.
+      COMMON /modpr/  g,tau,xnu,c,cosmo,xi           !Model parameters.
       COMMON /flags/  ltime,is,ip,it,mbad            !Flags, counters.
       COMMON /outdat/ xout,thmout,t9out,tout,dtout,  !Output data.
      |                etaout,hubout

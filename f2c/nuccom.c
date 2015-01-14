@@ -1768,7 +1768,7 @@ doublereal ex_(real *x)
     static real sl[11] = { 1.f,1.f,1.f,2.f,2.f,1.f,1.f,1.f,2.f,3.f,1.f };
 
     /* Format strings */
-    static char fmt_6000[] = "(\002 \002,\002** y(\002,i2,\002) fails to con"
+    static char fmt_6000[] = "(\002,\002** y(\002,i2,\002) fails to con"
 	    "verge **\002)";
     static char fmt_6002[] = "(\002 \002,\002** \002,i2,\002 th diagonal ter"
 	    "m equals zero **\002)";
