@@ -423,6 +423,7 @@ const int common_nucdat::nnuc;
 		{}
 	};
 
+    
 	// TODO make a class that is arrayed.
     /*
 	struct common_outdat
@@ -604,7 +605,7 @@ const int common_nucdat::nnuc;
 		double a[nnuc+1][nnuc+1];
 		double b[nnuc+1];
 
-        OutputDatum outputs[itmax+1];
+        OutputDatum out[itmax+1];
 		//double yx[nnuc+1];
 		/*
         boost::numeric::ublas::matrix<double> a(nnuc,nnuc);
@@ -766,6 +767,18 @@ const int common_nucdat::nnuc;
             isVIndex(index);
             return index < 4? dUdt0.V(index) : dUdt0.Y(index-3); 
         }
+        
+        double& xout(unsigned index, unsigned nuclide) {
+            isNuclideIndex(index);
+            return dUdt0.Y(index); 
+        }
+
+        double& thmout(unsigned index, unsigned nuclide) {
+        double& T9out(unsigned index) {
+        double& tout(unsigned index) {
+        double& dtout(unsigned index) {
+        double& etaout(unsigned index) {
+        double& hubout(unsigned index) {
 
         public: void output(std::ostream& os) const
         {

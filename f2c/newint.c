@@ -72,7 +72,7 @@ struct {
 #define modpr0_1 modpr0_
 
 struct {
-    real g, tau, xnu, c__[3], cosmo, xi[3], b;
+    real g, tau, xnu, c__[3], cosmo, xi[3];
 } modpr_;
 
 #define modpr_1 modpr_
@@ -109,7 +109,7 @@ struct {
 
 struct {
     doublereal a[676]	/* was [26][26] */;
-    real b___[26], yx[26];
+    real b[26], yx[26];
 } lncoef_;
 
 #define lncoef_1 lncoef_
@@ -153,9 +153,8 @@ struct {
 #define outdat_1 outdat_
 
 struct {
-    real t9mev, tnmev, tnu, cnorm;
+    real t9mev, tnmev, tnu, cnorm, rhonu;
     integer nu;
-    real rhonu;
 } nupar_;
 
 #define nupar_1 nupar_
@@ -245,7 +244,7 @@ static integer c__1 = 1;
 /* Time variables. */
 /* Dynamic variables. */
 /* Energy densities. */
-/* Linear eqn coeffi */
+/* Linear eqn coeffic */
 /* Nuclide data. */
 /* Eval function bl */
 /* Eval function bm(z */
@@ -309,12 +308,11 @@ static integer c__1 = 1;
 /* c(2) is neutron half-life (min). */
 /* c(3) is number of neutrino species. */
 /* Cosmological constant. */
+/* ----------DEFAULT VARIATIONAL PARAMETERS. */
 /* Neutrino degeneracy parameters. */
 /* xi(1) is e neutrino degeneracy param */
 /* xi(2) is m neutrino degeneracy param */
 /* xi(3) is t neutrino degeneracy param */
-/* ----------DEFAULT VARIATIONAL PARAMETERS. */
-/* Fierz parameter */
 /* Default initial time step. */
 /* ----------VARIATIONAL PARAMETERS. */
 /* Default baryon-to-photon ratio. */

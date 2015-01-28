@@ -63,14 +63,20 @@ struct {
 
 #define runopt_1 runopt_
 
-struct {
-    real f[88], r__[88];
+union {
+    struct {
+	real f[88], r__;
+    } _1;
+    struct {
+	real f[88], r__[88];
+    } _2;
 } rates_;
 
-#define rates_1 rates_
+#define rates_1 (rates_._1)
+#define rates_2 (rates_._2)
 
 struct {
-    real g, tau, xnu, c__[3], cosmo, xi[3], b;
+    real g, tau, xnu, c__[3], cosmo, xi[3];
 } modpr_;
 
 #define modpr_1 modpr_
@@ -95,9 +101,8 @@ struct {
 #define besselcb_1 besselcb_
 
 struct {
-    real t9mev, tnmev, tnu, cnorm;
+    real t9mev, tnmev, tnu, cnorm, rhonu;
     integer nu;
-    real rhonu;
 } nupar_;
 
 #define nupar_1 nupar_
@@ -137,11 +142,11 @@ struct {
 union {
     struct {
 	doublereal a[676]	/* was [26][26] */;
-	real bkevin[26], yx[26];
+	real b[26], yx[26];
     } _1;
     struct {
 	doublereal a[676]	/* was [26][26] */;
-	real bkevin[26], y[26];
+	real b[26], y[26];
     } _2;
 } lncoef_;
 
@@ -181,10 +186,7 @@ static integer c__1 = 1;
 
     /* Local variables */
     static integer i__;
-#define v ((real *)&evolp1_1)
-#define v0 ((real *)&evolp3_1)
-    static real dtl;
-#define dvdt ((real *)&evolp2_1)
+    static real v[29], v0[29], dtl, dvdt[29];
     static integer mvar, loop;
     static real dvdt0[29];
     extern /* Subroutine */ int check_(void), accum_(void);
@@ -247,9 +249,10 @@ static integer c__1 = 1;
 /* Time derivatives. */
 /* Value of variables at original point */
 /* ----------EQUIVALENCE STATEMENTS. */
-/* Value of derivatives at original poi */
+/*     EQUIVALENCE (v(4),y(1)),(dvdt(4),dydt(1)),(v0(4),y0(1)) */
 /* ===========================PROCEDURE DIVISION================================== */
 /* 10--------INPUT INITIALIZATION INFORMATION, RELABEL---------------------------- */
+/* Value of derivatives at original poi */
     flags_1.ltime = 0;
 /* Set termination indicator to zero. */
     start_();
@@ -358,11 +361,6 @@ L200:
 /*     3)  Wagoner, R.V. 1969, page 292, equations C1, C2. */
 } /* driver_ */
 
-#undef dvdt
-#undef v0
-#undef v
-
-
 /* ========================IDENTIFICATION DIVISION================================ */
 /* Subroutine */ int start_(void)
 {
@@ -409,9 +407,8 @@ L200:
 /* ==========================DECLARATION DIVISION================================= */
 /* ----------REACTION RATES. */
 /* Run options. */
-/* Forward reaction rate coefficients. */
 /* ----------EVOLUTION PARAMETERS. */
-/* Reverse reaction rate coefficients. */
+/* Forward reaction rate coefficients. */
 /* Temperature (in units of 10**9 K). */
 /* Defined by hv = M(atomic)n(baryon)/t */
 /* Chemical potential of electron. */
@@ -429,9 +426,8 @@ L200:
 /* c(1) is variation of grav. constant. */
 /* c(2) is neutron lifetime (sec). */
 /* c(3) is number of neutrino species. */
-/* Neutrino degeneracy parameters. */
 /* ----------VARIATIONAL PARAMETERS. */
-/* Fierz parameter. */
+/* Neutrino degeneracy parameters. */
 /* Initial time step. */
 /* ----------TIME VARIABLES. */
 /* Baryon-to-photon ratio. */
@@ -511,15 +507,15 @@ L200:
 /* Initial p abundance (Ref */
 	}
     }
-/* change: set cnorm regardless of the nu_e chem potential */
-/*      IF (xi(1).ne.0.) THEN        !Electron neutrino degeneracy. */
-    nupar_1.cnorm = 1.f;
-    nupar_1.tnu = 1e-5f;
+    if (modpr_1.xi[0] != 0.f) {
+/* Electron neutrino degeneracy. */
+	nupar_1.cnorm = 1.f;
+	nupar_1.tnu = 1e-5f;
 /* Low temperature. */
-    rate1_(&c_b4);
+	rate1_(&c_b4);
 /* Find normalization constant at low t */
-    nupar_1.cnorm = 1 / modpr_1.tau / rates_1.f[0];
-/*      END IF */
+	nupar_1.cnorm = 1 / modpr_1.tau / rates_1.f[0];
+    }
     evolp3_1.y0[0] = evolp1_1.y[0];
     evolp3_1.y0[1] = evolp1_1.y[1];
 /* 40--------FIND RATIO OF BARYON DENSITY TO TEMPERATURE CUBED-------------------- */
@@ -1095,12 +1091,8 @@ L120:
 /* ========================IDENTIFICATION DIVISION================================ */
 /* Subroutine */ int bessel_(real *z__)
 {
-    /* Local variables */
     static integer i__;
-    static real r__;
-#define blz ((real *)&besselcb_1)
-#define bmz ((real *)&besselcb_1 + 5)
-#define bnz ((real *)&besselcb_1 + 10)
+    static real r__, blz[5], bmz[5], bnz[5];
     extern /* Subroutine */ int knux_(real *);
 
 /* ----------LINKAGES. */
@@ -1127,9 +1119,15 @@ L120:
 /* Array containing values from functio */
 /* Defined by z = m(electron)*c**2/k*t9 */
 /* ----------EQUIVALENCE STATEMENTS. */
-/* Multiples of z. */
+/*     EQUIVALENCE (blz(1),bl1),(blz(2),bl2),(blz(3),bl3),(blz(4),bl4), */
+/*    |            (blz(5),bl5) */
+/*     EQUIVALENCE (bmz(1),bm1),(bmz(2),bm2),(bmz(3),bm3),(bmz(4),bm4), */
+/*    |            (bmz(5),bm5) */
+/*     EQUIVALENCE (bnz(1),bn1),(bnz(2),bn2),(bnz(3),bn3),(bnz(4),bn4), */
+/*    |            (bnz(5),bn5) */
 /* ===========================PROCEDURE DIVISION================================== */
 /* 10--------LOCALLY DEFINED FUNCTIONS-------------------------------------------- */
+/* Multiples of z. */
 /* Function bl. */
 /* Function bm. */
 /* 20--------CALCULATE FOR 1 THRU 5 Z--------------------------------------------- */
@@ -1148,11 +1146,6 @@ L120:
     }
     return 0;
 } /* bessel_ */
-
-#undef bnz
-#undef bmz
-#undef blz
-
 
 /* ========================IDENTIFICATION DIVISION================================ */
 /* Subroutine */ int knux_(real *z__)
@@ -1283,7 +1276,7 @@ L120:
     real r__1, r__2, r__3;
 
     /* Local variables */
-    extern /* Subroutine */ doublereal func5_(), func6_();
+    extern /* Subroutine */ int func5_(), func6_();
     extern doublereal xintd_(real *, real *, U_fp, integer *);
     static real uplim1, uplim2;
 
@@ -1399,18 +1392,13 @@ doublereal func1_(real *x)
 	part1 = 1.f / (ex_(&r__1) + 1.f);
 	r__1 = (*x - 2.531f) * (.511f / nupar_1.tnmev) - modpr_1.xi[0];
 	part2 = 1.f / (ex_(&r__1) + 1.f);
-/*       func1 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2 */
-/*      IF (x.gt.(2.531) THEN */
 /* Computing 2nd power */
 	r__1 = *x - 2.531f;
 /* Computing 2nd power */
 	r__2 = *x;
 	d__1 = (doublereal) (r__2 * r__2 - 1);
-	ret_val = nupar_1.cnorm * (*x + modpr_1.b) * (r__1 * r__1) * pow_dd(&
-		d__1, &c_b24) * part1 * part2;
-/*      ELSE */
-/*        func1 = cnorm*(x-b)*(x-2.531)**2*(x**2-1)**.5*part1*part2 */
-/*      END IF */
+	ret_val = nupar_1.cnorm * *x * (r__1 * r__1) * pow_dd(&d__1, &c_b24) *
+		 part1 * part2;
     }
     return ret_val;
 } /* func1_ */
@@ -1456,18 +1444,13 @@ doublereal func2_(real *x)
 	part1 = 1.f / (ex_(&r__1) + 1.f);
 	r__1 = -(*x + 2.531f) * (.511f / nupar_1.tnmev) - modpr_1.xi[0];
 	part2 = 1.f / (ex_(&r__1) + 1.f);
-/*       func2 = cnorm*(x+b*)*(x+2.531)**2*(x**2-1)**.5*part1*part2 */
-/*      IF (x.gt.(2.531) THEN */
 /* Computing 2nd power */
 	r__1 = *x + 2.531f;
 /* Computing 2nd power */
 	r__2 = *x;
 	d__1 = (doublereal) (r__2 * r__2 - 1);
-	ret_val = nupar_1.cnorm * (*x - modpr_1.b) * (r__1 * r__1) * pow_dd(&
-		d__1, &c_b24) * part1 * part2;
-/*      ELSE */
-/*        func2 = cnorm*(x+b)*(x+2.531)**2*(x**2-1)**.5*part1*part2 */
-/*      END IF */
+	ret_val = nupar_1.cnorm * *x * (r__1 * r__1) * pow_dd(&d__1, &c_b24) *
+		 part1 * part2;
     }
     return ret_val;
 } /* func2_ */
@@ -1513,14 +1496,13 @@ doublereal func3_(real *x)
 	part1 = 1.f / (ex_(&r__1) + 1.f);
 	r__1 = (*x + 2.531f) * (.511f / nupar_1.tnmev) + modpr_1.xi[0];
 	part2 = 1.f / (ex_(&r__1) + 1.f);
-/*       func3 = cnorm*x*(x+2.531)**2*(x**2-1)**.5*part1*part2 */
 /* Computing 2nd power */
 	r__1 = *x + 2.531f;
 /* Computing 2nd power */
 	r__2 = *x;
 	d__1 = (doublereal) (r__2 * r__2 - 1);
-	ret_val = nupar_1.cnorm * (*x - modpr_1.b) * (r__1 * r__1) * pow_dd(&
-		d__1, &c_b24) * part1 * part2;
+	ret_val = nupar_1.cnorm * *x * (r__1 * r__1) * pow_dd(&d__1, &c_b24) *
+		 part1 * part2;
     }
     return ret_val;
 } /* func3_ */
@@ -1566,14 +1548,13 @@ doublereal func4_(real *x)
 	part1 = 1.f / (ex_(&r__1) + 1.f);
 	r__1 = -(*x - 2.531f) * (.511f / nupar_1.tnmev) + modpr_1.xi[0];
 	part2 = 1.f / (ex_(&r__1) + 1.f);
-/*       func4 = cnorm*x*(x-2.531)**2*(x**2-1)**.5*part1*part2 */
 /* Computing 2nd power */
 	r__1 = *x - 2.531f;
 /* Computing 2nd power */
 	r__2 = *x;
 	d__1 = (doublereal) (r__2 * r__2 - 1);
-	ret_val = nupar_1.cnorm * (*x + modpr_1.b * .511f) * (r__1 * r__1) * 
-		pow_dd(&d__1, &c_b24) * part1 * part2;
+	ret_val = nupar_1.cnorm * *x * (r__1 * r__1) * pow_dd(&d__1, &c_b24) *
+		 part1 * part2;
     }
     return ret_val;
 } /* func4_ */
@@ -1655,7 +1636,7 @@ doublereal func6_(real *x)
 /*       Scherrer,R.J., 1983, Mon.Not.R.astr.Soc., 205, 683. */
 /*       Beaudet,G. and Goret,P., 1976, Astron. & Astrophys., 49, 415. */
 /* ========================IDENTIFICATION DIVISION================================ */
-doublereal xintd_(real *xlow, real *xhi, U_fp func, integer *nq)
+doublereal xintd_(real *xlow, real *xhi, E_fp func, integer *nq)
 {
     /* Initialized data */
 
@@ -1768,7 +1749,7 @@ doublereal ex_(real *x)
     static real sl[11] = { 1.f,1.f,1.f,2.f,2.f,1.f,1.f,1.f,2.f,3.f,1.f };
 
     /* Format strings */
-    static char fmt_6000[] = "(\002,\002** y(\002,i2,\002) fails to con"
+    static char fmt_6000[] = "(\002 \002,\002** y(\002,i2,\002) fails to con"
 	    "verge **\002)";
     static char fmt_6002[] = "(\002 \002,\002** \002,i2,\002 th diagonal ter"
 	    "m equals zero **\002)";
@@ -1820,7 +1801,7 @@ doublereal ex_(real *x)
 /* Evolution paramete */
 /* Evolution paramete */
 /* Time varying param */
-/* Dynamic variables. */
+/* Dynamic variable */
 /* Energy densities. */
 /* Linear eqn coeffic */
 /* Flags,counters. */
@@ -1933,135 +1914,135 @@ doublereal ex_(real *x)
 	    }
 L201:
 /* 1-0-0-1 configuration. */
-	    ci = rates_1.f[n - 1];
+	    ci = rates_2.f[n - 1];
 /* (Ref 1). */
 	    cj = 0.f;
 	    ck = 0.f;
-	    cl = rates_1.r__[n - 1];
+	    cl = rates_2.r__[n - 1];
 	    goto L212;
 L202:
 /* 1-1-0-1 configuration. */
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * 1e10f * t932 * ex_(&
-		    r__1) * rates_1.f[n - 1];
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * 1e10f * t932 * ex_(&
+		    r__1) * rates_2.f[n - 1];
 /* (Ref 2). */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
-	    ci = evolp1_1.y[j - 1] * rates_1.f[n - 1] / 2.f;
-	    cj = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
+	    ci = evolp1_1.y[j - 1] * rates_2.f[n - 1] / 2.f;
+	    cj = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
 	    ck = 0.f;
-	    cl = rates_1.r__[n - 1];
+	    cl = rates_2.r__[n - 1];
 	    goto L212;
 L203:
 /* 1-1-1-1 configuration. */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * ex_(&r__1) * rates_1.f[
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * ex_(&r__1) * rates_2.f[
 		    n - 1];
 /* (Ref 3). */
-	    ci = evolp1_1.y[j - 1] * rates_1.f[n - 1] / 2.f;
-	    cj = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
-	    ck = evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 2.f;
-	    cl = evolp1_1.y[k - 1] * rates_1.r__[n - 1] / 2.f;
+	    ci = evolp1_1.y[j - 1] * rates_2.f[n - 1] / 2.f;
+	    cj = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
+	    ck = evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 2.f;
+	    cl = evolp1_1.y[k - 1] * rates_2.r__[n - 1] / 2.f;
 	    goto L212;
 L204:
 /* 1-0-0-2 configuration. */
-	    ci = rates_1.f[n - 1];
+	    ci = rates_2.f[n - 1];
 	    cj = 0.f;
 	    ck = 0.f;
-	    cl = evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 2.f;
+	    cl = evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 2.f;
 	    goto L212;
 L205:
 /* 1-1-0-2 configuration. */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * ex_(&r__1) * rates_1.f[
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * ex_(&r__1) * rates_2.f[
 		    n - 1];
 /* (Ref 3). */
-	    ci = evolp1_1.y[j - 1] * rates_1.f[n - 1] / 2.f;
-	    cj = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
+	    ci = evolp1_1.y[j - 1] * rates_2.f[n - 1] / 2.f;
+	    cj = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
 	    ck = 0.f;
-	    cl = evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 2.f;
+	    cl = evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 2.f;
 	    goto L212;
 L206:
 /* 2-0-1-1 configuration. */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * ex_(&r__1) * rates_1.f[
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * ex_(&r__1) * rates_2.f[
 		    n - 1];
 /* (Ref 3). */
-	    ci = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
+	    ci = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
 	    cj = 0.f;
-	    ck = evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 2.f;
-	    cl = evolp1_1.y[k - 1] * rates_1.r__[n - 1] / 2.f;
+	    ck = evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 2.f;
+	    cl = evolp1_1.y[k - 1] * rates_2.r__[n - 1] / 2.f;
 	    goto L212;
 L207:
 /* 3-0-0-1 configuration. */
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * 1e20f * t932 * t932 * 
-		    ex_(&r__1) * rates_1.f[n - 1];
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * 1e20f * t932 * t932 * 
+		    ex_(&r__1) * rates_2.f[n - 1];
 /* (Ref 4). */
-	    rates_1.f[n - 1] = endens_1.rhob * endens_1.rhob * rates_1.f[n - 
+	    rates_2.f[n - 1] = endens_1.rhob * endens_1.rhob * rates_2.f[n - 
 		    1];
-	    ci = evolp1_1.y[i__ - 1] * evolp1_1.y[i__ - 1] * rates_1.f[n - 1] 
+	    ci = evolp1_1.y[i__ - 1] * evolp1_1.y[i__ - 1] * rates_2.f[n - 1] 
 		    / 6.f;
 	    cj = 0.f;
 	    ck = 0.f;
-	    cl = rates_1.r__[n - 1];
+	    cl = rates_2.r__[n - 1];
 	    goto L212;
 L208:
 /* 2-1-0-1 configuration. */
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * 1e20f * t932 * t932 * 
-		    ex_(&r__1) * rates_1.f[n - 1];
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * 1e20f * t932 * t932 * 
+		    ex_(&r__1) * rates_2.f[n - 1];
 /* (Ref 4). */
-	    rates_1.f[n - 1] = endens_1.rhob * endens_1.rhob * rates_1.f[n - 
+	    rates_2.f[n - 1] = endens_1.rhob * endens_1.rhob * rates_2.f[n - 
 		    1];
-	    ci = evolp1_1.y[j - 1] * evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 
+	    ci = evolp1_1.y[j - 1] * evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 
 		    3.f;
-	    cj = evolp1_1.y[i__ - 1] * evolp1_1.y[i__ - 1] * rates_1.f[n - 1] 
+	    cj = evolp1_1.y[i__ - 1] * evolp1_1.y[i__ - 1] * rates_2.f[n - 1] 
 		    / 6.f;
 	    ck = 0.f;
-	    cl = rates_1.r__[n - 1];
+	    cl = rates_2.r__[n - 1];
 	    goto L212;
 L209:
 /* 1-1-1-2 configuration. */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * 1e-10f * t9m32 * 
-		    endens_1.rhob * ex_(&r__1) * rates_1.f[n - 1];
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * 1e-10f * t9m32 * 
+		    endens_1.rhob * ex_(&r__1) * rates_2.f[n - 1];
 /* (Ref 5) */
-	    ci = evolp1_1.y[j - 1] * rates_1.f[n - 1] / 2.f;
-	    cj = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
-	    ck = evolp1_1.y[l - 1] * evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 
+	    ci = evolp1_1.y[j - 1] * rates_2.f[n - 1] / 2.f;
+	    cj = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
+	    ck = evolp1_1.y[l - 1] * evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 
 		    6.f;
-	    cl = evolp1_1.y[k - 1] * evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 
+	    cl = evolp1_1.y[k - 1] * evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 
 		    3.f;
 	    goto L212;
 L210:
 /* 1-1-0-3 configuration. */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * 1e-10f * t9m32 * 
-		    endens_1.rhob * ex_(&r__1) * rates_1.f[n - 1];
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * 1e-10f * t9m32 * 
+		    endens_1.rhob * ex_(&r__1) * rates_2.f[n - 1];
 /* (Ref 5) */
-	    ci = evolp1_1.y[j - 1] * rates_1.f[n - 1] / 2.f;
-	    cj = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
+	    ci = evolp1_1.y[j - 1] * rates_2.f[n - 1] / 2.f;
+	    cj = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
 	    ck = 0.f;
-	    cl = evolp1_1.y[l - 1] * evolp1_1.y[l - 1] * rates_1.r__[n - 1] / 
+	    cl = evolp1_1.y[l - 1] * evolp1_1.y[l - 1] * rates_2.r__[n - 1] / 
 		    6.f;
 	    goto L212;
 L211:
 /* 2-0-2-1 configuration. */
-	    rates_1.f[n - 1] = endens_1.rhob * rates_1.f[n - 1];
+	    rates_2.f[n - 1] = endens_1.rhob * rates_2.f[n - 1];
 	    r__1 = -recpr_1.q9[n - 1] / evolp1_1.t9;
-	    rates_1.r__[n - 1] = recpr_1.rev[n - 1] * 1e-10f * t9m32 * 
-		    endens_1.rhob * ex_(&r__1) * rates_1.f[n - 1];
+	    rates_2.r__[n - 1] = recpr_1.rev[n - 1] * 1e-10f * t9m32 * 
+		    endens_1.rhob * ex_(&r__1) * rates_2.f[n - 1];
 /* (Ref 5) */
-	    ci = evolp1_1.y[i__ - 1] * rates_1.f[n - 1] / 2.f;
+	    ci = evolp1_1.y[i__ - 1] * rates_2.f[n - 1] / 2.f;
 	    cj = 0.f;
-	    ck = evolp1_1.y[l - 1] * evolp1_1.y[k - 1] * rates_1.r__[n - 1] / 
+	    ck = evolp1_1.y[l - 1] * evolp1_1.y[k - 1] * rates_2.r__[n - 1] / 
 		    3.f;
-	    cl = evolp1_1.y[k - 1] * evolp1_1.y[k - 1] * rates_1.r__[n - 1] / 
+	    cl = evolp1_1.y[k - 1] * evolp1_1.y[k - 1] * rates_2.r__[n - 1] / 
 		    6.f;
 L212:
 /* 30--------CONSTRUCT THE A-MATRIX----------------------------------------------- */
@@ -2135,7 +2116,7 @@ L212:
 	}
 	a_ref(i__, i__) = a_ref(i__, i__) + 1.;
 /* Add identity matrix to a-matrix. */
-	lncoef_1.bkevin[i1 - 1] = evolp3_1.y0[i__ - 1];
+	lncoef_1.b[i1 - 1] = evolp3_1.y0[i__ - 1];
 /* Initial abundances. */
     }
 /* 50--------SOLVE EQUATIONS TO GET DERIVATIVE------------------------------------ */
@@ -2264,7 +2245,7 @@ L212:
 /* No errors yet. */
     i__1 = runopt_1.isize;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	x[i__ - 1] = lncoef_2.bkevin[i__ - 1];
+	x[i__ - 1] = lncoef_2.b[i__ - 1];
 /* Right-hand vector. */
 	lncoef_2.y[i__ - 1] = 0.f;
 /* Solution vector. */
@@ -2351,8 +2332,8 @@ L300:
 				r__ += a0_ref(j, k) * lncoef_2.y[k - 1];
 /* Left side with approximate sol */
 			    }
-			    x[j - 1] = lncoef_2.bkevin[j - 1] - r__;
-/* Subtract difference from right */
+			    x[j - 1] = lncoef_2.b[j - 1] - r__;
+/* Subtract difference from right side. */
 			}
 /* ..........OPERATE ON RIGHT-HAND VECTOR. */
 			i__2 = runopt_1.isize - 1;

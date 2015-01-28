@@ -21,7 +21,7 @@ struct {
 #define rates_1 rates_
 
 struct {
-    real g, tau, xnu, c__[3], cosmo, xi[3], b;
+    real g, tau, xnu, c__[3], cosmo, xi[3];
 } modpr_;
 
 #define modpr_1 modpr_
@@ -33,9 +33,8 @@ struct {
 #define thermcb_1 thermcb_
 
 struct {
-    real t9mev, tnmev, tnu, cnorm;
+    real t9mev, tnmev, tnu, cnorm, rhonu;
     integer nu;
-    real rhonu;
 } nupar_;
 
 #define nupar_1 nupar_
@@ -154,7 +153,7 @@ struct {
 
 struct {
     real e_1[7];
-    } modpr0_ = { 1.f, 880.1f, 3.f, 0.f, 0.f, 0.f, 0.f };
+    } modpr0_ = { 1.f, 885.7f, 3.f, 0.f, 0.f, 0.f, 0.f };
 
 struct {
     real e_1[2];
@@ -260,7 +259,7 @@ static doublereal c_b37 = .83333333;
 /* Number of gaussian quads. */
 /* Reaction rates. */
 /* Model parameters. */
-/* Dynamic variable */
+/* Dynamic variables. */
 /* ----------EXTERNAL FUNCTIONS. */
 /* Integration parame */
 /* Part 1 of n->p rate. */
@@ -290,53 +289,57 @@ static doublereal c_b37 = .83333333;
 /* Upper limits for integrals for rever */
 /* ===========================PROCEDURE DIVISION================================== */
 /* 10--------COMPUTE WEAK REACTION RATES (NONDEGENERATE)-------------------------- */
-/*      IF (xi(1).eq.0.) THEN */
-/*        f(1)  = thm(13)/tau        !Forward rate for weak np reaction. */
-/*        r(1)  = thm(14)/tau        !Reverse rate for weak np reaction. */
-/*      ELSE */
-/* 20--------COMPUTE WEAK REACTION RATES (DEGENERATE)----------------------------- */
 /* Parts of integrals for forward rate. */
 /* Parts of integrals for reverse rate. */
-    nupar_1.t9mev = *tph * .086171f;
+    if (modpr_1.xi[0] == 0.f) {
+	rates_1.f[0] = thermcb_1.thm[12] / modpr_1.tau;
+/* Forward rate for weak np reaction. */
+	rates_1.r__[0] = thermcb_1.thm[13] / modpr_1.tau;
+/* Reverse rate for weak np reaction. */
+    } else {
+/* 20--------COMPUTE WEAK REACTION RATES (DEGENERATE)----------------------------- */
+	nupar_1.t9mev = *tph * .086171f;
 /* Convert photon temp to units of MeV. */
-    nupar_1.tnmev = nupar_1.tnu * .086171f;
+	nupar_1.tnmev = nupar_1.tnu * .086171f;
 /* ..........COMPUTE OVERFLOW LIMITS FOR LIMITS OF INTEGRATION (Ref 1 & 2). */
 /* Convert neutrino temp to units of Me */
-    w[0] = -(nupar_1.t9mev / .511f) * -88.722f;
-    w[1] = nupar_1.tnmev / .511f * (modpr_1.xi[0] + 88.029f) + 2.531f;
-    x[0] = nupar_1.t9mev / .511f * 88.029f;
-    x[1] = -(nupar_1.tnmev / .511f) * (modpr_1.xi[0] - 88.722f) - 2.531f;
-    y[0] = -(nupar_1.t9mev / .511f) * -88.722f;
-    y[1] = nupar_1.tnmev / .511f * (88.029f - modpr_1.xi[0]) - 2.531f;
-    z__[0] = nupar_1.t9mev / .511f * 88.029f;
-    z__[1] = -(nupar_1.tnmev / .511f) * (-88.722f - modpr_1.xi[0]) + 2.531f;
+	w[0] = -(nupar_1.t9mev / .511f) * -88.722f;
+	w[1] = nupar_1.tnmev / .511f * (modpr_1.xi[0] + 88.029f) + 2.531f;
+	x[0] = nupar_1.t9mev / .511f * 88.029f;
+	x[1] = -(nupar_1.tnmev / .511f) * (modpr_1.xi[0] - 88.722f) - 2.531f;
+	y[0] = -(nupar_1.t9mev / .511f) * -88.722f;
+	y[1] = nupar_1.tnmev / .511f * (88.029f - modpr_1.xi[0]) - 2.531f;
+	z__[0] = nupar_1.t9mev / .511f * 88.029f;
+	z__[1] = -(nupar_1.tnmev / .511f) * (-88.722f - modpr_1.xi[0]) + 
+		2.531f;
 /* ..........COMPARE LIMITS AND TAKE LARGER OF THE TWO. */
-    uplim1 = dabs(w[0]);
-    uplim2 = dabs(x[0]);
-    uplim3 = dabs(y[0]);
-    uplim4 = dabs(z__[0]);
-    if (uplim1 < dabs(w[1])) {
-	uplim1 = w[1];
-    }
-    if (uplim2 < dabs(x[1])) {
-	uplim2 = x[1];
-    }
-    if (uplim3 < dabs(y[1])) {
-	uplim3 = y[1];
-    }
-    if (uplim4 < dabs(z__[1])) {
-	uplim4 = z__[1];
-    }
+	uplim1 = dabs(w[0]);
+	uplim2 = dabs(x[0]);
+	uplim3 = dabs(y[0]);
+	uplim4 = dabs(z__[0]);
+	if (uplim1 < dabs(w[1])) {
+	    uplim1 = w[1];
+	}
+	if (uplim2 < dabs(x[1])) {
+	    uplim2 = x[1];
+	}
+	if (uplim3 < dabs(y[1])) {
+	    uplim3 = y[1];
+	}
+	if (uplim4 < dabs(z__[1])) {
+	    uplim4 = z__[1];
+	}
 /* ..........EVALUATE THE INTEGRALS NUMERICALLY. */
-    part1 = xintd_(&c_b3, &uplim1, (U_fp)func1_, &c__50);
-    part2 = xintd_(&c_b3, &uplim2, (U_fp)func2_, &c__50);
-    part3 = xintd_(&c_b3, &uplim3, (U_fp)func3_, &c__50);
-    part4 = xintd_(&c_b3, &uplim4, (U_fp)func4_, &c__50);
-    rates_1.f[0] = part1 + part2;
+	part1 = xintd_(&c_b3, &uplim1, (U_fp)func1_, &c__50);
+	part2 = xintd_(&c_b3, &uplim2, (U_fp)func2_, &c__50);
+	part3 = xintd_(&c_b3, &uplim3, (U_fp)func3_, &c__50);
+	part4 = xintd_(&c_b3, &uplim4, (U_fp)func4_, &c__50);
+	rates_1.f[0] = part1 + part2;
 /* Add 2 integrals to get forward rate. */
-    rates_1.r__[0] = part3 + part4;
-/*      END IF !(xi(1).eq.0.) */
+	rates_1.r__[0] = part3 + part4;
 /* Add 2 integrals to get reverse rate. */
+    }
+/* (xi(1).eq.0.) */
     return 0;
 /* ----------REFERENCES----------------------------------------------------------- */
 /*     1) Forms of the integrals involved can be found in */

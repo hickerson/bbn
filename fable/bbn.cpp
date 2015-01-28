@@ -1,6 +1,7 @@
 #define FEM_TRANSLATION_UNIT_WITH_MAIN
 
 #include "BigBangSimulator.hpp"
+//#include "cmn.hpp"
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <iostream>
@@ -959,10 +960,11 @@ void bbn::common::check()
 	//20--------WRITE INTO FILE------------------------------------------------------
 	//
 	if (itime == 8) { 						/// Right after a run.
-        double* Xout = outputs[it].X;
+        double* Xout = out[it].X;
 		Xout[8] += Xout[9]; 				/// Add beryllium to lithium.
 		Xout[5] += Xout[4]; 				/// Add tritium to helium-3.
 		Xout[6] -= 0.0003f; 				/// my correction for fitted rates+coarse steps
+                                            /// TODO: check above correction.
 		//write(3, "(7(e13.5))"), Nnu, tau, etaout(it), xout(it, 3),
 		//write(3, "(7e13.5)"), Nnu, tau, etaout(it), xout(it, 3),
 		//	xout(it,5), xout(it,6), xout(it,8);	/// Output N_nu, tau_n, eta, H2, He3, He4, an Li7.
@@ -4615,7 +4617,7 @@ statement_200:
 			write_loop wloop(*this, 2, "(1p,e10.3,1p,10e12.3)");
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 10) {
-				wloop, xout(j, i);
+				wloop, Xout(j, i);
 			}
 		}
 	}
@@ -4689,9 +4691,9 @@ statement_310:
 		write_loop wloop(*this, iw, format_3106);
 		wloop, T9out(j);
 		FEM_DO_SAFE(i, 3, 6) {
-			wloop, xout(j, i);
+			wloop, Xout(j, i);
 		}
-		wloop, xout(j, 8);
+		wloop, Xout(j, 8);
 	}
 	write(iw, format_2014);
 	write(iw, format_3108);
@@ -4713,11 +4715,11 @@ statement_320:
 			write_loop wloop(*this, iw, format_3106);
 			wloop, T9out(j);
 			FEM_DO_SAFE(i, 1, 2) {
-				wloop, xout(j, i);
+				wloop, Xout(j, i);
 			}
-			wloop, xout(j, 7);
+			wloop, Xout(j, 7);
 			FEM_DO_SAFE(i, 9, 10) {
-				wloop, xout(j, i);
+				wloop, Xout(j, i);
 			}
 		}
 	}
