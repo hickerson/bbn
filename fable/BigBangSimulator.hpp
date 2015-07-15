@@ -774,11 +774,23 @@ const int common_nucdat::nnuc;
         }
 
         double& thmout(unsigned index, unsigned nuclide) {
+        }
+
         double& T9out(unsigned index) {
+        }
+
         double& tout(unsigned index) {
+        }
+
         double& dtout(unsigned index) {
+        }
+
         double& etaout(unsigned index) {
+        }
+
         double& hubout(unsigned index) {
+        }
+
 
         public: void output(std::ostream& os) const
         {

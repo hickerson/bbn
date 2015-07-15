@@ -1,0 +1,89 @@
+AlterBBN Version 1.4 (28 June 2013)
+-----------------------------------
+By Alexandre Arbey (alexandre.arbey@ens-lyon.fr)
+
+
+INTRODUCTION
+------------
+The most recent version of this program can be obtained from: 
+http://superiso.in2p3.fr/relic/alterbbn
+
+This C code (in C99 standard) provides the calculation of the BBN abundance of the elements in different cosmological framework.
+
+The program has been tested on Linux and Mac machines with gcc and icc.
+
+
+Installation and Compilation
+----------------------------
+- tar xzvf alterbbn_vX.X.tgz
+- cd alterbbn_vX.X
+- in Makefile, define your C compiler
+- compile with: make
+
+6 programs are available:
+- stand_cosmo.c: calculation of the abundances in the standard cosmological model
+- alter_eta.c: calculation in a scenario with a modified baryon-to-photon ratio
+- alter_etannutau.c: calculation in a scenario with a modified baryon-to-photon ratio, a different number of neutrinos and a modified neutron lifetime
+- alter_neutrinos.c: calculation in a scenario with a different number of neutrinos
+- alter_reheating.c: calculation in a reheating-like model
+- alter_standmod.c: calculation in a model with modified expansion rate and entropy content
+
+
+Included Files
+--------------
+- Procedures in src/
+bbn.c
+bbnrate.c
+general.c
+omega.c
+
+- Main programs
+stand_cosmo.c: calculation of the abundances in the standard cosmological model
+alter_eta.c: calculation in a scenario with a modified baryon-to-photon ratio
+alter_etannutau.c: calculation in a scenario with modified baryon-to-photon ratio, neutrino number and neutron lifetime
+alter_neutrinos.c: calculation in a scenario with a different number of neutrinos, and/or with degeneracy
+alter_reheating.c: calculation in a reheating-like model
+alter_standmod.c: calculation in a model with modified expansion rate and entropy content
+
+- Headers in src
+include.h: definitions and prototypes
+
+- src/sgStar_heff/: contains different tables of sgStar/heff.
+
+- Other
+Makefile(s)
+README
+
+
+History
+-------
+v1.4 - 06/28/2013 -     Added calculation of the errors, inspired by astro-ph/9803177 (thanks to S. Sarkar).
+			Routine prototypes modified.
+			Neutrino degeneracy added.
+
+v1.3 - 03/04/2012 -     Reaction rate moved to separate file bbnrate.c.
+			Evaluation of errors using low and high rates.
+			Several comments modified in the .c files (thanks to A. Mishra).
+
+v1.2 - 07/08/2011 -     Improved p <-> n reaction rate.
+
+v1.1 - 06/20/2011 -     Improved nuclear network.
+
+v1.0 - 06/02/2011 - 	First public release.
+
+
+LICENSE
+-------
+    SuperIso Copyright (C) 2013 A. Arbey
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or any 
+    later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    See <http://www.gnu.org/licenses/>.  

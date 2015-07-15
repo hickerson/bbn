@@ -3717,7 +3717,7 @@ void bbn::common::accum()
 	double& hv = U.hv;							/// Copy the reference.
 	double& phie = U.phie;						/// Copy the reference.
 
-    OutputDatum& out = outputs[it];
+    //OutputDatum& out = out[it];
     double* Xout = out.X;
 	int i = 0;
 	FEM_DO_SAFE(i, 1, isize) {
