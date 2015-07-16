@@ -103,10 +103,15 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			x=1.+(double)je/(double)n*(max1-1.);
 			if(x>1.)
 			{
-				int1+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/(1.+exp((x-q)*me/Tnumev-paramrelic.xinu1));
+				int1+=x*pow(x-q,2.)*sqrt(x*x-1.)
+                    /(1.+exp(-me*x/T9mev))
+                    /(1.+exp((x-q)*me/Tnumev-paramrelic.xinu1));
 			}
 		}
-		if(max1>1.) int1+=0.5*max1*pow(max1-q,2.)*sqrt(max1*max1-1.)/(1.+exp(-me*max1/T9mev))/(1.+exp((max1-q)*me/Tnumev-paramrelic.xinu1));
+		if(max1>1.) 
+            int1+=0.5*max1*pow(max1-q,2.)*sqrt(max1*max1-1.)
+                /(1.+exp(-me*max1/T9mev))
+                /(1.+exp((max1-q)*me/Tnumev-paramrelic.xinu1));
 		int1*=(max1-1.)/(double)n;
 
 		for(je=1;je<=n-1;je++)
@@ -114,10 +119,15 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			x=1.+(double)je/(double)n*(max2-1.);
 			if(x>1.)
 			{
-				int2+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(me*x/T9mev))/(1.+exp(-(x+q)*me/Tnumev-paramrelic.xinu1));
+				int2+=x*pow(x+q,2.)*sqrt(x*x-1.)
+                    /(1.+exp(me*x/T9mev))
+                    /(1.+exp(-(x+q)*me/Tnumev-paramrelic.xinu1));
 			}
 		}
-		if(max2>1.) int2+=0.5*max2*pow(max2+q,2.)*sqrt(max2*max2-1.)/(1.+exp(me*max2/T9mev))/(1.+exp(-(max2+q)*me/Tnumev-paramrelic.xinu1));
+		if(max2>1.) 
+            int2+=0.5*max2*pow(max2+q,2.)*sqrt(max2*max2-1.)
+                /(1.+exp(me*max2/T9mev))
+                /(1.+exp(-(max2+q)*me/Tnumev-paramrelic.xinu1));
 		int2*=(max2-1.)/(double)n;
 
 		for(je=1;je<=n-1;je++)
@@ -125,10 +135,15 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			x=1.+(double)je/(double)n*(max3-1.);
 			if(x>1.)
 			{
-				int3+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/(1.+exp((x+q)*me/Tnumev+paramrelic.xinu1));
+				int3+=x*pow(x+q,2.)*sqrt(x*x-1.)
+                    /(1.+exp(-me*x/T9mev))
+                    /(1.+exp((x+q)*me/Tnumev+paramrelic.xinu1));
 			}
 		}
-		if(max3>1.) int3+=0.5*max3*pow(max3+q,2.)*sqrt(max3*max3-1.)/(1.+exp(-me*max3/T9mev))/(1.+exp((max3+q)*me/Tnumev+paramrelic.xinu1));
+		if(max3>1.) 
+            int3+=0.5*max3*pow(max3+q,2.)*sqrt(max3*max3-1.)
+                /(1.+exp(-me*max3/T9mev))
+                /(1.+exp((max3+q)*me/Tnumev+paramrelic.xinu1));
 		int3*=(max3-1.)/(double)n;
  
 		for(je=1;je<=n-1;je++)
@@ -136,10 +151,15 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			x=1.+(double)je/(double)n*(max4-1.);
 			if(x>1.)
 			{
-				int4+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(me*x/T9mev))/(1.+exp(-(x-q)*me/Tnumev+paramrelic.xinu1));
+				int4+=x*pow(x-q,2.)*sqrt(x*x-1.)
+                    /(1.+exp(me*x/T9mev))
+                    /(1.+exp(-(x-q)*me/Tnumev+paramrelic.xinu1));
 			}
 		}
-		if(max4>1.) int4+=0.5*max4*pow(max4-q,2.)*sqrt(max4*max4-1.)/(1.+exp(me*max4/T9mev))/(1.+exp(-(max4-q)*me/Tnumev+paramrelic.xinu1));
+		if(max4>1.) 
+            int4+=0.5*max4*pow(max4-q,2.)*sqrt(max4*max4-1.)
+                /(1.+exp(me*max4/T9mev))
+                /(1.+exp(-(max4-q)*me/Tnumev+paramrelic.xinu1));
 		int4*=(max4-1.)/(double)n;
 
 		f[1]=int1+int2;
