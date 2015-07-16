@@ -88,7 +88,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double T9mev=T9*0.086171;
 		double Tnumev=Tnu*0.086171;
 
-		double me=0.510998928;
+		double me=0.510998928;  /* electron mass in MeV*/
 		double q=1.29333217/me; /* q=(mn-mp)/me */
 
 		double int1=0.;
@@ -99,16 +99,19 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double x;
 		int je;
 
-		double max1=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
+		//double max1=max(50.*(T9mev/me)+1,fabs((Tnumev/me)*(50.+xi1)+q));
+		double max1=max(50.*(T9mev/me)+1,fabs((Tnumev/me)*(50.+xi1)+q));
 		double max2=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
 		double max3=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
 		double max4=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
 				
+        /// Integral 1: 1st part of n->p rate
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*(max1-1.);
+			x=(double)je/(double)n*(max1-1.);
+			//x=1.+(double)je/(double)n*(max1-1.);
 			//if(x>1.)
-			if(x>0)
+			if(x>=0)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
                     /(1.+exp(-me*x/T9mev))
@@ -122,10 +125,11 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                 /(1.+exp((max1-q)*me/Tnumev-xi1));
 		int1*=(max1-1.)/(double)n;
 
+        /// Integral 2: 2nd part of n->p rate
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max2-1.);
-			if(x>1.)
+			if(x>=1.)
 			{
 				int2+=(x-b)*pow(x+q,2.)*sqrt(x*x-1.)
                     /(1.+exp(me*x/T9mev))
@@ -138,10 +142,11 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                 /(1.+exp(-(max2+q)*me/Tnumev-xi1));
 		int2*=(max2-1.)/(double)n;
 
+        /// Integral 3: 1st part of p->n rate
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max3-1.);
-			if(x>1.)
+			if(x>=1.)
 			{
 				int3+=(x-b)*pow(x+q,2.)*sqrt(x*x-1.)
                     /(1.+exp(-me*x/T9mev))
@@ -154,6 +159,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                 /(1.+exp((max3+q)*me/Tnumev+xi1));
 		int3*=(max3-1.)/(double)n;
  
+        /// Integral 4: 2nd part of p->n rate
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max4-1.);
