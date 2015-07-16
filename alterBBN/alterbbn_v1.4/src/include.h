@@ -40,6 +40,7 @@ typedef struct relicparam
 	double nbnu;
 	double life_neutron;
 	double xinu1,xinu2,xinu3;
+    double fierz;
 }
 relicparam;
 
@@ -96,6 +97,7 @@ double dark_entropy_derivative(double T, struct relicparam paramrelic);
 double dark_entropy_Sigmad(double T, struct relicparam paramrelic);
 double nonthermal(double T, struct relicparam paramrelic);
 double neutdens(double Tnu, struct relicparam paramrelic);
+void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic);
 
 /* bbnrate.c */
 void rate_weak(int err, double f[]);

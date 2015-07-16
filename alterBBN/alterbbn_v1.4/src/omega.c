@@ -151,6 +151,18 @@ void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double 
 
 /*--------------------------------------------------------------*/
 
+void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic)
+/* modifies the values of the baryon-to-photon ratio eta, the effective number of neutrinos nbnu and the neutron lifetime life_neutron */
+{
+	paramrelic->eta0=eta;
+	paramrelic->nbnu=nbnu;
+	paramrelic->life_neutron=life_neutron;
+	paramrelic->fierz=fierz;
+	return;
+}
+
+/*--------------------------------------------------------------*/
+
 void Init_dark_density(double dd0, double ndd, double T_end, struct relicparam* paramrelic)
 /* modifies the parameters of the dark energy density which appears in the Friedmann equation */
 {
