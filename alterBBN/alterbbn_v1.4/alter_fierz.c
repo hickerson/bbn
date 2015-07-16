@@ -11,13 +11,15 @@ int main(int argc,char** argv)
 	double eta,H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
 	double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
 	double nbnu,tau;
+    double fierz;
 
-	if(argc<4) 
+	if(argc<5) 
   	{ 
     		printf(" This program needs 3 parameters:\n"
-           	"   eta    value of the baryon-to-photon ratio\n"
+           	    "   eta     value of the baryon-to-photon ratio\n"
                 "   nbnu    number of neutrinos\n"
-                "   tau     neutron lifetime\n");
+                "   tau     neutron lifetime\n"
+                "   fierz   beta-decay Fierz interference term\n");
       		exit(1); 
   	} 
 	else 
@@ -25,10 +27,12 @@ int main(int argc,char** argv)
   		sscanf(argv[1],"%lf",&eta);
   		sscanf(argv[2],"%lf",&nbnu);
   		sscanf(argv[3],"%lf",&tau);
+  		sscanf(argv[4],"%lf",&fierz);
   	}
 	
 	Init_cosmomodel(&paramrelic);	
 	Init_cosmomodel_param(eta,nbnu,tau,0.,0.,0.,&paramrelic);
+    Init_cosmomodel_fierz(fierz);
 	
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 	nucl(2,paramrelic,ratioH);
