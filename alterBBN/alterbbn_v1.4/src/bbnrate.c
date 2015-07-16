@@ -54,8 +54,12 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 {
 	double ferr,rerr;
 	ferr=rerr=0.;
+    double b=paramrelic.fierz; /* beta-decay Fierz interference term */
+	double tau=paramrelic.life_neutron; /* measured neutron lifetime at T=0 */
+    double xi1=paramrelic.xinu1;
+    //printf("b: %.3e\n");
 	
-	if((paramrelic.xinu1==0.)||(Tnu==0.))
+	if(((paramrelic.xinu1==0)||(Tnu==0))&&(b==0))
 	{
 		int ie;
 		double z=5.929862032115561/T9;
@@ -67,14 +71,14 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		f[1]=1.;
 		for(ie=1;ie<=13;ie++) 
             f[1]+=a[ie-1]/pow(z,ie);
-		f[1]*=exp(-0.33979/z)/paramrelic.life_neutron; /* n->p */
+		f[1]*=exp(-0.33979/z)/tau; /* n->p */
 		
 		if(z<5.10998997931)
 		{
 			r[1]=-0.62173;
 			for(ie=1;ie<=10;ie++)
                 r[1]+=b[ie-1]/pow(z,ie);
-			r[1]*=exp(-2.8602*z)/paramrelic.life_neutron; /* n->p */
+			r[1]*=exp(-2.8602*z)/tau; /* n->p */
 		}
 		else r[1]=0.; /* p->n */
 
@@ -94,8 +98,6 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
  		int n=50;
 		double x;
 		int je;
-        double b=paramrelic.fierz; /* beta-decay Fierz interference term */
-        double xi1=paramrelic.xinu1;
 
 		double max1=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
 		double max2=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
@@ -105,14 +107,16 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max1-1.);
-			if(x>1.)
+			//if(x>1.)
+			if(x>0)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
                     /(1.+exp(-me*x/T9mev))
                     /(1.+exp((x-q)*me/Tnumev-xi1));
 			}
 		}
-		if(max1>1.) 
+		//if(max1>1.) 
+		if(max1>0) 
             int1+=0.5*(max1+b)*pow(max1-q,2.)*sqrt(max1*max1-1.)
                 /(1.+exp(-me*max1/T9mev))
                 /(1.+exp((max1-q)*me/Tnumev-xi1));

@@ -56,12 +56,16 @@ int main(int argc,char** argv)
 		printf("value:\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n",Yp,H2_H,He3_H,Li7_H,Li6_H,Be7_H); 
 		printf(" +/- :\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n\n",sigma_Yp,sigma_H2_H,sigma_He3_H,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H);
 	}
+    printf("b    :\t %.3e\n",paramrelic.fierz);
 	
 	int compat=bbn_excluded(0,paramrelic);
 
-	if(compat==1) printf("Excluded by BBN constraints\n");
-	else if(compat==0) printf("Compatible with BBN constraints\n");
-	else printf("Computation failed\n");
+	if(compat==1)
+        printf("Excluded by BBN constraints\n");
+	else if(compat==0)
+        printf("Compatible with BBN constraints\n");
+	else
+        printf("Computation failed\n");
 
 	return 1;
 }
