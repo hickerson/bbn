@@ -31,8 +31,7 @@ int main(int argc,char** argv)
   	}
 	
 	Init_cosmomodel(&paramrelic);	
-	Init_cosmomodel_param(eta,nbnu,tau,0.,0.,0.,&paramrelic);
-    Init_cosmomodel_fierz(fierz);
+	Init_fierz(eta,nbnu,tau,fierz,&paramrelic);
 	
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 	nucl(2,paramrelic,ratioH);

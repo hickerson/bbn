@@ -154,11 +154,9 @@ void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double 
 /*--------------------------------------------------------------*/
 
 void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic)
-/* modifies the values of the baryon-to-photon ratio eta, the effective number of neutrinos nbnu and the neutron lifetime life_neutron */
+/* modifies the values of the baryon-to-photon ratio eta, the effective number of neutrinos nbnu and the neutron lifetime life_neutron and the beta-decay Fierz interference term */
 {
-	paramrelic->eta0=eta;
-	paramrelic->nbnu=nbnu;
-	paramrelic->life_neutron=life_neutron;
+    Init_cosmomodel_param(eta, nbnu, life_neutron, 0, 0, 0, paramrelic);
 	paramrelic->fierz=fierz;
 	return;
 }
