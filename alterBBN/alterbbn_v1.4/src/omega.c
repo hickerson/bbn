@@ -127,6 +127,8 @@ void Init_cosmomodel(struct relicparam* paramrelic)
 	paramrelic->xinu2=0.; 
 	paramrelic->xinu3=0.; 
 
+	paramrelic->fierz=0.;  /* beta-decay Fierz interference term */
+
 	paramrelic->dd0=paramrelic->ndd=paramrelic->Tdend=0.;
 	paramrelic->sd0=paramrelic->nsd=paramrelic->Tsend=0.;
 	paramrelic->nt0=paramrelic->nnt=paramrelic->Tnend=0.;
