@@ -59,7 +59,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
     double xi1=paramrelic.xinu1;
     //printf("b: %.3e\n");
 	
-	if(((paramrelic.xinu1==0)||(Tnu==0))&&(b==0))
+	if(((paramrelic.xinu1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
 		double z=5.929862032115561/T9;
@@ -99,8 +99,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double x;
 		int je;
 
-		//double max1=max(50.*(T9mev/me)+1,fabs((Tnumev/me)*(50.+xi1)+q));
-		double max1=max(50.*(T9mev/me)+1,fabs((Tnumev/me)*(50.+xi1)+q));
+		double max1=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
 		double max2=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
 		double max3=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
 		double max4=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
