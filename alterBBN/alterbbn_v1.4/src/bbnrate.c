@@ -64,7 +64,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
     double b=paramrelic.fierz; /* beta-decay Fierz interference term */
 	double tau=paramrelic.life_neutron; /* measured neutron lifetime at T=0 */
     double xi1=paramrelic.xinu1;
-    //printf("b: %.3e\n");
+	double me=0.510998928;  /* electron mass in MeV*/
 	
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
@@ -80,7 +80,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
             f[1]+=fa[ie-1]/pow(z,ie);
 		f[1]*=exp(-0.33979/z)/tau; /* n->p */
 		
-		if(z<5.10998997931)
+		if(z < me)
 		{
 			r[1]=-0.62173;
 			for(ie=1;ie<=10;ie++)
@@ -94,8 +94,9 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	{		
 		double T9mev=T9*0.086171;
 		double Tnumev=Tnu*0.086171;
+		double z9=T9*0.086171/me;
+		double znu=Tnu*0.086171/me;
 
-		double me=0.510998928;  /* electron mass in MeV*/
 		double q=1.29333217/me; /* q=(mn-mp)/me */
 
 		double int1=0.;
@@ -106,11 +107,17 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double x;
 		int je;
 
-		double max1=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
-		double max2=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
-		double max3=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
-		double max4=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
+        printf("z9: %f\n", z9);
+        printf("znu: %f\n", znu);
+        assert(z9 > 0);
+        assert(znu > 0);
+
+		double max1=max(50.*z9,fabs((znu)*(50.+xi1)+q));
+		double max2=max(50.*z9,fabs((znu)*(50.-xi1)-q));
+		double max3=max(50.*z9,fabs((znu)*(50.-xi1)-q));
+		double max4=max(50.*z9,fabs((znu)*(50.+xi1)+q));
 				
+        printf("T9mev: %f\n", T9mev);
         assert(T9mev > 0);
         assert(Tnumev > 0);
 
@@ -123,7 +130,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			if(x>0)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(-me*x/T9mev))
+                    /(1.+exp(-x*me/T9mev))
                     /(1.+exp((x-q)*me/Tnumev-xi1));
 			}
 		}
