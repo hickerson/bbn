@@ -1,4 +1,5 @@
 #include "include.h"
+#include "assert.h"
 
 void rate_weak(int err, double f[])
 /* calculates the nuclear forward rates of weak interaction reactions */
@@ -31,16 +32,22 @@ void rate_weak(int err, double f[])
 			ferr[ie]=ferrhigh[ie];
 		}
 		
-		if(err==1) for(ie=2;ie<=11;ie++) f[ie]*=fabs(1.+ferrhigh[ie]);
-		if(err==2) for(ie=2;ie<=11;ie++) f[ie]*=fabs(1.+ferrlow[ie]);
+		if(err==1) 
+            for(ie=2;ie<=11;ie++) 
+                f[ie]*=fabs(1.+ferrhigh[ie]);
+		if(err==2) 
+            for(ie=2;ie<=11;ie++) 
+                f[ie]*=fabs(1.+ferrlow[ie]);
 				
 		if(err>100000)
 		{
 			srand((unsigned int)(getpid()+err));
-			for(ie=2;ie<=11;ie++) f[ie]*=fabs(1.+ferr[ie]*rand_gauss());
+			for(ie=2;ie<=11;ie++) 
+                f[ie]*=fabs(1.+ferr[ie]*rand_gauss());
 		}
 		
-		if(err<0) f[-err]*=fabs(1.+ferr[-err]);
+		if(err<0) 
+            f[-err]*=fabs(1.+ferr[-err]);
 	}
 
 	return;
@@ -59,29 +66,29 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
     double xi1=paramrelic.xinu1;
     //printf("b: %.3e\n");
 	
-	if(((paramrelic.xinu1==0)&&(b==0))||(Tnu==0))
+	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
 		double z=5.929862032115561/T9;
 	
-		double a[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
+		double fa[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
 	
-		double b[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
+		double fb[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
 	
 		f[1]=1.;
 		for(ie=1;ie<=13;ie++) 
-            f[1]+=a[ie-1]/pow(z,ie);
+            f[1]+=fa[ie-1]/pow(z,ie);
 		f[1]*=exp(-0.33979/z)/tau; /* n->p */
 		
 		if(z<5.10998997931)
 		{
 			r[1]=-0.62173;
 			for(ie=1;ie<=10;ie++)
-                r[1]+=b[ie-1]/pow(z,ie);
+                r[1]+=fb[ie-1]/pow(z,ie);
 			r[1]*=exp(-2.8602*z)/tau; /* n->p */
 		}
-		else r[1]=0.; /* p->n */
-
+		else 
+            r[1]=0.; /* p->n */
 	}
 	else
 	{		
@@ -104,13 +111,16 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double max3=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-xi1)-q));
 		double max4=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+xi1)+q));
 				
+        assert(T9mev > 0);
+        assert(Tnumev > 0);
+
         /// Integral 1: 1st part of n->p rate
 		for(je=1;je<=n-1;je++)
 		{
 			x=(double)je/(double)n*(max1-1.);
 			//x=1.+(double)je/(double)n*(max1-1.);
 			//if(x>1.)
-			if(x>=0)
+			if(x>0)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
                     /(1.+exp(-me*x/T9mev))

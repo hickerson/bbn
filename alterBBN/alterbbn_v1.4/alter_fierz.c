@@ -2,6 +2,9 @@
 
 /*--------------------------------------------------------*/
 /* Calculation of the observables in the Standard Model   */
+/* Included is the Fierz interference term, which extends */
+/* the electroweak sector to include scalar and tensor    */
+/* currents that may result from SUSY, leptoquarks, etc   */
 /*--------------------------------------------------------*/
 
 int main(int argc,char** argv)
@@ -15,12 +18,12 @@ int main(int argc,char** argv)
 
 	if(argc<5) 
   	{ 
-    		printf(" This program needs 3 parameters:\n"
-           	    "   eta     value of the baryon-to-photon ratio\n"
-                "   nbnu    number of neutrinos\n"
-                "   tau     neutron lifetime\n"
-                "   fierz   beta-decay Fierz interference term\n");
-      		exit(1); 
+        printf(" This program needs 4 parameters:\n"
+            "   eta     value of the baryon-to-photon ratio\n"
+            "   nbnu    number of neutrinos\n"
+            "   tau     neutron lifetime\n"
+            "   fierz   beta-decay Fierz interference term\n");
+        exit(1); 
   	} 
 	else 
   	{
