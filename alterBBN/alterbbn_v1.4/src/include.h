@@ -1,3 +1,6 @@
+#ifndef __INCLUDE_H__
+#define __INCLUDE_H__
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -18,11 +21,13 @@
 
 /*--------------------------------------------------------------------*/
 
-#define pi    3.1415926535897932385
-#define zeta3 1.2020569031595942855
+#define pi      3.1415926535897932385
+#define zeta3   1.2020569031595942855
 
-#define hbar  6.58211889e-25    /// Planck constant in GeV.s
-#define Gn    6.67428e-8        /// Gravitational constant in m^3.g^-1.s^-2
+#define hbar    6.58211889e-25    /// Planck constant in GeV.s
+#define Gn      6.67428e-8        /// Gravitational constant in m^3.g^-1.s^-2
+#define me      0.510998928;      /// electron mass in MeV
+#define kB      0.0861733238;     /// Boltzmann constant in MeV/GK
 
 /*--------------------------------------------------------------------*/
 
@@ -117,3 +122,5 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[]);
 int bbn_excluded(int err, struct relicparam paramrelic);
+
+#endif  /// __INCLUDE_H__

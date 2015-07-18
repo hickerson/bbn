@@ -65,8 +65,6 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
     double b=paramrelic.fierz;          /// beta-decay Fierz interference term */
 	double tau=paramrelic.life_neutron; /// measured neutron lifetime at T=0 in s */
     double xi1=paramrelic.xinu1;        /// neutrino chemical potential
-	const double me = 0.510998928;      /// electron mass in MeV
-    const double k  = 0.0861733238;     /// Boltzmann constant in MeV/GK
 	
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
