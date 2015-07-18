@@ -26,8 +26,8 @@
 
 #define hbar    6.58211889e-25    /// Planck constant in GeV.s
 #define Gn      6.67428e-8        /// Gravitational constant in m^3.g^-1.s^-2
-#define me      0.510998928;      /// electron mass in MeV
-#define kB      0.0861733238;     /// Boltzmann constant in MeV/GK
+#define me      0.510998928       /// electron mass in MeV
+#define kB      0.0861733238      /// Boltzmann constant in MeV/GK
 
 /*--------------------------------------------------------------------*/
 

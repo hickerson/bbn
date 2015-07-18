@@ -69,7 +69,8 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
-		double z=5.929862032115561/T9;
+		//double z=5.929862032115561/T9;
+		double z=(me/kB)/T9;
 	
 		double fa[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
 	
@@ -92,11 +93,11 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	}
 	else
 	{		
-		double T9mev=T9*0.086171;
-		double Tnumev=Tnu*0.086171;
-		double z9=T9*0.086171/me;
-		double znu=Tnu*0.086171/me;
-		double q=1.29333217/me; /* q=(mn-mp)/me */
+		double T9mev = T9*kB;
+		double Tnumev = Tnu*kB;
+		double z9 = T9*kB/me;
+		double znu = Tnu*kB/me;
+		double q = 1.29333217/me; /* q=(mn-mp)/me */
 
 		double int1=0.;
  		double int2=0.;
