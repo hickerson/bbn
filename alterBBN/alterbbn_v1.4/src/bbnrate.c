@@ -54,7 +54,23 @@ void rate_weak(int err, double f[])
 	return;
 }
 
+
+/*----------------------------------------------------*
+
+double weak_phase_space(double Ex, double Ee, double Enu)
+{
+    if(x>1.)
+    {
+        (x+b)*pow(Enu,2.)*sqrt(x*x-1.)
+            /(1.+exp(-Ee/z9))
+            /(1.+exp(-Enu/znu-xi1));
+    }
+    return 0;
+}
+*/
+
 /*----------------------------------------------------*/
+
 
 void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu)
 /* calculates the nuclear forward and reverse rates f[] and r[] of the reaction p <-> n at the temperature T9 */
@@ -115,25 +131,29 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
         //printf("znu: %f\n", znu);
         //assert(z9 > 0);
         //assert(znu > 0);
-
-		double max1=max(50.*z9,fabs((znu)*(50.+xi1)+q));
-		double max2=max(50.*z9,fabs((znu)*(50.-xi1)-q));
-		double max3=max(50.*z9,fabs((znu)*(50.-xi1)-q));
-		double max4=max(50.*z9,fabs((znu)*(50.+xi1)+q));
 				
         //printf("T9mev: %f\n", T9mev);
         //assert(T9mev > 0);
         //assert(Tnumev > 0);
 
+        /// Integral 0: Normalizer for n->p rate
+        double norm = 0;
+		for(je=1;je<=n-1;je++)
+		{
+			x=1.+(double)je/(double)n*q;
+			norm += (x+b)*pow(x-q,2.)*sqrt(x*x-1.);
+		}
+		norm *= tau*q/(double)n;
+        //printf("norm: %f\n", norm);
+
         /// Integral 1: 1st part of n->p rate
+		double max1=max(50*z9,fabs((znu)*(50.+xi1)+q));
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max1-1.);
 			if(x>1.)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
-                //    /(1.+exp(-x*me/T9mev))
-                //    /(1.+exp((x-q)*me/Tnumev-xi1));
                     /(1.+exp(-x/z9))
                     /(1.+exp((x-q)/znu-xi1));
 			}
@@ -145,31 +165,33 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		int1*=(max1-1.)/(double)n;
 
         /// Integral 2: 2nd part of n->p rate
+		double max2=max(50*z9,fabs((znu)*(50.-xi1)-q));
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max2-1.);
-			if(x>=1.)
+			if(x>1.)
 			{
 				int2+=(x-b)*pow(x+q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(me*x/T9mev))
-                    /(1.+exp(-(x+q)*me/Tnumev-xi1));
+                    /(1.+exp(x/z9))
+                    /(1.+exp(-(x+q)/znu-xi1));
 			}
 		}
 		if(max2>1.) 
             int2+=0.5*(max2-b)*pow(max2+q,2.)*sqrt(max2*max2-1.)
-                /(1.+exp(me*max2/T9mev))
-                /(1.+exp(-(max2+q)*me/Tnumev-xi1));
+                /(1.+exp(max2/z9))
+                /(1.+exp(-(max2+q)/znu-xi1));
 		int2*=(max2-1.)/(double)n;
 
         /// Integral 3: 1st part of p->n rate
+		double max3=max(50*z9,fabs((znu)*(50.-xi1)-q));
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max3-1.);
-			if(x>=1.)
+			if(x>1.)
 			{
 				int3+=(x-b)*pow(x+q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(-me*x/T9mev))
-                    /(1.+exp((x+q)*me/Tnumev+xi1));
+                    /(1.+exp(-x/z9))
+                    /(1.+exp((x+q)/znu+xi1));
 			}
 		}
 		if(max3>1.) 
@@ -179,6 +201,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		int3*=(max3-1.)/(double)n;
  
         /// Integral 4: 2nd part of p->n rate
+		double max4=max(50*z9,fabs((znu)*(50.+xi1)+q));
 		for(je=1;je<=n-1;je++)
 		{
 			x=1.+(double)je/(double)n*(max4-1.);
@@ -195,8 +218,8 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                 /(1.+exp(-(max4-q)*me/Tnumev+xi1));
 		int4*=(max4-1.)/(double)n;
 
-		f[1]=int1+int2;
-        r[1]=int3+int4;
+		f[1]=(int1+int2)/norm;
+        r[1]=(int3+int4)/norm;
 	}
 
 	if((err!=0&&err!=-10000))
@@ -219,6 +242,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	
 	if(err>100000)
 	{
+        printf("Error: rates are going to be random.");
 			srand((unsigned int)(getpid()+err));
 			f[1]*=fabs(1.+ferr*rand_gauss());
 			r[1]*=fabs(1.+rerr*rand_gauss());
