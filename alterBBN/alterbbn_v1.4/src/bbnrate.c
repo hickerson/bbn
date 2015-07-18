@@ -8,16 +8,16 @@ void rate_weak(int err, double f[])
 	double ferrlow[12],ferrhigh[12],ferr[12];
 	int ie;
 	
-	f[2]=1.78141141239e-9;	/* H3 -> e- + v + He3 */
-	f[3]=0.827;	 	/* Li8 -> e- + v + 2He4 */
-	f[4]=34.3;	 	/* B12 -> e- + B + C12 */
-	f[5]=3.834e-12;	 	/* C14 -> e- + v + N14 */
-	f[6]=0.9;	 	/* B8 -> e+ + v + 2He4 */
-	f[7]=5.668e-4;	 	/* C11 -> e+ + v + B11 */
-	f[8]=63.01;	 	/* N12 -> e+ + v + C12 */
-	f[9]=0.001159;	 	/* N13 -> e+ + v + C13 */
-	f[10]=0.0098171;	 /* O14 -> e+ + v + N14 */
-	f[11]=0.0056704; 	/* O15 -> e+ + v + N15 */
+	f[2]=1.78141141239e-9;	/// H3 -> e- + v + He3
+	f[3]=0.827;	 	        /// Li8 -> e- + v + 2 He4
+	f[4]=34.3;	 	        /// B12 -> e- + B + C12
+	f[5]=3.834e-12;	 	    /// C14 -> e- + v + N14
+	f[6]=0.9;	 	        /// B8 -> e+ + v + 2 He4
+	f[7]=5.668e-4;	 	    /// C11 -> e+ + v + B11
+	f[8]=63.01;	 	        /// N12 -> e+ + v + C12 
+	f[9]=0.001159;	 	    /// N13 -> e+ + v + C13
+	f[10]=0.0098171;	    /// O14 -> e+ + v + N14 
+	f[11]=0.0056704; 	    /// O15 -> e+ + v + N15 
 
 	if((err>0)||(err<-1&&err>=-11))
 	{
@@ -103,7 +103,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
  		double int2=0.;
 		double int3=0.;
 		double int4=0.;
- 		int n=50;
+ 		int n=5000;
 		double x;
 		int je;
 
