@@ -5,6 +5,7 @@ void rate_weak(int err, double f[])
 /* calculates the nuclear forward rates of weak interaction reactions */
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
+    double Nbeta = 11;
 	double ferrlow[12],ferrhigh[12],ferr[12];
 	int ie;
 	
@@ -67,6 +68,9 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	const double me = 0.510998928;      /// electron mass in MeV
     const double k  = 0.0861733238;     /// Boltzmann constant in MeV/GK
 	
+    enum test { NepnN, HpgD };
+    printf("enums: %u\n");
+
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
@@ -103,7 +107,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
  		double int2=0.;
 		double int3=0.;
 		double int4=0.;
- 		int n=5000;
+ 		int n=1000;
 		double x;
 		int je;
 
@@ -124,11 +128,8 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
         /// Integral 1: 1st part of n->p rate
 		for(je=1;je<=n-1;je++)
 		{
-			//x=(double)je/(double)n*(max1-1.);
 			x=1.+(double)je/(double)n*(max1-1.);
-            //printf("x: %f\n", x);
 			if(x>1.)
-			//if(x>0)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
                 //    /(1.+exp(-x*me/T9mev))
@@ -138,7 +139,6 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			}
 		}
 		if(max1>1.) 
-		//if(max1>0) 
             int1+=0.5*(max1+b)*pow(max1-q,2.)*sqrt(max1*max1-1.)
                 /(1.+exp(-me*max1/T9mev))
                 /(1.+exp((max1-q)*me/Tnumev-xi1));
