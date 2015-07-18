@@ -70,7 +70,9 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	{
 		int ie;
 		//double z=5.929862032115561/T9;
-		double z=(me/kB)/T9;
+		//double z=(me/kB)/T9;
+		double z9 = T9*kB/me;
+		//double znu = Tnu*kB/me;
 	
 		double fa[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
 	
@@ -78,16 +80,17 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	
 		f[1]=1.;
 		for(ie=1;ie<=13;ie++) 
-            f[1]+=fa[ie-1]/pow(z,ie);
-		f[1]*=exp(-0.33979/z)/tau; /* n->p */
+            f[1]+=fa[ie-1]*pow(z9,ie);
+		f[1]*=exp(-0.33979*z9)/tau; /* n->p */
 		
 		//if(z < 5.10998997931) // almost 10*me, but why?
-		if(z < 10) // maybe 10 works instead!? 
+		//if(z9 < 10) // maybe 10 works instead!? 
+		if(z9 > 0.1) // maybe 0.1 works instead!? 
 		{
 			r[1]=-0.62173;
 			for(ie=1;ie<=10;ie++)
-                r[1]+=fb[ie-1]/pow(z,ie);
-			r[1]*=exp(-2.8602*z)/tau; /* n->p */
+                r[1]+=fb[ie-1]*pow(z9,ie);
+			r[1]*=exp(-2.8602/z9)/tau; /* n->p */
 		}
 		else 
             r[1]=0.; /* p->n */
