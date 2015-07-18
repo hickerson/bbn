@@ -140,7 +140,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
         double norm = 0;
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*q;
+			x=1.+(double)je/(double)n*(q-1);
 			norm += (x+b)*pow(x-q,2.)*sqrt(x*x-1.);
 		}
 		norm *= tau*q/(double)n;
