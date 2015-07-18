@@ -20,8 +20,9 @@
 
 #define pi    3.1415926535897932385
 #define zeta3 1.2020569031595942855
-#define hbar  6.58211889e-25 /* in GeV.s */
-#define Gn    6.67428e-8  /* in m^3.g^-1.s^-2 */
+
+#define hbar  6.58211889e-25    /// Planck constant in GeV.s
+#define Gn    6.67428e-8        /// Gravitational constant in m^3.g^-1.s^-2
 
 /*--------------------------------------------------------------------*/
 
@@ -47,8 +48,14 @@ relicparam;
 /*--------------------------------------------------------------------*/
 /* Prototypes */
 
+//#define NBETAREAC 11
 #define NNUCREAC 88
 #define NNUC 26
+
+enum BetaReac {
+    np = 1,   
+    NBETAREAC
+};
 
 /* general.c */
 double max(double x, double y);
