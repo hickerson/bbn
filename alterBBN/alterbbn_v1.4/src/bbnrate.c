@@ -123,7 +123,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
  		double int2=0.;
 		double int3=0.;
 		double int4=0.;
- 		int n=100;
+ 		int n=10000;
 		double x;
 		int je;
 
@@ -144,7 +144,8 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 			x=1.+(double)je/(double)n*(q-1);
 			norm += (x+b)*pow(x-q,2.)*sqrt(x*x-1.);
 		}
-		norm *= tau*q/(double)n;
+		norm *= tau*(q-1)/(double)n;
+        //printf("I0: %f\n", tau/norm);
         //printf("norm: %f\n", norm);
 
         /// Integral 1: 1st part of n->p rate
