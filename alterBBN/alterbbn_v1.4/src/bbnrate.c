@@ -81,7 +81,8 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
             f[1]+=fa[ie-1]/pow(z,ie);
 		f[1]*=exp(-0.33979/z)/tau; /* n->p */
 		
-		if(z < 5.10998997931) // almost 10*me, but why?
+		//if(z < 5.10998997931) // almost 10*me, but why?
+		if(z < 10) // maybe 10 works instead!? 
 		{
 			r[1]=-0.62173;
 			for(ie=1;ie<=10;ie++)
