@@ -68,9 +68,6 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	const double me = 0.510998928;      /// electron mass in MeV
     const double k  = 0.0861733238;     /// Boltzmann constant in MeV/GK
 	
-    enum test { NepnN, HpgD };
-    printf("enums: %u\n");
-
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
