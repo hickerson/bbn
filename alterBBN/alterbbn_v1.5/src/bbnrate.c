@@ -85,31 +85,28 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
-		//double z=5.929862032115561/T9;
-		//double z=(me/kB)/T9;
-		double z9 = T9*kB/me;
-		//double znu = Tnu*kB/me;
+		double z9 = T9*kB/me;           /// inverse of old z def in v1.4
 	
-		double fa[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
+		double af[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
 	
-		double fb[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
+		double bf[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
 	
 		f[1]=1.;
 		for(ie=1;ie<=13;ie++) 
-            f[1]+=fa[ie-1]*pow(z9,ie);
-		f[1]*=exp(-0.33979*z9)/tau; /* n->p */
+            f[1]+=af[ie-1]*pow(z9,ie);
+		f[1]*=exp(-0.33979*z9)/tau;     /// n->p
 		
-		//if(z < 5.10998997931) // almost 10*me, but why?
-		//if(z9 < 10) // maybe 10 works instead!? 
+		//if(1/z9 < 5.10998997931) // almost 10*me, but why?
+		//if(1/z9 < 10) // maybe 10 works instead!? 
 		if(z9 > 0.1) // maybe 0.1 works instead!? 
 		{
 			r[1]=-0.62173;
 			for(ie=1;ie<=10;ie++)
-                r[1]+=fb[ie-1]*pow(z9,ie);
-			r[1]*=exp(-2.8602/z9)/tau; /* n->p */
+                r[1]+=bf[ie-1]*pow(z9,ie);
+			r[1]*=exp(-2.8602/z9)/tau;  /// n->p
 		}
 		else 
-            r[1]=0.; /* p->n */
+            r[1]=0.;                    /// p->n
 	}
 	else
 	{		
@@ -117,7 +114,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double Tnumev = Tnu*kB;
 		double z9 = T9*kB/me;
 		double znu = Tnu*kB/me;
-		double q = 1.29333217/me; /* q=(mn-mp)/me */
+		double q = 1.29333217/me;   /// q=(mn-mp)/me
 
 		double int1 = 0;
  		double int2 = 0;
@@ -128,98 +125,88 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double x;
 		int je;
 
-        //printf("z9: %f\n", z9);
-        //printf("znu: %f\n", znu);
-        //assert(z9 > 0);
-        //assert(znu > 0);
-				
-        //printf("T9mev: %f\n", T9mev);
-        //assert(T9mev > 0);
-        //assert(Tnumev > 0);
-
         /// Integral 0: Normalizer for n->p rate
 		double zmax = max(50*z9,q);
         double norm = 0;
 		for(je=1;je<=n-1;je++)
 		{
-			x = 1.+(double)je/(double)n*(q-1);
-			norm += (x+b)*pow(x-q,2.)*sqrt(x*x-1.);
+			x = 1+(double)je/(double)n*(q-1);
+			norm += (x+b)*pow(x-q,2.)*sqrt(x*x-1);
 		}
-		norm *= tau*(q-1)/0.9805/(double)n; // Fermi function correction
-        //printf("I0: %f\n", tau/norm);
-        //printf("norm: %f\n", norm);
+		norm *= (q-1)/(double)n;    /// PDF normalizer
+		norm *= tau/0.9805;         /// lifetime and Fermi function correction
 
         /// Integral 1: 1st part of n->p rate
 		double max1 = max(zmax,fabs(znu*(50.+xi1)+q));
 		for(je=1;je<=n-1;je++)
 		{
-			x = 1.+(double)je/(double)n*(max1-1.);
-			if(x>1.)
+			x = 1+(double)je/(double)n*(max1-1);
+			if(x>1)
 			{
-				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(-x/z9))
-                    /(1.+exp((x-q)/znu-xi1));
+				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1)
+                    /(1+exp(-x/z9))
+                    /(1+exp((x-q)/znu-xi1));
 			}
 		}
-		if(max1>1.) 
-            int1+=0.5*(max1+b)*pow(max1-q,2.)*sqrt(max1*max1-1.)
-                /(1.+exp(-me*max1/T9mev))
-                /(1.+exp((max1-q)*me/Tnumev-xi1));
-		int1*=(max1-1.)/(double)n;
+		if(max1>1) 
+            int1+=0.5*(max1+b)*pow(max1-q,2.)*sqrt(max1*max1-1)
+                /(1+exp(-max1/z9))
+                /(1+exp((max1-q)/znu-xi1));
+		int1*=(max1-1)/(double)n;
 
         /// Integral 2: 2nd part of n->p rate
 		double max2=max(zmax,fabs(znu*(50.-xi1)-q));
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*(max2-1.);
-			if(x>1.)
+			x=1+(double)je/(double)n*(max2-1);
+			if(x>1)
 			{
-				int2+=(x-b)*pow(x+q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(x/z9))
-                    /(1.+exp(-(x+q)/znu-xi1));
+				int2+=(x-b)*pow(x+q,2.)*sqrt(x*x-1)
+                    /(1+exp(x/z9))
+                    /(1+exp(-(x+q)/znu-xi1));
 			}
 		}
-		if(max2>1.) 
-            int2+=0.5*(max2-b)*pow(max2+q,2.)*sqrt(max2*max2-1.)
-                /(1.+exp(max2/z9))
-                /(1.+exp(-(max2+q)/znu-xi1));
-		int2*=(max2-1.)/(double)n;
+		if(max2>1) 
+            int2+=0.5*(max2-b)*pow(max2+q,2.)*sqrt(max2*max2-1)
+                /(1+exp(max2/z9))
+                /(1+exp(-(max2+q)/znu-xi1));
+		int2*=(max2-1)/(double)n;
 
         /// Integral 3: 1st part of p->n rate
 		double max3=max(zmax,fabs(znu*(50.-xi1)-q));
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*(max3-1.);
-			if(x>1.)
+			x=1+(double)je/(double)n*(max3-1);
+			if(x>1)
 			{
-				int3+=(x-b)*pow(x+q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(-x/z9))
-                    /(1.+exp((x+q)/znu+xi1));
+				int3+=(x-b)*pow(x+q,2.)*sqrt(x*x-1)
+                    /(1+exp(-x/z9))
+                    /(1+exp((x+q)/znu+xi1));
 			}
 		}
-		if(max3>1.) 
-            int3+=0.5*(max3-b)*pow(max3+q,2.)*sqrt(max3*max3-1.)
-                /(1.+exp(-me*max3/T9mev))
-                /(1.+exp((max3+q)*me/Tnumev+xi1));
-		int3*=(max3-1.)/(double)n;
+		if(max3>1) 
+            int3+=0.5*(max3-b)*pow(max3+q,2.)*sqrt(max3*max3-1)
+                /(1+exp(-max3/z9))
+                /(1+exp((max3+q)/znu+xi1));
+		int3*=(max3-1)/(double)n;
  
         /// Integral 4: 2nd part of p->n rate
 		double max4=max(zmax,fabs(znu*(50.+xi1)+q));
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*(max4-1.);
-			if(x>1.)
+			x=1+(double)je/(double)n*(max4-1);
+			if(x>1)
 			{
-				int4+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
-                    /(1.+exp(me*x/T9mev))
-                    /(1.+exp(-(x-q)*me/Tnumev+xi1));
+				int4+=(x+b)*pow(x-q,2.)*sqrt(x*x-1)
+                    /(1+exp(x/z9))
+                    /(1+exp(-(x-q)/znu+xi1));
 			}
 		}
-		if(max4>1.) 
-            int4+=0.5*(max4+b)*pow(max4-q,2.)*sqrt(max4*max4-1.)
-                /(1.+exp(me*max4/T9mev))
-                /(1.+exp(-(max4-q)*me/Tnumev+xi1));
-		int4*=(max4-1.)/(double)n;
+		if(max4>1) 
+            int4+=0.5*(max4+b)*pow(max4-q,2.)*sqrt(max4*max4-1)
+                /(1+exp(max4/z9))
+                /(1+exp(-(max4-q)/znu+xi1));
+		int4*=(max4-1)/(double)n;
 
 		f[1]=(int1+int2)/norm;
         r[1]=(int3+int4)/norm;
@@ -233,28 +220,28 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	
 	if(err==1) 
 	{
-		f[1]*=fabs(1.+ferr);
-		r[1]*=fabs(1.+rerr);
+		f[1]*=fabs(1+ferr);
+		r[1]*=fabs(1+rerr);
 	}
 	
 	if(err==2) 
 	{
-		f[1]*=fabs(1.-ferr);
-		r[1]*=fabs(1.-rerr);
+		f[1]*=fabs(1-ferr);
+		r[1]*=fabs(1-rerr);
 	}
 	
 	if(err>100000)
 	{
         printf("Error: rates are going to be random.");
 			srand((unsigned int)(getpid()+err));
-			f[1]*=fabs(1.+ferr*rand_gauss());
-			r[1]*=fabs(1.+rerr*rand_gauss());
+			f[1]*=fabs(1+ferr*rand_gauss());
+			r[1]*=fabs(1+rerr*rand_gauss());
 	}
 		
 	if(err==-1)
 	{
-		f[1]*=fabs(1.-ferr);
-		r[1]*=fabs(1.-rerr);
+		f[1]*=fabs(1-ferr);
+		r[1]*=fabs(1-rerr);
 	}		
 	
 	return;
