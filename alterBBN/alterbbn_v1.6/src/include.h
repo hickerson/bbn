@@ -57,9 +57,24 @@ relicparam;
 #define NNUC 26
 #define NBETAREC 11
 
+/*
+    Naming convention using enums so that reactions 
+    can be added or removed with interfering with loops.
+    X_YZ, XY_ZW, X_YZW, etc...
+    where X, Y, Z, can be one g, v, e, p, n, d, t, h, a, LiN, etc...
+    g - gamma
+    v - electron neutrino (or anti)
+    e - electron, positron, or beta
+    p - proton (H)
+    n - neutron 
+    d - deuteron (H2)
+    t - triton (H3)
+    h - helion (He3)
+    a - alpha (He4)
+*/
 enum ReactionIndex {
 	np = 0,     /// n -> p
-	t_evHe3,    /// H3 -> e- + v + He3
+	t_evh,      /// H3 -> e- + v + He3
 	Li8_evaa,   /// Li8 -> e- + v + 2He4
 	B12_evBC12, /// B12 -> e- + B + C12
 	C14_evN14,  /// C14 -> e- + v + N14
@@ -71,25 +86,25 @@ enum ReactionIndex {
 	O15_evN15,  /// O15 -> e+ + v + N15
 	Hn_gd,      /// H + n -> g + H2
 	dn_gt,      /// H2 + n -> g + H3
-	He3n_ga,    /// He3 + n -> g + He4
+	hn_ga,      /// He3 + n -> g + He4
 	Li6n_gLi7,  /// Li6 + n -> g + Li7
-	He3n_pt,    /// He3 + n -> p + H3
+	hn_pt,      /// He3 + n -> p + H3
 	Be7n_pLi7,  /// Be7 + n -> p + Li7
 	Li6n_at,    /// Li6 + n -> a + H3
 	Be7n_aa,    /// Be7 + n -> a + He4
-	dp_gHe3,    /// H2 + p -> g + He3
+	dp_gh,      /// H2 + p -> g + He3
 	tp_ga,      /// H3 + p -> g + He4
 	Li6p_gBe7,  /// Li6 + p -> g + Be7
-	Li6p_aHe3,  /// Li6 + p -> a + He3
+	Li6p_ah,    /// Li6 + p -> a + He3
 	Li7p_aa,    /// Li7 + p -> a + He4
 	da_pLi6,    /// H2 + a -> p + Li6
 	ta_pLi7,    /// H3 + a -> p + Li7
-	He3a_pBe7,  /// He3 + a -> p + Be7
-	dd_pHe3,    /// H2 + d -> p + He3
+	ha_pBe7,    /// He3 + a -> p + Be7
+	dd_ph,      /// H2 + d -> p + He3
 	dd_nt,      /// H2 + d -> n + H3
 	td_na,      /// H3 + d -> n + He4
-	He3d_pa,    /// He3 + d -> p + He4
-	He3He3_ppa, /// He3 + He3 -> 2p + He4
+	hd_pa,      /// He3 + d -> p + He4
+	hh_ppa,     /// He3 + He3 -> 2p + He4
 	Li7d_naa,   /// Li7 + d -> n + a + He4
 	Be7d_paa,   /// Be7 + d -> p + a + He4
 	Li7n_gLi8,  /// Li7 + n -> g + Li8

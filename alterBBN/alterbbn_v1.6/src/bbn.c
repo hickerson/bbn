@@ -38,8 +38,9 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	}
 	
 	
-
-	for(i=1;i<=NNUC;i++) for(j=1;j<=NNUC;j++) a[i][j]=0.;
+	for(i=1;i<=NNUC;i++) 
+        for(j=1;j<=NNUC;j++) 
+            a[i][j]=0.;
 
 	for (n=1;n<=NNUCREAC;n++)
 	{
@@ -157,28 +158,34 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 			k=NNUC+1-k;
 			l=NNUC+1-l;
 			
-			if(j<=NNUC) a[j][i]+=rn2*cn1;
-			if(k<=NNUC) a[k][i]-=rn3*cn1;
+			if(j<=NNUC) 
+                a[j][i]+=rn2*cn1;
+			if(k<=NNUC) 
+                a[k][i]-=rn3*cn1;
 			a[i][i]+=rn1*cn1;
 			a[l][i]-=rn4*cn1;
 			
 			if (j<=NNUC) 
 			{
 				a[j][j]+=rn2*cn2;
-				if(k<=NNUC) a[k][j]-=rn3*cn2;
+				if(k<=NNUC) 
+                    a[k][j]-=rn3*cn2;
 				a[i][j]+=rn1*cn2;
 				a[l][j]-=rn4*cn2;
 			}
 			
 			if (k<=NNUC)
 			{
-				if(j<=NNUC) a[j][k]-=rn2*cn3;
+				if(j<=NNUC) 
+                    a[j][k]-=rn2*cn3;
 				a[k][k]+=rn3*cn3;
 				a[i][k]-=rn1*cn3;
 				a[l][k]+=rn4*cn3;
 			}
-			if(j<=NNUC) a[j][l]-=rn2*cn4;
-			if(k<=NNUC) a[k][l]+=rn3*cn4;
+			if(j<=NNUC) 
+                a[j][l]-=rn2*cn4;
+			if(k<=NNUC) 
+                a[k][l]+=rn3*cn4;
 			a[i][l]-=rn1*cn4;
 			a[l][l]+=rn4*cn4;
 		}
@@ -192,14 +199,18 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 		for(j=1;j<=NNUC;j++)
 		{
 			j1=NNUC+1-j;
-			if(fabs(a[j][i])<bdln*Y0[j1]/Y0[i1]) a[j][i]=0.;
+			if(fabs(a[j][i])<bdln*Y0[j1]/Y0[i1]) 
+                a[j][i]=0.;
 			else a[j][i]*=dt;
 		}
 		a[i][i]+=1.;
 		b[i1]=Y0[i];
 	}
 
-	if(loop==1) icnvm=ip; else icnvm=c0;
+	if(loop==1) 
+        icnvm=ip; 
+    else 
+        icnvm=c0;
 	
 	nord=0;
 	fail=0;
@@ -224,7 +235,8 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 			if(a[j][i]!=0.)
 			{
 				cx=a[j][i]/a[i][i];
-				for(k=i+1;k<=NNUC;k++) a[j][k]-=cx*a[i][k];
+				for(k=i+1;k<=NNUC;k++) 
+                    a[j][k]-=cx*a[i][k];
 				a[j][i]=cx;
 				x[j]-=cx*x[i];
 			}
@@ -238,7 +250,8 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 		for(i=NNUC-1;i>=1;i--)
 		{
 			sum=0.;
-			for(j=i+1;j<=NNUC;j++) sum+=a[i][j]*x[j];
+			for(j=i+1;j<=NNUC;j++) 
+                sum+=a[i][j]*x[j];
 			x[i]=(x[i]-sum)/a[i][i];
 			yx[i]+=x[i];
 		}
@@ -261,11 +274,14 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 							for(j=1;j<=NNUC;j++) 
 							{
 								t = 0.;
-								for(k=1;k<=NNUC;k++) t+=a0[j][k]*yx[k];
+								for(k=1;k<=NNUC;k++) 
+                                    t+=a0[j][k]*yx[k];
 								x[j]=b[j]-t;
 							}
 
-							for(j=2;j<=NNUC;j++) for(k=j+1;k<=NNUC;k++) x[k]-=a[k][j]*x[j];
+							for(j=2;j<=NNUC;j++) 
+                                for(k=j+1;k<=NNUC;k++) 
+                                    x[k]-=a[k][j]*x[j];
 							break;
 						}
 						else
@@ -293,8 +309,10 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 #ifdef DEBUG
 	if(fail!=0)
 	{
-		if(fail==-1) printf("y(%d) failed to converge\n",ierror);
-		if(fail>=1) printf("%d th diagonal term equals zero\n",fail);
+		if(fail==-1) 
+            printf("y(%d) failed to converge\n",ierror);
+		if(fail>=1) 
+            printf("%d th diagonal term equals zero\n",fail);
 	}
 #endif		
 	return fail;
