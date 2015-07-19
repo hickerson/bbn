@@ -61,7 +61,7 @@ relicparam;
     Naming convention using enums so that reactions 
     can be added or removed with interfering with loops.
     X_YZ, XY_ZW, X_YZW, etc...
-    where X, Y, Z, can be one g, v, e, p, n, d, t, h, a, LiN, etc...
+    where X, Y, Z, can be one g, v, e, n, p, d, t, h, a, LiN, etc...
     g - gamma
     v - electron neutrino (or anti)
     e - electron, positron, or beta
@@ -163,7 +163,14 @@ enum ReactionIndex {
 	C13a_nO16   /// C13 + a -> n + O16
 };
 
-
+enum NuclideIndex {
+    n = 1, p, d, t, h, a, 
+    Li6, Li7, Be7, Li8,
+    B8, Be9, B10, B11,
+    C11, B12, C12, N12,
+    C13, N13, C14, N14,
+    O14, N15, O15, O16
+};
 
 /* general.c */
 double max(double x, double y);
