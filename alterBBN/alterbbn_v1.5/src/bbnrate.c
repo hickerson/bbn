@@ -119,11 +119,12 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 		double znu = Tnu*kB/me;
 		double q = 1.29333217/me; /* q=(mn-mp)/me */
 
-		double int1=0.;
- 		double int2=0.;
-		double int3=0.;
-		double int4=0.;
- 		int n=1000;
+		double int1 = 0;
+ 		double int2 = 0;
+		double int3 = 0;
+		double int4 = 0;
+ 		int n = 1000;
+        double minexp = 10;
 		double x;
 		int je;
 
@@ -137,23 +138,22 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
         //assert(Tnumev > 0);
 
         /// Integral 0: Normalizer for n->p rate
-		double zmax=max(50*z9,q);
+		double zmax = max(50*z9,q);
         double norm = 0;
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*(q-1);
+			x = 1.+(double)je/(double)n*(q-1);
 			norm += (x+b)*pow(x-q,2.)*sqrt(x*x-1.);
 		}
-		//norm *= 0.981*tau*(q-1)/(double)n;
-		norm *= tau*(q-1)/0.981/(double)n;
+		norm *= tau*(q-1)/0.9805/(double)n; // Fermi function correction
         //printf("I0: %f\n", tau/norm);
         //printf("norm: %f\n", norm);
 
         /// Integral 1: 1st part of n->p rate
-		double max1=max(zmax,fabs(znu*(50.+xi1)+q));
+		double max1 = max(zmax,fabs(znu*(50.+xi1)+q));
 		for(je=1;je<=n-1;je++)
 		{
-			x=1.+(double)je/(double)n*(max1-1.);
+			x = 1.+(double)je/(double)n*(max1-1.);
 			if(x>1.)
 			{
 				int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1.)
@@ -161,12 +161,10 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                     /(1.+exp((x-q)/znu-xi1));
 			}
 		}
-        /*
 		if(max1>1.) 
             int1+=0.5*(max1+b)*pow(max1-q,2.)*sqrt(max1*max1-1.)
                 /(1.+exp(-me*max1/T9mev))
                 /(1.+exp((max1-q)*me/Tnumev-xi1));
-                */
 		int1*=(max1-1.)/(double)n;
 
         /// Integral 2: 2nd part of n->p rate
@@ -181,12 +179,10 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                     /(1.+exp(-(x+q)/znu-xi1));
 			}
 		}
-        /*
 		if(max2>1.) 
             int2+=0.5*(max2-b)*pow(max2+q,2.)*sqrt(max2*max2-1.)
                 /(1.+exp(max2/z9))
                 /(1.+exp(-(max2+q)/znu-xi1));
-                */
 		int2*=(max2-1.)/(double)n;
 
         /// Integral 3: 1st part of p->n rate
@@ -201,12 +197,10 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                     /(1.+exp((x+q)/znu+xi1));
 			}
 		}
-        /*
 		if(max3>1.) 
             int3+=0.5*(max3-b)*pow(max3+q,2.)*sqrt(max3*max3-1.)
                 /(1.+exp(-me*max3/T9mev))
                 /(1.+exp((max3+q)*me/Tnumev+xi1));
-                */
 		int3*=(max3-1.)/(double)n;
  
         /// Integral 4: 2nd part of p->n rate
@@ -221,12 +215,10 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                     /(1.+exp(-(x-q)*me/Tnumev+xi1));
 			}
 		}
-        /*
 		if(max4>1.) 
             int4+=0.5*(max4+b)*pow(max4-q,2.)*sqrt(max4*max4-1.)
                 /(1.+exp(me*max4/T9mev))
                 /(1.+exp(-(max4-q)*me/Tnumev+xi1));
-                */
 		int4*=(max4-1.)/(double)n;
 
 		f[1]=(int1+int2)/norm;
