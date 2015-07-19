@@ -55,6 +55,100 @@ relicparam;
 
 #define NNUCREAC 88
 #define NNUC 26
+#define NBETAREC 11
+
+enum ReactionIndex {
+	np = 0,     /// n -> p
+	t_evHe3,    /// H3 -> e- + v + He3
+	Li8_evaa,   /// Li8 -> e- + v + 2He4
+	B12_evBC12, /// B12 -> e- + B + C12
+	C14_evN14,  /// C14 -> e- + v + N14
+	B8_evaa,    /// B8 -> e+ + v + 2He4
+	C11_evB11,  /// C11 -> e+ + v + B11
+	N12_evc12,  /// N12 -> e+ + v + C12
+	N13_evC13,  /// N13 -> e+ + v + C13
+	O14_evN14,  /// O14 -> e+ + v + N14
+	O15_evN15,  /// O15 -> e+ + v + N15
+	Hn_gd,      /// H + n -> g + H2
+	dn_gt,      /// H2 + n -> g + H3
+	He3n_ga,    /// He3 + n -> g + He4
+	Li6n_gLi7,  /// Li6 + n -> g + Li7
+	He3n_pt,    /// He3 + n -> p + H3
+	Be7n_pLi7,  /// Be7 + n -> p + Li7
+	Li6n_at,    /// Li6 + n -> a + H3
+	Be7n_aa,    /// Be7 + n -> a + He4
+	dp_gHe3,    /// H2 + p -> g + He3
+	tp_ga,      /// H3 + p -> g + He4
+	Li6p_gBe7,  /// Li6 + p -> g + Be7
+	Li6p_aHe3,  /// Li6 + p -> a + He3
+	Li7p_aa,    /// Li7 + p -> a + He4
+	da_pLi6,    /// H2 + a -> p + Li6
+	ta_pLi7,    /// H3 + a -> p + Li7
+	He3a_pBe7,  /// He3 + a -> p + Be7
+	dd_pHe3,    /// H2 + d -> p + He3
+	dd_nt,      /// H2 + d -> n + H3
+	td_na,      /// H3 + d -> n + He4
+	He3d_pa,    /// He3 + d -> p + He4
+	He3He3_ppa, /// He3 + He3 -> 2p + He4
+	Li7d_naa,   /// Li7 + d -> n + a + He4
+	Be7d_paa,   /// Be7 + d -> p + a + He4
+	Li7n_gLi8,  /// Li7 + n -> g + Li8
+	B10n_gB11,  /// B10 + n -> g + B11
+	B11n_gB12,  /// B11 + n -> g + B12
+	C11n_pB11,  /// C11 + n -> p + B11
+	B10n_aLi7,  /// B10 + n -> a + Li7
+	Be7p_gB8,   /// Be7 + p -> g + B8
+	Be9p_gB10,  /// Be9 + p -> g + B10
+	B10p_gC11,  /// B10 + p -> g + C11
+	B11p_gC12,  /// B11 + p -> g + C12
+	C11p_gN12,  /// C11 + p -> g + N12
+	B12p_nC12,  /// B12 + p -> n + C12
+	Be9p_aLi6,  /// Be9 + p -> a + Li6
+	B10p_aBe7,  /// B10 + p -> a + Be7
+	B12p_aBe9,  /// B12 + p -> a + Be9
+	Li6a_gB10,  /// Li6 + a -> g + B10
+	Li7a_gB11,  /// Li7 + a -> g + B11
+	Be7a_gC11,  /// Be7 + a -> g + C11
+	B8a_pC11,   /// B8 + a -> p + C11
+	Li8a_nB11,  /// Li8 + a -> n + B11
+	Be9a_nC12,  /// Be9 + a -> n + C12
+	Be9d_nB10,  /// Be9 + d -> n + B10
+	B10d_pB11,  /// B10 + d -> p + B11
+	B11d_nC12,  /// B11 + d -> n + C12
+	aan_gBe9,   /// He4 + a + n -> g + Be9
+	aaa_gC12,   /// He4 + 2a -> g + C12
+	Li8p_naa,   /// Li8 + p -> n + a + He4
+	B8n_paa,    /// B8 + n -> p + a + He4
+	Be9p_daa,   /// Be9 + p -> d + a + He4
+	B11p_aaBe4, /// B11 + p -> 2a + Be4
+	C11n_aaa,   /// C11 + n -> 2a + He4
+	C12n_gC13,  /// C12 + n -> g + C13
+	C13n_gC14,  /// C13 + n -> g + C14
+	N14n_gN15,  /// N14 + n -> g + N15
+	N13n_pC13,  /// N13 + n -> p + C13
+	N14n_pC14,  /// N14 + n -> p + C14
+	O15n_pN15,  /// O15 + n -> p + N15
+	O15n_aC12,  /// O15 + n -> a + C12
+	C12p_gN13,  /// C12 + p -> g + N13
+	C13p_gN14,  /// C13 + p -> g + N14
+	C14p_gN15,  /// C14 + p -> g + N15
+	N13p_gO14,  /// N13 + p -> g + O14
+	N14p_gO15,  /// N14 + p -> g + O15
+	N15p_gO16,  /// N15 + p -> g + O16
+	N15p_aC12,  /// N15 + p -> a + C12
+	C12a_gO16,  /// C12 + a -> g + O16
+	B10a_pC13,  /// B10 + a -> p + C13
+	B11a_pC14,  /// B11 + a -> p + C14
+	C11a_pN14,  /// C11 + a -> p + N14
+	N12a_pO15,  /// N12 + a -> p + O15
+	N13a_pO16,  /// N13 + a -> p + O16
+	B10a_nN13,  /// B10 + a -> n + N13
+	B11a_nN14,  /// B11 + a -> n + N14
+	B12a_nN15,  /// B12 + a -> n + N15
+	C13a_nO16   /// C13 + a -> n + O16
+};
+
+
 
 /* general.c */
 double max(double x, double y);
