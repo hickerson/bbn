@@ -53,14 +53,8 @@ relicparam;
 /*--------------------------------------------------------------------*/
 /* Prototypes */
 
-//#define NBETAREAC 11
 #define NNUCREAC 88
 #define NNUC 26
-
-enum BetaReac {
-    np = 1,   
-    NBETAREAC
-};
 
 /* general.c */
 double max(double x, double y);

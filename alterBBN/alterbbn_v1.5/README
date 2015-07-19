@@ -1,7 +1,7 @@
 AlterBBN Version 1.4 (28 June 2013)
 -----------------------------------
 By Alexandre Arbey (alexandre.arbey@ens-lyon.fr)
-
+Additions by Kevin Peter Hickerson (hickerson@physics.ucla.edu)
 
 INTRODUCTION
 ------------
@@ -20,13 +20,14 @@ Installation and Compilation
 - in Makefile, define your C compiler
 - compile with: make
 
-6 programs are available:
+7 programs are available:
 - stand_cosmo.c: calculation of the abundances in the standard cosmological model
 - alter_eta.c: calculation in a scenario with a modified baryon-to-photon ratio
 - alter_etannutau.c: calculation in a scenario with a modified baryon-to-photon ratio, a different number of neutrinos and a modified neutron lifetime
 - alter_neutrinos.c: calculation in a scenario with a different number of neutrinos
 - alter_reheating.c: calculation in a reheating-like model
 - alter_standmod.c: calculation in a model with modified expansion rate and entropy content
+- alter_fierz.c: like etannutau but with an added Fierz interference term in the  n<->p rates
 
 
 Included Files
@@ -44,6 +45,7 @@ alter_etannutau.c: calculation in a scenario with modified baryon-to-photon rati
 alter_neutrinos.c: calculation in a scenario with a different number of neutrinos, and/or with degeneracy
 alter_reheating.c: calculation in a reheating-like model
 alter_standmod.c: calculation in a model with modified expansion rate and entropy content
+- alter_fierz.c: like etannutau but with an added Fierz interference term in the  n<->p rates
 
 - Headers in src
 include.h: definitions and prototypes
@@ -57,6 +59,11 @@ README
 
 History
 -------
+v1.5 - 07/19/2015 -     Added calculation Fierz interference term to the n<->p rates. 
+            Improved the direct integration section of n<->p.
+            Fixed normalizer and added Coulomb correction n lifetime.
+            Improved the readability of some code and comments.
+
 v1.4 - 06/28/2013 -     Added calculation of the errors, inspired by astro-ph/9803177 (thanks to S. Sarkar).
 			Routine prototypes modified.
 			Neutrino degeneracy added.
