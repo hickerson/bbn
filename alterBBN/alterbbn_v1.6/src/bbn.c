@@ -2,6 +2,108 @@
 
 /*----------------------------------------------------*/
 
+/*
+enum ReactionIndex {
+	np = 1,     /// n -> p
+	t_evh,      /// H3 -> e- + v + He3
+	Li8_evaa,   /// Li8 -> e- + v + 2He4
+	B12_evC12,  /// B12 -> e- + v + C12
+	C14_evN14,  /// C14 -> e- + v + N14
+	B8_evaa,    /// B8 -> e+ + v + 2He4
+	C11_evB11,  /// C11 -> e+ + v + B11
+	N12_evC12,  /// N12 -> e+ + v + C12
+	N13_evC13,  /// N13 -> e+ + v + C13
+	O14_evN14,  /// O14 -> e+ + v + N14
+	O15_evN15,  /// O15 -> e+ + v + N15
+	Hn_gd,      /// H + n -> g + H2
+	dn_gt,      /// H2 + n -> g + H3
+	hn_ga,      /// He3 + n -> g + He4
+	Li6n_gLi7,  /// Li6 + n -> g + Li7
+	hn_pt,      /// He3 + n -> p + H3
+	Be7n_pLi7,  /// Be7 + n -> p + Li7
+	Li6n_at,    /// Li6 + n -> a + H3
+	Be7n_aa,    /// Be7 + n -> a + He4
+	dp_gh,      /// H2 + p -> g + He3
+	tp_ga,      /// H3 + p -> g + He4
+	Li6p_gBe7,  /// Li6 + p -> g + Be7
+	Li6p_ah,    /// Li6 + p -> a + He3
+	Li7p_aa,    /// Li7 + p -> a + He4
+	da_pLi6,    /// H2 + a -> p + Li6
+	ta_pLi7,    /// H3 + a -> p + Li7
+	ha_pBe7,    /// He3 + a -> p + Be7
+	dd_ph,      /// H2 + d -> p + He3
+	dd_nt,      /// H2 + d -> n + H3
+	td_na,      /// H3 + d -> n + He4
+	hd_pa,      /// He3 + d -> p + He4
+	hh_ppa,     /// He3 + He3 -> 2p + He4
+	Li7d_naa,   /// Li7 + d -> n + a + He4
+	Be7d_paa,   /// Be7 + d -> p + a + He4
+	Li7n_gLi8,  /// Li7 + n -> g + Li8
+	B10n_gB11,  /// B10 + n -> g + B11
+	B11n_gB12,  /// B11 + n -> g + B12
+	C11n_pB11,  /// C11 + n -> p + B11
+	B10n_aLi7,  /// B10 + n -> a + Li7
+	Be7p_gB8,   /// Be7 + p -> g + B8
+	Be9p_gB10,  /// Be9 + p -> g + B10
+	B10p_gC11,  /// B10 + p -> g + C11
+	B11p_gC12,  /// B11 + p -> g + C12
+	C11p_gN12,  /// C11 + p -> g + N12
+	B12p_nC12,  /// B12 + p -> n + C12
+	Be9p_aLi6,  /// Be9 + p -> a + Li6
+	B10p_aBe7,  /// B10 + p -> a + Be7
+	B12p_aBe9,  /// B12 + p -> a + Be9
+	Li6a_gB10,  /// Li6 + a -> g + B10
+	Li7a_gB11,  /// Li7 + a -> g + B11
+	Be7a_gC11,  /// Be7 + a -> g + C11
+	B8a_pC11,   /// B8 + a -> p + C11
+	Li8a_nB11,  /// Li8 + a -> n + B11
+	Be9a_nC12,  /// Be9 + a -> n + C12
+	Be9d_nB10,  /// Be9 + d -> n + B10
+	B10d_pB11,  /// B10 + d -> p + B11
+	B11d_nC12,  /// B11 + d -> n + C12
+	aan_gBe9,   /// He4 + a + n -> g + Be9
+	aaa_gC12,   /// He4 + 2a -> g + C12
+	Li8p_naa,   /// Li8 + p -> n + a + He4
+	B8n_paa,    /// B8 + n -> p + a + He4
+	Be9p_daa,   /// Be9 + p -> d + a + He4
+	B11p_aaBe4, /// B11 + p -> 2a + Be4
+	C11n_aaa,   /// C11 + n -> 2a + He4
+	C12n_gC13,  /// C12 + n -> g + C13
+	C13n_gC14,  /// C13 + n -> g + C14
+	N14n_gN15,  /// N14 + n -> g + N15
+	N13n_pC13,  /// N13 + n -> p + C13
+	N14n_pC14,  /// N14 + n -> p + C14
+	O15n_pN15,  /// O15 + n -> p + N15
+	O15n_aC12,  /// O15 + n -> a + C12
+	C12p_gN13,  /// C12 + p -> g + N13
+	C13p_gN14,  /// C13 + p -> g + N14
+	C14p_gN15,  /// C14 + p -> g + N15
+	N13p_gO14,  /// N13 + p -> g + O14
+	N14p_gO15,  /// N14 + p -> g + O15
+	N15p_gO16,  /// N15 + p -> g + O16
+	N15p_aC12,  /// N15 + p -> a + C12
+	C12a_gO16,  /// C12 + a -> g + O16
+	B10a_pC13,  /// B10 + a -> p + C13
+	B11a_pC14,  /// B11 + a -> p + C14
+	C11a_pN14,  /// C11 + a -> p + N14
+	N12a_pO15,  /// N12 + a -> p + O15
+	N13a_pO16,  /// N13 + a -> p + O16
+	B10a_nN13,  /// B10 + a -> n + N13
+	B11a_nN14,  /// B11 + a -> n + N14
+	B12a_nN15,  /// B12 + a -> n + N15
+	C13a_nO16   /// C13 + a -> n + O16
+};
+
+enum NuclideIndex {
+    n = 1, p, d, t, h, a, 
+    Li6, Li7, Be7, Li8,
+    B8, Be9, B10, B11,
+    C11, B12, C12, N12,
+    C13, N13, C14, N14,
+    O14, N15, O15, O16
+};
+*/
+
 int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
@@ -367,17 +469,17 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	{B12_evC12, 0.,16.,0.,0.,17.,0.,0.},		// B12 -> e- + n + C12
 	{C14_evN14, 0.,21.,0.,0.,22.,0.,0.},		// C14 -> e- + v + N14
 	{B8_evaa,   3.,11.,0.,0.,6.,0.,0.},		// B8 -> e+ + v + 2He4
-	{7.,0.,15.,0.,0.,14.,0.,0.},		// C11 -> e+ + v + B11
-	{8.,0.,18.,0.,0.,17.,0.,0.},		// N12 -> e+ + v + C12
-	{9.,0.,20.,0.,0.,19.,0.,0.},		// N13 -> e+ + v + C13
-	{10.,0.,23.,0.,0.,22.,0.,0.},		// O14 -> e+ + v + N14
-	{11.,0.,25.,0.,0.,24.,0.,0.},		// O15 -> e+ + v + N15
-	{12.,1.,2.,1.,0.,3.,0.471,25.82},	// H + n -> g + H2
-	{13.,1.,3.,1.,0.,4.,1.63,72.62},	// H2 + n -> g + H3
-	{14.,1.,5.,1.,0.,6.,2.61,238.81},	// He3 + n -> g + He4
-	{15.,1.,7.,1.,0.,8.,1.19,84.17},	// Li6 + n -> g + Li7
-	{16.,2.,5.,1.,2.,4.,1.002,8.863},	// He3 + n -> p + H3
-	{17.,2.,9.,1.,2.,8.,0.998,19.081},	// Be7 + n -> p + Li7
+	{C11_evB11, 0.,15.,0.,0.,14.,0.,0.},		// C11 -> e+ + v + B11
+	{N12_evC12, 0.,18.,0.,0.,17.,0.,0.},		// N12 -> e+ + v + C12
+	{N13_evC13, 0.,20.,0.,0.,19.,0.,0.},		// N13 -> e+ + v + C13
+	{O14_evN14, 0.,23.,0.,0.,22.,0.,0.},		// O14 -> e+ + v + N14
+	{O15_evN15, 0.,25.,0.,0.,24.,0.,0.},		// O15 -> e+ + v + N15
+	{pn_gd,     1.,2.,1.,0.,3.,0.471,25.82},	// H + n -> g + H2
+	{dn_gt,     1.,3.,1.,0.,4.,1.63,72.62},	// H2 + n -> g + H3
+	{hn_ga,     1.,5.,1.,0.,6.,2.61,238.81},	// He3 + n -> g + He4
+	{Li6n_gLi7, 1.,7.,1.,0.,8.,1.19,84.17},	// Li6 + n -> g + Li7
+	{hn_pt,     2.,5.,1.,2.,4.,1.002,8.863},	// He3 + n -> p + H3
+	{Be7n_pLi7, 2.,9.,1.,2.,8.,0.998,19.081},	// Be7 + n -> p + Li7
 	{18.,2.,7.,1.,4.,6.,1.070,55.494},	// Li6 + n -> a + H3
 	{19.,4.,9.,1.,0.,6.,4.70,220.39},	// Be7 + n -> a + He4
 	{20.,1.,3.,2.,0.,5.,1.63,63.750},	// H2 + p -> g + He3

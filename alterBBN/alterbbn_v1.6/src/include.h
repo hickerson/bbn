@@ -80,11 +80,11 @@ enum ReactionIndex {
 	C14_evN14,  /// C14 -> e- + v + N14
 	B8_evaa,    /// B8 -> e+ + v + 2He4
 	C11_evB11,  /// C11 -> e+ + v + B11
-	N12_evc12,  /// N12 -> e+ + v + C12
+	N12_evC12,  /// N12 -> e+ + v + C12
 	N13_evC13,  /// N13 -> e+ + v + C13
 	O14_evN14,  /// O14 -> e+ + v + N14
 	O15_evN15,  /// O15 -> e+ + v + N15
-	Hn_gd,      /// H + n -> g + H2
+	pn_gd,      /// H + n -> g + H2
 	dn_gt,      /// H2 + n -> g + H3
 	hn_ga,      /// He3 + n -> g + He4
 	Li6n_gLi7,  /// Li6 + n -> g + Li7
