@@ -1,13 +1,14 @@
 #include "include.h"
 
-/*----------------------------------------------------*/
-/* type: 0-10, each type has a unique (#n1,#n2,#n3,#n4) quartet */
-/* n1: incoming nuclide number */
-/* n2: incoming light nuclide number */
-/* n3: outgoing light nuclide number */
-/* n4: outgoing nuclide number */
-/* rev: reverse reaction coefficient */
-/* q: energy release in reaction */
+/*----------------------------------------------------
+ * type: 0-10, each type has a unique (#n1,#n2,#n3,#n4) quartet
+ * n1: incoming nuclide number 
+ * n2: incoming light nuclide number
+ * n3: outgoing light nuclide number
+ * n4: outgoing nuclide number
+ * rev: reverse reaction coefficient
+ * q: energy release in reaction
+ *----------------------------------------------------*/
 void setup_reactions(double reacparam[][8]) 
 {
     int first = np;

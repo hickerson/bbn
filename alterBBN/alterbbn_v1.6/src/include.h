@@ -58,12 +58,21 @@ relicparam;
 #define NBETAREC 11
 
 /*
-    Reaction enum
-    this way, reactions can added or removed with interfering with loops.
+    enum ReactionIndex
+    Using this way, reactions can added or removed 
+    without interfering with loops.
 
-    Naming convention:
-    X_YZ, XY_ZW, X_YZW, etc...
-    where X, Y, Z, can be one g, v, e, n, p, d, t, h, a, LiN, etc...
+    The naming convention for the reaction
+
+        X -> Y + Z, X + Y -> Z + W, etc...
+
+    would be labeled
+        
+        X_YZ, XY_ZW, X_YZW, etc...
+    
+    where X, Y, Z, W, can be one g, v, e, n, p, d, t, h, a, 
+    or, and atomic isotope, Xn, such as Li7, C12, etc...
+    The special cases for ultralight isotopes are 
     g - gamma
     v - electron neutrino (or anti)
     e - electron, positron, or beta
@@ -75,7 +84,7 @@ relicparam;
     a - alpha (He4)
 */
 enum ReactionIndex {
-	np = 1,     /// n <-> p
+	np = 100,     /// n <-> p
 	t_evh,      /// H3 -> e- + v + He3
 	Li8_evaa,   /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12

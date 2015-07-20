@@ -100,22 +100,22 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
             0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,
             0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
 	
-		f[1]=1.;
+		f[np]=1.;
 		for(i=1;i<=13;i++) 
-            f[1]+=af[i-1]*pow(z9,i);
-		f[1]*=exp(-0.33979*z9)/tau;     /// n->p
+            f[np]+=af[i-1]*pow(z9,i);
+		f[np]*=exp(-0.33979*z9)/tau;     /// n->p
 		
 		//if(1/z9 < 5.10998997931) // almost 10*me, but why?
 		//if(1/z9 < 10) // maybe 10 works instead!? 
 		if(z9 > 0.1) // maybe 0.1 works instead!? 
 		{
-			r[1]=-0.62173;
+			r[np]=-0.62173;
 			for(i=1;i<=10;i++)
-                r[1]+=bf[i-1]*pow(z9,i);
-			r[1]*=exp(-2.8602/z9)/tau;  /// n->p
+                r[np]+=bf[i-1]*pow(z9,i);
+			r[np]*=exp(-2.8602/z9)/tau;  /// n->p
 		}
 		else 
-            r[1]=0.;                    /// p->n
+            r[np]=0.;                    /// p->n
 	}
 	else
 	{		
@@ -217,8 +217,8 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
                 /(1+exp(-(max4-q)/znu+xi1));
 		int4*=(max4-1)/(double)n;
 
-		f[1]=(int1+int2)/norm;
-        r[1]=(int3+int4)/norm;
+		f[np]=(int1+int2)/norm;
+        r[np]=(int3+int4)/norm;
 	}
 
 	if((err!=0&&err!=-10000))
@@ -229,28 +229,28 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 	
 	if(err==1) 
 	{
-		f[1]*=fabs(1+ferr);
-		r[1]*=fabs(1+rerr);
+		f[np]*=fabs(1+ferr);
+		r[np]*=fabs(1+rerr);
 	}
 	
 	if(err==2) 
 	{
-		f[1]*=fabs(1-ferr);
-		r[1]*=fabs(1-rerr);
+		f[np]*=fabs(1-ferr);
+		r[np]*=fabs(1-rerr);
 	}
 	
 	if(err>100000)
 	{
         printf("Error: rates are going to be random.");
 			srand((unsigned int)(getpid()+err));
-			f[1]*=fabs(1+ferr*rand_gauss());
-			r[1]*=fabs(1+rerr*rand_gauss());
+			f[np]*=fabs(1+ferr*rand_gauss());
+			r[np]*=fabs(1+rerr*rand_gauss());
 	}
 		
 	if(err==-1)
 	{
-		f[1]*=fabs(1-ferr);
-		r[1]*=fabs(1-rerr);
+		f[np]*=fabs(1-ferr);
+		r[np]*=fabs(1-rerr);
 	}		
 	
 	return;
