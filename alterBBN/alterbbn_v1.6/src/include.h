@@ -75,7 +75,7 @@ relicparam;
     a - alpha (He4)
 */
 enum ReactionIndex {
-	np = 1,     /// n -> p
+	np = 1,     /// n <-> p
 	t_evh,      /// H3 -> e- + v + He3
 	Li8_evaa,   /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12
@@ -99,11 +99,11 @@ enum ReactionIndex {
 	Li6p_gBe7,  /// Li6 + p -> g + Be7
 	Li6p_ah,    /// Li6 + p -> a + He3
 	Li7p_aa,    /// Li7 + p -> a + He4
-	da_pLi6,    /// H2 + a -> p + Li6
-	ta_pLi7,    /// H3 + a -> p + Li7
-	ha_pBe7,    /// He3 + a -> p + Be7
-	dd_ph,      /// H2 + d -> p + He3
-	dd_nt,      /// H2 + d -> n + H3
+	da_gLi6,    /// H2 + a -> p + Li6   changed to H2 + a -> g + Li6
+	ta_gLi7,    /// H3 + a -> p + Li7   changed to H3 + a -> g + Li7
+	ha_gBe7,    /// He3 + a -> p + Be7  changed to He3 + a -> g + Be7
+	dd_nh,      /// H2 + d -> p + He3   changed to H2 + d -> n + He3   
+	dd_pt,      /// H2 + d -> n + H3    changed to H2 + d -> p + H3
 	td_na,      /// H3 + d -> n + He4
 	hd_pa,      /// He3 + d -> p + He4
 	hh_ppa,     /// He3 + He3 -> 2p + He4
