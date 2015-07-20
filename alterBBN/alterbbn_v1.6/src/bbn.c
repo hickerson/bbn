@@ -11,7 +11,7 @@
 void setup_reactions(double reacparam[][8]) 
 {
     int first = np;
-    int last = np + NNUCREAC;
+    int last = np + NNUCREAC - 1;
 	double _reacparam[NNUCREAC][8] =  // TODO do a real loop
 	{
     /// reaction   type n1 n2 n3 n4  rev   q
@@ -123,8 +123,8 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double nn3[11]={0.,0.,1.,0.,0.,1.,0.,0.,1.,0.,2.};
 	double nn4[11]={1.,1.,1.,2.,2.,1.,1.,1.,2.,3.,1.};
 
-    int first = np;
-    int last = np + NNUCREAC;
+    enum ReactionIndex first = np;
+    enum ReactionIndex last = np + NNUCREAC - 1;
 	
 	int i,j,k,l,n,i1,j1,ind;
 	double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
@@ -442,7 +442,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 {
 	int i;
     int first = np;
-    int last = np + NNUCREAC;
+    int last = np + NNUCREAC - 1;
 	double f[last+1],r[last+1];
 	for(i=0;i<=NNUC;i++) 
         ratioH[i]=0.;
@@ -836,7 +836,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
     int first = np;
-    int last = np + NNUCREAC;
+    int last = np + NNUCREAC - 1;
 	int i;
 	for(i=0;i<=NNUC;i++) ratioH[i]=0.;
 	double f[last+1],r[last+1];
@@ -1230,7 +1230,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
     int first = np;
-    int last = np + NNUCREAC;
+    int last = np + NNUCREAC - 1;
 	int ie,je;
 	for(ie=0;ie<=NNUC;ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0.;
