@@ -2,108 +2,6 @@
 
 /*----------------------------------------------------*/
 
-/*
-enum ReactionIndex {
-	np = 1,     /// n -> p
-	t_evh,      /// H3 -> e- + v + He3
-	Li8_evaa,   /// Li8 -> e- + v + 2He4
-	B12_evC12,  /// B12 -> e- + v + C12
-	C14_evN14,  /// C14 -> e- + v + N14
-	B8_evaa,    /// B8 -> e+ + v + 2He4
-	C11_evB11,  /// C11 -> e+ + v + B11
-	N12_evC12,  /// N12 -> e+ + v + C12
-	N13_evC13,  /// N13 -> e+ + v + C13
-	O14_evN14,  /// O14 -> e+ + v + N14
-	O15_evN15,  /// O15 -> e+ + v + N15
-	Hn_gd,      /// H + n -> g + H2
-	dn_gt,      /// H2 + n -> g + H3
-	hn_ga,      /// He3 + n -> g + He4
-	Li6n_gLi7,  /// Li6 + n -> g + Li7
-	hn_pt,      /// He3 + n -> p + H3
-	Be7n_pLi7,  /// Be7 + n -> p + Li7
-	Li6n_at,    /// Li6 + n -> a + H3
-	Be7n_aa,    /// Be7 + n -> a + He4
-	dp_gh,      /// H2 + p -> g + He3
-	tp_ga,      /// H3 + p -> g + He4
-	Li6p_gBe7,  /// Li6 + p -> g + Be7
-	Li6p_ah,    /// Li6 + p -> a + He3
-	Li7p_aa,    /// Li7 + p -> a + He4
-	da_gLi6,    /// H2 + a -> p + Li6   changed p -> g
-	ta_gLi7,    /// H3 + a -> p + Li7   changed p -> g
-	ha_pBe7,    /// He3 + a -> p + Be7
-	dd_ph,      /// H2 + d -> p + He3
-	dd_nt,      /// H2 + d -> n + H3
-	td_na,      /// H3 + d -> n + He4
-	hd_pa,      /// He3 + d -> p + He4
-	hh_ppa,     /// He3 + He3 -> 2p + He4
-	Li7d_naa,   /// Li7 + d -> n + a + He4
-	Be7d_paa,   /// Be7 + d -> p + a + He4
-	Li7n_gLi8,  /// Li7 + n -> g + Li8
-	B10n_gB11,  /// B10 + n -> g + B11
-	B11n_gB12,  /// B11 + n -> g + B12
-	C11n_pB11,  /// C11 + n -> p + B11
-	B10n_aLi7,  /// B10 + n -> a + Li7
-	Be7p_gB8,   /// Be7 + p -> g + B8
-	Be9p_gB10,  /// Be9 + p -> g + B10
-	B10p_gC11,  /// B10 + p -> g + C11
-	B11p_gC12,  /// B11 + p -> g + C12
-	C11p_gN12,  /// C11 + p -> g + N12
-	B12p_nC12,  /// B12 + p -> n + C12
-	Be9p_aLi6,  /// Be9 + p -> a + Li6
-	B10p_aBe7,  /// B10 + p -> a + Be7
-	B12p_aBe9,  /// B12 + p -> a + Be9
-	Li6a_gB10,  /// Li6 + a -> g + B10
-	Li7a_gB11,  /// Li7 + a -> g + B11
-	Be7a_gC11,  /// Be7 + a -> g + C11
-	B8a_pC11,   /// B8 + a -> p + C11
-	Li8a_nB11,  /// Li8 + a -> n + B11
-	Be9a_nC12,  /// Be9 + a -> n + C12
-	Be9d_nB10,  /// Be9 + d -> n + B10
-	B10d_pB11,  /// B10 + d -> p + B11
-	B11d_nC12,  /// B11 + d -> n + C12
-	aan_gBe9,   /// He4 + a + n -> g + Be9
-	aaa_gC12,   /// He4 + 2a -> g + C12
-	Li8p_naa,   /// Li8 + p -> n + a + He4
-	B8n_paa,    /// B8 + n -> p + a + He4
-	Be9p_daa,   /// Be9 + p -> d + a + He4
-	B11p_aaBe4, /// B11 + p -> 2a + Be4
-	C11n_aaa,   /// C11 + n -> 2a + He4
-	C12n_gC13,  /// C12 + n -> g + C13
-	C13n_gC14,  /// C13 + n -> g + C14
-	N14n_gN15,  /// N14 + n -> g + N15
-	N13n_pC13,  /// N13 + n -> p + C13
-	N14n_pC14,  /// N14 + n -> p + C14
-	O15n_pN15,  /// O15 + n -> p + N15
-	O15n_aC12,  /// O15 + n -> a + C12
-	C12p_gN13,  /// C12 + p -> g + N13
-	C13p_gN14,  /// C13 + p -> g + N14
-	C14p_gN15,  /// C14 + p -> g + N15
-	N13p_gO14,  /// N13 + p -> g + O14
-	N14p_gO15,  /// N14 + p -> g + O15
-	N15p_gO16,  /// N15 + p -> g + O16
-	N15p_aC12,  /// N15 + p -> a + C12
-	C12a_gO16,  /// C12 + a -> g + O16
-	B10a_pC13,  /// B10 + a -> p + C13
-	B11a_pC14,  /// B11 + a -> p + C14
-	C11a_pN14,  /// C11 + a -> p + N14
-	N12a_pO15,  /// N12 + a -> p + O15
-	N13a_pO16,  /// N13 + a -> p + O16
-	B10a_nN13,  /// B10 + a -> n + N13
-	B11a_nN14,  /// B11 + a -> n + N14
-	B12a_nN15,  /// B12 + a -> n + N15
-	C13a_nO16   /// C13 + a -> n + O16
-};
-
-enum NuclideIndex {
-    n = 1, p, d, t, h, a, 
-    Li6, Li7, Be7, Li8,
-    B8, Be9, B10, B11,
-    C11, B12, C12, N12,
-    C13, N13, C14, N14,
-    O14, N15, O15, O16
-};
-*/
-
 int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
@@ -112,6 +10,9 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double nn2[11]={0.,1.,1.,0.,1.,0.,0.,1.,1.,1.,0.};
 	double nn3[11]={0.,0.,1.,0.,0.,1.,0.,0.,1.,0.,2.};
 	double nn4[11]={1.,1.,1.,2.,2.,1.,1.,1.,2.,3.,1.};
+
+    int first = np;
+    int last = np + NNUCREAC;
 	
 	int i,j,k,l,n,i1,j1,ind;
 	double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
@@ -120,15 +21,14 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double bdln;
 	int ierror;
 	int c0 = 0;
-	int type[NNUCREAC+1],n1[NNUCREAC+1],n2[NNUCREAC+1],n3[NNUCREAC+1],n4[NNUCREAC+1];
-	double rev[NNUCREAC+1],q9[NNUCREAC+1];
+	int type[last+1],n1[last+1],n2[last+1],n3[last+1],n4[last+1];
+	double rev[last+1],q9[last+1];
 	double a[NNUC+1][NNUC+1],b[NNUC+1],yx[NNUC+1];
 	int icnvm;
 	double x[NNUC+1], a0[NNUC+1][NNUC+1], cx, sum, xdy, t;
 	int nord,test;
 	
-	
-	for (i=1;i<=NNUCREAC;i++) 
+	for (i = first; i <= last; i++) 
 	{
 		type[i]=(int)reacparam[i][1];
 		n1[i]=(int)reacparam[i][2];
@@ -144,7 +44,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
         for(j=1;j<=NNUC;j++) 
             a[i][j]=0.;
 
-	for (n=1;n<=NNUCREAC;n++)
+	for (n = first; n <= last; n++) 
 	{
 		ind=type[n];
 		i=n1[n];
@@ -322,7 +222,10 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 		yx[i]=0.;
 	}
 	
-	if(icnvm==inc) for(i=1;i<=NNUC;i++) for(j=1;j<=NNUC;j++) a0[j][i]=a[j][i];
+	if(icnvm==inc) 
+        for(i=1;i<=NNUC;i++) 
+            for(j=1;j<=NNUC;j++) 
+                a0[j][i]=a[j][i];
 
 	for(i=1;i<=NNUC;i++)
 	{
@@ -426,8 +329,11 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
 	int i;
-	for(i=0;i<=NNUC;i++) ratioH[i]=0.;
-	double f[NNUCREAC+1],r[NNUCREAC+1];
+    int first = np;
+    int last = np + NNUCREAC;
+	double f[last+1],r[last+1];
+	for(i=0;i<=NNUC;i++) 
+        ratioH[i]=0.;
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9, dphie_dlna3, dphie_dZY, sum_DeltaMdY_dt, sum_ZdY_dt;
@@ -462,95 +368,95 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* q: energy release in reaction */
 
 /*   reac#      type n1 n2 n3 n4  rev   q   */
-	{0.,        0.,0.,0.,0.,0.,0.,0.},		// none
-	{np,        0.,1.,0.,0.,2.,0.,0.},		// n -> p
-	{t_evh,     0.,4.,0.,0.,5.,0.,0.},		// H3 -> e- + v + He3
-	{Li8_evaa,  3.,10.,0.,0.,6.,0.,0.},		// Li8 -> e- + v + 2He4
-	{B12_evC12, 0.,16.,0.,0.,17.,0.,0.},		// B12 -> e- + n + C12
-	{C14_evN14, 0.,21.,0.,0.,22.,0.,0.},		// C14 -> e- + v + N14
-	{B8_evaa,   3.,11.,0.,0.,6.,0.,0.},		// B8 -> e+ + v + 2He4
-	{C11_evB11, 0.,15.,0.,0.,14.,0.,0.},		// C11 -> e+ + v + B11
-	{N12_evC12, 0.,18.,0.,0.,17.,0.,0.},		// N12 -> e+ + v + C12
-	{N13_evC13, 0.,20.,0.,0.,19.,0.,0.},		// N13 -> e+ + v + C13
-	{O14_evN14, 0.,23.,0.,0.,22.,0.,0.},		// O14 -> e+ + v + N14
-	{O15_evN15, 0.,25.,0.,0.,24.,0.,0.},		// O15 -> e+ + v + N15
-	{pn_gd,     1.,2.,1.,0.,3.,0.471,25.82},	// H + n -> g + H2
-	{dn_gt,     1.,3.,1.,0.,4.,1.63,72.62},	// H2 + n -> g + H3
-	{hn_ga,     1.,5.,1.,0.,6.,2.61,238.81},	// He3 + n -> g + He4
-	{Li6n_gLi7, 1.,7.,1.,0.,8.,1.19,84.17},	// Li6 + n -> g + Li7
-	{hn_pt,     2.,5.,1.,2.,4.,1.002,8.863},	// He3 + n -> p + H3
-	{Be7n_pLi7, 2.,9.,1.,2.,8.,0.998,19.081},	// Be7 + n -> p + Li7
-	{Li6n_at,   2.,7.,1.,4.,6.,1.070,55.494},	// Li6 + n -> a + H3
-	{Be7n_aa,   4.,9.,1.,0.,6.,4.70,220.39},	// Be7 + n -> a + He4
-	{dp_gh,     1.,3.,2.,0.,5.,1.63,63.750},	// H2 + p -> g + He3
-	{tp_ga,     1.,4.,2.,0.,6.,2.61,229.932},	// H3 + p -> g + He4
-	{Li6p_gBe7, 1.,7.,2.,0.,9.,1.19,65.054},	// Li6 + p -> g + Be7
-	{Li6p_ah,   2.,7.,2.,5.,6.,1.07,46.631},	// Li6 + p -> a + He3
-	{Li7p_aa,   4.,8.,2.,0.,6.,4.69,201.291},	// Li7 + p -> a + He4
-	{da_gLi6,   1.,6.,3.,0.,7.,1.53,17.118},	// H2 + a -> g + Li6
-	{ta_gLi7,   1.,6.,4.,0.,8.,1.11,28.640},	// H3 + a -> g + Li7
-	{ha_gBe7,   1.,6.,5.,0.,9.,1.11,18.423},	// He3 + a -> g + Be7
-	{dd_nh,     5.,3.,0.,1.,5.,1.73,37.935},	// H2 + d -> n + He3
-	{dd_pt,     5.,3.,0.,2.,4.,1.73,46.798},	// H2 + d -> p + H3
-	{td_na,     2.,4.,3.,1.,6.,5.54,204.117},	// H3 + d -> n + He4
-	{hd_pa,     2.,5.,3.,2.,6.,5.55,212.980},	// He3 + d -> p + He4
-	{hh_ppa,    10.,5.,0.,2.,6.,3.39,149.230},	// He3 + He3 -> 2p + He4
-	{Li7d_naa,  8.,8.,3.,1.,6.,9.95,175.476},	// Li7 + d -> n + a + He4
-	{Be7d_paa,  8.,9.,3.,2.,6.,9.97,194.557},	// Be7 + d -> p + a + He4
-	{Li7n_gLi8, 1.,8.,1.,0.,10.,1.31,23.59},	// Li7 + n -> g + Li8
-	{B10n_gB11, 1.,13.,1.,0.,14.,3.04,132.95},	// B10 + n -> g + B11
-	{B11n_gB12,  1.,14.,1.,0.,16.,2.34,39.10},	// B11 + n -> g + B12
-	{C11n_pB11, 2.,15.,1.,2.,14.,1.002,32.080},	// C11 + n -> p + B11
-	{B10n_aLi7,  2.,13.,1.,6.,8.,0.758,32.382},	// B10 + n -> a + Li7
-	{Be7p_gB8,   1.,9.,2.,0.,11.,1.30,1.595},	// Be7 + p -> g + B8
-	{Be9p_gB10, 1.,12.,2.,0.,13.,0.973,76.427},	// Be9 + p -> g + B10
-	{B10p_gC11, 1.,13.,2.,0.,15.,3.03,100.840},	// B10 + p -> g + C11
-	{B11p_gC12, 1.,14.,2.,0.,17.,7.01,185.173},	// B11 + p -> g + C12
-	{C11p_gN12, 1.,15.,2.,0.,18.,2.33,6.975},	// C11 + p -> g + N12
-	{B12p_nC12, 2.,16.,2.,1.,17.,3.00,146.08},	// B12 + p -> n + C12
-	{Be9p_aLi6, 2.,12.,2.,6.,7.,0.618,24.674},	// Be9 + p -> a + Li6
-	{B10p_aBe7, 2.,13.,2.,6.,9.,0.754,13.301},	// B10 + p -> a + Be7
-	{B12p_aBe9, 2.,16.,2.,6.,12.,0.292,79.89},	// B12 + p -> a + Be9
-	{Li6a_gB10, 1.,7.,6.,0.,13.,1.58,51.753},	// Li6 + a -> g + B10
-	{Li7a_gB11, 1.,8.,6.,0.,14.,4.02,100.538},	// Li7 + a -> g + B11
-	{Be7a_gC11, 1.,9.,6.,0.,15.,4.02,87.539},	// Be7 + a -> g + C11
-	{B8a_pC11,  2.,11.,6.,2.,15.,3.08,86.00},	// B8 + a -> p + C11 
-	{Li8a_nB11, 2.,10.,6.,1.,14.,3.07,76.96},	// Li8 + a -> n + B11
-	{Be9a_nC12, 2.,12.,6.,1.,17.,10.3,66.160},	// Be9 + a -> n + C12
-	{Be9d_nB10, 2.,12.,3.,1.,13.,2.07,50.63},	// Be9 + d -> n + B10
-	{B10d_pB11, 2.,13.,3.,2.,14.,6.44,107.13},	// B10 + d -> p + B11
-	{B11d_nC12, 2.,14.,3.,1.,17.,14.9,159.36},	// B11 + d -> n + C12
-	{aan_gBe9,  7.,6.,1.,0.,12.,0.584,18.260},	// He4 + a + n -> g + Be9
-	{aaa_gC12,  6.,6.,0.,0.,17.,2.00,84.420},	// He4 + 2a -> g + C12
-	{Li8p_naa,  8.,10.,2.,1.,6.,3.58,177.73},	// Li8 + p -> n + a + He4
-	{B8n_paa,   8.,11.,1.,2.,6.,3.58,218.82},	// B8 + n -> p + a + He4
-	{Be9p_daa,  8.,12.,2.,3.,6.,0.807,7.555},	// Be9 + p -> d + a + He4
-	{B11p_aaa,  9.,14.,2.,0.,6.,3.50,100.753},	// B11 + p -> 2a + He4
-	{C11n_aaa,  9.,15.,1.,0.,6.,3.49,132.83},	// C11 + n -> 2a + He4
-	{C12n_gC13, 1.,17.,1.,0.,19.,0.886,57.41},	// C12 + n -> g + C13
-	{C13n_gC14, 1.,19.,1.,0.,21.,3.58,94.88},	// C13 + n -> g + C14
-	{N14n_gN15, 1.,22.,1.,0.,24.,2.71,125.74},	// N14 + n -> g + N15
-	{N13n_pC13, 2.,20.,1.,2.,19.,1.002,34.846},	// N13 + n -> p + C13
-	{N14n_pC14, 2.,22.,1.,2.,21.,3.003,7.263},	// N14 + n -> p + C14
-	{O15n_pN15, 2.,25.,1.,2.,24.,1.002,41.037},	// O15 + n -> p + N15
-	{O15n_aC12, 2.,25.,1.,6.,17.,0.709,98.661},	// O15 + n -> a + C12
-	{C12p_gN13, 1.,17.,2.,0.,20.,0.884,22.553},	// C12 + p -> g + N13
-	{C13p_gN14, 1.,19.,2.,0.,22.,1.19,87.621},	// C13 + p -> g + N14
-	{C14p_gN15, 1.,21.,2.,0.,24.,0.900,118.452},	// C14 + p -> g + N15
-	{N13p_gO14, 1.,20.,2.,0.,23.,3.57,53.706},	// N13 + p -> g + O14
-	{N14p_gO15, 1.,22.,2.,0.,25.,2.70,84.678},	// N14 + p -> g + O15
-	{N15p_gO16, 2.,24.,2.,0.,26.,3.62,140.734},	// N15 + p -> g + O16
-	{N15p_aC12, 2.,24.,2.,6.,17.,0.706,57.623},	// N15 + p -> a + C12
-	{C12a_gO16, 1.,17.,6.,0.,26.,5.13,83.111},	// C12 + a -> g + O16
-	{B10a_pC13, 2.,13.,6.,2.,19.,9.36,47.16},	// B10 + a -> p + C13
-	{B11a_pC14, 2.,14.,6.,2.,21.,11.0,9.098},	// B11 + a -> p + C14
-	{C11a_pN14, 2.,15.,6.,2.,22.,3.68,33.915},	// C11 + a -> p + N14
-	{N12a_pO15, 3.,18.,6.,2.,25.,4.26,111.87},	// N12 + a -> p + O15
-	{N13a_pO16, 3.,20.,6.,2.,26.,5.81,60.557},	// N13 + a -> p + O16
-	{B10a_nN13, 2.,13.,6.,1.,20.,9.34,12.287},	// B10 + a -> n + N13
-	{B11a_nN14, 2.,14.,6.,1.,22.,3.67,1.835},	// B11 + a -> n + N14
-	{B12a_nN15, 2.,16.,6.,1.,24.,4.25,88.47},	// B12 + a -> n + N15
-	{C13a_nO16, 2.,19.,6.,1.,26.,5.79,25.711}	// C13 + a -> n + O16
+	{0.,        0,  0.,0.,0.,0.,0.,0.},		// none
+	{np,        0,  1.,0.,0.,2.,0.,0.},		// n -> p
+	{t_evh,     0,  4.,0.,0.,5.,0.,0.},		// H3 -> e- + v + He3
+	{Li8_evaa,  3,  10.,0.,0.,6.,0.,0.},		// Li8 -> e- + v + 2He4
+	{B12_evC12, 0,  16.,0.,0.,17.,0.,0.},		// B12 -> e- + n + C12
+	{C14_evN14, 0,  21.,0.,0.,22.,0.,0.},		// C14 -> e- + v + N14
+	{B8_evaa,   3,  11.,0.,0.,6.,0.,0.},		// B8 -> e+ + v + 2He4
+	{C11_evB11, 0,  15.,0.,0.,14.,0.,0.},		// C11 -> e+ + v + B11
+	{N12_evC12, 0,  18.,0.,0.,17.,0.,0.},		// N12 -> e+ + v + C12
+	{N13_evC13, 0,  20.,0.,0.,19.,0.,0.},		// N13 -> e+ + v + C13
+	{O14_evN14, 0,  23.,0.,0.,22.,0.,0.},		// O14 -> e+ + v + N14
+	{O15_evN15, 0,  25.,0.,0.,24.,0.,0.},		// O15 -> e+ + v + N15
+	{pn_gd,     1,  2.,1.,0.,3.,0.471,25.82},	// H + n -> g + H2
+	{dn_gt,     1,  3.,1.,0.,4.,1.63,72.62},	// H2 + n -> g + H3
+	{hn_ga,     1,  5.,1.,0.,6.,2.61,238.81},	// He3 + n -> g + He4
+	{Li6n_gLi7, 1,  7.,1.,0.,8.,1.19,84.17},	// Li6 + n -> g + Li7
+	{hn_pt,     2,  5.,1.,2.,4.,1.002,8.863},	// He3 + n -> p + H3
+	{Be7n_pLi7, 2,  9.,1.,2.,8.,0.998,19.081},	// Be7 + n -> p + Li7
+	{Li6n_at,   2,  7.,1.,4.,6.,1.070,55.494},	// Li6 + n -> a + H3
+	{Be7n_aa,   4,  9.,1.,0.,6.,4.70,220.39},	// Be7 + n -> a + He4
+	{dp_gh,     1,  3.,2.,0.,5.,1.63,63.750},	// H2 + p -> g + He3
+	{tp_ga,     1,  4.,2.,0.,6.,2.61,229.932},	// H3 + p -> g + He4
+	{Li6p_gBe7, 1,  7.,2.,0.,9.,1.19,65.054},	// Li6 + p -> g + Be7
+	{Li6p_ah,   2,  7.,2.,5.,6.,1.07,46.631},	// Li6 + p -> a + He3
+	{Li7p_aa,   4,  8.,2.,0.,6.,4.69,201.291},	// Li7 + p -> a + He4
+	{da_gLi6,   1,  6.,3.,0.,7.,1.53,17.118},	// H2 + a -> g + Li6
+	{ta_gLi7,   1,  6.,4.,0.,8.,1.11,28.640},	// H3 + a -> g + Li7
+	{ha_gBe7,   1,  6.,5.,0.,9.,1.11,18.423},	// He3 + a -> g + Be7
+	{dd_nh,     5,  3.,0.,1.,5.,1.73,37.935},	// H2 + d -> n + He3
+	{dd_pt,     5,  3.,0.,2.,4.,1.73,46.798},	// H2 + d -> p + H3
+	{td_na,     2,  4.,3.,1.,6.,5.54,204.117},	// H3 + d -> n + He4
+	{hd_pa,     2,  5.,3.,2.,6.,5.55,212.980},	// He3 + d -> p + He4
+	{hh_ppa,    10, 5.,0.,2.,6.,3.39,149.230},	// He3 + He3 -> 2p + He4
+	{Li7d_naa,  8,  8.,3.,1.,6.,9.95,175.476},	// Li7 + d -> n + a + He4
+	{Be7d_paa,  8,  9.,3.,2.,6.,9.97,194.557},	// Be7 + d -> p + a + He4
+	{Li7n_gLi8, 1,  8.,1.,0.,10.,1.31,23.59},	// Li7 + n -> g + Li8
+	{B10n_gB11, 1,  13.,1.,0.,14.,3.04,132.95},	// B10 + n -> g + B11
+	{B11n_gB12, 1,  14.,1.,0.,16.,2.34,39.10},	// B11 + n -> g + B12
+	{C11n_pB11, 2,  15.,1.,2.,14.,1.002,32.080},	// C11 + n -> p + B11
+	{B10n_aLi7, 2,  13.,1.,6.,8.,0.758,32.382},	// B10 + n -> a + Li7
+	{Be7p_gB8,  1,  9.,2.,0.,11.,1.30,1.595},	// Be7 + p -> g + B8
+	{Be9p_gB10, 1,  12.,2.,0.,13.,0.973,76.427},	// Be9 + p -> g + B10
+	{B10p_gC11, 1,  13.,2.,0.,15.,3.03,100.840},	// B10 + p -> g + C11
+	{B11p_gC12, 1,  14.,2.,0.,17.,7.01,185.173},	// B11 + p -> g + C12
+	{C11p_gN12, 1,  15.,2.,0.,18.,2.33,6.975},	// C11 + p -> g + N12
+	{B12p_nC12, 2,  16.,2.,1.,17.,3.00,146.08},	// B12 + p -> n + C12
+	{Be9p_aLi6, 2,  12.,2.,6.,7.,0.618,24.674},	// Be9 + p -> a + Li6
+	{B10p_aBe7, 2,  13.,2.,6.,9.,0.754,13.301},	// B10 + p -> a + Be7
+	{B12p_aBe9, 2,  16.,2.,6.,12.,0.292,79.89},	// B12 + p -> a + Be9
+	{Li6a_gB10, 1,  7.,6.,0.,13.,1.58,51.753},	// Li6 + a -> g + B10
+	{Li7a_gB11, 1,  8.,6.,0.,14.,4.02,100.538},	// Li7 + a -> g + B11
+	{Be7a_gC11, 1,  9.,6.,0.,15.,4.02,87.539},	// Be7 + a -> g + C11
+	{B8a_pC11,  2,  11.,6.,2.,15.,3.08,86.00},	// B8 + a -> p + C11 
+	{Li8a_nB11, 2,  10.,6.,1.,14.,3.07,76.96},	// Li8 + a -> n + B11
+	{Be9a_nC12, 2,  12.,6.,1.,17.,10.3,66.160},	// Be9 + a -> n + C12
+	{Be9d_nB10, 2,  12.,3.,1.,13.,2.07,50.63},	// Be9 + d -> n + B10
+	{B10d_pB11, 2,  13.,3.,2.,14.,6.44,107.13},	// B10 + d -> p + B11
+	{B11d_nC12, 2,  14.,3.,1.,17.,14.9,159.36},	// B11 + d -> n + C12
+	{aan_gBe9,  7,  6.,1.,0.,12.,0.584,18.260},	// He4 + a + n -> g + Be9
+	{aaa_gC12,  6,  6.,0.,0.,17.,2.00,84.420},	// He4 + 2a -> g + C12
+	{Li8p_naa,  8,  10.,2.,1.,6.,3.58,177.73},	// Li8 + p -> n + a + He4
+	{B8n_paa,   8,  11.,1.,2.,6.,3.58,218.82},	// B8 + n -> p + a + He4
+	{Be9p_daa,  8,  12.,2.,3.,6.,0.807,7.555},	// Be9 + p -> d + a + He4
+	{B11p_aaa,  9,  14.,2.,0.,6.,3.50,100.753},	// B11 + p -> 2a + He4
+	{C11n_aaa,  9,  15.,1.,0.,6.,3.49,132.83},	// C11 + n -> 2a + He4
+	{C12n_gC13, 1,  17.,1.,0.,19.,0.886,57.41},	// C12 + n -> g + C13
+	{C13n_gC14, 1,  19.,1.,0.,21.,3.58,94.88},	// C13 + n -> g + C14
+	{N14n_gN15, 1,  22.,1.,0.,24.,2.71,125.74},	// N14 + n -> g + N15
+	{N13n_pC13, 2,  20.,1.,2.,19.,1.002,34.846},	// N13 + n -> p + C13
+	{N14n_pC14, 2,  22.,1.,2.,21.,3.003,7.263},	// N14 + n -> p + C14
+	{O15n_pN15, 2,  25.,1.,2.,24.,1.002,41.037},	// O15 + n -> p + N15
+	{O15n_aC12, 2,  25.,1.,6.,17.,0.709,98.661},	// O15 + n -> a + C12
+	{C12p_gN13, 1,  17.,2.,0.,20.,0.884,22.553},	// C12 + p -> g + N13
+	{C13p_gN14, 1,  19.,2.,0.,22.,1.19,87.621},	// C13 + p -> g + N14
+	{C14p_gN15, 1,  21.,2.,0.,24.,0.900,118.452},	// C14 + p -> g + N15
+	{N13p_gO14, 1,  20.,2.,0.,23.,3.57,53.706},	// N13 + p -> g + O14
+	{N14p_gO15, 1,  22.,2.,0.,25.,2.70,84.678},	// N14 + p -> g + O15
+	{N15p_gO16, 2,  24.,2.,0.,26.,3.62,140.734},	// N15 + p -> g + O16
+	{N15p_aC12, 2,  24.,2.,6.,17.,0.706,57.623},	// N15 + p -> a + C12
+	{C12a_gO16, 1,  17.,6.,0.,26.,5.13,83.111},	// C12 + a -> g + O16
+	{B10a_pC13, 2,  13.,6.,2.,19.,9.36,47.16},	// B10 + a -> p + C13
+	{B11a_pC14, 2,  14.,6.,2.,21.,11.0,9.098},	// B11 + a -> p + C14
+	{C11a_pN14, 2,  15.,6.,2.,22.,3.68,33.915},	// C11 + a -> p + N14
+	{N12a_pO15, 3,  18.,6.,2.,25.,4.26,111.87},	// N12 + a -> p + O15
+	{N13a_pO16, 3,  20.,6.,2.,26.,5.81,60.557},	// N13 + a -> p + O16
+	{B10a_nN13, 2,  13.,6.,1.,20.,9.34,12.287},	// B10 + a -> n + N13
+	{B11a_nN14, 2,  14.,6.,1.,22.,3.67,1.835},	// B11 + a -> n + N14
+	{B12a_nN15, 2,  16.,6.,1.,24.,4.25,88.47},	// B12 + a -> n + N15
+	{C13a_nO16, 2,  19.,6.,1.,26.,5.79,25.711}	// C13 + a -> n + O16
 	};
 /*   reac# type n1 n2 n3 n4  rev   q 
 	{0.,0.,0.,0.,0.,0.,0.,0.},		// none
@@ -645,7 +551,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	};
     */
 		
-	for(i=1;i<=NNUCREAC;i++) 
+	for(i = first; i <= last; i++)
 	{
 		f[i] = 0.;
 		r[i] = 0.;
@@ -832,19 +738,23 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for (i=1;i<=NNUC;i++) ratioH[i]=Y[i]/Y[2];
+				for (i=1;i<=NNUC;i++) 
+                    ratioH[i]=Y[i]/Y[2];
 			
 				ratioH[2]=Y[2]*Am[2];
 				ratioH[6]=Y[6]*Am[6];
-				for(i=1;i<=9;i++) ratioH[10]+=ratioH[i];
+				for(i=1;i<=9;i++) 
+                    ratioH[10]+=ratioH[i];
 				ratioH[10]-=1.;
 				ratioH[0] = h_eta / 33683.;
-				if((it==nitmax)||(ip<inc)) ltime = 1;
+				if((it==nitmax)||(ip<inc))
+                    ltime = 1;
 			}
 
 			if(loop==1)
 			{
-				if(ip==inc) ip=0;
+				if(ip==inc) 
+                    ip=0;
 				ip++;
 				is++;
 				if(is>3)
@@ -908,12 +818,15 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 
 /*----------------------------------------------------*/
 
+#if 0
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
+    int first = np;
+    int last = np + NNUCREAC;
 	int i;
 	for(i=0;i<=NNUC;i++) ratioH[i]=0.;
-	double f[NNUCREAC+1],r[NNUCREAC+1];
+	double f[last+1],r[last+1];
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9, dphie_dlna3, dphie_dZY, sum_DeltaMdY_dt, sum_ZdY_dt;
@@ -1039,7 +952,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	{88.,2.,19.,6.,1.,26.,5.79,25.711}	// C13 + a -> n + O16
 	};
 		
-	for(i=1;i<=NNUCREAC;i++) 
+	for(i = first; i <= last; i++)
 	{
 		f[i] = 0.;
 		r[i] = 0.;
@@ -1291,40 +1204,52 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	
 	return fail;
 }
+#endif 
 
 /*----------------------------------------------------*/
 
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[])
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
+    int first = np;
+    int last = np + NNUCREAC;
 	int ie,je;
-	for(ie=0;ie<=NNUC;ie++) ratioH[ie]=sigma_ratioH[ie]=0.;
+	for(ie=0;ie<=NNUC;ie++) 
+        ratioH[ie]=sigma_ratioH[ie]=0.;
 
 	if(err==0)
 	{
-		if(nucl(0,paramrelic, ratioH)>0) return 0; 
-		else return 1;
+		if(nucl(0,paramrelic, ratioH)>0) 
+            return 0; 
+		else 
+            return 1;
 	}
 	else if(err==1||err==2)
 	{
-		if(nucl(err,paramrelic, sigma_ratioH)>0) return 0;
-		if(nucl(0,paramrelic, ratioH)>0) return 0;
-		for(je=0;je<=NNUC;je++) sigma_ratioH[je]=fabs(sigma_ratioH[je]-ratioH[je]);
+		if(nucl(err,paramrelic, sigma_ratioH)>0) 
+            return 0;
+		if(nucl(0,paramrelic, ratioH)>0) 
+            return 0;
+		for(je=0;je<=NNUC;je++) 
+            sigma_ratioH[je]=fabs(sigma_ratioH[je]-ratioH[je]);
 		return 1;
 	}
 	else if(err==3)
 	{	
-		if(nucl(0, paramrelic, ratioH)>0) return 0;
+		if(nucl(0, paramrelic, ratioH)>0) 
+            return 0;
 		
 		double ratioH_ref[NNUC+1];
 		int optfail=0;
 		
-		if(nucl(-10000, paramrelic, ratioH_ref)>0) optfail=1;	
-		for(ie=0;ie<=NNUC;ie++) optfail+=isnan(ratioH_ref[ie]);
+		if(nucl(-10000, paramrelic, ratioH_ref)>0) 
+            optfail=1;	
+		for(ie=0;ie<=NNUC;ie++) 
+            optfail+=isnan(ratioH_ref[ie]);
 		
 		double ratioH_tmp[NNUC+1];
 		
-		for(ie=1;ie<=NNUCREAC;ie++)
+		for(ie = first; ie <= last; ie++)
 		{
 			if(optfail==0)
 			{
@@ -1335,30 +1260,43 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
 				}
 			}
 						
-			for(je=0;je<=NNUC;je++) optfail+=isnan(ratioH_tmp[je]);
-			for(je=0;je<=NNUC;je++) sigma_ratioH[je]+=pow(ratioH_tmp[je]-ratioH_ref[je],2.);
+			for(je=0;je<=NNUC;je++) 
+                optfail += isnan(ratioH_tmp[je]);
+			
+            for(je=0;je<=NNUC;je++) 
+                sigma_ratioH[je] += pow(ratioH_tmp[je]-ratioH_ref[je],2.);
 		}
 
-		for(ie=0;ie<=NNUC;ie++) sigma_ratioH[ie]=sqrt(sigma_ratioH[ie]);		
-		for(ie=0;ie<=NNUC;ie++) if(sigma_ratioH[ie]/ratioH[ie]<1.e-10) optfail+=1;
+		for(ie=0;ie<=NNUC;ie++) 
+            sigma_ratioH[ie] = sqrt(sigma_ratioH[ie]);		
+		
+        for(ie=0;ie<=NNUC;ie++) 
+            if(sigma_ratioH[ie]/ratioH[ie]<1.e-10) 
+                optfail+=1;
 		
 		if(optfail>0)
 		{
 			printf("Sorry, more precise calculation required, please wait...\n");
 
-			for(ie=0;ie<=NNUC;ie++) ratioH_ref[ie]=ratioH[ie];
-			for(ie=0;ie<=NNUC;ie++) sigma_ratioH[ie]=0.;
-			for(ie=1;ie<=NNUCREAC;ie++)
+			for(ie=0;ie<=NNUC;ie++) 
+                ratioH_ref[ie]=ratioH[ie];
+			for(ie=0;ie<=NNUC;ie++) 
+                sigma_ratioH[ie]=0.;
+		    for(ie = first; ie <= last; ie++)
 			{
-				if(nucl_failsafe(-ie, paramrelic, ratioH_tmp)>0) return 0;
+				if(nucl_failsafe(-ie, paramrelic, ratioH_tmp)>0) 
+                    return 0;
 						
-				for(je=0;je<=NNUC;je++) sigma_ratioH[je]+=pow(ratioH_tmp[je]-ratioH_ref[je],2.);
+				for(je=0;je<=NNUC;je++) 
+                    sigma_ratioH[je] += pow(ratioH_tmp[je]-ratioH_ref[je],2.);
 			}
-			for(ie=0;ie<=NNUC;ie++) sigma_ratioH[ie]=sqrt(sigma_ratioH[ie]);
+			for(ie=0;ie<=NNUC;ie++) 
+                sigma_ratioH[ie] = sqrt(sigma_ratioH[ie]);
 		}
 
 
-		for(ie=0;ie<=NNUC;ie++) sigma_ratioH[ie]*=ratioH[ie]/ratioH_ref[ie];
+		for(ie=0;ie<=NNUC;ie++) 
+            sigma_ratioH[ie] *= ratioH[ie]/ratioH_ref[ie];
 
 		return 1;
 	}
