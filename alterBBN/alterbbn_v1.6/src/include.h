@@ -246,6 +246,7 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 void rate_all(int err, double f[], double T9);
 
 /* bbn.c */
+void setup_reactions(double reacparam[][8]);
 int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
