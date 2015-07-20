@@ -5,9 +5,12 @@ void rate_weak(int err, double f[])
 /* calculates the nuclear forward rates of weak interaction reactions */
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
-    double Nbeta = 11;
-	double ferrlow[12],ferrhigh[12],ferr[12];
-	int ie;
+    //double Nbeta = 11;
+    int first = t_evh;
+    int last = O15_evN15;
+	double ferrlow[last+1]; 
+    double ferrhigh[last+1]; 
+    double ferr[last+1];
 	
 	f[t_evh] = 1.78141141239e-9;	/// H3 -> e- + v + He3
 	f[Li8_evaa]  = 0.827;	 	    /// Li8 -> e- + v + 2He4
@@ -20,35 +23,36 @@ void rate_weak(int err, double f[])
 	f[O14_evN14] = 0.0098171;	    /// O14 -> e+ + v + N14 
 	f[O15_evN15] = 0.0056704; 	    /// O15 -> e+ + v + N15 
 
-	if((err>0)||(err<-1&&err>=-11))
+	if((err > 0) || (err <= -first && err >= -last))
 	{
-		ferrhigh[2]=5.e-3;
-		ferrlow[2]=-5.e-3;
-		ferr[2]=5.e-3;
+		ferrhigh[first] = 5.e-3;
+		ferrlow[first] = -5.e-3;
+		ferr[first] = 5.e-3;
 		
-		for(ie=3;ie<=11;ie++)
+	    int reac;
+		for(reac = first+1; reac <= last; reac++)
 		{
-			ferrhigh[ie]=9.;
-			ferrlow[ie]=-0.9;
-			ferr[ie]=ferrhigh[ie];
+			ferrhigh[reac] = 9.;
+			ferrlow[reac] = -0.9;
+			ferr[reac] = ferrhigh[reac];
 		}
 		
-		if(err==1) 
-            for(ie=2;ie<=11;ie++) 
-                f[ie]*=fabs(1.+ferrhigh[ie]);
-		if(err==2) 
-            for(ie=2;ie<=11;ie++) 
-                f[ie]*=fabs(1.+ferrlow[ie]);
+		if(err == 1) 
+		    for(reac = first; reac <= last; reac++)
+                f[reac] *= fabs(1+ferrhigh[reac]);
+		if(err == 2) 
+		    for(reac = first; reac <= last; reac++)
+                f[reac] *= fabs(1+ferrlow[reac]);
 				
 		if(err>100000)
 		{
 			srand((unsigned int)(getpid()+err));
-			for(ie=2;ie<=11;ie++) 
-                f[ie]*=fabs(1.+ferr[ie]*rand_gauss());
+		    for(reac = first; reac <= last; reac++)
+                f[reac] *= fabs(1+ferr[reac]*rand_gauss());
 		}
 		
 		if(err<0) 
-            f[-err]*=fabs(1.+ferr[-err]);
+            f[-err] *= fabs(1+ferr[-err]);
 	}
 
 	return;
