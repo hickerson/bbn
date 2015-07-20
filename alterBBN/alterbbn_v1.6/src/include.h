@@ -137,7 +137,7 @@ enum ReactionIndex {
 	Li8p_naa,   /// Li8 + p -> n + a + He4
 	B8n_paa,    /// B8 + n -> p + a + He4
 	Be9p_daa,   /// Be9 + p -> d + a + He4
-	B11p_aaBe4, /// B11 + p -> 2a + Be4
+	B11p_aaa,   /// B11 + p -> 2a + Be4    changed to  B11 + p -> 2a + He4
 	C11n_aaa,   /// C11 + n -> 2a + He4
 	C12n_gC13,  /// C12 + n -> g + C13
 	C13n_gC14,  /// C13 + n -> g + C14
