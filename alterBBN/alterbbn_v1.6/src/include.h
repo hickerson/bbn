@@ -58,8 +58,10 @@ relicparam;
 #define NBETAREC 11
 
 /*
-    Naming convention using enums so that reactions 
-    can be added or removed with interfering with loops.
+    Reaction enum
+    this way, reactions can added or removed with interfering with loops.
+
+    Naming convention:
     X_YZ, XY_ZW, X_YZW, etc...
     where X, Y, Z, can be one g, v, e, n, p, d, t, h, a, LiN, etc...
     g - gamma
@@ -163,7 +165,24 @@ enum ReactionIndex {
 	C13a_nO16   /// C13 + a -> n + O16
 };
 
+/*
+    Nuclide enum can be added or removed with interfering with loops.
+
+    Nuclide naming convention:
+    g - gamma
+    v - electron neutrino (or anti)
+    e - electron, positron, or beta
+    p - proton (H)
+    n - neutron 
+    d - deuteron (H2)
+    t - triton (H3)
+    h - helion (He3)
+    a - alpha (He4)
+    Xn - X is the element (Z) and 
+         n is the atomic number (A)
+*/
 enum NuclideIndex {
+    g = -2, e = -1, v = 0, 
     n = 1, p, d, t, h, a, 
     Li6, Li7, Be7, Li8,
     B8, Be9, B10, B11,

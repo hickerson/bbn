@@ -1,8 +1,9 @@
 .KEEP_STATE:
 
 #
-VERSION = v1.4
-YEAR = 2013
+VERSION = v1.6
+YEAR = 2015
+AUTHORS = 
 
 # Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
@@ -56,7 +57,8 @@ distclean:
 	
 libbbn.a: 
 	@echo;
-	@echo AlterBBN $(VERSION) - A. Arbey $(YEAR);
+	@echo AlterBBN v1.4 - A. Arbey 2013;
+	@echo AlterBBN $(VERSION) - K. P. Hickerson $(YEAR);
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
@@ -74,6 +76,7 @@ save:
 	cp -p alter_neutrinos.c alterbbn_$(VERSION)/;\
 	cp -p alter_reheating.c alterbbn_$(VERSION)/;\
 	cp -p alter_standmod.c alterbbn_$(VERSION)/;\
+	cp -p alter_fierz.c alterbbn_$(VERSION)/;\
 	cp -p Makefile alterbbn_$(VERSION)/;\
 	mkdir alterbbn_$(VERSION)/src;\
 	cp -p src/*.h alterbbn_$(VERSION)/src/;\

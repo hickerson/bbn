@@ -9,16 +9,16 @@ void rate_weak(int err, double f[])
 	double ferrlow[12],ferrhigh[12],ferr[12];
 	int ie;
 	
-	f[2]=1.78141141239e-9;	/// H3 -> e- + v + He3
-	f[3]=0.827;	 	        /// Li8 -> e- + v + 2 He4
-	f[4]=34.3;	 	        /// B12 -> e- + B + C12
-	f[5]=3.834e-12;	 	    /// C14 -> e- + v + N14
-	f[6]=0.9;	 	        /// B8 -> e+ + v + 2 He4
-	f[7]=5.668e-4;	 	    /// C11 -> e+ + v + B11
-	f[8]=63.01;	 	        /// N12 -> e+ + v + C12 
-	f[9]=0.001159;	 	    /// N13 -> e+ + v + C13
-	f[10]=0.0098171;	    /// O14 -> e+ + v + N14 
-	f[11]=0.0056704; 	    /// O15 -> e+ + v + N15 
+	f[t_evh] = 1.78141141239e-9;	/// H3 -> e- + v + He3
+	f[Li8_evaa]  = 0.827;	 	    /// Li8 -> e- + v + 2He4
+	f[B12_evC12] = 34.3;	 	    /// B12 -> e- + v + C12
+	f[C14_evN14] = 3.834e-12;	 	/// C14 -> e- + v + N14
+	f[B8_evaa]   = 0.9;	 	        /// B8 -> e+ + v + 2He4
+	f[C11_evB11] = 5.668e-4;	 	/// C11 -> e+ + v + B11
+	f[N12_evC12] = 63.01;	 	    /// N12 -> e+ + v + C12 
+	f[N13_evC13] = 0.001159;	 	/// N13 -> e+ + v + C13
+	f[O14_evN14] = 0.0098171;	    /// O14 -> e+ + v + N14 
+	f[O15_evN15] = 0.0056704; 	    /// O15 -> e+ + v + N15 
 
 	if((err>0)||(err<-1&&err>=-11))
 	{
@@ -77,19 +77,24 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 /*err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err)*/
 {
 	double ferr,rerr;
-	ferr=rerr=0.;
-    double b=paramrelic.fierz;          /// beta-decay Fierz interference term */
-	double tau=paramrelic.life_neutron; /// measured neutron lifetime at T=0 in s */
-    double xi1=paramrelic.xinu1;        /// neutrino chemical potential
+	ferr = rerr = 0.;
+    double b = paramrelic.fierz;            /// beta-decay Fierz interference term */
+	double tau = paramrelic.life_neutron;   /// measured neutron lifetime at T=0 in s */
+    double xi1 = paramrelic.xinu1;          /// neutrino chemical potential
 	
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{
 		int ie;
-		double z9 = T9*kB/me;           /// inverse of old z def in v1.4
+		double z9 = T9*kB/me;               /// inverse of old z def in v1.4
 	
-		double af[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
+		double af[13] = {
+            0.15735,0.46172e1,-0.40520e2,0.13875e3,
+            -0.59898e2,0.66752e2,-0.16705e2,0.38071e1,
+            -0.39140,0.23590e-1,-0.83696e-4,-0.42095e-4,0.17675e-5};
 	
-		double bf[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
+		double bf[10] = {
+            0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,
+            0.45521e2,-0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
 	
 		f[1]=1.;
 		for(ie=1;ie<=13;ie++) 
