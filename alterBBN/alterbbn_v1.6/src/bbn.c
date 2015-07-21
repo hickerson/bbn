@@ -194,8 +194,8 @@ void setup_reactions(double reacparam[][8])
         {C13a_nO16, 2,  19.,6.,1.,26.,5.79,25.711}	// C13 + a -> n + O16
         */
     int reac,i,j;
-    int first = np;
-    int last = C13a_nO16;
+    enum ReactionIndex first = np;
+    enum ReactionIndex last = C13a_nO16;
     for (j = 0; j < NNUCREAC; j++)
         for (i = 0; i < 8; i++)
         {
@@ -218,7 +218,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double nn4[11]={1.,1.,1.,2.,2.,1.,1.,1.,2.,3.,1.};
 
     enum ReactionIndex first = np;
-    enum ReactionIndex last = np + NNUCREAC - 1;
+    enum ReactionIndex last = C13a_nO16;
 	
 	int i,j,k,l,n,i1,j1,ind;
 	double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
@@ -535,8 +535,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
 	int i;
-    int first = np;
-    int last = np + NNUCREAC - 1;
+    enum ReactionIndex first = np;
+    enum ReactionIndex last = C13a_nO16;
 	double f[last+1],r[last+1];
 	for(i=0;i<=NNUC;i++) 
         ratioH[i]=0.;
@@ -844,8 +844,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
-    int first = np;
-    int last = np + NNUCREAC - 1;
+    enum ReactionIndex first = np;
+    enum ReactionIndex last = C13a_nO16;
 	int i;
 	for(i=0;i<=NNUC;i++) ratioH[i]=0.;
 	double f[last+1],r[last+1];
@@ -1139,8 +1139,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[])
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
-    int first = np;
-    int last = np + NNUCREAC - 1;
+    enum ReactionIndex first = np;
+    enum ReactionIndex last = C13a_nO16;
 	int ie,je;
 	for(ie=0;ie<=NNUC;ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0.;
