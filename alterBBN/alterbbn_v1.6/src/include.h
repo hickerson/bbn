@@ -181,14 +181,14 @@ enum ReactionIndex {
     g - gamma
     v - electron neutrino (or anti)
     e - electron, positron, or beta
-    p - proton (H)
     n - neutron 
+    p - proton (H)
     d - deuteron (H2)
     t - triton (H3)
     h - helion (He3)
     a - alpha (He4)
-    Xn - X is the element (Z) and 
-         n is the atomic number (A)
+    Xy - X is the element (Z) and 
+         y is the atomic number (A)
 */
 enum NuclideIndex {
     g = -2, e = -1, v = 0, 
