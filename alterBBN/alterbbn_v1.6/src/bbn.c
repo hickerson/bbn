@@ -245,7 +245,6 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 		q9[i]=reacparam[i][7];
 	}
 	
-	
 	for(i=1;i<=NNUC;i++) 
         for(j=1;j<=NNUC;j++) 
             a[i][j]=0.;

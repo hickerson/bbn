@@ -74,17 +74,17 @@ relicparam;
     or, and atomic isotope, Xn, such as Li7, C12, etc...
     The special cases for ultralight isotopes are 
     g - gamma
-    v - electron neutrino (or anti)
-    e - electron, positron, or beta
-    p - proton (H)
+    v - electron neutrino (or anti-)
+    e - electron, positron, beta+/-
     n - neutron 
+    p - proton (H)
     d - deuteron (H2)
     t - triton (H3)
     h - helion (He3)
     a - alpha (He4)
 */
 enum ReactionIndex {
-	np = 100,     /// n <-> p
+	np = 1,     /// n <-> p
 	t_evh,      /// H3 -> e- + v + He3
 	Li8_evaa,   /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12
