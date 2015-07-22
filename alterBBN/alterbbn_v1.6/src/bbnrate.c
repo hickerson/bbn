@@ -665,7 +665,7 @@ void rate_all(int err, double f[], double T9)
 	
 /* B12 + p -> n + C12 */
 	f[B12p_nC12]=pow(T9,-2./3.)*4.02e11*exp(-12.12/pow(T9,1./3.));
-	ferr[45]=0.3;
+	ferr[B12p_nC12]=0.3;
 	
 /* Be9 + p -> a + Li6 */
 	f[Be9p_aLi6]=2.11e11*pow(T9,-2./3.)*exp(-10.361/pow(T9,1./3.)-pow(T9/0.4,2.))*(1.-0.189*T9+3.52e1*T9*T9)+5.24e8*pow(T9,-3./2.)*exp(-3.446/T9)+4.65e8*exp(-4.396/T9)/(pow(T9,0.293));
@@ -789,8 +789,7 @@ void rate_all(int err, double f[], double T9)
 	f[O15n_aC12]=(sqrt(T9)*0.188+1.+T9*0.015)*3.5e7;
 	
 /* C12 + p -> g + N13 */
-	
-f[C12p_gN13]=2.e7*pow(T9,-2./3.)*exp(-13.692*pow(T9,-1./3.)-pow(T9/0.46,2.))*(1.+9.89*T9-59.8*T9*T9+266.*T9*T9*T9)+1.e5*pow(T9,-3./2.)*exp(-4.913/T9)+4.24e5*pow(T9,-3./2.)*exp(-21.62/T9);
+	f[C12p_gN13]=2.e7*pow(T9,-2./3.)*exp(-13.692*pow(T9,-1./3.)-pow(T9/0.46,2.))*(1.+9.89*T9-59.8*T9*T9+266.*T9*T9*T9)+1.e5*pow(T9,-3./2.)*exp(-4.913/T9)+4.24e5*pow(T9,-3./2.)*exp(-21.62/T9);
 	
 /* C13 + p -> g + N14 */
 	f[C13p_gN14]=9.57e7*pow(T9,-2./3.)*exp(-13.720*pow(T9,-1./3.)-T9*T9)*(1.+3.56*T9)+1.5e6*pow(T9,-3./2.)*exp(-5.930/T9)+6.83e5*pow(T9,-8.64e-1)*exp(-12.057/T9);
@@ -867,7 +866,7 @@ f[C12p_gN13]=2.e7*pow(T9,-2./3.)*exp(-13.692*pow(T9,-1./3.)-pow(T9/0.46,2.))*(1.
 			if(err>100000) f[reac]*=fabs(1.+ferr[reac]*rand_gauss());
 		}
 	}
-	else if(err<=-12&&err>=-last) 
+	else if(err<=-first&&err>=-last) 
         f[-err]*=fabs(1.+ferr[-err]);
 	
 	return;
