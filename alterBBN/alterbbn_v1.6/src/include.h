@@ -53,9 +53,9 @@ relicparam;
 /*--------------------------------------------------------------------*/
 /* Prototypes */
 
-#define NNUCREAC 88
-#define NNUC 26
-#define NBETAREC 11
+#define NNUCREAC    88
+#define NNUC        26
+#define NBETA       11
 
 /*
     enum ReactionIndex
@@ -189,9 +189,17 @@ enum ReactionIndex {
     a - alpha (He4)
     Xy - X is the element (Z) and 
          y is the atomic number (A)
+	
+    Nuclides: 
+    1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 
+    7=Li6, 8=Li7, 9=Be7, 10=Li8, 
+    11=B8, 12=Be9, 13=B10, 14=B11, 
+    15=C11, 16=B12, 17=C12, 18=N12, 
+    19=C13, 20=N13, 21=C14, 22=N14, 
+    23=O14, 24=N15, 25=O15, 26=O16 
 */
 enum NuclideIndex {
-    g = -2, e = -1, v = 0, 
+    //g = -2, e = -1, v = 0, 
     n = 1, p, d, t, h, a, 
     Li6, Li7, Be7, Li8,
     B8, Be9, B10, B11,
@@ -199,6 +207,7 @@ enum NuclideIndex {
     C13, N13, C14, N14,
     O14, N15, O15, O16
 };
+
 
 /* general.c */
 double max(double x, double y);
