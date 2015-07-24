@@ -171,7 +171,7 @@ typedef enum ReactionIndex {
 	B11a_nN14,  /// B11 + a -> n + N14
 	B12a_nN15,  /// B12 + a -> n + N15
 	C13a_nO16,  /// C13 + a -> n + O16
-    NREACMAX
+    REAC_MAX
 } ReactionIndex;
 
 
@@ -223,10 +223,11 @@ typedef enum NuclideIndex {
 
 typedef struct Nuclide {
     NuclideIndex i;     /// Isotopic index
-    const  char *S;     /// Symbol name
+    const char *S;      /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
     int N;              /// Neutron number 
+    double dm;          /// Mass excess [MeV]
 } Nuclide;
 
 
@@ -260,6 +261,7 @@ double rand_gauss(void);
 int test_integer(char name[]);
 int test_file(char *name);
 
+
 /* omega.c */
 void Init_modeleff(int model_eff, struct relicparam* paramrelic);
 double heff(double Temp, struct relicparam paramrelic);
@@ -279,13 +281,17 @@ double nonthermal(double T, struct relicparam paramrelic);
 double neutdens(double Tnu, struct relicparam paramrelic);
 void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic);
 
+
 /* bbnrate.c */
 void rate_weak(int err, double f[]);
 void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu);
 void rate_all(int err, double f[], double T9);
 
+
 /* bbn.c */
+// TODO void setup_reactions(Reaction[] reaction);
 void setup_reactions(double reacparam[][8]);
+void setup_nuclides(Nuclide nuclide[]);
 int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
