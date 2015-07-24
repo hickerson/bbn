@@ -243,10 +243,12 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	{
         // TODO use struct instead of raw double array.
 		//type[reac]=(int)reacparam[reac][1];
+        /*
 		n1[reac]=(int)reacparam[reac][2];
 		n2[reac]=(int)reacparam[reac][3];
 		n3[reac]=(int)reacparam[reac][4];
 		n4[reac]=(int)reacparam[reac][5];
+        */
 		rev[reac]=reacparam[reac][6];
 		q9[reac]=reacparam[reac][7];
 	}
@@ -261,10 +263,16 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	{
         int type = reacparam[n][1];
 		//ind=type[n];
+        /*
 		i=n1[n];
 		j=n2[n];
 		k=n3[n];
 		l=n4[n];
+        */
+		i = reacparam[n][2];
+		j = reacparam[n][3];
+		k = reacparam[n][4];
+		l = reacparam[n][5];
 		if (i <= NNUC && l <= NNUC)
 		{
 			rn1=nn1[type];

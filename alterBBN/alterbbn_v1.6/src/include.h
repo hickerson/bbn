@@ -171,7 +171,8 @@ enum ReactionIndex {
 	B10a_nN13,  /// B10 + a -> n + N13
 	B11a_nN14,  /// B11 + a -> n + N14
 	B12a_nN15,  /// B12 + a -> n + N15
-	C13a_nO16   /// C13 + a -> n + O16
+	C13a_nO16,  /// C13 + a -> n + O16
+    NREACMAX
 };
 
 /*
@@ -205,7 +206,8 @@ enum NuclideIndex {
     B8, Be9, B10, B11,
     C11, B12, C12, N12,
     C13, N13, C14, N14,
-    O14, N15, O15, O16
+    O14, N15, O15, O16,
+    NNUCMAX
 };
 
 
