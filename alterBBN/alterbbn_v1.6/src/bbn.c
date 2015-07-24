@@ -195,8 +195,9 @@ void setup_reactions(double reacparam[][8])
         {C13a_nO16, 2,  19.,6.,1.,26.,5.79,25.711}	// C13 + a -> n + O16
      */
     int reac,i,j;
-    enum ReactionIndex first = np;
-    enum ReactionIndex last = C13a_nO16;
+    //TODO fix
+    //enum ReactionIndex first = np;
+    //enum ReactionIndex last = C13a_nO16;
     //enum ReactionIndex reac;
     //for (reac = 0; reac < NNUCREAC; reac++)
     for (j = 0; j < NNUCREAC; j++)
@@ -207,6 +208,65 @@ void setup_reactions(double reacparam[][8])
         }
 }
 
+void setup_nuclides(int A[], int Z[], double D[]) {
+	// Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
+	
+	//double Am[NNUC+1] = { 0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /// Mass number 
+
+		
+	//double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; /// Atomic number Z
+		
+	//double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036}; /// mass excess DeltaM
+    A[n] = A[p] = 1;
+    A[d] = 2;
+    A[t] = A[h] = 3;
+    A[a] = 4;
+    A[Li6] = 6;
+    double nuclide[NNUC_MAX][4];
+
+    /// S - isotopic symbol
+    /// A - atomic mass number
+    /// Z - atomic charge number
+    /// N - neutron number
+    /// D - atomic mass excess 
+    ///               S   A   Z   N   D 
+    nuclides[g] =   { g,  0,  0,  0,  };
+    nuclides[n] =   { n,  1,  0,  1,  };
+    nuclides[p] =   { p,  1,  1,  0,  };
+    nuclides[d] =   { d,  1,  1,  1,  };
+    nuclides[t] =   { t,  2,  1,  2,  };
+    nuclides[h] =   { h,  3,  2,  1,  };
+    nuclides[a] =   { a,  4,  2,  2,  };
+
+    nuclides[Li6] = {Li6, 6,  3,  3,  };
+    nuclides[Li7] = {Li7, 7,  3,  4,  };
+    nuclides[Be7] = {Be7, 7,  4,  3,  };
+    nuclides[Li8] = {Li8, 8,  3,  5,  };
+
+    nuclides[B8] =  {B8,  8,  5,  3, };
+    nuclides[Be9] = {Be9, 9,  4,  5, };
+    nuclides[B10] = {B10, 10, 5,  5, };
+    nuclides[B11] = {B11, 11, 5,  6, };
+
+    nuclides[C11] = {C11, 11, 6,  5, };
+    nuclides[B12] = {B12  12, 5,  7, };
+    nuclides[C12] = {C12, 12, 6,  6, };
+    nuclides[N12] = {N12, 12, 7,  5, };
+
+    nuclides[C13] = {C13, 13, 6,  7, };
+    nuclides[N13] = {N13, 14, 7,  6, };
+    nuclides[C14] = {C14, 14, 6,  8, };
+    nuclides[N14] = {N14, 14, 7,  7, };
+
+    nuclides[O14] = {O14, 14, 8,  6, };
+    nuclides[N15] = {N15, 15, 7,  8, };
+    nuclides[O15] = {O15, 15, 8,  7, };
+    nuclides[O16] = {O16, 16, 8,  8, };
+
+    enum NuclideIndex i;
+};
+
+}
     
 /*----------------------------------------------------*/
 
@@ -565,19 +625,26 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 
 	/* Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
 	
-	double Am[NNUC+1] = {0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /* Mass number A */
+	double Am[NNUC+1] = {
+        0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /// Mass number 
 		
-	double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; /* Atomic number Z */
+	double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; /// Atomic number Z
 		
-	double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036}; /* mass excess DeltaM */	
+	double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036}; /// mass excess DeltaM
+
+    int A[NNUC_SIZE];
+    int Z[NNUC_SIZE];
+    int D[NNUC_SIZE];
+    setup_nuclides(A,Z,C);
 
 	double reacparam[NNUCREAC+1][8];
     setup_reactions(reacparam);
 		
-	for(i = first; i <= last; i++)
+    enum ReactionIndex n;
+	for(n = first; n <= last; n++)
 	{
-		f[i] = 0.;
-		r[i] = 0.;
+		f[n] = 0;
+		r[n] = 0;
 	}
 	
     /*

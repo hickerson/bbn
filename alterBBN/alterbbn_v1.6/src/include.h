@@ -207,7 +207,7 @@ enum NuclideIndex {
     C11, B12, C12, N12,
     C13, N13, C14, N14,
     O14, N15, O15, O16,
-    NNUCMAX
+    NNUC_MAX
 };
 
 
