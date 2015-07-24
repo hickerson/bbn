@@ -197,6 +197,8 @@ void setup_reactions(double reacparam[][8])
     int reac,i,j;
     enum ReactionIndex first = np;
     enum ReactionIndex last = C13a_nO16;
+    //enum ReactionIndex reac;
+    //for (reac = 0; reac < NNUCREAC; reac++)
     for (j = 0; j < NNUCREAC; j++)
         for (i = 0; i < 8; i++)
         {
@@ -257,7 +259,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
     enum ReactionIndex n,i1,j1;
 	for (n = first; n <= last; n++) 
 	{
-        int type = reacparam[reac][1];
+        int type = reacparam[n][1];
 		//ind=type[n];
 		i=n1[n];
 		j=n2[n];
