@@ -1,4 +1,4 @@
 CC = gcc
-CFLAGS = -O3 -pipe -fomit-frame-pointer
+CFLAGS = -O3 -pipe -fomit-frame-pointer -g
 MAKE = make
 AR = ar
