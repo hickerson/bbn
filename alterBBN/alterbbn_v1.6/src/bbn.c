@@ -221,7 +221,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
     enum ReactionIndex first = np;
     enum ReactionIndex last = C13a_nO16;
 	
-	int i,j,k,l,n,i1,j1,ind;
+	//int i,j,k,l,n,i1,j1,ind;
 	double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
 	cn1=cn2=cn3=cn4=0.;
 	int fail;
@@ -238,6 +238,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
     enum ReactionIndex reac;
 	for (reac = first; reac <= last; reac++) 
 	{
+        // TODO use struct instead of raw double array.
 		type[reac]=(int)reacparam[reac][1];
 		n1[reac]=(int)reacparam[reac][2];
 		n2[reac]=(int)reacparam[reac][3];
@@ -247,26 +248,28 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 		q9[reac]=reacparam[reac][7];
 	}
 	
-    enum NuclideIndex nuc;
-	for(nuc = 1; nuc <= NNUC; nuc ++) 
-        for(nuc = 1; nuc <= NNUC; nuc ++) 
-            a[nuc][nuc] = 0;
+	enum NuclideIndex i,j,k,l;
+	for(i = 1; i <= NNUC; i++) 
+        for(j = 1; j <= NNUC; j++) 
+            a[i][j] = 0;
 
+    enum ReactionIndex n,i1,j1;
 	for (n = first; n <= last; n++) 
 	{
-		ind=type[n];
+        int type = reacparam[reac][1];
+		//ind=type[n];
 		i=n1[n];
 		j=n2[n];
 		k=n3[n];
 		l=n4[n];
 		if (i <= NNUC && l <= NNUC)
 		{
-			rn1=nn1[ind];
-			rn2=nn2[ind];
-			rn3=nn3[ind];
-			rn4=nn4[ind];
+			rn1=nn1[type];
+			rn2=nn2[type];
+			rn3=nn3[type];
+			rn4=nn4[type];
 			
-			switch(ind) 
+			switch(type) 
 			{
 				case 0:	{ /* (1,0,0,1) type */
 					cn1=f[n];
