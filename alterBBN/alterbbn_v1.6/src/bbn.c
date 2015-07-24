@@ -224,34 +224,28 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
     enum ReactionIndex last = C13a_nO16;
 	
 	//int i,j,k,l,n,i1,j1,ind;
-	double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
+	//double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
+	double cn1,cn2,cn3,cn4,yY[NNUC];
 	cn1=cn2=cn3=cn4=0.;
 	int fail;
 	double bdln;
 	int ierror;
 	int c0 = 0;
-	//int type[last+1],n1[last+1],n2[last+1],n3[last+1],n4[last+1];
-	enum ReactionIndex n1[last+1],n2[last+1],n3[last+1],n4[last+1];
-	double rev[last+1],q9[last+1];
+	//double rev[last+1],q9[last+1];
 	double a[NNUC+1][NNUC+1],b[NNUC+1],yx[NNUC+1];
 	int icnvm;
 	double x[NNUC+1], a0[NNUC+1][NNUC+1], cx, sum, xdy, t;
 	int nord,test;
 	
+    /*
     enum ReactionIndex reac;
 	for (reac = first; reac <= last; reac++) 
 	{
         // TODO use struct instead of raw double array.
-		//type[reac]=(int)reacparam[reac][1];
-        /*
-		n1[reac]=(int)reacparam[reac][2];
-		n2[reac]=(int)reacparam[reac][3];
-		n3[reac]=(int)reacparam[reac][4];
-		n4[reac]=(int)reacparam[reac][5];
-        */
 		rev[reac]=reacparam[reac][6];
 		q9[reac]=reacparam[reac][7];
 	}
+    */
 	
 	enum NuclideIndex i,j,k,l;
 	for(i = 1; i <= NNUC; i++) 
@@ -262,24 +256,20 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	for (n = first; n <= last; n++) 
 	{
         int type = reacparam[n][1];
-		//ind=type[n];
-        /*
-		i=n1[n];
-		j=n2[n];
-		k=n3[n];
-		l=n4[n];
-        */
 		i = reacparam[n][2];
 		j = reacparam[n][3];
 		k = reacparam[n][4];
 		l = reacparam[n][5];
+		double Rn = reacparam[n][6];
+		double Q9 = reacparam[n][7];
+        int rn1, rn2, rn3, rn4;
+        rn1=nn1[type];
+        rn2=nn2[type];
+        rn3=nn3[type];
+        rn4=nn4[type];
+			
 		if (i <= NNUC && l <= NNUC)
 		{
-			rn1=nn1[type];
-			rn2=nn2[type];
-			rn3=nn3[type];
-			rn4=nn4[type];
-			
 			switch(type) 
 			{
 				case 0:	{ /* (1,0,0,1) type */
@@ -290,7 +280,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 					break;}
 
 				case 1: { /* (1,1,0,1) type */
-					r[n]=rev[n]*1e10*pow(T9,1.5)*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*1e10*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*f[n];
 					cn1=Y[j]*f[n]/2.;
 					cn2=Y[i]*f[n]/2.;
@@ -300,7 +290,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 
 				case 2:	{ /* (1,1,1,1) type */
 					f[n]=rhob*f[n];
-					r[n]=rev[n]*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*exp(-Q9/T9)*f[n];
 					cn1=Y[j]*f[n]/2.;
 					cn2=Y[i]*f[n]/2.;
 					cn3=Y[l]*r[n]/2.;
@@ -316,7 +306,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 
 				case 4:	{ /* (1,1,0,2) type */
 					f[n]=rhob*f[n];
-					r[n]=rev[n]*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*exp(-Q9/T9)*f[n];
 					cn1=Y[j]*f[n]/2.;
 					cn2=Y[i]*f[n]/2.;
 					cn3=0.;
@@ -325,7 +315,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 
 				case 5:	{ /* (2,0,1,1) type */
 					f[n]=rhob*f[n];
-					r[n]=rev[n]*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*exp(-Q9/T9)*f[n];
 					cn1=Y[i]*f[n]/2.;
 					cn2=0.;
 					cn3=Y[l]*r[n]/2.;
@@ -333,7 +323,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 					break;}
 
 				case 6:	{ /* (3,0,0,1) type */
-					r[n]=rev[n]*1.e20*pow(T9,1.5)*pow(T9,1.5)*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*1.e20*pow(T9,1.5)*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*rhob*f[n];
 					cn1=Y[i]*Y[i]*f[n]/6.;
 					cn2=0.;
@@ -342,7 +332,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 					break;}
 		
 				case 7:	{ /* (2,1,0,1) type */
-					r[n]=rev[n]*1.e20*pow(T9,1.5)*pow(T9,1.5)*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*1.e20*pow(T9,1.5)*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*rhob*f[n];
 					cn1=Y[j]*Y[i]*f[n]/3.;
 					cn2=Y[i]*Y[i]*f[n]/6.;
@@ -352,7 +342,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 
 				case 8:	{ /* (1,1,1,2) type */
 					f[n]=rhob*f[n];
-					r[n]=rev[n]*1.e-10*pow(T9,-1.5)*rhob*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*1.e-10*pow(T9,-1.5)*rhob*exp(-Q9/T9)*f[n];
 					cn1=Y[j]*f[n]/2.;
 					cn2=Y[i]*f[n]/2.;
 					cn3=Y[l]*Y[l]*r[n]/6.;
@@ -361,7 +351,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 
 				case 9:	{ /* (1,1,0,3) type */
 					f[n]=rhob*f[n];
-					r[n]=rev[n]*1.e-10*pow(T9,-1.5)*rhob*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*1.e-10*pow(T9,-1.5)*rhob*exp(-Q9/T9)*f[n];
 					cn1=Y[j]*f[n]/2.;
 					cn2=Y[i]*f[n]/2.;
 					cn3=0.;
@@ -370,7 +360,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 
 				case 10:{ /* (2,0,2,1) type */
 					f[n]=rhob*f[n];
-					r[n]=rev[n]*1.e-10*pow(T9,-1.5)*rhob*exp(-q9[n]/T9)*f[n];
+					r[n]=Rn*1.e-10*pow(T9,-1.5)*rhob*exp(-Q9/T9)*f[n];
 					cn1=Y[i]*f[n]/2.;
 					cn2=0.;
 					cn3=Y[l]*Y[k]*r[n]/3.;
