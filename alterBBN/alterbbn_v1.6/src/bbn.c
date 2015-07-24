@@ -235,20 +235,22 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double x[NNUC+1], a0[NNUC+1][NNUC+1], cx, sum, xdy, t;
 	int nord,test;
 	
-	for (i = first; i <= last; i++) 
+    enum ReactionIndex reac;
+	for (reac = first; reac <= last; reac++) 
 	{
-		type[i]=(int)reacparam[i][1];
-		n1[i]=(int)reacparam[i][2];
-		n2[i]=(int)reacparam[i][3];
-		n3[i]=(int)reacparam[i][4];
-		n4[i]=(int)reacparam[i][5];
-		rev[i]=reacparam[i][6];
-		q9[i]=reacparam[i][7];
+		type[reac]=(int)reacparam[reac][1];
+		n1[reac]=(int)reacparam[reac][2];
+		n2[reac]=(int)reacparam[reac][3];
+		n3[reac]=(int)reacparam[reac][4];
+		n4[reac]=(int)reacparam[reac][5];
+		rev[reac]=reacparam[reac][6];
+		q9[reac]=reacparam[reac][7];
 	}
 	
-	for(i=1;i<=NNUC;i++) 
-        for(j=1;j<=NNUC;j++) 
-            a[i][j]=0.;
+    enum NuclideIndex nuc;
+	for(nuc = 1; nuc <= NNUC; nuc ++) 
+        for(nuc = 1; nuc <= NNUC; nuc ++) 
+            a[nuc][nuc] = 0;
 
 	for (n = first; n <= last; n++) 
 	{
