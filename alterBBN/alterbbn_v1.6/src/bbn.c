@@ -228,7 +228,8 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double bdln;
 	int ierror;
 	int c0 = 0;
-	int type[last+1],n1[last+1],n2[last+1],n3[last+1],n4[last+1];
+	//int type[last+1],n1[last+1],n2[last+1],n3[last+1],n4[last+1];
+	enum ReactionIndex n1[last+1],n2[last+1],n3[last+1],n4[last+1];
 	double rev[last+1],q9[last+1];
 	double a[NNUC+1][NNUC+1],b[NNUC+1],yx[NNUC+1];
 	int icnvm;
@@ -239,7 +240,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	for (reac = first; reac <= last; reac++) 
 	{
         // TODO use struct instead of raw double array.
-		type[reac]=(int)reacparam[reac][1];
+		//type[reac]=(int)reacparam[reac][1];
 		n1[reac]=(int)reacparam[reac][2];
 		n2[reac]=(int)reacparam[reac][3];
 		n3[reac]=(int)reacparam[reac][4];
