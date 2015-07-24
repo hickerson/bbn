@@ -31,9 +31,9 @@
 
 /*--------------------------------------------------------------------*/
 
-typedef struct relicparam
 /* structure containing the cosmological model parameters */
-{
+// TODO make name not suck
+typedef struct relicparam {
 	int dummy;
 	int entropy_model;
 	double dd0,ndd,Tdend;
@@ -47,8 +47,7 @@ typedef struct relicparam
 	double life_neutron;
 	double xinu1,xinu2,xinu3;
     double fierz;
-}
-relicparam;
+} relicparam;
 
 /*--------------------------------------------------------------------*/
 /* Prototypes */
@@ -83,7 +82,7 @@ relicparam;
     h - helion (He3)
     a - alpha (He4)
 */
-enum ReactionIndex {
+typedef enum ReactionIndex {
 	np = 1,     /// n <-> p
 	t_evh,      /// H3 -> e- + v + He3
 	Li8_evaa,   /// Li8 -> e- + v + 2He4
@@ -173,34 +172,45 @@ enum ReactionIndex {
 	B12a_nN15,  /// B12 + a -> n + N15
 	C13a_nO16,  /// C13 + a -> n + O16
     NREACMAX
-};
+} ReactionIndex;
 
-/*
-    Nuclide enum can be added or removed with interfering with loops.
 
-    Nuclide naming convention:
-    g - gamma
-    v - electron neutrino (or anti)
-    e - electron, positron, or beta
-    n - neutron 
-    p - proton (H)
-    d - deuteron (H2)
-    t - triton (H3)
-    h - helion (He3)
-    a - alpha (He4)
-    Xy - X is the element (Z) and 
-         y is the atomic number (A)
-	
-    Nuclides: 
-    1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 
-    7=Li6, 8=Li7, 9=Be7, 10=Li8, 
-    11=B8, 12=Be9, 13=B10, 14=B11, 
-    15=C11, 16=B12, 17=C12, 18=N12, 
-    19=C13, 20=N13, 21=C14, 22=N14, 
-    23=O14, 24=N15, 25=O15, 26=O16 
-*/
-enum NuclideIndex {
-    //g = -2, e = -1, v = 0, 
+typedef struct Reaction {
+    ReactionIndex n;
+    // TODO ReationType type;
+    int type;
+} Reaction;
+
+
+/********************************************
+ *  NuclideIndex
+ *  enum can be added or removed 
+ *  with interfering with loops.
+ *
+ *  Nuclide naming convention:
+ *  g - gamma
+ *  v - electron neutrino (or anti)
+ *  e - electron, positron, or beta
+ *  n - neutron 
+ *  p - proton (H)
+ *  d - deuteron (H2)
+ *  t - triton (H3)
+ *  h - helion (He3)
+ *  a - alpha (He4)
+ *  SA - S is the element symbol and 
+ *       A is the atomic number (A)
+ *
+ *  Nuclides: 
+ *  1:  n,    2: p, 
+ *  3:  H2,   4: H3,   5: He3,  6: He4, 
+ *  7:  Li6,  8: Li7,  9: Be7, 10: Li8, 
+ *  11: B8,  12: Be9, 13: B10, 14: B11, 
+ *  15: C11, 16: B12, 17: C12, 18: N12, 
+ *  19: C13, 20: N13, 21: C14, 22: N14, 
+ *  23: O14, 24: N15, 25: O15, 26: O16 
+ *******************************************/
+typedef enum NuclideIndex {
+    g = 0, e = -1, v = 0, 
     n = 1, p, d, t, h, a, 
     Li6, Li7, Be7, Li8,
     B8, Be9, B10, B11,
@@ -208,7 +218,16 @@ enum NuclideIndex {
     C13, N13, C14, N14,
     O14, N15, O15, O16,
     NNUC_MAX
-};
+} NuclideIndex;
+
+
+typedef struct Nuclide {
+    NuclideIndex i;     /// Isotopic index
+    const  char *S;     /// Symbol name
+    int A;              /// Atomic number
+    int Z;              /// Proton number
+    int N;              /// Neutron number 
+} Nuclide;
 
 
 /* general.c */
