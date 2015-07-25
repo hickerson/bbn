@@ -196,9 +196,9 @@ void setup_reactions(double reacparam[][8])
      */
     int reac,i,j;
     //TODO fix
-    //enum ReactionIndex first = np;
-    //enum ReactionIndex last = C13a_nO16;
-    //enum ReactionIndex reac;
+    //ReactionIndex first = np;
+    //ReactionIndex last = C13a_nO16;
+    //ReactionIndex reac;
     //for (reac = 0; reac < NNUCREAC; reac++)
     for (j = 0; j < NNUCREAC; j++)
         for (i = 0; i < 8; i++)
@@ -208,7 +208,8 @@ void setup_reactions(double reacparam[][8])
         }
 }
 
-void setup_nuclides(int A[], int Z[], double D[]) {
+void setup_nuclides(Nuclide nuclide[]) {
+//void setup_nuclides(int A[], int Z[], double D[]) {
 	// Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
 	
 	//double Am[NNUC+1] = { 0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /// Mass number 
@@ -217,53 +218,66 @@ void setup_nuclides(int A[], int Z[], double D[]) {
 	//double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; /// Atomic number Z
 		
 	//double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036}; /// mass excess DeltaM
+    /*
     A[n] = A[p] = 1;
     A[d] = 2;
     A[t] = A[h] = 3;
     A[a] = 4;
     A[Li6] = 6;
-    double nuclide[NNUC_MAX][4];
+    */
+    //double nuclide[NNUC_MAX][4];
 
-    /// S - isotopic symbol
-    /// A - atomic mass number
-    /// Z - atomic charge number
-    /// N - neutron number
-    /// D - atomic mass excess 
-    ///               S   A   Z   N   D 
-    nuclides[g] =   { g,  0,  0,  0,  };
-    nuclides[n] =   { n,  1,  0,  1,  };
-    nuclides[p] =   { p,  1,  1,  0,  };
-    nuclides[d] =   { d,  1,  1,  1,  };
-    nuclides[t] =   { t,  2,  1,  2,  };
-    nuclides[h] =   { h,  3,  2,  1,  };
-    nuclides[a] =   { a,  4,  2,  2,  };
+    /*-----------------------------------
+    /   Data from http://www.nndc.bnl.gov/masses/mass.mas03
+    /
+    /   S - isotopic symbol
+    /   A - atomic mass number
+    /   Z - atomic charge number
+    /   N - neutron number
+    /   M - mass excess 
+    /------------------------------------
+    /                 S   A   Z   N   D   */
+	// Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 
+	//double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 
+    nuclide[0] =   { 0,  0,  0,  0,  0 };
+    nuclide[n] =   { n,  1,  0,  1,  8.071388};
+    nuclide[p] =   { p,  1,  1,  0,  7.289028};
+    nuclide[d] =   { d,  1,  1,  1,  13.135825};
+    nuclide[t] =   { t,  2,  1,  2,  14.949915};
+    nuclide[h] =   { h,  3,  2,  1,  14.931325};
+    nuclide[a] =   { a,  4,  2,  2,  2.424931};
 
-    nuclides[Li6] = {Li6, 6,  3,  3,  };
-    nuclides[Li7] = {Li7, 7,  3,  4,  };
-    nuclides[Be7] = {Be7, 7,  4,  3,  };
-    nuclides[Li8] = {Li8, 8,  3,  5,  };
+	// 14.0864, 14.9078, 15.7696, 20.9464,
+    nuclide[Li6] = {Li6, 6,  3,  3,  14.9078};
+    nuclide[Li7] = {Li7, 7,  3,  4,  15.7696};
+    nuclide[Be7] = {Be7, 7,  4,  3,  15.7696};
+    nuclide[Li8] = {Li8, 8,  3,  5,  20.9464};
 
-    nuclides[B8] =  {B8,  8,  5,  3, };
-    nuclides[Be9] = {Be9, 9,  4,  5, };
-    nuclides[B10] = {B10, 10, 5,  5, };
-    nuclides[B11] = {B11, 11, 5,  6, };
+    // 22.9212, 11.34758, 12.05086, 8.6680,
+    nuclide[B8] =  {B8,  8,  5,  3, 22.9212};
+    nuclide[Be9] = {Be9, 9,  4,  5, 11.34758};
+    nuclide[B10] = {B10, 10, 5,  5, 12.05086};
+    nuclide[B11] = {B11, 11, 5,  6, 8.6680};
 
-    nuclides[C11] = {C11, 11, 6,  5, };
-    nuclides[B12] = {B12  12, 5,  7, };
-    nuclides[C12] = {C12, 12, 6,  6, };
-    nuclides[N12] = {N12, 12, 7,  5, };
+    // 10.6506, 13.3690, 0., 17.3382, 
+    nuclide[C11] = {C11, 11, 6,  5, 10.6506};
+    nuclide[B12] = {B12  12, 5,  7, 13.3690};
+    nuclide[C12] = {C12, 12, 6,  6, 0};
+    nuclide[N12] = {N12, 12, 7,  5, 17.3382};
 
-    nuclides[C13] = {C13, 13, 6,  7, };
-    nuclides[N13] = {N13, 14, 7,  6, };
-    nuclides[C14] = {C14, 14, 6,  8, };
-    nuclides[N14] = {N14, 14, 7,  7, };
+    // 3.125036, 5.3455, 3.019916, 2.863440, 
+    nuclide[C13] = {C13, 13, 6,  7, 3.125036};
+    nuclide[N13] = {N13, 14, 7,  6, 5.3455};
+    nuclide[C14] = {C14, 14, 6,  8, 3.019916};
+    nuclide[N14] = {N14, 14, 7,  7, 2.863440};
 
-    nuclides[O14] = {O14, 14, 8,  6, };
-    nuclides[N15] = {N15, 15, 7,  8, };
-    nuclides[O15] = {O15, 15, 8,  7, };
-    nuclides[O16] = {O16, 16, 8,  8, };
+    // 8.006521, 0.101439, 2.8554, -4.737036
+    nuclide[O14] = {O14, 14, 8,  6, 8.006521};
+    nuclide[N15] = {N15, 15, 7,  8, 0.101439};
+    nuclide[O15] = {O15, 15, 8,  7, 2.8554};
+    nuclide[O16] = {O16, 16, 8,  8, -4.737036};
 
-    enum NuclideIndex i;
+    NuclideIndex i;
 };
 
 }
@@ -280,8 +294,8 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	double nn3[11]={0.,0.,1.,0.,0.,1.,0.,0.,1.,0.,2.};
 	double nn4[11]={1.,1.,1.,2.,2.,1.,1.,1.,2.,3.,1.};
 
-    enum ReactionIndex first = np;
-    enum ReactionIndex last = C13a_nO16;
+    ReactionIndex first = np;
+    ReactionIndex last = C13a_nO16;
 	
 	//int i,j,k,l,n,i1,j1,ind;
 	//double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
@@ -298,7 +312,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	int nord,test;
 	
     /*
-    enum ReactionIndex reac;
+    ReactionIndex reac;
 	for (reac = first; reac <= last; reac++) 
 	{
         // TODO use struct instead of raw double array.
@@ -307,12 +321,12 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 	}
     */
 	
-	enum NuclideIndex i,j,k,l;
+	NuclideIndex i,j,k,l;
 	for(i = 1; i <= NNUC; i++) 
         for(j = 1; j <= NNUC; j++) 
             a[i][j] = 0;
 
-    enum ReactionIndex n,i1,j1;
+    ReactionIndex n,i1,j1;
 	for (n = first; n <= last; n++) 
 	{
         int type = reacparam[n][1];
@@ -601,8 +615,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
 	int i;
-    enum ReactionIndex first = np;
-    enum ReactionIndex last = C13a_nO16;
+    ReactionIndex first = np;
+    ReactionIndex last = C13a_nO16;
 	double f[last+1],r[last+1];
 	for(i=0;i<=NNUC;i++) 
         ratioH[i]=0.;
@@ -640,7 +654,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	double reacparam[NNUCREAC+1][8];
     setup_reactions(reacparam);
 		
-    enum ReactionIndex n;
+    ReactionIndex n;
 	for(n = first; n <= last; n++)
 	{
 		f[n] = 0;
@@ -917,8 +931,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
-    enum ReactionIndex first = np;
-    enum ReactionIndex last = C13a_nO16;
+    ReactionIndex first = np;
+    ReactionIndex last = C13a_nO16;
 	int i;
 	for(i=0;i<=NNUC;i++) ratioH[i]=0.;
 	double f[last+1],r[last+1];
@@ -1212,8 +1226,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[])
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
-    enum ReactionIndex first = np;
-    enum ReactionIndex last = C13a_nO16;
+    ReactionIndex first = np;
+    ReactionIndex last = C13a_nO16;
 	int ie,je;
 	for(ie=0;ie<=NNUC;ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0.;
