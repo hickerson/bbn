@@ -190,7 +190,7 @@ void setup_nuclides(int A[], int Z[], double D[]) {
     */
 
     int nnuc_size = O16 + 1;
-    Nuclide _nuclide[nnuc_size] = {
+    Nuclide _nuclide[O16+1] = {
         { 0,  0,  0,  0,  0 },
         { n,  1,  0,  1,  8.071388},
         { p,  1,  1,  0,  7.289028},
@@ -227,11 +227,11 @@ void setup_nuclides(int A[], int Z[], double D[]) {
     };
 
     NuclideIndex i;
-    for (i = 0; i <= NNUC; i++) {
+    for (i = 0; i <= O16; i++) {
         Nuclide X = _nuclide[i];
         A[X.i] = X.A;
         Z[X.i] = X.Z;
-        D[X.i] = X.D;
+        D[X.i] = X.dm;
     }
 }
     
@@ -592,19 +592,19 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 
 	/* Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
 	
+    /*
 	double Am[NNUC+1] = {
         0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /// Mass number 
 		
 	double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; /// Atomic number Z
 		
 	double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036}; /// mass excess DeltaM
-
-    /*
-    int A[NNUC_SIZE];
-    int Z[NNUC_SIZE];
-    int D[NNUC_SIZE];
-    setup_nuclides(A,Z,C);
     */
+
+    int Am[NNUC+1];
+    int Zm[NNUC+1];
+    double Dm[NNUC+1];
+    setup_nuclides(Am,Zm,Dm);
 
 	double reacparam[NNUCREAC+1][8];
     setup_reactions(reacparam);
