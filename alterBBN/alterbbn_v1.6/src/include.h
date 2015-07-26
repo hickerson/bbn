@@ -210,10 +210,11 @@ typedef struct Reaction {
  *  23: O14, 24: N15, 25: O15, 26: O16 
  *******************************************/
 typedef enum NuclideIndex {
-    g = 0, e = -1, v = 0, 
-    n = 1, p, d, t, h, a, 
+    //g=0, e=-1, v=0, 
+    n=1, p, 
+    d,   t,   h,   a, 
     Li6, Li7, Be7, Li8,
-    B8, Be9, B10, B11,
+    B8,  Be9, B10, B11,
     C11, B12, C12, N12,
     C13, N13, C14, N14,
     O14, N15, O15, O16,
@@ -223,7 +224,7 @@ typedef enum NuclideIndex {
 
 typedef struct Nuclide {
     NuclideIndex i;     /// Isotopic index
-    const char *S;      /// Symbol name
+    //const char *S;      /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
     int N;              /// Neutron number 
