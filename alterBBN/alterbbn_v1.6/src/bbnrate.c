@@ -6,13 +6,13 @@ void rate_weak(int err, double f[])
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
     //double Nbeta = 11;
-    int first = t_evh;
+    int first = T_evh;
     int last = O15_evN15;
 	double ferrlow[last+1]; 
     double ferrhigh[last+1]; 
     double ferr[last+1];
 	
-	f[t_evh] = 1.78141141239e-9;	/// H3 -> e- + v + He3
+	f[T_evh] = 1.78141141239e-9;	/// H3 -> e- + v + He3
 	f[Li8_evaa]  = 0.827;	 	    /// Li8 -> e- + v + 2He4
 	f[B12_evC12] = 34.3;	 	    /// B12 -> e- + v + C12
 	f[C14_evN14] = 3.834e-12;	 	/// C14 -> e- + v + N14

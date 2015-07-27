@@ -77,14 +77,14 @@ typedef struct relicparam {
     e - electron, positron, beta+/-
     n - neutron 
     p - proton (H)
-    d - deuteron (H2)
+    D - deuteron (H2)
     t - triton (H3)
     h - helion (He3)
     a - alpha (He4)
 */
 typedef enum ReactionIndex {
 	np = 1,     /// n <-> p
-	t_evh,      /// H3 -> e- + v + He3
+	T_evh,      /// H3 -> e- + v + He3
 	Li8_evaa,   /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12
 	C14_evN14,  /// C14 -> e- + v + N14
@@ -94,29 +94,29 @@ typedef enum ReactionIndex {
 	N13_evC13,  /// N13 -> e+ + v + C13
 	O14_evN14,  /// O14 -> e+ + v + N14
 	O15_evN15,  /// O15 -> e+ + v + N15
-	pn_gd,      /// H + n -> g + H2
-	dn_gt,      /// H2 + n -> g + H3
+	pn_gD,      /// H + n -> g + H2
+	Dn_gT,      /// H2 + n -> g + H3
 	hn_ga,      /// He3 + n -> g + He4
 	Li6n_gLi7,  /// Li6 + n -> g + Li7
-	hn_pt,      /// He3 + n -> p + H3
+	hn_pT,      /// He3 + n -> p + H3
 	Be7n_pLi7,  /// Be7 + n -> p + Li7
-	Li6n_at,    /// Li6 + n -> a + H3
+	Li6n_aT,    /// Li6 + n -> a + H3
 	Be7n_aa,    /// Be7 + n -> a + He4
-	dp_gh,      /// H2 + p -> g + He3
-	tp_ga,      /// H3 + p -> g + He4
+	Dp_gh,      /// H2 + p -> g + He3
+	Tp_ga,      /// H3 + p -> g + He4
 	Li6p_gBe7,  /// Li6 + p -> g + Be7
 	Li6p_ah,    /// Li6 + p -> a + He3
 	Li7p_aa,    /// Li7 + p -> a + He4
-	da_gLi6,    /// H2 + a -> p + Li6   changed to H2 + a -> g + Li6
-	ta_gLi7,    /// H3 + a -> p + Li7   changed to H3 + a -> g + Li7
+	Da_gLi6,    /// H2 + a -> p + Li6   changed to H2 + a -> g + Li6
+	Ta_gLi7,    /// H3 + a -> p + Li7   changed to H3 + a -> g + Li7
 	ha_gBe7,    /// He3 + a -> p + Be7  changed to He3 + a -> g + Be7
-	dd_nh,      /// H2 + d -> p + He3   changed to H2 + d -> n + He3   
-	dd_pt,      /// H2 + d -> n + H3    changed to H2 + d -> p + H3
-	td_na,      /// H3 + d -> n + He4
-	hd_pa,      /// He3 + d -> p + He4
+	DD_nh,      /// H2 + d -> p + He3   changed to H2 + d -> n + He3   
+	DD_pT,      /// H2 + d -> n + H3    changed to H2 + d -> p + H3
+	TD_na,      /// H3 + d -> n + He4
+	hD_pa,      /// He3 + d -> p + He4
 	hh_ppa,     /// He3 + He3 -> 2p + He4
-	Li7d_naa,   /// Li7 + d -> n + a + He4
-	Be7d_paa,   /// Be7 + d -> p + a + He4
+	Li7D_naa,   /// Li7 + d -> n + a + He4
+	Be7D_paa,   /// Be7 + d -> p + a + He4
 	Li7n_gLi8,  /// Li7 + n -> g + Li8
 	B10n_gB11,  /// B10 + n -> g + B11
 	B11n_gB12,  /// B11 + n -> g + B12
@@ -137,14 +137,14 @@ typedef enum ReactionIndex {
 	B8a_pC11,   /// B8 + a -> p + C11
 	Li8a_nB11,  /// Li8 + a -> n + B11
 	Be9a_nC12,  /// Be9 + a -> n + C12
-	Be9d_nB10,  /// Be9 + d -> n + B10
-	B10d_pB11,  /// B10 + d -> p + B11
-	B11d_nC12,  /// B11 + d -> n + C12
+	Be9D_nB10,  /// Be9 + d -> n + B10
+	B10D_pB11,  /// B10 + d -> p + B11
+	B11D_nC12,  /// B11 + d -> n + C12
 	aan_gBe9,   /// He4 + a + n -> g + Be9
 	aaa_gC12,   /// He4 + 2a -> g + C12
 	Li8p_naa,   /// Li8 + p -> n + a + He4
 	B8n_paa,    /// B8 + n -> p + a + He4
-	Be9p_daa,   /// Be9 + p -> d + a + He4
+	Be9p_Daa,   /// Be9 + p -> d + a + He4
 	B11p_aaa,   /// B11 + p -> 2a + Be4    changed to  B11 + p -> 2a + He4
 	C11n_aaa,   /// C11 + n -> 2a + He4
 	C12n_gC13,  /// C12 + n -> g + C13
@@ -193,8 +193,8 @@ typedef struct Reaction {
  *  e - electron, positron, or beta
  *  n - neutron 
  *  p - proton (H)
- *  d - deuteron (H2)
- *  t - triton (H3)
+ *  D - deuteron (H2)
+ *  T - triton (H3)
  *  h - helion (He3)
  *  a - alpha (He4)
  *  SA - S is the element symbol and 
@@ -212,7 +212,7 @@ typedef struct Reaction {
 typedef enum NuclideIndex {
     //g=0, e=-1, v=0, 
     n=1, p, 
-    d,   t,   h,   a, 
+    D,   T,   h,   a, 
     Li6, Li7, Be7, Li8,
     B8,  Be9, B10, B11,
     C11, B12, C12, N12,

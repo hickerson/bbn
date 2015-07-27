@@ -15,7 +15,7 @@ void setup_reactions(double reacparam[][8])
 	{
     /// reaction   type n1   n2  n3  n4   rev   Q [MeV]     
         {np,        0,  n,   0,  0,  p,   0.0,   0.0},		/// n <-> p
-        {t_evh,     0,  t,   0,  0,  h,   0.0,   0.0},		/// H3 -> e- + v + He3
+        {T_evh,     0,  T,   0,  0,  h,   0.0,   0.0},		/// H3 -> e- + v + He3
         {Li8_evaa,  3,  Li8, 0,  0,  a,   0.0,   0.0},		/// Li8 -> e- + v + 2He4
         {B12_evC12, 0,  B12, 0,  0,  C12, 0.0,   0.0},		/// B12 -> e- + v + C12
         {C14_evN14, 0,  C14, 0,  0,  N14, 0.0,   0.0},		/// C14 -> e- + v + N14
@@ -25,29 +25,29 @@ void setup_reactions(double reacparam[][8])
         {N13_evC13, 0,  N13, 0,  0,  C13, 0.0,   0.0},		/// N13 -> e+ + v + C13
         {O14_evN14, 0,  O14, 0,  0,  N14, 0.0,   0.0},		/// O14 -> e+ + v + N14
         {O15_evN15, 0,  O15, 0,  0,  N15, 0.0,   0.0},		/// O15 -> e+ + v + N15
-        {pn_gd,     1,  p,   n,  0,  d,   0.471, 25.82},	/// H + n -> g + H2
-        {dn_gt,     1,  d,   n,  0,  t,   1.63,  72.62},	/// H2 + n -> g + H3
+        {pn_gD,     1,  p,   n,  0,  D,   0.471, 25.82},	/// H + n -> g + H2
+        {Dn_gT,     1,  D,   n,  0,  T,   1.63,  72.62},	/// H2 + n -> g + H3
         {hn_ga,     1,  h,   n,  0,  a,   2.61,  238.81},	/// He3 + n -> g + He4
         {Li6n_gLi7, 1,  Li6, n,  0,  Li7, 1.19,  84.17},	/// Li6 + n -> g + Li7
-        {hn_pt,     2,  h,   n,  p,  t,   1.002, 8.863},	/// He3 + n -> p + H3
+        {hn_pT,     2,  h,   n,  p,  T,   1.002, 8.863},	/// He3 + n -> p + H3
         {Be7n_pLi7, 2,  Be7, n,  p,  Li7, 0.998, 19.081},	/// Be7 + n -> p + Li7
-        {Li6n_at,   2,  Li6, n,  t,  a,   1.070, 55.494},	/// Li6 + n -> a + H3    //// TODO swap
+        {Li6n_aT,   2,  Li6, n,  T,  a,   1.070, 55.494},	/// Li6 + n -> a + H3    //// TODO swap
         {Be7n_aa,   4,  Be7, n,  0,  a,   4.70,  220.39},	/// Be7 + n -> 2He4
-        {dp_gh,     1,  d,   p,  0,  h,   1.63,  63.750},	/// H2 + p -> g + He3
-        {tp_ga,     1,  t,   p,  0,  a,   2.61,  229.932},	/// H3 + p -> g + He4
+        {Dp_gh,     1,  D,   p,  0,  h,   1.63,  63.750},	/// H2 + p -> g + He3
+        {Tp_ga,     1,  T,   p,  0,  a,   2.61,  229.932},	/// H3 + p -> g + He4
         {Li6p_gBe7, 1,  Li6, p,  0,  Be7, 1.19,  65.054},	/// Li6 + p -> g + Be7
         {Li6p_ah,   2,  Li6, p,  h,  a,   1.07,  46.631},	/// Li6 + p -> a + He3   //// TODO swap 
         {Li7p_aa,   4,  Li7, p,  0,  a,   4.69,  201.291},	/// Li7 + p -> 2He4
-        {da_gLi6,   1,  a,   d,  0,  Li6, 1.53,  17.118},	/// H2 + a -> g + Li6    //// TODO swap id
-        {ta_gLi7,   1,  a,   t,  0,  Li7, 1.11,  28.640},	/// H3 + a -> g + Li7    //// TODO swap id
+        {Da_gLi6,   1,  a,   D,  0,  Li6, 1.53,  17.118},	/// H2 + a -> g + Li6    //// TODO swap id
+        {Ta_gLi7,   1,  a,   T,  0,  Li7, 1.11,  28.640},	/// H3 + a -> g + Li7    //// TODO swap id
         {ha_gBe7,   1,  a,   h,  0,  Be7, 1.11,  18.423},	/// He3 + a -> g + Be7    //// TODO swap id
-        {dd_nh,     5,  d,   0,  n,  h,   1.73,  37.935},	/// 2d -> n + He3
-        {dd_pt,     5,  d,   0,  p,  t,   1.73,  46.798},	/// 2d -> p + H3
-        {td_na,     2,  t,   d,  n,  a,   5.54,  204.117},	/// t + d -> n + He4
-        {hd_pa,     2,  h,   d,  p,  a,   5.55,  212.980},	/// He3 + d -> p + He4
+        {DD_nh,     5,  D,   0,  n,  h,   1.73,  37.935},	/// 2D -> n + He3
+        {DD_pT,     5,  D,   0,  p,  T,   1.73,  46.798},	/// 2D -> p + H3
+        {TD_na,     2,  T,   D,  n,  a,   5.54,  204.117},	/// T + D -> n + He4
+        {hD_pa,     2,  h,   D,  p,  a,   5.55,  212.980},	/// He3 + D -> p + He4
         {hh_ppa,    10, h,   0,  p,  a,   3.39,  149.230},	/// 2He3 -> 2p + He4
-        {Li7d_naa,  8,  Li7, d,  n,  a,   9.95,  175.476},	/// Li7 + d -> n + 2He4
-        {Be7d_paa,  8,  Be7, d,  p,  a,   9.97,  194.557},	/// Be7 + d -> p + 2He4
+        {Li7D_naa,  8,  Li7, D,  n,  a,   9.95,  175.476},	/// Li7 + D -> n + 2He4
+        {Be7D_paa,  8,  Be7, D,  p,  a,   9.97,  194.557},	/// Be7 + D -> p + 2He4
         {Li7n_gLi8, 1,  Li7, n,  0,  Li8, 1.31,  23.59},	/// Li7 + n -> g + Li8
         {B10n_gB11, 1,  B10, n,  0,  B11, 3.04,  132.95},	/// B10 + n -> g + B11
         {B11n_gB12, 1,  B11, n,  0,  B12, 2.34,  39.10},	/// B11 + n -> g + B12
@@ -68,14 +68,14 @@ void setup_reactions(double reacparam[][8])
         {B8a_pC11,  2,  B8,  a,  p,  C11, 3.08,  86.00},	/// B8 + a -> p + C11 
         {Li8a_nB11, 2,  Li8, a,  n,  B11, 3.07,  76.96},	/// Li8 + a -> n + B11
         {Be9a_nC12, 2,  Be9, a,  n,  C12, 10.3,  66.160},	/// Be9 + a -> n + C12
-        {Be9d_nB10, 2,  Be9, d,  n,  B10, 2.07,  50.63},	/// Be9 + d -> n + B10
-        {B10d_pB11, 2,  B10, d,  p,  B11, 6.44,  107.13},	/// B10 + d -> p + B11
-        {B11d_nC12, 2,  B11, d,  n,  C12, 14.9,  159.36},	/// B11 + d -> n + C12
+        {Be9D_nB10, 2,  Be9, D,  n,  B10, 2.07,  50.63},	/// Be9 + D -> n + B10
+        {B10D_pB11, 2,  B10, D,  p,  B11, 6.44,  107.13},	/// B10 + D -> p + B11
+        {B11D_nC12, 2,  B11, D,  n,  C12, 14.9,  159.36},	/// B11 + D -> n + C12
         {aan_gBe9,  7,  a,   n,  0,  Be9, 0.584, 18.260},	/// 2He4 + n -> g + Be9
         {aaa_gC12,  6,  a,   0,  0,  C12, 2.00,  84.420},	/// 3He4 -> g + C12
         {Li8p_naa,  8,  Li8, p,  n,  a,   3.58,  177.73},	/// Li8 + p -> n + 2He4
         {B8n_paa,   8,  B8,  n,  p,  a,   3.58,  218.82},	/// B8 + n -> p + 2He4
-        {Be9p_daa,  8,  Be9, p,  d,  a,   0.807, 7.555},	/// Be9 + p -> d + 2He4
+        {Be9p_Daa,  8,  Be9, p,  D,  a,   0.807, 7.555},	/// Be9 + p -> D + 2He4
         {B11p_aaa,  9,  B11, p,  0,  a,   3.50,  100.753},	/// B11 + p -> 3He4
         {C11n_aaa,  9,  C11, n,  0,  a,   3.49,  132.83},	/// C11 + n -> 3He4
         {C12n_gC13, 1,  C12, n,  0,  C13, 0.886, 57.41},	/// C12 + n -> g + C13
@@ -119,7 +119,7 @@ void setup_reactions(double reacparam[][8])
 }
 
 //void setup_nuclides(Nuclide nuclide[]) {
-void setup_nuclides(int A[], int Z[], double D[]) {
+void setup_nuclides(int A[], int Z[], double Dm[]) {
 	// Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
 	
 	//double Am[NNUC+1] = { 0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /// Mass number 
@@ -153,8 +153,8 @@ void setup_nuclides(int A[], int Z[], double D[]) {
     nuclide[0] =   { 0,  0,  0,  0,  0 };
     nuclide[n] =   { n,  1,  0,  1,  8.071388};
     nuclide[p] =   { p,  1,  1,  0,  7.289028};
-    nuclide[d] =   { d,  1,  1,  1,  13.135825};
-    nuclide[t] =   { t,  2,  1,  2,  14.949915};
+    nuclide[D] =   { D,  1,  1,  1,  13.135825};
+    nuclide[T] =   { T,  2,  1,  2,  14.949915};
     nuclide[h] =   { h,  3,  2,  1,  14.931325};
     nuclide[a] =   { a,  4,  2,  2,  2.424931};
 
@@ -191,12 +191,13 @@ void setup_nuclides(int A[], int Z[], double D[]) {
 
     int nnuc_size = O16 + 1;
     Nuclide _nuclide[O16+1] = {
+    ///   i   A   Z   N   dm
         { 0,  0,  0,  0,  0 },
         { n,  1,  0,  1,  8.071388},
         { p,  1,  1,  0,  7.289028},
 
-        { d,  1,  1,  1,  13.135825},
-        { t,  2,  1,  2,  14.949915},
+        { D,  1,  1,  1,  13.135825},
+        { T,  2,  1,  2,  14.949915},
         { h,  3,  2,  1,  14.931325},
         { a,  4,  2,  2,  2.424931},
 
@@ -231,7 +232,7 @@ void setup_nuclides(int A[], int Z[], double D[]) {
         Nuclide X = _nuclide[i];
         A[X.i] = X.A;
         Z[X.i] = X.Z;
-        D[X.i] = X.dm;
+        Dm[X.i] = X.dm;
     }
 }
     
@@ -649,41 +650,42 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 		nitmax=10;
 	}
 
-	double T9=T9i;
-	double Tnu=T9;
-	double t=1./pow(T9*0.09615,2.);
-	double dt=dt0;
+	double T9 = T9i;
+	double Tnu = T9;
+	//double t=1./pow(T9*0.09615,2.);
+	double t = pow(T9*0.09615, -2);
+	double dt = dt0;
 
 	if (15.011 / T9 > 58.)
 	{
-		Y[1] = 1.e-25;
-		Y[2] = 1.;
+		Y[n] = 1.e-25;
+		Y[p] = 1.;
 	} 
 	else if (15.011 / T9 < -58.)
 	{
-		Y[1] = 1.;
-		Y[2] = 1.e-25;
+		Y[n] = 1.;
+		Y[p] = 1.e-25;
 	} 
 	else 
 	{
-		Y[1] = 1. / (exp(15.011 / T9) + 1.);
-		Y[2] = 1. / (exp(-15.011 / T9) + 1.);
+		Y[n] = 1. / (exp(15.011 / T9) + 1.);
+		Y[p] = 1. / (exp(-15.011 / T9) + 1.);
 	}
 
-	Y0[1]=Y[1];
-	Y0[2]=Y[2];
+	Y0[n]=Y[n];
+	Y0[p]=Y[p];
 
 	z=5.929862032115561/T9;
 	double h_eta=paramrelic.eta0*33683.*2.75;
-	double phie=h_eta*(Y[2]*1.784e-5)/(pow(z,3.)*0.5*(Lbessel(z)-Lbessel(2.*z)*2.+Lbessel(3.*z)*3.-Lbessel(4.*z)*4.+Lbessel(5.*z)*5.-Lbessel(6.*z)*6.+Lbessel(7.*z)*7.));
+	double phie=h_eta*(Y[p]*1.784e-5)/(pow(z,3.)*0.5*(Lbessel(z)-Lbessel(2.*z)*2.+Lbessel(3.*z)*3.-Lbessel(4.*z)*4.+Lbessel(5.*z)*5.-Lbessel(6.*z)*6.+Lbessel(7.*z)*7.));
 	double rhob0=h_eta*pow(T9,3.);	
 	double rho_gamma,drho_gamma_dT9,P_gamma,rho_epem;
 	double drho_epem_dT9,drho_epem_dphie,P_epem,rho_neutrinos,rho_baryons;
 	double dM_epem_dT9,dN_epem_dphie;
 	
-	Y[3] =Y[1]*Y[2]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
+	Y[D] =Y[n]*Y[p]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
-	Y0[3]=Y[3];
+	Y0[D]=Y[D];
 	for (i = 4; i <= NNUC; ++i) 
 	{
 		Y[i]=Ytmin;
@@ -803,10 +805,10 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			{
 				it++;
 				for (i=1;i<=NNUC;i++) 
-                    ratioH[i]=Y[i]/Y[2];
+                    ratioH[i]=Y[i]/Y[p];
 			
-				ratioH[2]=Y[2]*Am[2];
-				ratioH[6]=Y[6]*Am[6];
+				ratioH[p]=Y[p]*Am[p];
+				ratioH[a]=Y[a]*Am[a];
 				for(i=1;i<=9;i++) 
                     ratioH[10]+=ratioH[i];
 				ratioH[10]-=1.;
@@ -872,8 +874,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 		}	
 	}
 			
-	ratioH[8]+=ratioH[9];
-	ratioH[5]+=ratioH[4];
+	ratioH[Li7] += ratioH[Be7];
+	ratioH[h] += ratioH[T];
 	
 	for (i=0;i<=NNUC;i++) 
         ratioH[i]=fabs(ratioH[i]);
@@ -963,34 +965,34 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 
 	if (15.011 / T9 > 58.)
 	{
-		Y[1] = 1.e-25;
-		Y[2] = 1.;
+		Y[n] = 1.e-25;
+		Y[p] = 1.;
 	} 
 	else if (15.011 / T9 < -58.)
 	{
-		Y[1] = 1.;
-		Y[2] = 1.e-25;
+		Y[n] = 1.;
+		Y[p] = 1.e-25;
 	} 
 	else 
 	{
-		Y[1] = 1. / (exp(15.011 / T9) + 1.);
-		Y[2] = 1. / (exp(-15.011 / T9) + 1.);
+		Y[n] = 1. / (exp(15.011 / T9) + 1.);
+		Y[p] = 1. / (exp(-15.011 / T9) + 1.);
 	}
 
-	Y0[1]=Y[1];
-	Y0[2]=Y[2];
+	Y0[n]=Y[n];
+	Y0[p]=Y[p];
 
 	z=5.929862032115561/T9;
 	double h_eta=paramrelic.eta0*33683.*2.75;
-	double phie=h_eta*(Y[2]*1.784e-5)/(pow(z,3.)*0.5*(Lbessel(z)-Lbessel(2.*z)*2.+Lbessel(3.*z)*3.-Lbessel(4.*z)*4.+Lbessel(5.*z)*5.-Lbessel(6.*z)*6.+Lbessel(7.*z)*7.));
+	double phie=h_eta*(Y[p]*1.784e-5)/(pow(z,3.)*0.5*(Lbessel(z)-Lbessel(2.*z)*2.+Lbessel(3.*z)*3.-Lbessel(4.*z)*4.+Lbessel(5.*z)*5.-Lbessel(6.*z)*6.+Lbessel(7.*z)*7.));
 	double rhob0=h_eta*pow(T9,3.);	
 	double rho_gamma,drho_gamma_dT9,P_gamma,rho_epem;
 	double drho_epem_dT9,drho_epem_dphie,P_epem,rho_neutrinos,rho_baryons;
 	double dM_epem_dT9,dN_epem_dphie;
 	
-	Y[3] =Y[1]*Y[2]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
+	Y[D] = Y[n]*Y[p]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
-	Y0[3]=Y[3];
+	Y0[D]=Y[D];
 	for (i = 4; i <= NNUC; ++i) 
 	{
 		Y[i]=Ytmin;
@@ -1106,10 +1108,10 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for (i=1;i<=NNUC;i++) ratioH[i]=Y[i]/Y[2];
+				for (i=1;i<=NNUC;i++) ratioH[i]=Y[i]/Y[p];
 			
-				ratioH[2]=Y[2]*Am[2];
-				ratioH[6]=Y[6]*Am[6];
+				ratioH[p]=Y[p]*Am[p];
+				ratioH[a]=Y[a]*Am[a];
 				for(i=1;i<=9;i++) ratioH[10]+=ratioH[i];
 				ratioH[10]-=1.;
 				ratioH[0] = h_eta / 33683.;
@@ -1172,10 +1174,11 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 		}	
 	}
 			
-	ratioH[8]+=ratioH[9];
-	ratioH[5]+=ratioH[4];
+	ratioH[Li7] += ratioH[Be7];
+	ratioH[h] += ratioH[T];
 	
-	for (i=0;i<=NNUC;i++) ratioH[i]=fabs(ratioH[i]);
+	for (i=0;i<=NNUC;i++)
+        ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
 }
@@ -1287,12 +1290,12 @@ int bbn_excluded(int err, struct relicparam paramrelic)
 		
 	if(nucl(err,paramrelic,ratioH)==0)
 	{
-		H2_H=ratioH[3];
-		Yp=ratioH[6];
-		Li7_H=ratioH[8];
-		Be7_H=ratioH[9];
-		He3_H=ratioH[5];
-		Li6_H=ratioH[7];
+		H2_H = ratioH[D];
+		Yp = ratioH[a];
+		Li7_H = ratioH[Li7];
+		Be7_H = ratioH[Be7];
+		He3_H = ratioH[h];
+		Li6_H = ratioH[Li6];
 	
 #ifdef DEBUG
 		printf("Yp\t\t H2/H\t\t He3/H2\t\t Li7/H\t\t Li6/Li7\t Be7/H\n");
