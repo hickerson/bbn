@@ -85,10 +85,10 @@ typedef struct relicparam {
 typedef enum ReactionIndex {
 	n_p = 1,    /// n <-> p
 	H3_evHe3,   /// H3 -> e- + v + He3
-	Li8_evaHe3, /// Li8 -> e- + v + 2He4
+	Li8_evaHe4, /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12
 	C14_evN14,  /// C14 -> e- + v + N14
-	B8_evaHe3,  /// B8 -> e+ + v + 2He4
+	B8_evaHe4,  /// B8 -> e+ + v + 2He4
 	C11_evB11,  /// C11 -> e+ + v + B11
 	N12_evC12,  /// N12 -> e+ + v + C12
 	N13_evC13,  /// N13 -> e+ + v + C13
@@ -96,27 +96,27 @@ typedef enum ReactionIndex {
 	O15_evN15,  /// O15 -> e+ + v + N15
 	H1n_gH2,    /// H1 + n -> g + H2
 	H2n_gH3,    /// H2 + n -> g + H3
-	He3n_gHe3,  /// He3 + n -> g + He4
+	He3n_gHe4,  /// He3 + n -> g + He4
 	Li6n_gLi7,  /// Li6 + n -> g + Li7
 	He3n_pH3,   /// He3 + n -> p + H3
 	Be7n_pLi7,  /// Be7 + n -> p + Li7
 	Li6n_aH3,   /// Li6 + n -> a + H3
-	Be7n_aHe3,  /// Be7 + n -> a + He4
+	Be7n_aHe4,  /// Be7 + n -> a + He4
 	H2p_gHe3,   /// H2 + p -> g + He3
-	H3p_gHe3,   /// H3 + p -> g + He4
+	H3p_gHe4,   /// H3 + p -> g + He4
 	Li6p_gBe7,  /// Li6 + p -> g + Be7
 	Li6p_aHe3,  /// Li6 + p -> a + He3
-	Li7p_aHe3,  /// Li7 + p -> a + He4
+	Li7p_aHe4,  /// Li7 + p -> a + He4
 	H2a_gLi6,   /// H2 + a -> p + Li6   changed to H2 + a -> g + Li6
 	H3a_gLi7,   /// H3 + a -> p + Li7   changed to H3 + a -> g + Li7
 	He3a_gBe7,  /// He3 + a -> p + Be7  changed to He3 + a -> g + Be7
 	H2d_nHe3,   /// H2 + d -> p + He3   changed to H2 + d -> n + He3   
 	H2d_pH3,    /// H2 + d -> n + H3    changed to H2 + d -> p + H3
-	H3d_nHe3,   /// H3 + d -> n + He4
+	H3d_nHe4,   /// H3 + d -> n + He4
 	He3d_pHe4,  /// He3 + d -> p + He4
-	He3h_ppa,   /// He3 + He3 -> 2p + He4
-	Li7d_naa,   /// Li7 + d -> n + a + He4
-	Be7d_paa,   /// Be7 + d -> p + a + He4
+	He3h_ppHe4,   /// He3 + He3 -> 2p + He4
+	Li7d_naHe4,   /// Li7 + d -> n + a + He4
+	Be7d_paHe4,   /// Be7 + d -> p + a + He4
 	Li7n_gLi8,  /// Li7 + n -> g + Li8
 	B10n_gB11,  /// B10 + n -> g + B11
 	B11n_gB12,  /// B11 + n -> g + B12

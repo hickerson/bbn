@@ -25,16 +25,16 @@ void setup_reactions(double reacparam[][8])
         {N13_evC13, 0,  N13, 0,   0,   C13, 0.0,   0.0     },	/// N13 -> e+ + v + C13
         {O14_evN14, 0,  O14, 0,   0,   N14, 0.0,   0.0     },	/// O14 -> e+ + v + N14
         {O15_evN15, 0,  O15, 0,   0,   N15, 0.0,   0.0     },	/// O15 -> e+ + v + N15
-        {H1n_gH2,   1,  H1,  Nu,  0,   H2,  0.471, 25.82   },	/// H + n -> g + H2
+        {H1n_gH2,   1,  H1,  Nu,  0,   H2,  0.471, 25.82   },	/// H1 + n -> g + H2
         {H2n_gH3,   1,  H2,  Nu,  0,   H3,  1.63,  72.62   },	/// H2 + n -> g + H3
-        {He3n_ga,   1,  He3, Nu,  0,   He4, 2.61,  238.81  },	/// He3 + n -> g + He4
+        {He3n_gHe4, 1,  He3, Nu,  0,   He4, 2.61,  238.81  },	/// He3 + n -> g + He4
         {Li6n_gLi7, 1,  Li6, Nu,  0,   Li7, 1.19,  84.17   },	/// Li6 + n -> g + Li7
         {He3n_pH3,  2,  He3, Nu,  H1,  H3,  1.002, 8.863   },	/// He3 + n -> p + H3
         {Be7n_pLi7, 2,  Be7, Nu,  H1,  Li7, 0.998, 19.081  },	/// Be7 + n -> p + Li7
         {Li6n_aH3,  2,  Li6, Nu,  H3,  He4, 1.070, 55.494  },	/// Li6 + n -> a + H3    //// TODO swap
         {Be7n_aHe4, 4,  Be7, Nu,  0,   He4, 4.70,  220.39  },	/// Be7 + n -> 2He4
         {H2p_gHe3,  1,  H2,  H1,  0,   He3, 1.63,  63.750  },	/// H2 + p -> g + He3
-        {H3p_ga,    1,  H3,  H1,  0,   He4, 2.61,  229.932 },	/// H3 + p -> g + He4
+        {H3p_gHe4,  1,  H3,  H1,  0,   He4, 2.61,  229.932 },	/// H3 + p -> g + He4
         {Li6p_gBe7, 1,  Li6, H1,  0,   Be7, 1.19,  65.054  },	/// Li6 + p -> g + Be7
         {Li6p_aHe3, 2,  Li6, H1,  He3, He4, 1.07,  46.631  },	/// Li6 + p -> a + He3   //// TODO swap 
         {Li7p_aHe4, 4,  Li7, H1,  0,   He4, 4.69,  201.291 },	/// Li7 + p -> 2He4
@@ -43,9 +43,9 @@ void setup_reactions(double reacparam[][8])
         {He3a_gBe7, 1,  He4, He3, 0,   Be7, 1.11,  18.423  },	/// He3 + a -> g + Be7    //// TODO swap id
         {H2d_nHe3,  5,  H2,  0,   Nu , He3, 1.73,  37.935  },	/// 2H2 -> n + He3
         {H2d_pH3,   5,  H2,  0,   H1,  H3,  1.73,  46.798  },	/// 2H2 -> p + H3
-        {H3d_na,    2,  H3,  H2,  Nu,  He4, 5.54,  204.117 },	/// T + H2 -> n + He4
-        {He3d_pa,   2,  He3, H2,  H1,  He4, 5.55,  212.980 },	/// He3 + H2 -> p + He4
-        {He3h_ppa,  10, He3, 0,   H1,  He4, 3.39,  149.230 },	/// 2He3 -> 2p + He4
+        {H3d_nHe4,  2,  H3,  H2,  Nu,  He4, 5.54,  204.117 },	/// H1 + H2 -> n + He4
+        {He3d_pHe4, 2,  He3, H2,  H1,  He4, 5.55,  212.980 },	/// He3 + H2 -> p + He4
+        {He3h_ppHe4,10, He3, 0,   H1,  He4, 3.39,  149.230 },	/// 2He3 -> 2p + He4
         {Li7d_naHe4,8,  Li7, H2,  Nu,  He4, 9.95,  175.476 },	/// Li7 + d -> n + 2He4
         {Be7d_paHe4,8,  Be7, H2,  H1,  He4, 9.97,  194.557 },	/// Be7 + d -> p + 2He4
         {Li7n_gLi8, 1,  Li7, Nu,  0,   Li8, 1.31,  23.59   },	/// Li7 + n -> g + Li8
