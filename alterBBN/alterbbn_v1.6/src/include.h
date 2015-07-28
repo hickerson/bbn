@@ -85,10 +85,10 @@ typedef struct relicparam {
 typedef enum ReactionIndex {
 	n_p = 1,    /// n <-> p
 	H3_evHe3,   /// H3 -> e- + v + He3
-	Li8_evaHe4, /// Li8 -> e- + v + 2He4
+	Li8_ev2He4, /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12
 	C14_evN14,  /// C14 -> e- + v + N14
-	B8_evaHe4,  /// B8 -> e+ + v + 2He4
+	B8_ev2He4,  /// B8 -> e+ + v + 2He4
 	C11_evB11,  /// C11 -> e+ + v + B11
 	N12_evC12,  /// N12 -> e+ + v + C12
 	N13_evC13,  /// N13 -> e+ + v + C13
@@ -100,23 +100,23 @@ typedef enum ReactionIndex {
 	Li6n_gLi7,  /// Li6 + n -> g + Li7
 	He3n_pH3,   /// He3 + n -> p + H3
 	Be7n_pLi7,  /// Be7 + n -> p + Li7
-	Li6n_aH3,   /// Li6 + n -> a + H3
-	Be7n_aHe4,  /// Be7 + n -> a + He4
+	Li6n_tHe4,   /// Li6 + n -> t + He4
+	Be7n_2He4,  /// Be7 + n -> 2He4
 	H2p_gHe3,   /// H2 + p -> g + He3
 	H3p_gHe4,   /// H3 + p -> g + He4
 	Li6p_gBe7,  /// Li6 + p -> g + Be7
-	Li6p_aHe3,  /// Li6 + p -> a + He3
-	Li7p_aHe4,  /// Li7 + p -> a + He4
-	H2a_gLi6,   /// H2 + a -> p + Li6   changed to H2 + a -> g + Li6
-	H3a_gLi7,   /// H3 + a -> p + Li7   changed to H3 + a -> g + Li7
-	He3a_gBe7,  /// He3 + a -> p + Be7  changed to He3 + a -> g + Be7
-	H2d_nHe3,   /// H2 + d -> p + He3   changed to H2 + d -> n + He3   
-	H2d_pH3,    /// H2 + d -> n + H3    changed to H2 + d -> p + H3
+	Li6p_hHe4,  /// Li6 + p -> h + He4
+	Li7p_2He4,  /// Li7 + p -> a + He4
+	He4d_gLi6,  /// He4 + d -> g + Li6
+	He4t_gLi7,  /// He4 + t -> g + Li7
+	He4h_gBe7,  /// He4 + h -> g + Be7
+	H2d_nHe3,   /// H2 + d -> n + He3   
+	H2d_pH3,    /// H2 + d -> p + H3
 	H3d_nHe4,   /// H3 + d -> n + He4
 	He3d_pHe4,  /// He3 + d -> p + He4
-	He3h_ppHe4,   /// He3 + He3 -> 2p + He4
-	Li7d_naHe4,   /// Li7 + d -> n + a + He4
-	Be7d_paHe4,   /// Be7 + d -> p + a + He4
+	He3h_2pHe4, /// He3 + h -> 2p + He4
+	Li7d_n2He4, /// Li7 + d -> n + 2He4
+	Be7d_p2He4, /// Be7 + d -> p + 2He4
 	Li7n_gLi8,  /// Li7 + n -> g + Li8
 	B10n_gB11,  /// B10 + n -> g + B11
 	B11n_gB12,  /// B11 + n -> g + B12
@@ -142,11 +142,11 @@ typedef enum ReactionIndex {
 	B11d_nC12,  /// B11 + d -> n + C12
 	He4an_gBe9, /// He4 + a + n -> g + Be9
 	He4aa_gC12, /// He4 + 2a -> g + C12
-	Li8p_naHe4, /// Li8 + p -> n + a + He4
-	B8n_paHe4,  /// B8 + n -> p + a + He4
-	Be9p_daHe4, /// Be9 + p -> d + a + He4
-	B11p_aaHe4, /// B11 + p -> 2a + Be4    changed to  B11 + p -> 2a + He4
-	C11n_aaHe4, /// C11 + n -> 2a + He4
+	Li8p_n2He4, /// Li8 + p -> n + 2He4
+	B8n_p2He4,  /// B8 + n -> p + 2He4
+	Be9p_d2He4, /// Be9 + p -> d + 2He4
+	B11p_3He4,  /// B11 + p -> 3He4
+	C11n_3He4,  /// C11 + n -> 3He4
 	C12n_gC13,  /// C12 + n -> g + C13
 	C13n_gC14,  /// C13 + n -> g + C14
 	N14n_gN15,  /// N14 + n -> g + N15

@@ -7,7 +7,7 @@ AUTHORS =
 
 # Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
-CFLAGS= -O3 -pipe -fomit-frame-pointer
+CFLAGS= -O3 -pipe -fomit-frame-pointer -g
 
 # CC = clang
 # CFLAGS= -O3
