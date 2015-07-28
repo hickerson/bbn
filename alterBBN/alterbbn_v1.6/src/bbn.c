@@ -13,7 +13,7 @@ void setup_reactions(double reacparam[][8])
 {
 	double _reacparam[NNUCREAC][8] =  // TODO do a real loop
 	{
-    /// reaction    type n1   n2   n3   n4   rev    Q[MeV]           Reaction
+    /// reaction    type n1   n2   n3   n4   rev    Q[MeV]          Reaction
         {n_p,        0,  Nu,  0,   0,   H1,  0.0,   0.0     },	/// n <-> p
         {H3_evHe3,   0,  H3,  0,   0,   He3, 0.0,   0.0     },	/// H3 -> e- + v + He3
         {Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0.0,   0.0     },	/// Li8 -> e- + v + 2He4
@@ -191,11 +191,10 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 
     int nnuc_size = O16 + 1;
     Nuclide _nuclide[O16+1] = {
-    ///   i   A   Z   N   dm
-        { 0,  0,  0,  0,  0 },
+    ///  i    A   Z   N   dm
+        {0,   0,  0,  0,  0 },
         {Nu,  1,  0,  1,  8.071388},
         {H1,  1,  1,  0,  7.289028},
-
         {H2,  1,  1,  1,  13.135825},
         {H3,  2,  1,  2,  14.949915},
         {He3, 3,  2,  1,  14.931325},

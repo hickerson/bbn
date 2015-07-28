@@ -52,10 +52,6 @@ typedef struct relicparam {
 /*--------------------------------------------------------------------*/
 /* Prototypes */
 
-#define NNUCREAC    88
-#define NNUC        26
-#define NBETA       11
-
 /*
     enum ReactionIndex
     Using this way, reactions can added or removed 
@@ -63,18 +59,21 @@ typedef struct relicparam {
 
     The naming convention for the reaction
 
-        X -> Y + Z, X + Y -> Z + W, etc...
+        X -> x + Y, X + x -> y + Y, X + x + y -> z + 2Y etc...
 
     would be labeled
         
-        X_YZ, XY_ZW, X_YZW, etc...
+        X_xY, Xx_yY, X_xyY, Xx_yzY, Xxy_z2Y etc...
     
-    where X, Y, Z, W, can be one g, v, e, n, p, d, t, h, a, 
-    or, and atomic isotope, Xn, such as Li7, C12, etc...
-    The special cases for light interchange isotopes are 
+    where X, Y, Z, can be one of and atomic 
+    isotope, such as H1, Li7, C12, etc...
+    and x, y, z, are special cases for light 
+    interchange isotopes can be one of
     g - gamma
-    v - electron neutrino (or anti-)
-    e - electron, positron, beta+/-
+    v - electron neutrino (nue)
+    u - electron anti-neutrino (nuz)
+    e - electron (beta-)
+    z - positron (beta+)
     n - neutron (Nu)
     p - proton (H1)
     d - deuteron (H2)
@@ -171,9 +170,12 @@ typedef enum ReactionIndex {
 	B11a_nN14,  /// B11 + a -> n + N14
 	B12a_nN15,  /// B12 + a -> n + N15
 	C13a_nO16,  /// C13 + a -> n + O16
-    REAC_MAX
+    ReactionIndexOverflow   
 } ReactionIndex;
 
+#define NNUCREAC    88
+#define NNUC        26
+#define NBETA       11
 
 typedef struct Reaction {
     ReactionIndex n;
@@ -188,17 +190,9 @@ typedef struct Reaction {
  *  with interfering with loops.
  *
  *  Nuclide naming convention:
- *  g - gamma
- *  v - electron neutrino (or anti)
- *  e - electron, positron, or beta
- *  n - neutron 
- *  p - proton (H)
- *  D - deuteron (H2)
- *  T - triton (H3)
- *  h - helion (He3)
- *  a - alpha (He4)
- *  SA - S is the element symbol and 
- *
+ *  SyA - Sy is the element symbol of
+ *        Nu, H, He, Li Be, B, C, N, O.
+ *      - A is the atomic mass
  *  Nuclides: 
  *  1:  n,    2: p, 
  *  3:  H2,   4: H3,   5: He3,  6: He4, 
@@ -212,14 +206,15 @@ typedef enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-    Nu = 1,   H1,
-    H2,  H3,  He3, He4,    
+    Nu = 1,   
+    H1,  H2,  H3,  
+    He3, He4, //He6, He8,
     Li6, Li7, Be7, Li8,
     B8,  Be9, B10, B11,
     C11, B12, C12, N12,
     C13, N13, C14, N14,
     O14, N15, O15, O16,
-    NUC_MAX
+    NuclideIndexOverflow
 } NuclideIndex;
 
 
