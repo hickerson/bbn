@@ -212,18 +212,19 @@ typedef enum NuclideIndex {
 
 //#define NNUCREAC    88
 //#define NBETA       11
+#define BetaIndexOverflow (015_evN15+1)
 #define NNUCREAC      (ReactionIndexOverflow-n_p)
-#define NBETA         (O15_evN15+1-n_p)
+#define NBETA         (BetaIndexOverflow-n_p)
 #define NNUC          (NuclideIndexOverflow-Nu)
 
 
 typedef struct Nuclide {
-    NuclideIndex i;  /// Isotopic index
-    //const char *S; /// Symbol name
-    int A;           /// Atomic number
-    int Z;           /// Proton number
-    int N;           /// Neutron number 
-    double dm;       /// Mass excess [MeV]
+    NuclideIndex index; /// Isotopic index
+    //const char *S;    /// Symbol name
+    int A;              /// Atomic number
+    int Z;              /// Proton number
+    int N;              /// Neutron number 
+    double dm;          /// Mass excess [MeV]
 } Nuclide;
 
 

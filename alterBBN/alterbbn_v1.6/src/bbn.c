@@ -107,21 +107,11 @@ void setup_reactions(Reaction reaction[])
         {C13a_nO16,  2,  C13, He4, Nu,  O16, 5.79,  25.711  }	/// C13 + a -> n + O16
     };
 
-    int reac,i,j;
-    //TODO fix
-    //ReactionIndex first = n_p;
-    //ReactionIndex last = C13a_nO16;
-    //ReactionIndex reac;
+    ReactionIndex i,j;
     for (i = 0; i < NNUCREAC; i++)
     {
-        //Reaction& _reac = _reaction[i];
         int j = _reaction[i].index;
         reaction[j] = _reaction[i];
-    /*    for (i = 0; i < 8; i++)
-        {
-            int index = _reacparam[j][0];
-            reacparam[index][i] = _reacparam[j][i];
-        } */
     }
 }
 
@@ -196,8 +186,8 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
     nuclide[O16] = {O16, 16, 8,  8, -4.737036};
     */
 
-    int nnuc_size = O16 + 1;
-    Nuclide _nuclide[O16+1] = {
+    //int nnuc_size = O16 + 1;
+    Nuclide _nuclide[NuclideIndexOverflow] = {
     ///  i    A   Z   N   dm
         {0,   0,  0,  0,  0 },
         {Nu,  1,  0,  1,  8.071388},
@@ -233,12 +223,13 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
         {O16, 16, 8,  8, -4.737036}
     };
 
-    NuclideIndex i;
-    for (i = 0; i <= O16; i++) {
+    NuclideIndex i,j;
+    for (i = 0; i < NNUC+1; i++) {
         Nuclide X = _nuclide[i];
-        A[X.i] = X.A;
-        Z[X.i] = X.Z;
-        Dm[X.i] = X.dm;
+        j = X.index;
+        A[j] = X.A;
+        Z[j] = X.Z;
+        Dm[j] = X.dm;
     }
 }
     
@@ -585,10 +576,11 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
-	int i;
+	NuclideIndex i;
     ReactionIndex first = n_p;
     ReactionIndex last = C13a_nO16;
-	double f[last+1],r[last+1];
+	double f[ReactionIndexOverflow];
+	double r[ReactionIndexOverflow];
 	for(i=0;i<=NNUC;i++) 
         ratioH[i]=0.;
 	double sd;
@@ -625,7 +617,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
     setup_nuclides(Am,Zm,Dm);
 
 	//double reacparam[NNUCREAC+1][8];
-    Reaction reaction[NNUCREAC+1];
+    Reaction reaction[ReactionIndexOverflow];
     setup_reactions(reaction);
 		
     ReactionIndex n;
