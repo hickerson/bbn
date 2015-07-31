@@ -808,9 +808,9 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
-				for(i=1;i<=9;i++) 
-                    ratioH[10]+=ratioH[i];
-				ratioH[10]-=1.;
+				for(i=H1;i<=Be7;i++) 
+                    ratioH[Li8]+=ratioH[i];
+				ratioH[Li8]-=1.;
 				ratioH[0] = h_eta / 33683.;
 				if((it==nitmax)||(ip<inc))
                     ltime = 1;
