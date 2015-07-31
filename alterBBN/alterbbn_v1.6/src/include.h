@@ -83,7 +83,7 @@ typedef struct relicparam {
     a - alpha (He4)
 */
 typedef enum ReactionIndex {
-	n_p = 1,    /// n <-> p
+	n_p = 99,    /// n <-> p
 	H3_evHe3,   /// H3 -> e- + v + He3
 	Li8_ev2He4, /// Li8 -> e- + v + 2He4
 	B12_evC12,  /// B12 -> e- + v + C12
