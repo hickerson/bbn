@@ -1,4 +1,5 @@
 #include "include.h"
+#include "assert.h"
 
 /*----------------------------------------------------
  * type: 0-10, each type has a unique (#n1,#n2,#n3,#n4) quartet
@@ -304,8 +305,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		j = reaction[n].in_minor;
 		k = reaction[n].out_minor;
 		l = reaction[n].out_major;
-		double Rn = reation[n].reverse;
-		double Q9 = reation[n].forward;
+		double Rn = reaction[n].reverse;
+		double Q9 = reaction[n].forward;
         int rn1, rn2, rn3, rn4;
         rn1=nn1[type];
         rn2=nn2[type];
@@ -625,7 +626,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 
 	//double reacparam[NNUCREAC+1][8];
     Reaction reaction[NNUCREAC+1];
-    setup_reactions(reation);
+    setup_reactions(reaction);
 		
     ReactionIndex n;
 	for(n = first; n <= last; n++)
@@ -788,7 +789,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
             	
 			rate_all(err,f,T9);
 		
-			fail=linearize(T9,reacparam,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
+			fail=linearize(T9,reaction,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
 
 			if( fail>0 ) 
                 return 0;
@@ -941,8 +942,9 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
     double Dm[NNUC+1];
     setup_nuclides(Am,Zm,Dm);
 
-	double reacparam[last+1][8];
-    setup_reactions(reacparam);
+	//double reacparam[last+1][8];
+	Reaction reaction[last+1];
+    setup_reactions(reaction);
 		
 	for(i = first; i <= last; i++)
 	{
@@ -1093,7 +1095,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 			
 			rate_all(err,f,T9);
 		
-			fail=linearize(T9,reacparam,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
+			fail=linearize(T9,reaction,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
 
 			if(fail>0) return 0;
 			

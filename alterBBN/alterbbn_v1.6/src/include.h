@@ -230,9 +230,8 @@ typedef struct Reaction {
     NuclideIndex out_minor;
     NuclideIndex out_major;
     double reverse;
-    double forword;
+    double forward;
 } Reaction;
-
 
 
 /* general.c */
