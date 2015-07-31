@@ -29,9 +29,6 @@
 #define me      0.510998928       /// electron mass in MeV
 #define kB      0.0861733238      /// Boltzmann constant in MeV/GK
 
-#define NNUCREAC    88
-#define NNUC        26
-#define NBETA       11
 
 /*--------------------------------------------------------------------*/
 
@@ -174,8 +171,9 @@ typedef enum ReactionIndex {
 	B11a_nN14,  /// B11 + a -> n + N14
 	B12a_nN15,  /// B12 + a -> n + N15
 	C13a_nO16,  /// C13 + a -> n + O16
-    ReactionIndexOverflow   
+    ReactionIndexOverflow
 } ReactionIndex;
+
 
 
 /********************************************
@@ -212,6 +210,13 @@ typedef enum NuclideIndex {
 } NuclideIndex;
 
 
+//#define NNUCREAC    88
+//#define NBETA       11
+#define NNUCREAC      (ReactionIndexOverflow-n_p)
+#define NBETA         (O15_evN15+1-n_p)
+#define NNUC          (NuclideIndexOverflow-Nu)
+
+
 typedef struct Nuclide {
     NuclideIndex i;  /// Isotopic index
     //const char *S; /// Symbol name
@@ -232,6 +237,7 @@ typedef struct Reaction {
     double reverse;
     double forward;
 } Reaction;
+
 
 
 /* general.c */
