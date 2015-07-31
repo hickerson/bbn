@@ -282,7 +282,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
     ReactionIndex n,i1,j1;
 	for (n = first; n <= last; n++) 
 	{
-        int type = reacparam[Nu][1];
+        int type = reacparam[n][1];
 		i = reacparam[n][2];
 		j = reacparam[n][3];
 		k = reacparam[n][4];
