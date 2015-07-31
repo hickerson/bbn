@@ -29,6 +29,10 @@
 #define me      0.510998928       /// electron mass in MeV
 #define kB      0.0861733238      /// Boltzmann constant in MeV/GK
 
+#define NNUCREAC    88
+#define NNUC        26
+#define NBETA       11
+
 /*--------------------------------------------------------------------*/
 
 /* structure containing the cosmological model parameters */
@@ -173,16 +177,6 @@ typedef enum ReactionIndex {
     ReactionIndexOverflow   
 } ReactionIndex;
 
-#define NNUCREAC    88
-#define NNUC        26
-#define NBETA       11
-
-typedef struct Reaction {
-    ReactionIndex n;
-    // TODO ReationType type;
-    int type;
-} Reaction;
-
 
 /********************************************
  *  NuclideIndex
@@ -219,13 +213,26 @@ typedef enum NuclideIndex {
 
 
 typedef struct Nuclide {
-    NuclideIndex i;     /// Isotopic index
-    //const char *S;      /// Symbol name
-    int A;              /// Atomic number
-    int Z;              /// Proton number
-    int N;              /// Neutron number 
-    double dm;          /// Mass excess [MeV]
+    NuclideIndex i;  /// Isotopic index
+    //const char *S; /// Symbol name
+    int A;           /// Atomic number
+    int Z;           /// Proton number
+    int N;           /// Neutron number 
+    double dm;       /// Mass excess [MeV]
 } Nuclide;
+
+
+typedef struct Reaction {
+    ReactionIndex index;
+    int type;           /// TODO ReationType type;
+    NuclideIndex in_major;
+    NuclideIndex in_minor;
+    NuclideIndex out_minor;
+    NuclideIndex out_major;
+    double reverse;
+    double forword;
+} Reaction;
+
 
 
 /* general.c */
@@ -286,11 +293,12 @@ void rate_all(int err, double f[], double T9);
 
 
 /* bbn.c */
-// TODO void setup_reactions(Reaction[] reaction);
-void setup_reactions(double reacparam[][8]);
+void setup_reactions(Reaction reaction[]);
+//void setup_reactions(double reacparam[][8]);
 //void setup_nuclides(Nuclide nuclide[]);
 void setup_nuclides(int A[], int Z[], double dm[]);
-int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
+//int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
+int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[]);

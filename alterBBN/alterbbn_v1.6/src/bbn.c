@@ -9,11 +9,13 @@
  * rev: reverse reaction coefficient
  * q: energy release in reaction
  *----------------------------------------------------*/
-void setup_reactions(double reacparam[][8]) 
+//void setup_reactions(double reacparam[][8]) 
+void setup_reactions(Reaction reaction[]) 
 {
-	double _reacparam[NNUCREAC][8] =  // TODO do a real loop
+	//double _reacparam[NNUCREAC][8] =  // TODO do a real loop
+	Reaction _reaction[NNUCREAC] =  
 	{
-    /// reaction    type n1   n2   n3   n4   rev    Q[MeV]          Reaction
+    /// reaction    type i    j    k    l    rev    Q[MeV]          Reaction
         {n_p,        0,  Nu,  0,   0,   H1,  0.0,   0.0     },	/// n <-> p
         {H3_evHe3,   0,  H3,  0,   0,   He3, 0.0,   0.0     },	/// H3 -> e- + v + He3
         {Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0.0,   0.0     },	/// Li8 -> e- + v + 2He4
@@ -109,13 +111,17 @@ void setup_reactions(double reacparam[][8])
     //ReactionIndex first = n_p;
     //ReactionIndex last = C13a_nO16;
     //ReactionIndex reac;
-    //for (reac = 0; reac < NNUCREAC; reac++)
-    for (j = 0; j < NNUCREAC; j++)
-        for (i = 0; i < 8; i++)
+    for (i = 0; i < NNUCREAC; i++)
+    {
+        //Reaction& _reac = _reaction[i];
+        int j = _reaction[i].index;
+        reaction[j] = _reaction[i];
+    /*    for (i = 0; i < 8; i++)
         {
             int index = _reacparam[j][0];
             reacparam[index][i] = _reacparam[j][i];
-        }
+        } */
+    }
 }
 
 //void setup_nuclides(Nuclide nuclide[]) {
@@ -238,7 +244,8 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 /*----------------------------------------------------*/
 
 
-int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
+//int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
+int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
 	/* Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types */
@@ -282,6 +289,7 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
     ReactionIndex n,i1,j1;
 	for (n = first; n <= last; n++) 
 	{
+        /*
         int type = reacparam[n][1];
 		i = reacparam[n][2];
 		j = reacparam[n][3];
@@ -289,6 +297,15 @@ int linearize(double T9, double reacparam[][8], double f[], double r[], int loop
 		l = reacparam[n][5];
 		double Rn = reacparam[n][6];
 		double Q9 = reacparam[n][7];
+        */
+        assert(reaction[n].index == n);
+        int type = reaction[n].type;
+		i = reaction[n].in_major;
+		j = reaction[n].in_minor;
+		k = reaction[n].out_minor;
+		l = reaction[n].out_major;
+		double Rn = reation[n].reverse;
+		double Q9 = reation[n].forward;
         int rn1, rn2, rn3, rn4;
         rn1=nn1[type];
         rn2=nn2[type];
@@ -606,8 +623,9 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
     double Dm[NNUC+1];
     setup_nuclides(Am,Zm,Dm);
 
-	double reacparam[NNUCREAC+1][8];
-    setup_reactions(reacparam);
+	//double reacparam[NNUCREAC+1][8];
+    Reaction reaction[NNUCREAC+1];
+    setup_reactions(reation);
 		
     ReactionIndex n;
 	for(n = first; n <= last; n++)
