@@ -55,16 +55,17 @@ class Reaction
         rev(i) = reacpr[i-1][7-1]; 			/// Reverse reaction coefficient.
         q9(i) = reacpr[i-1][8-1]; 			/// Energy released.
         */
+        int index = reaction_data[i-1][0];  /// Reaction index.
+        std::cout << "i: " << i << " r[o]: " << index << "\n";
+        assert(i == index);                 /// Reaction index.
 
-        /*
         type = reaction_data[i-1][1];       /// Reaction type.
+        in[0] = reaction_data[i-1][2]; 	    /// Incoming nuclide type.
+        in[1] = reaction_data[i-1][3]; 	    /// Incoming nuclide type.
+        out[0] = reaction_data[i-1][4]; 	/// Outgoing nuclide type.
+        out[1] = reaction_data[i-1][5]; 	/// Outgoing nuclide type.
         reverse = reaction_data[i-1][6];    /// Reverse reaction coefficient.
         energy = reaction_data[i-1][7];     /// Energy released.
-        in[i] = reaction_data[i-1][2]; 	    /// Incoming nuclide type.
-        in[i] = reaction_data[i-1][3]; 	    /// Incoming nuclide type.
-        out[i] = reaction_data[i-1][4]; 	/// Outgoing nuclide type.
-        out[i] = reaction_data[i-1][5]; 	/// Outgoing nuclide type.
-        */
 	}
 
 	public: Reaction(const Reaction & copy): 

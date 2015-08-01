@@ -423,7 +423,9 @@ const int common_nucdat::nnuc;
 		{}
 	};
 
+    
 	// TODO make a class that is arrayed.
+    /*
 	struct common_outdat
 	{
 		static const int itmax = 40;
@@ -447,11 +449,60 @@ const int common_nucdat::nnuc;
 			hubout(dimension(itmax), fem::fill0)
 		{}
 	};
+    */
 
+/*
 #ifdef FEM_TRANSLATION_UNIT_WITH_MAIN
 	const int common_outdat::itmax;
 	const int common_outdat::nnuc;
 #endif
+*/
+
+    struct OutputDatum
+    {
+        //static const int itmax = 40;
+        //static const int nnuc = 26;
+
+        /*
+        arr<double, 2> xout;
+        arr<double, 2> thmout;
+        arr<double> T9out;
+        arr<double> tout;
+        arr<double> dtout;
+        arr<double> etaout;
+        arr<double> hubout;
+        */
+        double X[26+1];     // TODO this needs better editing.
+        double thm[6+1];    // TODO this needs better editing.
+        double T9;
+        double t;
+        double dt;
+        double eta;
+        double hub;
+
+        OutputDatum() :
+            /*
+            xout(dimension(itmax, nnuc), fem::fill0),
+            thmout(dimension(itmax, 6), fem::fill0),
+            T9out(dimension(itmax), fem::fill0),
+            tout(dimension(itmax), fem::fill0),
+            dtout(dimension(itmax), fem::fill0),
+            etaout(dimension(itmax), fem::fill0),
+            hubout(dimension(itmax), fem::fill0)
+            */
+            T9(0),
+            t(0),
+            dt(0),
+            eta(0),
+            hub(0)
+        {
+            for (int i = 0; i <= 26; i++)
+                X[i] = 0;
+            for (int i = 0; i <= 6; i++)
+                thm[i] = 0;
+        }
+    };
+
 
 	struct common_nupar
 	{
@@ -526,7 +577,7 @@ const int common_nucdat::nnuc;
 		//common_kays,
 		common_flags,
 		//common_checkcb,
-		common_outdat,
+		//common_outdat,
 		common_nupar,
 		common_runopt,
 		common_outopt,
@@ -534,8 +585,10 @@ const int common_nucdat::nnuc;
 	{
 		static const int nrec = 88;
 		static const int nnuc = 26;
-		int Nreactions = 88;
-		int Nnuclide = 26;
+		static const int itmax = 40;
+		int Nreactions = nrec;
+		int Nnuclide = nnuc;
+		int Niterations = itmax;
         
 		//static const int si[] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 		//static const int sj[] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
@@ -551,6 +604,8 @@ const int common_nucdat::nnuc;
 		// TODO put in a subclass?
 		double a[nnuc+1][nnuc+1];
 		double b[nnuc+1];
+
+        OutputDatum out[itmax+1];
 		//double yx[nnuc+1];
 		/*
         boost::numeric::ublas::matrix<double> a(nnuc,nnuc);
@@ -579,6 +634,7 @@ const int common_nucdat::nnuc;
 
 
 		void qvary(int, double);        // TODO remove?
+
 
 	private:
 		EvolutionParameters<double, nnuc> U, U0, dU, dUdt, dUdt0; 
@@ -711,6 +767,30 @@ const int common_nucdat::nnuc;
             isVIndex(index);
             return index < 4? dUdt0.V(index) : dUdt0.Y(index-3); 
         }
+        
+        double& xout(unsigned index, unsigned nuclide) {
+            isNuclideIndex(index);
+            return dUdt0.Y(index); 
+        }
+
+        double& thmout(unsigned index, unsigned nuclide) {
+        }
+
+        double& T9out(unsigned index) {
+        }
+
+        double& tout(unsigned index) {
+        }
+
+        double& dtout(unsigned index) {
+        }
+
+        double& etaout(unsigned index) {
+        }
+
+        double& hubout(unsigned index) {
+        }
+
 
         public: void output(std::ostream& os) const
         {
