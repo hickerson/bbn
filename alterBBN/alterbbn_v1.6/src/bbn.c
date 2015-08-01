@@ -110,7 +110,7 @@ void setup_reactions(Reaction reaction[])
     ReactionIndex i,j;
     for (i = 0; i < NNUCREAC; i++)
     {
-        int j = _reaction[i].index;
+        j = _reaction[i].index;
         reaction[j] = _reaction[i];
     }
 }
@@ -249,12 +249,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
     ReactionIndex first = n_p;
     ReactionIndex last = C13a_nO16;
 	
-	//int i,j,k,l,n,i1,j1,ind;
-	//double cn1,cn2,cn3,cn4,rn1,rn2,rn3,rn4,yY[NNUC];
 	double cn1,cn2,cn3,cn4,yY[NNUC];
 	cn1=cn2=cn3=cn4=0.;
 	int fail;
-	double bdln;
 	int ierror;
 	int c0 = 0;
 	//double rev[last+1],q9[last+1];
@@ -281,16 +278,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
     ReactionIndex n,i1,j1;
 	for (n = first; n <= last; n++) 
 	{
-        /*
-        int type = reacparam[n][1];
-		i = reacparam[n][2];
-		j = reacparam[n][3];
-		k = reacparam[n][4];
-		l = reacparam[n][5];
-		double Rn = reacparam[n][6];
-		double Q9 = reacparam[n][7];
-        */
         assert(reaction[n].index == n);
+		Reaction reac = reaction[n]; // TODO use
         int type = reaction[n].type;
 		i = reaction[n].in_major;
 		j = reaction[n].in_minor;
@@ -441,16 +430,16 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		}
 	}
 	
-	bdln=H*3.*1.e-5;
+	double bdln = 3e-5*H;   /// was H*3.*1.e-5;
 	
-	for(i=1;i<=NNUC;i++)
+	for(i=Nu; i<=O16; i++)
 	{
-		i1=NNUC+1-i;
+		i1=NNUC+1-i;    /// TODO fix
 		for(j=1;j<=NNUC;j++)
 		{
-			j1=NNUC+1-j;
-			if(fabs(a[j][i])<bdln*Y0[j1]/Y0[i1]) 
-                a[j][i]=0.;
+			j1=NNUC+1-j;	/// TODO fix
+			if(fabs(a[j][i]) < bdln*Y0[j1]/Y0[i1]) 
+                a[j][i]=0;
 			else a[j][i]*=dt;
 		}
 		a[i][i]+=1.;
@@ -464,18 +453,18 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 	nord=0;
 	fail=0;
-	for(i=1;i<=NNUC;i++)
+	for(i = Nu; i <= O16; i++)
 	{
 		x[i]=b[i];
 		yx[i]=0.;
 	}
 	
 	if(icnvm==inc) 
-        for(i=1;i<=NNUC;i++) 
+        for(i = Nu; i <= O16; i++) 
             for(j=1;j<=NNUC;j++) 
                 a0[j][i]=a[j][i];
 
-	for(i=1;i<=NNUC;i++)
+	for(i = Nu; i <= O16; i++)
 	{
 		if(a[i][i]==0.)
 		{
@@ -513,7 +502,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 		if(icnvm==inc) 
 		{
-			for(i=1;i<=NNUC;i++) 
+			for(i = Nu; i <= O16; i++) 
 			{
 				if(yx[i]!=0.) 
 				{
@@ -553,9 +542,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	}
 	while(test);
 
-	for(i=1;i<=NNUC;i++) 
+	for(i = Nu; i <= O16; i++) 
 	{
-		yY[i]=yx[NNUC+1-i];
+		yY[i]=yx[NNUC+1-i];  /// TODO fix
 		dY_dt[i]=(yY[i]-Y0[i])/dt;
 	}
 
@@ -581,8 +570,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
     ReactionIndex last = C13a_nO16;
 	double f[ReactionIndexOverflow];
 	double r[ReactionIndexOverflow];
-	for(i=0;i<=NNUC;i++) 
-        ratioH[i]=0.;
+	for(i=0;i<=NNUC;i++)  // fix
+        ratioH[i]=0;
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
@@ -600,16 +589,6 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	double H;
 	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
 
-	/* Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
-	
-    /*
-	double Am[NNUC+1] = {
-        0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; /// Mass number 
-		
-	double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; /// Atomic number Z
-		
-	double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036}; /// mass excess DeltaM
-    */
 
     int Am[NNUC+1];
     int Zm[NNUC+1];
@@ -617,7 +596,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
     setup_nuclides(Am,Zm,Dm);
 
 	//double reacparam[NNUCREAC+1][8];
-    Reaction reaction[ReactionIndexOverflow];
+    //Reaction reaction[ReactionIndexOverflow];
+    Reaction reaction[NNUCREAC+1];
     setup_reactions(reaction);
 		
     ReactionIndex n;
@@ -627,16 +607,6 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 		r[n] = 0;
 	}
 	
-    /*
-	double norm=1.;
-	if(paramrelic.xinu1!=0. || b parametric)
-	{
-		double f_tmp[2],r_tmp[2];
-		rate_pn(0,paramrelic,f_tmp,r_tmp,0.00001,0.00001);
-		//norm=1./f_tmp[1]/paramrelic.life_neutron;
-	}
-    */
-
 	double cy=0.1;
 	double ct=0.01;
 	double T9i=100.;
@@ -696,7 +666,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	Y[H2] =Y[Nu]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (i = 4; i <= NNUC; ++i) 
+	for (i = H3; i <= NNUC; ++i) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -792,7 +762,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			sum_DeltaMdY_dt=0.;
 			sum_ZdY_dt=0.;
 
-			for (i=1;i<=NNUC;i++)
+			for(i=Nu; i<=O16; i++)
 			{
 				sum_Y+=Y[i];
 				sum_ZY+=Zm[i]*Y[i];
@@ -814,7 +784,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for (i=1;i<=NNUC;i++) 
+				for(i=Nu; i<=O16; i++) 
                     ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
@@ -836,7 +806,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 				if(is>3)
 				{
 					dtmin=fabs(1./dlnT9_dt)*ct;
-					for (i=1;i<=NNUC;i++)
+					for(i=Nu; i<=O16; i++)
 					{
 						if ((dY_dt[i]!=0.)&&(Y[i]>Ytmin)) 
 						{
@@ -861,7 +831,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 				h_eta=h_eta0+dh_dt0*dt;
 				phie=phie0+dphie_dt0*dt;
 				
-				for (i=1;i<=NNUC;i++) 
+				for(i=Nu; i<=O16; i++) 
 				{
 					Y0[i]=Y[i];
 					dY_dt0[i]=dY_dt[i];
@@ -875,7 +845,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 				h_eta=h_eta0+(dh_dt+dh_dt0)*0.5*dt;
 				phie=phie0+(dphie_dt+dphie_dt0)*0.5*dt;
 
-				for (i=1;i<=NNUC;i++) 
+				for(i=Nu; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
 					if (Y[i]<Ytmin) Y[i]=Ytmin;
@@ -920,14 +890,6 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	double H;
 	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
 
-	/* Nuclides: 1=n, 2=p, 3=H2, 4=H3, 5=He3, 6=He4, 7=Li6, 8=Li7, 9=Be7, 10=Li8, 11=B8, 12=Be9, 13=B10, 14=B11, 15=C11, 16=B12, 17=C12, 18=N12, 19=C13, 20=N13, 21=C14, 22=N14, 23=O14, 24=N15, 25=O15, 26=O16 */
-
-	/* Atomic mass number A 
-	double Am[NNUC+1] = {0., 1., 1., 2., 3., 3., 4., 6., 7., 7., 8., 8., 9., 10., 11., 11., 12., 12., 12., 13., 13., 14., 14., 14., 15., 15., 16.}; 
-	*/
-    /* Atomic charge number Z
-	double Zm[NNUC+1] = {0., 0., 1., 1., 1., 2., 2., 3., 3., 4., 3., 5., 4., 5., 5., 6., 5., 6., 7., 6., 7., 6., 7., 8., 7., 8., 8.}; 
-	double Dm[NNUC+1] = {0., 8.071388, 7.289028, 13.135825, 14.949915, 14.931325, 2.424931, 14.0864, 14.9078, 15.7696, 20.9464, 22.9212, 11.34758, 12.05086, 8.6680, 10.6506, 13.3690, 0., 17.3382, 3.125036, 5.3455, 3.019916, 2.863440, 8.006521, 0.101439, 2.8554, -4.737036};  mass excess DeltaM */	
 
     int Am[NNUC+1];
     int Zm[NNUC+1];
@@ -1004,7 +966,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	Y[H2] = Y[Nu]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (i = 4; i <= NNUC; ++i) 
+	for (i = H3; i <= NNUC; ++i) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -1097,7 +1059,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 			sum_DeltaMdY_dt=0.;
 			sum_ZdY_dt=0.;
 
-			for (i=1;i<=NNUC;i++)
+			//for (i=1;i<=NNUC;i++)
+			for(i=Nu; i<=O16; i++)
 			{
 				sum_Y+=Y[i];
 				sum_ZY+=Zm[i]*Y[i];
@@ -1119,7 +1082,9 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for (i=1;i<=NNUC;i++) ratioH[i]=Y[i]/Y[H1];
+				//for (i=1;i<=NNUC;i++)
+				for(i=Nu; i<=O16; i++)
+					ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
@@ -1137,7 +1102,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 				if(is>3)
 				{
 					dtmin=fabs(1./dlnT9_dt)*ct;
-					for (i=1;i<=NNUC;i++)
+					for(i=Nu; i<=O16; i++)
 					{
 						if ((dY_dt[i]!=0.)&&(Y[i]>Ytmin)) 
 						{
@@ -1162,7 +1127,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 				h_eta=h_eta0+dh_dt0*dt;
 				phie=phie0+dphie_dt0*dt;
 				
-				for (i=1;i<=NNUC;i++) 
+				for(i=Nu; i<=O16; i++) 
 				{
 					Y0[i]=Y[i];
 					dY_dt0[i]=dY_dt[i];
@@ -1176,7 +1141,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 				h_eta=h_eta0+(dh_dt+dh_dt0)*0.5*dt;
 				phie=phie0+(dphie_dt+dphie_dt0)*0.5*dt;
 
-				for (i=1;i<=NNUC;i++) 
+				for(i=Nu; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
 					if (Y[i]<Ytmin) Y[i]=Ytmin;
