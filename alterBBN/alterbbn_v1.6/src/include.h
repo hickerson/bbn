@@ -220,7 +220,7 @@ typedef enum NuclideIndex {
 
 
 typedef struct Nuclide {
-    NuclideIndex index; /// Isotopic index
+    NuclideIndex id; /// Isotopic id
     //const char *S;    /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
@@ -230,7 +230,7 @@ typedef struct Nuclide {
 
 
 typedef struct Reaction {
-    ReactionIndex index;
+    ReactionIndex id;
     int type;           /// TODO ReationType type;
     NuclideIndex in_major;
     NuclideIndex in_minor;
