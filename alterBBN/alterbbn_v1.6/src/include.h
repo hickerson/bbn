@@ -215,13 +215,13 @@ typedef enum NuclideIndex {
 
 
 #define BetaIndexOverflow (015_evN15+1)
-//#define NNUCREAC      (ReactionIndexOverflow-n_p)
-//#define NBETA         (BetaIndexOverflow-H3_evHe3)
-//#define NNUC          (NuclideIndexOverflow-Nu)
-#define NNUC        26 
-#define NNUCREAC    88
-#define NBETA       11
-#define NUCBUFF 	NuclideIndexOverflow
+#define NNUCREAC     	(ReactionIndexOverflow-n_p)
+#define NBETA         	(BetaIndexOverflow-H3_evHe3)
+#define NNUC          	(NuclideIndexOverflow-Nu)
+//#define NNUC        	  26 
+//#define NNUCREAC   	  88
+//#define NBETA      	  11
+#define NUCBUFF 		NuclideIndexOverflow
 
 
 typedef struct Nuclide {
