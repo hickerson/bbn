@@ -75,7 +75,7 @@ typedef struct relicparam {
     u - electron anti-neutrino (nuz)
     e - electron (beta-)
     z - positron (beta+)
-    n - neutron (Nu)
+    n - neutron (Nu1)
     p - proton (H1)
     d - deuteron (H2)
     t - triton (H3)
@@ -190,8 +190,9 @@ typedef enum ReactionIndex {
  *        Nu, H, He, Li Be, B, C, N, O.
  *      - A is the atomic mass
  *  Nuclides: 
- *  1:  n,    2: p, 
- *  3:  H2,   4: H3,   5: He3,  6: He4, 
+ *  0:  Nu0   1: Nu1,  
+ *  2:  H1,   3: H2,   4: H3,   
+ *  5:  He3,  6: He4, 
  *  7:  Li6,  8: Li7,  9: Be7, 10: Li8, 
  *  11: B8,  12: Be9, 13: B10, 14: B11, 
  *  15: C11, 16: B12, 17: C12, 18: N12, 
@@ -202,7 +203,7 @@ typedef enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-    Nu = 1,   
+    Nu0=50, Nu1,   
     H1,  H2,  H3,  
     He3, He4, //He6, He8,
     Li6, Li7, Be7, Li8,
@@ -215,13 +216,13 @@ typedef enum NuclideIndex {
 
 
 #define BetaIndexOverflow (015_evN15+1)
-#define NNUCREAC     	(ReactionIndexOverflow-n_p)
 #define NBETA         	(BetaIndexOverflow-H3_evHe3)
-#define NNUC          	(NuclideIndexOverflow-Nu)
+#define NNUCREAC     	(ReactionIndexOverflow-n_p)
+#define NNUC          	(NuclideIndexOverflow-Nu1)
 //#define NNUC        	  26 
 //#define NNUCREAC   	  88
 //#define NBETA      	  11
-#define NUCBUFF 		NuclideIndexOverflow
+#define NUCBUF 			NuclideIndexOverflow
 
 
 typedef struct Nuclide {

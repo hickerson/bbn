@@ -10,7 +10,7 @@
 int main(int argc,char** argv)
 { 
 	struct relicparam paramrelic;
-	double ratioH[NNUC+1],sigma_ratioH[NNUC+1];
+	double ratioH[NUCBUF],sigma_ratioH[NUCBUF];
 	double eta,H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
 	double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
 	double nbnu,tau;
