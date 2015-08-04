@@ -174,6 +174,10 @@ typedef enum ReactionIndex {
     ReactionIndexOverflow
 } ReactionIndex;
 
+#define REACMIN n_p
+#define REACMAX C13a_nO16
+//#define REACBUFF (REACMIN+REACMAX) 
+#define REACBUFF ReactionIndexOverflow
 
 
 /********************************************
@@ -217,6 +221,7 @@ typedef enum NuclideIndex {
 #define NNUC        26 
 #define NNUCREAC    88
 #define NBETA       11
+#define NUCBUFF 	NuclideIndexOverflow
 
 
 typedef struct Nuclide {

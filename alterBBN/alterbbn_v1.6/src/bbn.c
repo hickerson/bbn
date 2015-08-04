@@ -13,7 +13,7 @@
 //void setup_reactions(double reacparam[][8]) 
 void setup_reactions(Reaction reaction[]) 
 {
-	//double _reacparam[NNUCREAC][8] =  // TODO do a real loop
+	//double reacparam[NNUCREAC][8] =  // TODO do a real loop
 	Reaction reac[NNUCREAC] =  
 	{
     /// reaction    type i    j    k    l    rev    Q[MeV]          Reaction
@@ -119,6 +119,7 @@ void setup_reactions(Reaction reaction[])
         reaction[id].out_major = reac[i].out_major;
         reaction[id].reverse = reac[i].reverse;
         reaction[id].forward = reac[i].forward;
+		assert(reac[i].type < 11);
     }
 	printf("Reaction Index Overflow: %d\n", ReactionIndexOverflow);
 	printf("C13a_nO16: %d\n", C13a_nO16);
@@ -175,11 +176,15 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 
     NuclideIndex i,j;
     for (i = 0; i <= O16; i++) {
-        Nuclide X = _nuclide[i];
-        j = X.id;
-        A[j] = X.A;
-        Z[j] = X.Z;
-        Dm[j] = X.dm;
+        //Nuclide X = _nuclide[i];
+        //j = X.id;
+        //A[j] = X.A;
+        //Z[j] = X.Z;
+        //Dm[j] = X.dm;
+        j = _nuclide[i].id;
+        A[j] = _nuclide[i].A;
+        Z[j] = _nuclide[i].Z;
+        Dm[j] = _nuclide[i].dm;
     }
 
 	printf("Nuclide Index Overflow: %d\n", NuclideIndexOverflow);
@@ -200,15 +205,16 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	double nn3[11]={0.,0.,1.,0.,0.,1.,0.,0.,1.,0.,2.};
 	double nn4[11]={1.,1.,1.,2.,2.,1.,1.,1.,2.,3.,1.};
 
-    ReactionIndex REACmin = n_p;
-    ReactionIndex REACmax = C13a_nO16;
+    ReactionIndex REACMIN = n_p;
+    ReactionIndex REACMAX = C13a_nO16;
+	ReactionIndex REACBUFF = REACMAX + REACMIN;
 	
 	double cn1,cn2,cn3,cn4,yY[O16+Nu];
 	cn1=cn2=cn3=cn4=0.;
 	int fail;
 	int ierror;
 	int c0 = 0;
-	//double rev[REACmax+1],q9[REACmax+1];
+	//double rev[REACBUFF],q9[REACBUFF];
 	double a[O16+Nu][O16+Nu],b[O16+Nu],yx[O16+Nu];
 	int icnvm;
 	double x[O16+Nu], a0[O16+Nu][O16+Nu], cx, sum, xdy, t;
@@ -216,7 +222,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
     /*
     ReactionIndex reac;
-	for (reac = REACmin; reac <= REACmax; reac++) 
+	for (reac = REACMIN; reac <= REACMAX; reac++) 
 	{
         // TODO use struct instead of raw double array.
 		rev[reac]=reacparam[reac][6];
@@ -229,8 +235,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
         for(j = Nu; j <= O16; j++) 
             a[i][j] = 0;
 
-    ReactionIndex n,i1,j1;
-	for (n = REACmin; n <= REACmax; n++) 
+    ReactionIndex n;
+	NuclideIndex i1,j1;
+	for (n = REACMIN; n <= REACMAX; n++) 
 	{
         assert(reaction[n].id == n);
 		Reaction reac = reaction[n]; // TODO use
@@ -395,7 +402,15 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		{
 			//j1=NNUC+1-j;	/// TODO fix
 			j1=O16+Nu-j;    /// TODO fix
-			printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
+			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
+			assert(i > 0 && i <= O16);
+			assert(i1 > 0 && i1 <= O16);
+			assert(j > 0 && j <= O16);
+			assert(j1 > 0 && j1 <= O16);
+			assert(Y0[i1]);
+			assert(Y0[j1]);
+			assert(a[j][i]>=0 || a[j][i]<=0); 
+			assert(fabs(a[j][i])>=0); 
 			if(fabs(a[j][i]) < bdln*Y0[j1]/Y0[i1]) 
                 a[j][i]=0;
 			else a[j][i]*=dt;
@@ -524,8 +539,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
 	NuclideIndex i;
-    ReactionIndex REACmin = n_p;
-    ReactionIndex REACmax = C13a_nO16;
+    ReactionIndex REACMIN = n_p;
+    ReactionIndex REACMAX = C13a_nO16;
 	double f[ReactionIndexOverflow];
 	double r[ReactionIndexOverflow];
 	for(i=0;i<=O16;i++)  // fix
@@ -559,7 +574,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
     setup_reactions(reaction);
 		
     ReactionIndex n;
-	for(n = REACmin; n <= REACmax; n++)
+	for(n = REACMIN; n <= REACMAX; n++)
 	{
 		f[n] = 0;
 		r[n] = 0;
@@ -769,10 +784,12 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 						if ((dY_dt[i]!=0.)&&(Y[i]>Ytmin)) 
 						{
 							dtl=(fabs(Y[i]/dY_dt[i]))*cy*(pow(log10(Y[i])/log10(Ytmin),2.)+1.);
-							if (dtl<dtmin) dtmin=dtl;
+							if (dtl<dtmin) 
+								dtmin=dtl;
 						}
 					}
-					if (dtmin>dt*1.5) dtmin=dt*1.5;
+					if (dtmin>dt*1.5) 
+						dtmin=dt*1.5;
 					dt=dtmin;
 				}
 				t+=dt;
@@ -817,7 +834,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	ratioH[Li7] += ratioH[Be7];
 	ratioH[He3] += ratioH[H3];
 	
-	for (i=0;i<=O16;i++) 
+	for (i=0; i<=O16; i++) 
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
@@ -828,11 +845,10 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
-    ReactionIndex REACmin = n_p;
-    ReactionIndex REACmax = C13a_nO16;
 	int i;
-	for(i=0;i<=O16;i++) ratioH[i]=0.;
-	double f[REACmax+1],r[REACmax+1];
+	for(i=0; i<=O16; i++) 
+		ratioH[i]=0;
+	double f[REACBUFF],r[REACBUFF];
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
@@ -856,14 +872,14 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
     double Dm[O16+Nu];
     setup_nuclides(Am,Zm,Dm);
 
-	//double reacparam[REACmax+1][8];
-	Reaction reaction[REACmax+1];
+	//double reacparam[REACBUFF][8];
+	Reaction reaction[REACBUFF];
     setup_reactions(reaction);
 		
-	for(i = REACmin; i <= REACmax; i++)
+	for(i = REACMIN; i <= REACMAX; i++)
 	{
-		f[i] = 0.;
-		r[i] = 0.;
+		f[i] = 0;
+		r[i] = 0;
 	}
 	
     /* DONE in loop now
@@ -1124,8 +1140,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[])
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
-    ReactionIndex REACmin = n_p;
-    ReactionIndex REACmax = C13a_nO16;
+    ReactionIndex REACMIN = n_p;
+    ReactionIndex REACMAX = C13a_nO16;
 	int ie,je;
 	for(ie=0;ie<=O16;ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0.;
@@ -1162,7 +1178,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
 		
 		double ratioH_tmp[O16+Nu];
 		
-		for(ie = REACmin; ie <= REACmax; ie++)
+		for(ie = REACMIN; ie <= REACMAX; ie++)
 		{
 			if(optfail==0)
 			{
@@ -1195,7 +1211,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
                 ratioH_ref[ie]=ratioH[ie];
 			for(ie=0;ie<=O16;ie++) 
                 sigma_ratioH[ie]=0.;
-		    for(ie = REACmin; ie <= REACmax; ie++)
+		    for(ie = REACMIN; ie <= REACMAX; ie++)
 			{
 				if(nucl_failsafe(-ie, paramrelic, ratioH_tmp)>0) 
                     return 0;
