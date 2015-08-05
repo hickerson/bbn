@@ -16,18 +16,20 @@ void setup_reactions(Reaction reaction[])
 	//double reacparam[NNUCREAC][8] =  // TODO do a real loop
 	Reaction reac[NNUCREAC] =  
 	{
+    /// beta decay  type i    j    k    l    rev    Q               Reaction
+        {n_p,        0,  Nu1, 0,   0,   H1,  0,     0       },	/// n <-> p
+        {H3_evHe3,   0,  H3,  0,   0,   He3, 0,     0       },	/// H3 -> e- + v + He3
+        {Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0,     0       },	/// Li8 -> e- + v + 2He4
+        {B12_evC12,  0,  B12, 0,   0,   C12, 0,     0       },	/// B12 -> e- + v + C12
+        {C14_evN14,  0,  C14, 0,   0,   N14, 0,     0       },	/// C14 -> e- + v + N14
+        {B8_ev2He4,  3,  B8,  0,   0,   He4, 0,     0       },	/// B8 -> e+ + v + 2He4
+        {C11_evB11,  0,  C11, 0,   0,   B11, 0,     0       },	/// C11 -> e+ + v + B11
+        {N12_evC12,  0,  N12, 0,   0,   C12, 0,     0       },	/// N12 -> e+ + v + C12
+        {N13_evC13,  0,  N13, 0,   0,   C13, 0,     0       },	/// N13 -> e+ + v + C13
+        {O14_evN14,  0,  O14, 0,   0,   N14, 0,     0       },	/// O14 -> e+ + v + N14
+        {O15_evN15,  0,  O15, 0,   0,   N15, 0,     0       },	/// O15 -> e+ + v + N15
+
     /// reaction    type i    j    k    l    rev    Q[MeV]          Reaction
-        {n_p,        0,  Nu1, 0,   0,   H1,  0.0,   0.0     },	/// n <-> p
-        {H3_evHe3,   0,  H3,  0,   0,   He3, 0.0,   0.0     },	/// H3 -> e- + v + He3
-        {Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0.0,   0.0     },	/// Li8 -> e- + v + 2He4
-        {B12_evC12,  0,  B12, 0,   0,   C12, 0.0,   0.0     },	/// B12 -> e- + v + C12
-        {C14_evN14,  0,  C14, 0,   0,   N14, 0.0,   0.0     },	/// C14 -> e- + v + N14
-        {B8_ev2He4,  3,  B8,  0,   0,   He4, 0.0,   0.0     },	/// B8 -> e+ + v + 2He4
-        {C11_evB11,  0,  C11, 0,   0,   B11, 0.0,   0.0     },	/// C11 -> e+ + v + B11
-        {N12_evC12,  0,  N12, 0,   0,   C12, 0.0,   0.0     },	/// N12 -> e+ + v + C12
-        {N13_evC13,  0,  N13, 0,   0,   C13, 0.0,   0.0     },	/// N13 -> e+ + v + C13
-        {O14_evN14,  0,  O14, 0,   0,   N14, 0.0,   0.0     },	/// O14 -> e+ + v + N14
-        {O15_evN15,  0,  O15, 0,   0,   N15, 0.0,   0.0     },	/// O15 -> e+ + v + N15
         {H1n_gH2,    1,  H1,  Nu1, 0,   H2,  0.471, 25.82   },	/// H1 + n -> g + H2
         {H2n_gH3,    1,  H2,  Nu1, 0,   H3,  1.63,  72.62   },	/// H2 + n -> g + H3
         {He3n_gHe4,  1,  He3, Nu1, 0,   He4, 2.61,  238.81  },	/// He3 + n -> g + He4
