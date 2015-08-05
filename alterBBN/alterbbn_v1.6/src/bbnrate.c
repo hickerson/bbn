@@ -8,9 +8,9 @@ void rate_weak(int err, double f[])
     //double Nbeta = 11;
     int first = H3_evHe3;
     int last = O15_evN15;
-	double ferrlow[last+1]; 
-    double ferrhigh[last+1]; 
-    double ferr[last+1];
+	double ferrlow[REACBUF]; 
+    double ferrhigh[REACBUF]; 
+    double ferr[REACBUF];
 	
 	f[H3_evHe3] = 1.78141141239e-9;	/// H3 -> e- + v + He3
 	f[Li8_ev2He4] = 0.827;	 	    /// Li8 -> e- + v + 2He4
@@ -264,9 +264,9 @@ void rate_all(int err, double f[], double T9)
 {
     int first = H1n_gH2;
     int last = C13a_nO16; 
-	double ferrlow[last+1];
-    double ferrhigh[last+1];
-    double ferr[last+1];
+	double ferrlow[REACBUF];
+    double ferrhigh[REACBUF];
+    double ferr[REACBUF];
 	int reac;
 
 	if((err!=0)&&(err!=-10000)) 

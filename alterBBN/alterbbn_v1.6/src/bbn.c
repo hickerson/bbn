@@ -138,7 +138,7 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
     /   M - mass excess 
     /------------------------------------*/
 
-    Nuclide _nuclide[O16+1] = {
+    Nuclide _nuclide[] = {
     ///  S    A   Z   N   dm
         {Nu0, 0,  0,  0,  0 },
         {Nu1, 1,  0,  1,  8.071388},
@@ -175,8 +175,8 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
     };
 
     NuclideIndex i,j;
-    for (i=Nu0; i <= O16; i++) {
-        j = _nuclide[i].id;
+    for (i=Nu0; i<=O16; i++) {
+        j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
         Dm[j] = _nuclide[i].dm;
@@ -202,17 +202,17 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	//ReactionIndex REACBUFF = REACMAX + REACMIN;
+	//ReactionIndex REACBUF = REACMAX + REACMIN;
 	
-	double cn1,cn2,cn3,cn4,yY[O16+Nu1];
+	double cn1,cn2,cn3,cn4,yY[NUCBUF];
 	cn1=cn2=cn3=cn4=0.;
 	int fail;
 	int ierror;
 	int c0 = 0;
-	//double rev[REACBUFF],q9[REACBUFF];
-	double a[O16+Nu1][O16+Nu1],b[O16+Nu1],yx[O16+Nu1];
+	//double rev[REACBUF],q9[REACBUF];
+	double a[NUCBUF][NUCBUF],b[NUCBUF],yx[NUCBUF];
 	int icnvm;
-	double x[O16+Nu1], a0[O16+Nu1][O16+Nu1], cx, sum, xdy, t;
+	double x[NUCBUF], a0[NUCBUF][NUCBUF], cx, sum, xdy, t;
 	int nord,test;
 	
     /*
@@ -536,8 +536,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	NuclideIndex i;
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	double f[REACBUFF];
-	double r[REACBUFF];
+	double f[REACBUF];
+	double r[REACBUF];
 	for(i=Nu0; i<=O16;i++)
         ratioH[i]=0;
 	double sd;
@@ -551,21 +551,21 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	int loop;
 	double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
 	double dT90_dt, dh_dt0, dphie_dt0;
-	double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];
+	double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
 	double dtmin;
 	double z;
 	double H;
 	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0;
 
 
-    int Am[O16+Nu1];
-    int Zm[O16+Nu1];
-    double Dm[O16+Nu1];
+    int Am[NUCBUF];
+    int Zm[NUCBUF];
+    double Dm[NUCBUF];
     setup_nuclides(Am,Zm,Dm);
 
 	//double reacparam[NNUCREAC+1][8];
     //Reaction reaction[ReactionIndexOverflow];
-    Reaction reaction[REACBUFF];
+    Reaction reaction[REACBUF];
     setup_reactions(reaction);
 		
     ReactionIndex n;
@@ -707,7 +707,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			dM_epem_dT9=-(z*z*z/T9)*(sinh1*(Lbessel(z)*3.-z*Mbessel(z))-sinh2*(Lbessel(2.*z)*3.-z*2.*Mbessel(2.*z))+sinh3*(Lbessel(3.*z)*3.-z*3.*Mbessel(3.*z))-sinh4*(Lbessel(4.*z)*3.-z*4.*Mbessel(4.*z))+sinh5*(Lbessel(5.*z)*3.-z*5.*Mbessel(5.*z))-sinh6*(Lbessel(6.*z)*3.-z*6.*Mbessel(6.*z))+sinh7*(Lbessel(7.*z)*3.-z*7.*Mbessel(7.*z))); /* d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) */
 			
 			dN_epem_dphie=z*z*z*(cosh1*Lbessel(z)-cosh2*2.*Lbessel(2.*z)+cosh3*3.*Lbessel(3.*z)-cosh4*4.*Lbessel(4.*z)+cosh5*5.*Lbessel(5.*z)-cosh6*6.*Lbessel(6.*z)+cosh7*7.*Lbessel(7.*z));
-			if(dN_epem_dphie!=0) dN_epem_dphie=1./dN_epem_dphie; /* d(pi^2/2 N_A (hbar*c/k)^3 h sum Z_i Y_i)/d(phie) */
+			if(dN_epem_dphie!=0) 
+				dN_epem_dphie=1/dN_epem_dphie; /* d(pi^2/2 N_A (hbar*c/k)^3 h sum Z_i Y_i)/d(phie) */
 			
 			H=sqrt(Gn*8.*pi/3.*(rho_gamma+rho_epem+rho_neutrinos+rho_baryons+rhod));
 			
@@ -760,7 +761,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 				for(i=H1;i<=Be7;i++) 
                     ratioH[Li8]+=ratioH[i];
 				ratioH[Li8]-=1.;
-				ratioH[0] = h_eta / 33683.;
+				ratioH[Nu0] = h_eta / 33683.;
 				if((it==nitmax)||(ip<inc))
                     ltime = 1;
 			}
@@ -843,7 +844,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	int i;
 	for(i=Nu0; i<=O16; i++) 
 		ratioH[i]=0;
-	double f[REACBUFF],r[REACBUFF];
+	double f[REACBUF],r[REACBUF];
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
@@ -855,20 +856,20 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	int loop;
 	double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
 	double dT90_dt, dh_dt0, dphie_dt0;
-	double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];
+	double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
 	double dtmin;
 	double z;
 	double H;
 	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
 
 
-    int Am[O16+Nu1];
-    int Zm[O16+Nu1];
-    double Dm[O16+Nu1];
+    int Am[NUCBUF];
+    int Zm[NUCBUF];
+    double Dm[NUCBUF];
     setup_nuclides(Am,Zm,Dm);
 
-	//double reacparam[REACBUFF][8];
-	Reaction reaction[REACBUFF];
+	//double reacparam[REACBUF][8];
+	Reaction reaction[REACBUF];
     setup_reactions(reaction);
 		
 	for(i = REACMIN; i <= REACMAX; i++)
@@ -937,7 +938,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	Y[H2] = Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (i = H3; i <= O16; ++i) 
+	for (i=H3; i<=O16; ++i) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -1062,7 +1063,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 				for(i=Nu1; i<=Be7; i++) 
 					ratioH[Li8] += ratioH[i];
 				ratioH[Li8] -= 1;
-				ratioH[0] = h_eta/33683.;
+				ratioH[Nu0] = h_eta/33683.;
 				if ((it==nitmax)||(ip<inc))
 					ltime = 1;
 			}
@@ -1165,7 +1166,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
 		if (nucl(0, paramrelic, ratioH)>0) 
             return 0;
 		
-		double ratioH_ref[O16+Nu1];
+		double ratioH_ref[NUCBUF];
 		int optfail=0;
 		
 		if (nucl(-10000, paramrelic, ratioH_ref)>0) 
@@ -1173,7 +1174,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
 		for (ie=Nu0; ie<=O16; ie++) 
             optfail+=isnan(ratioH_ref[ie]);
 		
-		double ratioH_tmp[O16+Nu1];
+		double ratioH_tmp[NUCBUF];
 		
 		for(ie=REACMIN; ie<=REACMAX; ie++)
 		{
@@ -1235,7 +1236,7 @@ int bbn_excluded(int err, struct relicparam paramrelic)
 /* "container" function which computes the abundances of the elements using the parameters of paramrelic and compares them to observational limits. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. Returns 1 if the considered BBN scenario is allowed, 0 otherwise. */
 {	 
 	double H2_H,Yp,Li7_H,Be7_H,He3_H,Li6_H;
-	double ratioH[O16+Nu1];
+	double ratioH[NUCBUF];
 		
 	if(nucl(err,paramrelic,ratioH)==0)
 	{

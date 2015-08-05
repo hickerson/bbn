@@ -176,8 +176,12 @@ typedef enum ReactionIndex {
 
 #define REACMIN n_p
 #define REACMAX C13a_nO16
-//#define REACBUFF (REACMIN+REACMAX) 
-#define REACBUFF ReactionIndexOverflow
+#define REACBUF ReactionIndexOverflow
+
+#define BETAMIN H3_evHe3
+#define BETAMAX O15_evN15
+#define NUMBETA (BETAMAX-BETAMIN+1)
+#define BETABUF	(METAMAX+1) 
 
 
 /********************************************
@@ -203,7 +207,7 @@ typedef enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-    Nu0=50, Nu1,   
+    Nu0=31,   Nu1,   
     H1,  H2,  H3,  
     He3, He4, //He6, He8,
     Li6, Li7, Be7, Li8,
@@ -215,8 +219,7 @@ typedef enum NuclideIndex {
 } NuclideIndex;
 
 
-#define BetaIndexOverflow (015_evN15+1)
-#define NBETA         	(BetaIndexOverflow-H3_evHe3)
+
 #define NNUCREAC     	(ReactionIndexOverflow-n_p)
 #define NNUC          	(NuclideIndexOverflow-Nu1)
 //#define NNUC        	  26 
