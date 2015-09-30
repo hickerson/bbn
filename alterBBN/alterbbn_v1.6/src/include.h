@@ -29,6 +29,7 @@
 #define me      0.510998928       /// electron mass in MeV
 #define kB      0.0861733238      /// Boltzmann constant in MeV/GK
 
+
 /*--------------------------------------------------------------------*/
 
 /* structure containing the cosmological model parameters */
@@ -74,7 +75,7 @@ typedef struct relicparam {
     u - electron anti-neutrino (nuz)
     e - electron (beta-)
     z - positron (beta+)
-    n - neutron (Nu)
+    n - neutron (Nu1)
     p - proton (H1)
     d - deuteron (H2)
     t - triton (H3)
@@ -170,18 +171,13 @@ typedef enum ReactionIndex {
 	B11a_nN14,  /// B11 + a -> n + N14
 	B12a_nN15,  /// B12 + a -> n + N15
 	C13a_nO16,  /// C13 + a -> n + O16
-    ReactionIndexOverflow   
+    ReactionIndexOverflow
 } ReactionIndex;
 
-#define NNUCREAC    88
-#define NNUC        26
-#define NBETA       11
-
-typedef struct Reaction {
-    ReactionIndex n;
-    // TODO ReationType type;
-    int type;
-} Reaction;
+#define REACMIN n_p
+#define REACMAX C13a_nO16
+//#define REACBUFF (REACMIN+REACMAX) 
+#define REACBUFF ReactionIndexOverflow
 
 
 /********************************************
@@ -194,8 +190,9 @@ typedef struct Reaction {
  *        Nu, H, He, Li Be, B, C, N, O.
  *      - A is the atomic mass
  *  Nuclides: 
- *  1:  n,    2: p, 
- *  3:  H2,   4: H3,   5: He3,  6: He4, 
+ *  0:  Nu0   1: Nu1,  
+ *  2:  H1,   3: H2,   4: H3,   
+ *  5:  He3,  6: He4, 
  *  7:  Li6,  8: Li7,  9: Be7, 10: Li8, 
  *  11: B8,  12: Be9, 13: B10, 14: B11, 
  *  15: C11, 16: B12, 17: C12, 18: N12, 
@@ -206,7 +203,7 @@ typedef enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-    Nu = 1,   
+    Nu0=50, Nu1,   
     H1,  H2,  H3,  
     He3, He4, //He6, He8,
     Li6, Li7, Be7, Li8,
@@ -218,14 +215,37 @@ typedef enum NuclideIndex {
 } NuclideIndex;
 
 
+#define BetaIndexOverflow (015_evN15+1)
+#define NBETA         	(BetaIndexOverflow-H3_evHe3)
+#define NNUCREAC     	(ReactionIndexOverflow-n_p)
+#define NNUC          	(NuclideIndexOverflow-Nu1)
+//#define NNUC        	  26 
+//#define NNUCREAC   	  88
+//#define NBETA      	  11
+#define NUCBUF 			NuclideIndexOverflow
+
+
 typedef struct Nuclide {
-    NuclideIndex i;     /// Isotopic index
-    //const char *S;      /// Symbol name
+    NuclideIndex id; /// Isotopic id
+    //const char *S;    /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
     int N;              /// Neutron number 
     double dm;          /// Mass excess [MeV]
 } Nuclide;
+
+
+typedef struct Reaction {
+    ReactionIndex id;
+    int type;           /// TODO ReationType type;
+    NuclideIndex in_major;
+    NuclideIndex in_minor;
+    NuclideIndex out_minor;
+    NuclideIndex out_major;
+    double reverse;
+    double forward;
+} Reaction;
+
 
 
 /* general.c */
@@ -286,11 +306,12 @@ void rate_all(int err, double f[], double T9);
 
 
 /* bbn.c */
-// TODO void setup_reactions(Reaction[] reaction);
-void setup_reactions(double reacparam[][8]);
+void setup_reactions(Reaction reaction[]);
+//void setup_reactions(double reacparam[][8]);
 //void setup_nuclides(Nuclide nuclide[]);
 void setup_nuclides(int A[], int Z[], double dm[]);
-int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
+//int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
+int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[]);
