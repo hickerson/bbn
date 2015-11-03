@@ -1,6 +1,7 @@
 #include "include.h"
 #include "assert.h"
 
+
 /*----------------------------------------------------
  * type: 0-10, each type has a unique (#n1,#n2,#n3,#n4) quartet
  * n1: incoming nuclide number 
@@ -538,7 +539,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
     //ReactionIndex REACMAX = C13a_nO16;
 	double f[REACBUFF];
 	double r[REACBUFF];
-	for(i=Nu0; i<=O16;i++)
+	for(i=Nu0; i<=O16; i++)
         ratioH[i]=0;
 	double sd;
 	double rhod, sum_Y;
@@ -549,13 +550,13 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	double T90,h_eta0,phie0;
 	double dtl;
 	int loop;
-	double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
+	//double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
 	double dT90_dt, dh_dt0, dphie_dt0;
 	double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];
 	double dtmin;
 	double z;
 	double H;
-	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0;
+	//dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0;
 
 
     int Am[O16+Nu1];
@@ -749,6 +750,13 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			dh_dt=-h_eta*(H*3.+dlnT9_dt*3.);
 			dphie_dt=dphie_dT9*dT9_dt+dphie_dlna3*(H*3.)+dphie_dZY*sum_ZdY_dt;
 			
+			/// tmp to test inits
+            printf("T9: %f\n", T9 );
+            printf("T9f: %f\n", T9f );
+            printf("dt: %f\n", dt );
+            printf("dlnT9_dt: %f\n", dlnT9_dt );
+            printf("ip: %d\n", ip );
+            printf("inc: %d\n", inc);
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
@@ -853,13 +861,13 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	double T90,h_eta0,phie0;
 	double dtl;
 	int loop;
-	double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
-	double dT90_dt, dh_dt0, dphie_dt0;
+	//double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
+	//double dT90_dt, dh_dt0, dphie_dt0;
 	double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];
 	double dtmin;
 	double z;
 	double H;
-	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
+	//dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
 
 
     int Am[O16+Nu1];
@@ -1040,15 +1048,15 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 				sum_ZdY_dt+=Zm[i]*dY_dt[i];
 			}
 		
-			dphie_dT9=dN_epem_dphie*(-1.07e-4*h_eta*sum_ZY/T9-dM_epem_dT9);
-			dphie_dlna3=-dN_epem_dphie*3.568e-5*h_eta*sum_ZY;
-			dphie_dZY=dN_epem_dphie*3.568e-5*h_eta;
+			double dphie_dT9=dN_epem_dphie*(-1.07e-4*h_eta*sum_ZY/T9-dM_epem_dT9);
+			double dphie_dlna3=-dN_epem_dphie*3.568e-5*h_eta*sum_ZY;
+			double dphie_dZY=dN_epem_dphie*3.568e-5*h_eta;
 						dlna3_dT9=-(drho_gamma_dT9+drho_epem_dT9+drho_epem_dphie*dphie_dT9+rho_baryons*1.388e-4*sum_Y+T9*1e9*dsd_dT9)/(rho_gamma+P_gamma+rho_epem+P_epem+rho_baryons*(9.25e-5*T9*sum_Y+1.388e-4*T9*sum_dY_dt/(H*3.)+sum_DeltaMdY_dt/(H*3.))+T9*1.e9*sd+drho_epem_dphie*(dphie_dlna3+dphie_dZY*sum_ZdY_dt/(H*3.)));
 
-			dT9_dt=3.*H/dlna3_dT9;
-			dlnT9_dt=dT9_dt/T9;
-			dh_dt=-h_eta*(H*3.+dlnT9_dt*3.);
-			dphie_dt=dphie_dT9*dT9_dt+dphie_dlna3*(H*3.)+dphie_dZY*sum_ZdY_dt;
+			double dT9_dt=3.*H/dlna3_dT9;
+			double dlnT9_dt=dT9_dt/T9;
+			double dh_dt=-h_eta*(H*3.+dlnT9_dt*3.);
+			double dphie_dt=dphie_dT9*dT9_dt+dphie_dlna3*(H*3.)+dphie_dZY*sum_ZdY_dt;
 			
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
