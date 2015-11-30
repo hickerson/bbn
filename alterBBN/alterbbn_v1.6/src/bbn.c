@@ -16,7 +16,7 @@ void setup_reactions(Reaction reaction[])
 	//double reacparam[NNUCREAC][8] =  // TODO do a real loop
 	Reaction reac[NNUCREAC] =  
 	{
-    /// beta decay  type i    j    k    l    rev    Q               Reaction
+    /// beta decay  type i    j    k    l    rev    Q   rate        Reaction
         {n_p,        0,  Nu1, 0,   0,   H1,  0,     0       },	/// n <-> p
         {H3_evHe3,   0,  H3,  0,   0,   He3, 0,     0       },	/// H3 -> e- + v + He3
         {Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0,     0       },	/// Li8 -> e- + v + 2He4
@@ -177,7 +177,7 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
     };
 
     NuclideIndex i,j;
-    for (i=Nu0; i<=O16; i++) {
+    for (i=0; i<=O16-Nu0; i++) {
         j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
@@ -206,8 +206,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
     //ReactionIndex REACMAX = C13a_nO16;
 	//ReactionIndex REACBUF = REACMAX + REACMIN;
 	
-	double cn1,cn2,cn3,cn4,yY[NUCBUF];
+	double cn1,cn2,cn3,cn4;
 	cn1=cn2=cn3=cn4=0.;
+	double yY[NUCBUF];
 	int fail;
 	int ierror;
 	int c0 = 0;
@@ -1120,7 +1121,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 				for(i=Nu1; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
-					if (Y[i]<Ytmin) Y[i]=Ytmin;
+					if (Y[i]<Ytmin) 
+						Y[i]=Ytmin;
 				}
 			}
 		}	
@@ -1142,7 +1144,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], doub
 {	
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	int ie,je;
+	NuclideIndex ie,je;
 	for(ie=Nu0; ie<=O16; ie++) 
         ratioH[ie] = sigma_ratioH[ie]=0;
 
