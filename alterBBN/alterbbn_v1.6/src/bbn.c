@@ -540,8 +540,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	NuclideIndex i;
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	double f[REACBUFF];
-	double r[REACBUFF];
+	double f[REACBUF];
+	double r[REACBUF];
 	for(i=Nu0; i<=O16; i++)
         ratioH[i]=0;
 	double sd;
@@ -553,7 +553,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	double T90,h_eta0,phie0;
 	double dtl;
 	int loop;
-	//double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
+	double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
 	double dT90_dt, dh_dt0, dphie_dt0;
 	double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
 	double dtmin;
@@ -583,7 +583,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	double ct=0.01;
 	double T9i=100.;
 	double T9f=0.01;
-	double Ytmin =1.e-30;
+	double Ytmin=1.e-30;
 	int inc=50;
 	double dt0=1.e-4;
 
