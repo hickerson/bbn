@@ -207,8 +207,6 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
     //ReactionIndex REACMAX = C13a_nO16;
 	//ReactionIndex REACBUF = REACMAX + REACMIN;
 	
-	double cn1,cn2,cn3,cn4;
-	cn1=cn2=cn3=cn4=0.;
 	double yY[NUCBUF];
 	int fail;
 	int ierror;
@@ -257,6 +255,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
         rn2=nn2[type];
         rn3=nn3[type];
         rn4=nn4[type];
+
+        double cn1,cn2,cn3,cn4;
+        cn1=cn2=cn3=cn4=0;
 			
 		if (i <= O16 && l <= O16)
 		{
@@ -276,6 +277,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=0;
 					cn4=r[n];
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 2:	{ /* (1,1,1,1) type */
@@ -285,6 +287,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=Y[l]*r[n]/2.;
 					cn4=Y[k]*r[n]/2.;
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 3:	{ /* (1,0,0,2) type */
@@ -292,6 +295,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=0;
 					cn3=0;
 					cn4=Y[l]*r[n]/2.;
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 4:	{ /* (1,1,0,2) type */
@@ -301,6 +305,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=0;
 					cn4=Y[l]*r[n]/2.;
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 5:	{ /* (2,0,1,1) type */
@@ -310,6 +315,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=0;
 					cn3=Y[l]*r[n]/2.;
 					cn4=Y[k]*r[n]/2.;
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 6:	{ /* (3,0,0,1) type */
@@ -319,6 +325,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=0;
 					cn3=0;
 					cn4=r[n];
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 		
 				case 7:	{ /* (2,1,0,1) type */
@@ -328,6 +335,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*Y[i]*f[n]/6.;
 					cn3=0;
 					cn4=r[n];
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 8:	{ /* (1,1,1,2) type */
@@ -337,6 +345,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=Y[l]*Y[l]*r[n]/6.;
 					cn4=Y[k]*Y[l]*r[n]/3.;
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 9:	{ /* (1,1,0,3) type */
@@ -346,6 +355,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=0;
 					cn4=Y[l]*Y[l]*r[n]/6.;
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 					break;}
 
 				case 10:{ /* (2,0,2,1) type */
@@ -355,6 +365,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=0;
 					cn3=Y[l]*Y[k]*r[n]/3.;
 					cn4=Y[k]*Y[k]*r[n]/6.;}
+                    printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 			}
             //printf("i j k l: %d %d %d %d\n",i,j,k,l);
             //printf("inverting.\n");
@@ -383,6 +394,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 				a[l][j]-=rn4*cn2;
                 //printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
                 //printf("i j k l: %d %d %d %d\n",i,j,k,l);
+                printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
+                printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 			    //assert(a[i][j]>=0);
 			    //assert(a[l][j]>=0);
 			}
@@ -417,18 +430,23 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		{
 			//j1=NNUC+1-j;	/// TODO fix
 			j1=O16+Nu1-j;    /// TODO fix
-			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
+			printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
 			assert(j >= Nu1& j <= O16);
 			assert(j1 >= Nu1& j1 <= O16);
 			assert(Y0[i1]);
 			assert(Y0[j1]);
+            printf("fabs(a[][]) %f\n.", a[j][i]); 
+		    if (bdln>=0)
+                printf("bdln is %f\n.", bdln); 
+			//assert(fabs(bdln)>=0); 
 			//assert(a[j][i]>=0 || a[j][i]<=0); 
 			assert(fabs(a[j][i])>=0); 
 			if(fabs(a[j][i]) < bdln*Y0[j1]/Y0[i1]) 
                 a[j][i]=0;
-			else a[j][i]*=dt;
+			else 
+                a[j][i]*=dt;
 		}
 		a[i][i]+=1.;
 		b[i1]=Y0[i];
