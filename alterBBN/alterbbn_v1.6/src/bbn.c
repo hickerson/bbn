@@ -117,8 +117,8 @@ void setup_reactions(Reaction reaction[])
         reaction[id].id = id;
         reaction[id].type = reac[i].type;
         reaction[id].in_major = reac[i].in_major;
-        reaction[id].in_minor = reac[i].in_minor;
-        reaction[id].out_minor = reac[i].out_minor;
+        reaction[id].in_minor = reac[i].in_minor;   // TODO don't set to zero.
+        reaction[id].out_minor = reac[i].out_minor; // TODO don't set to zero.
         reaction[id].out_major = reac[i].out_major;
         reaction[id].reverse = reac[i].reverse;
         reaction[id].forward = reac[i].forward;
@@ -248,8 +248,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		j = reaction[n].in_minor;
 		k = reaction[n].out_minor;
 		l = reaction[n].out_major;
-        printf("Reading the indicies from the reaction tables.\n");
-        printf("i j k l: %d %d %d %d\n",i,j,k,l);
+        //printf("Reading the indicies from the reaction tables.\n");
+        //printf("i j k l: %d %d %d %d\n",i,j,k,l);
 		double Rn = reaction[n].reverse;
 		double Q9 = reaction[n].forward;
         int rn1, rn2, rn3, rn4;
@@ -356,14 +356,13 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn3=Y[l]*Y[k]*r[n]/3.;
 					cn4=Y[k]*Y[k]*r[n]/6.;}
 			}
-            printf("i j k l: %d %d %d %d\n",i,j,k,l);
-            printf("inverting.\n");
+            //printf("i j k l: %d %d %d %d\n",i,j,k,l);
+            //printf("inverting.\n");
 
 			i=O16+Nu1-i;
 			j=O16+Nu1-j;
 			k=O16+Nu1-k;
 			l=O16+Nu1-l;
-            printf("i j k l: %d %d %d %d\n",i,j,k,l);
             
 			if(j<=O16) 
                 a[j][i]+=rn2*cn1;
@@ -371,9 +370,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
                 a[k][i]-=rn3*cn1;
 			a[i][i]+=rn1*cn1;
 			a[l][i]-=rn4*cn1;
-            printf("i j k l: %d %d %d %d\n",i,j,k,l);
-            printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
-			assert(a[i][j]>=0 && a[k][l]>=0);
+            //printf("i j k l: %d %d %d %d\n",i,j,k,l);
+            //printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
+			//assert(a[i][j]>=0 && a[k][l]>=0);
 			
 			if (j<=O16) 
 			{
@@ -382,8 +381,11 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
                     a[k][j]-=rn3*cn2;
 				a[i][j]+=rn1*cn2;
 				a[l][j]-=rn4*cn2;
+                //printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
+                //printf("i j k l: %d %d %d %d\n",i,j,k,l);
+			    //assert(a[i][j]>=0);
+			    //assert(a[l][j]>=0);
 			}
-			assert(a[j][i]>=0);
 			
 			if (k<=O16)
 			{
@@ -392,8 +394,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 				a[k][k]+=rn3*cn3;
 				a[i][k]-=rn1*cn3;
 				a[l][k]+=rn4*cn3;
+			    //assert(a[j][k]>=0);
 			}
-			assert(a[j][i]>=0);
 
 			if(j<=O16) 
                 a[j][l]-=rn2*cn4;
@@ -401,7 +403,6 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
                 a[k][l]+=rn3*cn4;
 			a[i][l]-=rn1*cn4;
 			a[l][l]+=rn4*cn4;
-			assert(a[j][i]>=0);
 		}
 	}
 	
@@ -417,14 +418,14 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 			//j1=NNUC+1-j;	/// TODO fix
 			j1=O16+Nu1-j;    /// TODO fix
 			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
-			assert(i > 0 && i <= O16);
-			assert(i1 > 0 && i1 <= O16);
-			assert(j > 0 && j <= O16);
-			assert(j1 > 0 && j1 <= O16);
+			assert(i >= Nu1 && i <= O16);
+			assert(i1 >= Nu1& i1 <= O16);
+			assert(j >= Nu1& j <= O16);
+			assert(j1 >= Nu1& j1 <= O16);
 			assert(Y0[i1]);
 			assert(Y0[j1]);
 			//assert(a[j][i]>=0 || a[j][i]<=0); 
-			//assert(fabs(a[j][i])>=0); 
+			assert(fabs(a[j][i])>=0); 
 			if(fabs(a[j][i]) < bdln*Y0[j1]/Y0[i1]) 
                 a[j][i]=0;
 			else a[j][i]*=dt;
