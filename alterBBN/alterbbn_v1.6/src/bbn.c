@@ -248,6 +248,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		j = reaction[n].in_minor;
 		k = reaction[n].out_minor;
 		l = reaction[n].out_major;
+        printf("Reading the indicies from the reaction tables.\n");
+        printf("i j k l: %d %d %d %d\n",i,j,k,l);
 		double Rn = reaction[n].reverse;
 		double Q9 = reaction[n].forward;
         int rn1, rn2, rn3, rn4;
@@ -354,8 +356,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn3=Y[l]*Y[k]*r[n]/3.;
 					cn4=Y[k]*Y[k]*r[n]/6.;}
 			}
-
             printf("i j k l: %d %d %d %d\n",i,j,k,l);
+            printf("inverting.\n");
+
 			i=O16+Nu1-i;
 			j=O16+Nu1-j;
 			k=O16+Nu1-k;
