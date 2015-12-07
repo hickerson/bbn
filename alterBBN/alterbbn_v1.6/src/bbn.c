@@ -233,8 +233,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	//for(i = Nu1; i <= O16; i++) 
     //    for(j = Nu1; j <= O16; j++) 
 	double a[NUCBUF][NUCBUF];
-	for(i = 0; i <= O16; i++) 
-        for(j = 0; j <= O16; j++) 
+	for(i=Nu1; i<=O16; i++) 
+        for(j=Nu1; j<=O16; j++) 
             a[i][j] = 0;
 
     ReactionIndex n;
@@ -369,8 +369,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 			a[i][i]+=rn1*cn1;
 			a[l][i]-=rn4*cn1;
             printf("i j k l: %d %d %d %d\n",i,j,k,l);
-            printf("NUCBUF %d\n", NUCBUF);
-			assert(a[j][i]>=0);
+            printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
+			assert(a[i][j]>=0 && a[k][l]>=0);
 			
 			if (j<=O16) 
 			{
