@@ -214,7 +214,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	int ierror;
 	int c0 = 0;
 	//double rev[REACBUF],q9[REACBUF];
-	double a[NUCBUF][NUCBUF],b[NUCBUF],yx[NUCBUF];
+	double b[NUCBUF],yx[NUCBUF];
 	int icnvm;
 	double x[NUCBUF], a0[NUCBUF][NUCBUF], cx, sum, xdy, t;
 	int nord,test;
@@ -232,6 +232,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	NuclideIndex i,j,k,l;
 	//for(i = Nu1; i <= O16; i++) 
     //    for(j = Nu1; j <= O16; j++) 
+	double a[NUCBUF][NUCBUF];
 	for(i = 0; i <= O16; i++) 
         for(j = 0; j <= O16; j++) 
             a[i][j] = 0;
@@ -354,10 +355,12 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn4=Y[k]*Y[k]*r[n]/6.;}
 			}
 
+            printf("i j k l: %d %d %d %d\n",i,j,k,l);
 			i=O16+Nu1-i;
 			j=O16+Nu1-j;
 			k=O16+Nu1-k;
 			l=O16+Nu1-l;
+            printf("i j k l: %d %d %d %d\n",i,j,k,l);
             
 			if(j<=O16) 
                 a[j][i]+=rn2*cn1;
@@ -365,6 +368,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
                 a[k][i]-=rn3*cn1;
 			a[i][i]+=rn1*cn1;
 			a[l][i]-=rn4*cn1;
+            printf("i j k l: %d %d %d %d\n",i,j,k,l);
+            printf("NUCBUF %d\n", NUCBUF);
+			assert(a[j][i]>=0);
 			
 			if (j<=O16) 
 			{
@@ -374,6 +380,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 				a[i][j]+=rn1*cn2;
 				a[l][j]-=rn4*cn2;
 			}
+			assert(a[j][i]>=0);
 			
 			if (k<=O16)
 			{
@@ -383,12 +390,15 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 				a[i][k]-=rn1*cn3;
 				a[l][k]+=rn4*cn3;
 			}
+			assert(a[j][i]>=0);
+
 			if(j<=O16) 
                 a[j][l]-=rn2*cn4;
 			if(k<=O16) 
                 a[k][l]+=rn3*cn4;
 			a[i][l]-=rn1*cn4;
 			a[l][l]+=rn4*cn4;
+			assert(a[j][i]>=0);
 		}
 	}
 	
