@@ -205,7 +205,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	//ReactionIndex REACBUF = REACMAX + REACMIN;
+	//ReactionIndex REACBUF = REACMAX + REACMIN + 1;
 	
 	double yY[NUCBUF];
 	int fail;
@@ -236,7 +236,6 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
             a[i][j] = 0;
 
     ReactionIndex n;
-	NuclideIndex i1,j1;
 	for (n = REACMIN; n <= REACMAX; n++) 
 	{
         assert(reaction[n].id == n);
@@ -247,10 +246,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		k = reaction[n].out_minor;
 		l = reaction[n].out_major;
         //printf("Reading the indicies from the reaction tables.\n");
-        //printf("i j k l: %d %d %d %d\n",i,j,k,l);
 		double Rn = reaction[n].reverse;
 		double Q9 = reaction[n].forward;
-        int rn1, rn2, rn3, rn4;
+        int rn1, rn2, rn3, rn4; // TODO change to NN
         rn1=nn1[type];
         rn2=nn2[type];
         rn3=nn3[type];
@@ -261,6 +259,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 			
         printf("State of coefficients....\n");
         printf("i j k l: %d %d %d %d\n",i,j,k,l);
+        printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
         printf("n f[n] r[n]: %d %f %f\n",n,r[n],f[n]);
 		if (i <= O16 && l <= O16)
 		{
@@ -416,6 +415,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 	for(i=Nu1; i<=O16; i++)
 	{
+	    NuclideIndex i1,j1;
 		//i1=NNUC+1-i;    /// TODO fix
 		i1=O16+Nu1-i;    /// TODO fix
 		//for(j=1;j<=NNUC;j++)
@@ -564,11 +564,11 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 int nucl(int err, struct relicparam paramrelic, double ratioH[])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
-	NuclideIndex i;
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
 	double f[REACBUF];
 	double r[REACBUF];
+	NuclideIndex i;
 	for(i=Nu0; i<=O16; i++)
         ratioH[i]=0;
 	double sd;
