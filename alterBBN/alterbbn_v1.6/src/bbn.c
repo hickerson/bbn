@@ -279,6 +279,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=0;
 					cn4=r[n];
+                    printf("rohb: %f\n", rhob);
 					break;}
 
 				case 2:	{ /* (1,1,1,1) type */
@@ -359,6 +360,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn3=Y[l]*Y[k]*r[n]/3.;
 					cn4=Y[k]*Y[k]*r[n]/6.;}
 			}
+            printf("type: %d\n", type);
             printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
             printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 
@@ -1083,7 +1085,9 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 			double dphie_dT9=dN_epem_dphie*(-1.07e-4*h_eta*sum_ZY/T9-dM_epem_dT9);
 			double dphie_dlna3=-dN_epem_dphie*3.568e-5*h_eta*sum_ZY;
 			double dphie_dZY=dN_epem_dphie*3.568e-5*h_eta;
-						dlna3_dT9=-(drho_gamma_dT9+drho_epem_dT9+drho_epem_dphie*dphie_dT9+rho_baryons*1.388e-4*sum_Y+T9*1e9*dsd_dT9)/(rho_gamma+P_gamma+rho_epem+P_epem+rho_baryons*(9.25e-5*T9*sum_Y+1.388e-4*T9*sum_dY_dt/(H*3.)+sum_DeltaMdY_dt/(H*3.))+T9*1.e9*sd+drho_epem_dphie*(dphie_dlna3+dphie_dZY*sum_ZdY_dt/(H*3.)));
+			dlna3_dT9=-
+                (drho_gamma_dT9+drho_epem_dT9+drho_epem_dphie*dphie_dT9+rho_baryons*1.388e-4*sum_Y+T9*1e9*dsd_dT9)/
+                (rho_gamma+P_gamma+rho_epem+P_epem+rho_baryons*(9.25e-5*T9*sum_Y+1.388e-4*T9*sum_dY_dt/(H*3.)+sum_DeltaMdY_dt/(H*3.))+T9*1.e9*sd+drho_epem_dphie*(dphie_dlna3+dphie_dZY*sum_ZdY_dt/(H*3.)));
 
 			double dT9_dt=3.*H/dlna3_dT9;
 			double dlnT9_dt=dT9_dt/T9;
