@@ -737,6 +737,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			rho_neutrinos=12.79264*neutdens(Tnu,paramrelic);
 										
 			rho_baryons=h_eta*T9*T9*T9;
+            printf("rho_baryons: %f h_eta: %f T9: %f\n", rho_baryons, h_eta, T9);
 			dM_epem_dT9=-(z*z*z/T9)*(sinh1*(Lbessel(z)*3.-z*Mbessel(z))-sinh2*(Lbessel(2.*z)*3.-z*2.*Mbessel(2.*z))+sinh3*(Lbessel(3.*z)*3.-z*3.*Mbessel(3.*z))-sinh4*(Lbessel(4.*z)*3.-z*4.*Mbessel(4.*z))+sinh5*(Lbessel(5.*z)*3.-z*5.*Mbessel(5.*z))-sinh6*(Lbessel(6.*z)*3.-z*6.*Mbessel(6.*z))+sinh7*(Lbessel(7.*z)*3.-z*7.*Mbessel(7.*z))); /* d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) */
 			
 			dN_epem_dphie=z*z*z*(cosh1*Lbessel(z)-cosh2*2.*Lbessel(2.*z)+cosh3*3.*Lbessel(3.*z)-cosh4*4.*Lbessel(4.*z)+cosh5*5.*Lbessel(5.*z)-cosh6*6.*Lbessel(6.*z)+cosh7*7.*Lbessel(7.*z));
@@ -901,7 +902,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 	double dtmin;
 	double z;
 	double H;
-	//dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
+	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
 
 
     int Am[NUCBUF];
