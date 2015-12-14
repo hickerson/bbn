@@ -1,5 +1,6 @@
 #include "include.h"
 #include "assert.h"
+//#include "memcheck.h"
 
 
 /*----------------------------------------------------
@@ -178,7 +179,8 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
     };
 
     NuclideIndex i,j;
-    for (i=0; i<=O16-Nu0; i++) {
+    //for (i=0; i<=O16-Nu0; i++) {
+    for (i=0; i<O16-Nu0; i++) {
         j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
@@ -867,7 +869,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	ratioH[Li7] += ratioH[Be7];
 	ratioH[He3] += ratioH[H3];
 	
-	for (i=Nu0; i<=O16; i++) 
+	//for (i=Nu0; i<=O16; i++) 
+	for (i=Nu1; i<=O16; i++) 
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
