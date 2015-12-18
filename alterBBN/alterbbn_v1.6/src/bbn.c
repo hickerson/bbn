@@ -1,5 +1,6 @@
 #include "include.h"
 #include "assert.h"
+//#include "memcheck.h"
 
 
 /*----------------------------------------------------
@@ -178,7 +179,8 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
     };
 
     NuclideIndex i,j;
-    for (i=0; i<=O16-Nu0; i++) {
+    //for (i=0; i<=O16-Nu0; i++) {
+    for (i=0; i<O16-Nu0; i++) {
         j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
@@ -257,10 +259,10 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
         double cn1,cn2,cn3,cn4;
         cn1=cn2=cn3=cn4=0;
 			
-        printf("State of coefficients....\n");
-        printf("i j k l: %d %d %d %d\n",i,j,k,l);
-        printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
-        printf("n f[n] r[n]: %d %f %f\n",n,r[n],f[n]);
+        //printf("State of coefficients....\n");
+        //printf("i j k l: %d %d %d %d\n",i,j,k,l);
+        //printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
+        //printf("n f[n] r[n]: %d %f %f\n",n,r[n],f[n]);
 		if (i <= O16 && l <= O16)
 		{
 			switch(type) 
@@ -279,7 +281,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn2=Y[i]*f[n]/2.;
 					cn3=0;
 					cn4=r[n];
-                    printf("rohb: %f\n", rhob);
+                    //printf("rohb: %f\n", rhob);
 					break;}
 
 				case 2:	{ /* (1,1,1,1) type */
@@ -360,9 +362,9 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 					cn3=Y[l]*Y[k]*r[n]/3.;
 					cn4=Y[k]*Y[k]*r[n]/6.;}
 			}
-            printf("type: %d\n", type);
-            printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
-            printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
+            //printf("type: %d\n", type);
+            //printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
+            //printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 
 			i=O16+Nu1-i;
 			j=O16+Nu1-j;
@@ -425,16 +427,14 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		{
 			//j1=NNUC+1-j;	/// TODO fix
 			j1=O16+Nu1-j;    /// TODO fix
-			printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
+			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
 			assert(j >= Nu1& j <= O16);
 			assert(j1 >= Nu1& j1 <= O16);
 			assert(Y0[i1]);
 			assert(Y0[j1]);
-            printf("fabs(a[][]) %f\n.", a[j][i]); 
-		    if (bdln>=0)
-                printf("bdln is %f\n.", bdln); 
+            //printf("fabs(a[][]) %f\n.", a[j][i]); 
 			//assert(fabs(bdln)>=0); 
 			//assert(a[j][i]>=0 || a[j][i]<=0); 
 			assert(fabs(a[j][i])>=0); 
@@ -674,8 +674,6 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	}
 	rate_weak(err,f);
 
-
-
 	while(ltime == 0)
 	{
 		for(loop=1;loop<=2;loop++)
@@ -737,7 +735,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			rho_neutrinos=12.79264*neutdens(Tnu,paramrelic);
 										
 			rho_baryons=h_eta*T9*T9*T9;
-            printf("rho_baryons: %f h_eta: %f T9: %f\n", rho_baryons, h_eta, T9);
+            //printf("rho_baryons: %f h_eta: %f T9: %f\n", rho_baryons, h_eta, T9);
 			dM_epem_dT9=-(z*z*z/T9)*(sinh1*(Lbessel(z)*3.-z*Mbessel(z))-sinh2*(Lbessel(2.*z)*3.-z*2.*Mbessel(2.*z))+sinh3*(Lbessel(3.*z)*3.-z*3.*Mbessel(3.*z))-sinh4*(Lbessel(4.*z)*3.-z*4.*Mbessel(4.*z))+sinh5*(Lbessel(5.*z)*3.-z*5.*Mbessel(5.*z))-sinh6*(Lbessel(6.*z)*3.-z*6.*Mbessel(6.*z))+sinh7*(Lbessel(7.*z)*3.-z*7.*Mbessel(7.*z))); /* d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) */
 			
 			dN_epem_dphie=z*z*z*(cosh1*Lbessel(z)-cosh2*2.*Lbessel(2.*z)+cosh3*3.*Lbessel(3.*z)-cosh4*4.*Lbessel(4.*z)+cosh5*5.*Lbessel(5.*z)-cosh6*6.*Lbessel(6.*z)+cosh7*7.*Lbessel(7.*z));
@@ -785,12 +783,12 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 			dphie_dt=dphie_dT9*dT9_dt+dphie_dlna3*(H*3.)+dphie_dZY*sum_ZdY_dt;
 			
 			/// tmp to test inits
-            printf("T9: %f\n", T9 );
-            printf("T9f: %f\n", T9f );
-            printf("dt: %f\n", dt );
-            printf("dlnT9_dt: %f\n", dlnT9_dt );
-            printf("ip: %d\n", ip );
-            printf("inc: %d\n", inc);
+            //printf("T9: %f\n", T9 );
+            //printf("T9f: %f\n", T9f );
+            //printf("dt: %f\n", dt );
+            //printf("dlnT9_dt: %f\n", dlnT9_dt );
+            //printf("ip: %d\n", ip );
+            //printf("inc: %d\n", inc);
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
@@ -871,7 +869,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	ratioH[Li7] += ratioH[Be7];
 	ratioH[He3] += ratioH[H3];
 	
-	for (i=Nu0; i<=O16; i++) 
+	//for (i=Nu0; i<=O16; i++) 
+	for (i=Nu1; i<=O16; i++) 
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
