@@ -563,7 +563,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 
 /*----------------------------------------------------*/
 
-int nucl(int err, struct relicparam paramrelic, double ratioH[])
+int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
     //ReactionIndex REACMIN = n_p;
@@ -572,7 +572,10 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 	double r[REACBUF];
 	NuclideIndex i;
 	for(i=Nu0; i<=O16; i++)
+	{
         ratioH[i]=0;
+		assert(ratioH[i]==0);
+	}
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
@@ -878,7 +881,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[])
 
 /*----------------------------------------------------*/
 
-int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
+int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
 	int i;
@@ -1179,14 +1182,14 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[])
 
 /*----------------------------------------------------*/
 
-int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[])
+int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF], double sigma_ratioH[NUCBUF])
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
 	NuclideIndex ie,je;
 	for(ie=Nu0; ie<=O16; ie++) 
-        ratioH[ie] = sigma_ratioH[ie]=0;
+        ratioH[ie]=sigma_ratioH[ie]=0;
 
 	if(err==0)
 	{
