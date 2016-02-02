@@ -38,15 +38,18 @@ int main(int argc,char** argv)
 	
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 	nucl(2,paramrelic,ratioH);
-	H2_H=ratioH[3];Yp=ratioH[6];Li7_H=ratioH[8];Be7_H=ratioH[9];He3_H=ratioH[5];Li6_H=ratioH[7];
+	//H2_H=ratioH[3];Yp=ratioH[6];Li7_H=ratioH[8];Be7_H=ratioH[9];He3_H=ratioH[5];Li6_H=ratioH[7];
+	H2_H=ratioH[H2];Yp=ratioH[He4];Li7_H=ratioH[Li7];Be7_H=ratioH[Be7];He3_H=ratioH[He3];Li6_H=ratioH[Li6];
 	printf("  low:\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n",Yp,H2_H,He3_H,Li7_H,Li6_H,Be7_H);
 
 	nucl(0,paramrelic,ratioH);
-	H2_H=ratioH[3];Yp=ratioH[6];Li7_H=ratioH[8];Be7_H=ratioH[9];He3_H=ratioH[5];Li6_H=ratioH[7];
+	//H2_H=ratioH[3];Yp=ratioH[6];Li7_H=ratioH[8];Be7_H=ratioH[9];He3_H=ratioH[5];Li6_H=ratioH[7];
+	H2_H=ratioH[H2];Yp=ratioH[He4];Li7_H=ratioH[Li7];Be7_H=ratioH[Be7];He3_H=ratioH[He3];Li6_H=ratioH[Li6];
 	printf(" cent:\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n",Yp,H2_H,He3_H,Li7_H,Li6_H,Be7_H); 
 	
 	nucl(1,paramrelic,ratioH);
-	H2_H=ratioH[3];Yp=ratioH[6];Li7_H=ratioH[8];Be7_H=ratioH[9];He3_H=ratioH[5];Li6_H=ratioH[7];
+	//H2_H=ratioH[3];Yp=ratioH[6];Li7_H=ratioH[8];Be7_H=ratioH[9];He3_H=ratioH[5];Li6_H=ratioH[7];
+	H2_H=ratioH[H2];Yp=ratioH[He4];Li7_H=ratioH[Li7];Be7_H=ratioH[Be7];He3_H=ratioH[He3];Li6_H=ratioH[Li6];
 	printf(" high:\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n\n",Yp,H2_H,He3_H,Li7_H,Li6_H,Be7_H);
 			
 	if(nucl_witherrors(3,paramrelic,ratioH,sigma_ratioH))
