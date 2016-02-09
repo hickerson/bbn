@@ -13,7 +13,9 @@ void Init_modeleff(int model_eff, struct relicparam* paramrelic)
 		{
 #include "sgStar_heff/sgStar_heff_A.tab"
   		};
-		for(ie=0;ie<=275;ie++) for(je=0;je<=2;je++) paramrelic->table_eff[ie][je]=tableA[ie][je];
+		for(ie=0;ie<=275;ie++) 
+			for(je=0;je<=2;je++) 
+				paramrelic->table_eff[ie][je]=tableA[ie][je];
 	}
 	else if(model_eff==2)
 	{
