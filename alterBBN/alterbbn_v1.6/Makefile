@@ -18,7 +18,7 @@ CFLAGS= -g -Wmaybe-uninitialized -Wuninitialized -Winit-self
 # CFLAGS = -O3 -Wall
 
 MAKE = make
-#AR = ar
+AR = ar
 
 .SUFFIXES:	.o .cpp .h
 .PRECIOUS:	.cpp .h libbbn.a
