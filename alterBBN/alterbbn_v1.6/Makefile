@@ -18,7 +18,7 @@ CFLAGS= -g -Wmaybe-uninitialized -Wuninitialized -Winit-self
 # CFLAGS = -O3 -Wall
 
 MAKE = make
-AR = ar
+#AR = ar
 
 .SUFFIXES:	.o .cpp .h
 .PRECIOUS:	.cpp .h libbbn.a
@@ -63,6 +63,7 @@ libbbn.a:
 	@echo AlterBBN $(VERSION) - K. P. Hickerson $(YEAR);
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
+	@echo CXX = $(CXX) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
 	echo MAKE = $(MAKE) >> src/FlagsForMake;\
 	echo AR = $(AR) >> src/FlagsForMake;
