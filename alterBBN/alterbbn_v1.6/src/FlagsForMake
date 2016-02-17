@@ -1,3 +1,4 @@
+CXX = g++
 CFLAGS = -g -Wmaybe-uninitialized -Wuninitialized -Winit-self
 MAKE = make
 AR = ar

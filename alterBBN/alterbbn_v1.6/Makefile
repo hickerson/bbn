@@ -63,7 +63,7 @@ libbbn.a:
 	@echo AlterBBN $(VERSION) - K. P. Hickerson $(YEAR);
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
-	@echo CXX = $(CXX) > src/FlagsForMake;\
+	echo CXX = $(CXX) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
 	echo MAKE = $(MAKE) >> src/FlagsForMake;\
 	echo AR = $(AR) >> src/FlagsForMake;
