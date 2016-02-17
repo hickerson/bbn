@@ -20,8 +20,8 @@ CFLAGS= -g -Wmaybe-uninitialized -Wuninitialized -Winit-self
 MAKE = make
 AR = ar
 
-.SUFFIXES:	.o .c .h
-.PRECIOUS:	.c .h libbbn.a
+.SUFFIXES:	.o .cpp .h
+.PRECIOUS:	.cpp .h libbbn.a
 
 CINCLUDE= -I./src -L./src
 
@@ -32,18 +32,18 @@ all: libbbn.a
 	   *) RANL="ranlib libnr.a";;\
 	   esac;\
 	echo ' ';\
-   	echo 'Please run "make name" to compile "name.c" into "name.x"';\
+   	echo 'Please run "make name" to compile "name.cpp" into "name.x"';\
 	echo ' '
 
-%.c:: %.c libbbn.a
+%.cpp:: %.cpp libbbn.a
 	$(CC) -c $(CFLAGS) $@;
-	$(CC) -o $*.x $(CFLAGS) $(CINCLUDE) $*.o -lbbn -lm;
+	$(CXX) -o $*.x $(CFLAGS) $(CINCLUDE) $*.o -lbbn -lm;
 	@rm -f $*.o;
 	@touch $*.x
 
-%:: %.c libbbn.a
-	$(CC) -c $(CFLAGS) $*.c;
-	$(CC) -o $*.x $(CFLAGS) $(CINCLUDE) $*.o -lbbn -lm;
+%:: %.cpp libbbn.a
+	$(CC) -c $(CFLAGS) $*.cpp;
+	$(CXX) -o $*.x $(CFLAGS) $(CINCLUDE) $*.o -lbbn -lm;
 	@rm -f $*.o;
 	@touch $*.x
 
@@ -78,11 +78,11 @@ save:
 	cp -p alter_neutrinos.c alterbbn_$(VERSION)/;\
 	cp -p alter_reheating.c alterbbn_$(VERSION)/;\
 	cp -p alter_standmod.c alterbbn_$(VERSION)/;\
-	cp -p alter_fierz.c alterbbn_$(VERSION)/;\
+	cp -p alter_fierz.cpp alterbbn_$(VERSION)/;\
 	cp -p Makefile alterbbn_$(VERSION)/;\
 	mkdir alterbbn_$(VERSION)/src;\
 	cp -p src/*.h alterbbn_$(VERSION)/src/;\
-	cp -p src/*.c alterbbn_$(VERSION)/src/;\
+	cp -p src/*.cpp alterbbn_$(VERSION)/src/;\
 	cp -rp src/sgStar_heff alterbbn_$(VERSION)/src/;\
 	cp -p src/Makefile alterbbn_$(VERSION)/src/;\
 	tar czvf alterbbn_$(VERSION).tgz alterbbn_$(VERSION);\
