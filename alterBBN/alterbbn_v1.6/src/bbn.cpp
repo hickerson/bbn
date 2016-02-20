@@ -132,14 +132,13 @@ void setup_reactions(Reaction reaction[])
 	//printf("NNUCREAC: %d\n", NNUCREAC);
 }
 #else
-//void setup_reactions(Reaction reaction[]) 
 void setup_reactions(Reaction reaction[]) 
+//void setup_reactions() 
 {
 	map<ReactionIndex, Reaction> reaction;
-	//Reaction reac[NNUCREAC] =  
-	//{
+	Reaction reac[NNUCREAC] = {
     /// beta decay  type i    j    k    l    rev    Q   rate        Reaction
-    reactions[n_p] = Reaction(n_p,        0,  Nu1, 0,   0,   H1,  0,     0       ),	/// n <-> p
+		Reaction(n_p,        0,  Nu1, 0,   0,   H1,  0,     0       ),	/// n <-> p
         Reaction(H3_evHe3,   0,  H3,  0,   0,   He3, 0,     0       ),	/// H3 -> e- + v + He3
         Reaction(Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0,     0       ),	/// Li8 -> e- + v + 2He4
         Reaction(B12_evC12,  0,  B12, 0,   0,   C12, 0,     0       ),	/// B12 -> e- + v + C12
