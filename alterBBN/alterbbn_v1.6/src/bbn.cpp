@@ -135,7 +135,7 @@ void setup_reactions(Reaction reaction[])
 void setup_reactions(Reaction reaction[]) 
 //void setup_reactions() 
 {
-	map<ReactionIndex, Reaction> reaction;
+	//map<ReactionIndex, Reaction> reaction;
 	Reaction reac[NNUCREAC] = {
     /// beta decay  type i    j    k    l    rev    Q   rate        Reaction
 		Reaction(n_p,        0,  Nu1, 0,   0,   H1,  0,     0       ),	/// n <-> p
@@ -230,10 +230,9 @@ void setup_reactions(Reaction reaction[])
         Reaction(C13a_nO16,  2,  C13, He4, Nu1, O16, 5.79,  25.711  )	/// C13 + a -> n + O16
     };
 
-    ReactionIndex i,id;
-    for (i = 0; i < NNUCREAC; i++)
+    for (int i = 0; i < NNUCREAC; i++)
     {
-        id = reac[i].id;
+        ReactionIndex id = reac[i].id;
         reaction[id].id = id;
         reaction[id].type = reac[i].type;
         reaction[id].in_major = reac[i].in_major;

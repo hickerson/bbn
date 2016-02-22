@@ -1,4 +1,5 @@
 #include "src/include.h"
+#include "src/Reaction.h"
 
 /*--------------------------------------------------------*/
 /* Calculation of the observables in the Standard Model   */
