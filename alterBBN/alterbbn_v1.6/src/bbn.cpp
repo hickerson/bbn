@@ -722,8 +722,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
     Reaction reaction[REACBUF];
     setup_reactions(reaction);
 		
-    ReactionIndex n;
-	for(n = REACMIN; n <= REACMAX; n++)
+    //ReactionIndex n;
+	for(int n = REACMIN; n <= REACMAX; n++)
 	{
 		f[n] = 0;
 		r[n] = 0;

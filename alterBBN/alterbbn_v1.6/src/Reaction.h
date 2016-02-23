@@ -203,12 +203,13 @@ struct Reaction {
     ReactionIndex id;
     int type;           /// TODO ReationType type;
     NuclideIndex in_major;
-    int in_minor;
-    int out_minor;
+    NuclideIndex in_minor;
+    NuclideIndex out_minor;
     NuclideIndex out_major;
     double reverse;
     double forward;
 
+	Reaction();
 	Reaction(ReactionIndex, int, //ReactionType, 
 			 NuclideIndex, NuclideIndex, NuclideIndex, NuclideIndex, 
 			 double, double);
