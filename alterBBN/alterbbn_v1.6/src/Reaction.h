@@ -209,10 +209,36 @@ struct Reaction {
     double reverse;
     double forward;
 
-	Reaction();
-	Reaction(ReactionIndex, int, //ReactionType, 
-			 NuclideIndex, NuclideIndex, NuclideIndex, NuclideIndex, 
-			 double, double);
+	//Reaction();
+	//Reaction(ReactionIndex, int, //ReactionType, 
+	//		 NuclideIndex, NuclideIndex, NuclideIndex, NuclideIndex, 
+	//		 double, double);
+	Reaction()
+	: 
+		id(ReactionIndexOverflow),
+		type(-1),
+		in_major(NuclideIndexOverflow),
+		in_minor(NuclideIndexOverflow),
+		out_minor(NuclideIndexOverflow),
+		out_major(NuclideIndexOverflow),
+		reverse(0),
+		forward(0)
+	{};
+
+	Reaction(ReactionIndex index, int type, //ReactionType type, <<< TODO
+			NuclideIndex in1, NuclideIndex in2, 
+			NuclideIndex out1, NuclideIndex out2, 
+			double reverse, double forward) 
+	: 
+		id(index),
+		type(type),
+		in_major(in1),
+		in_minor(in2),
+		out_minor(out1),
+		out_major(out2),
+		reverse(reverse),
+		forward(forward)
+	{};
 };
 
 
