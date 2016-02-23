@@ -163,11 +163,12 @@ typedef enum ReactionIndex {
  *  19: C13, 20: N13, 21: C14, 22: N14, 
  *  23: O14, 24: N15, 25: O15, 26: O16 
  *******************************************/
-typedef enum NuclideIndex {
+enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-    Nu0=31,   Nu1,   
+	None=0,
+    Nu0=31,   Nu1,   // Nu2, Nu4
     H1,  H2,  H3,  
     He3, He4, //He6, He8,
     Li6, Li7, Be7, Li8,
@@ -176,7 +177,7 @@ typedef enum NuclideIndex {
     C13, N13, C14, N14,
     O14, N15, O15, O16,
     NuclideIndexOverflow
-} NuclideIndex;
+};
 
 
 
@@ -188,30 +189,29 @@ typedef enum NuclideIndex {
 #define NUCBUF 			NuclideIndexOverflow
 
 
-typedef struct Nuclide {
+struct Nuclide {
     NuclideIndex id; /// Isotopic id
     //const char *S;    /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
     int N;              /// Neutron number 
     double dm;          /// Mass excess [MeV]
-} Nuclide;
+};
 
 
 struct Reaction {
     ReactionIndex id;
     int type;           /// TODO ReationType type;
     NuclideIndex in_major;
-    NuclideIndex in_minor;
-    NuclideIndex out_minor;
+    int in_minor;
+    int out_minor;
     NuclideIndex out_major;
     double reverse;
     double forward;
 
 	Reaction(ReactionIndex, int, //ReactionType, 
-			NuclideIndex, NuclideIndex, NuclideIndex, NuclideIndex, 
-			double, double);
-: 
+			 NuclideIndex, NuclideIndex, NuclideIndex, NuclideIndex, 
+			 double, double);
 };
 
 

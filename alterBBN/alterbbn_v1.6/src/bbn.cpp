@@ -138,87 +138,87 @@ void setup_reactions(Reaction reaction[])
 	//map<ReactionIndex, Reaction> reaction;
 	Reaction reac[NNUCREAC] = {
     /// beta decay  type i    j    k    l    rev    Q   rate        Reaction
-		Reaction(n_p,        0,  Nu1, 0,   0,   H1,  0,     0       ),	/// n <-> p
-        Reaction(H3_evHe3,   0,  H3,  0,   0,   He3, 0,     0       ),	/// H3 -> e- + v + He3
-        Reaction(Li8_ev2He4, 3,  Li8, 0,   0,   He4, 0,     0       ),	/// Li8 -> e- + v + 2He4
-        Reaction(B12_evC12,  0,  B12, 0,   0,   C12, 0,     0       ),	/// B12 -> e- + v + C12
-        Reaction(C14_evN14,  0,  C14, 0,   0,   N14, 0,     0       ),	/// C14 -> e- + v + N14
-        Reaction(B8_ev2He4,  3,  B8,  0,   0,   He4, 0,     0       ),	/// B8 -> e+ + v + 2He4
-        Reaction(C11_evB11,  0,  C11, 0,   0,   B11, 0,     0       ),	/// C11 -> e+ + v + B11
-        Reaction(N12_evC12,  0,  N12, 0,   0,   C12, 0,     0       },	/// N12 -> e+ + v + C12
-        Reaction(N13_evC13,  0,  N13, 0,   0,   C13, 0,     0       ),	/// N13 -> e+ + v + C13
-        Reaction(O14_evN14,  0,  O14, 0,   0,   N14, 0,     0       ),	/// O14 -> e+ + v + N14
-        Reaction(O15_evN15,  0,  O15, 0,   0,   N15, 0,     0       ),	/// O15 -> e+ + v + N15
+		Reaction(n_p,        0,  Nu1, Nu0, Nu0, H1,  0,     0       ),	/// n <-> p
+        Reaction(H3_evHe3,   0,  H3,  Nu0, Nu0, He3, 0,     0       ),	/// H3 -> e- + v + He3
+        Reaction(Li8_ev2He4, 3,  Li8, Nu0, Nu0, He4, 0,     0       ),	/// Li8 -> e- + v + 2He4
+        Reaction(B12_evC12,  0,  B12, Nu0, Nu0, C12, 0,     0       ),	/// B12 -> e- + v + C12
+        Reaction(C14_evN14,  0,  C14, Nu0, Nu0, N14, 0,     0       ),	/// C14 -> e- + v + N14
+        Reaction(B8_ev2He4,  3,  B8,  Nu0, Nu0, He4, 0,     0       ),	/// B8 -> e+ + v + 2He4
+        Reaction(C11_evB11,  0,  C11, Nu0, Nu0, B11, 0,     0       ),	/// C11 -> e+ + v + B11
+        Reaction(N12_evC12,  0,  N12, Nu0, Nu0, C12, 0,     0       ),	/// N12 -> e+ + v + C12
+        Reaction(N13_evC13,  0,  N13, Nu0, Nu0, C13, 0,     0       ),	/// N13 -> e+ + v + C13
+        Reaction(O14_evN14,  0,  O14, Nu0, Nu0, N14, 0,     0       ),	/// O14 -> e+ + v + N14
+        Reaction(O15_evN15,  0,  O15, Nu0, Nu0, N15, 0,     0       ),	/// O15 -> e+ + v + N15
 
     /// reaction    type i    j    k    l    rev    Q[MeV]          Reaction
-        Reaction(H1n_gH2,    1,  H1,  Nu1, 0,   H2,  0.471, 25.82   ),	/// H1 + n -> g + H2
-        Reaction(H2n_gH3,    1,  H2,  Nu1, 0,   H3,  1.63,  72.62   ),	/// H2 + n -> g + H3
-        Reaction(He3n_gHe4,  1,  He3, Nu1, 0,   He4, 2.61,  238.81  ),	/// He3 + n -> g + He4
-        Reaction(Li6n_gLi7,  1,  Li6, Nu1, 0,   Li7, 1.19,  84.17   ),	/// Li6 + n -> g + Li7
+        Reaction(H1n_gH2,    1,  H1,  Nu1, Nu0, H2,  0.471, 25.82   ),	/// H1 + n -> g + H2
+        Reaction(H2n_gH3,    1,  H2,  Nu1, Nu0, H3,  1.63,  72.62   ),	/// H2 + n -> g + H3
+        Reaction(He3n_gHe4,  1,  He3, Nu1, Nu0, He4, 2.61,  238.81  ),	/// He3 + n -> g + He4
+        Reaction(Li6n_gLi7,  1,  Li6, Nu1, Nu0, Li7, 1.19,  84.17   ),	/// Li6 + n -> g + Li7
         Reaction(He3n_pH3,   2,  He3, Nu1, H1,  H3,  1.002, 8.863   ),	/// He3 + n -> p + H3
         Reaction(Be7n_pLi7,  2,  Be7, Nu1, H1,  Li7, 0.998, 19.081  ),	/// Be7 + n -> p + Li7
         Reaction(Li6n_tHe4,  2,  Li6, Nu1, H3,  He4, 1.070, 55.494  ),	/// Li6 + n -> d + He4
-        Reaction(Be7n_2He4,  4,  Be7, Nu1, 0,   He4, 4.70,  220.39  ),	/// Be7 + n -> 2He4
-        Reaction(H2p_gHe3,   1,  H2,  H1,  0,   He3, 1.63,  63.750  ),	/// H2 + p -> g + He3
-        Reaction(H3p_gHe4,   1,  H3,  H1,  0,   He4, 2.61,  229.932 ),	/// H3 + p -> g + He4
-        Reaction(Li6p_gBe7,  1,  Li6, H1,  0,   Be7, 1.19,  65.054  ),	/// Li6 + p -> g + Be7
+        Reaction(Be7n_2He4,  4,  Be7, Nu1, Nu0, He4, 4.70,  220.39  ),	/// Be7 + n -> 2He4
+        Reaction(H2p_gHe3,   1,  H2,  H1,  Nu0, He3, 1.63,  63.750  ),	/// H2 + p -> g + He3
+        Reaction(H3p_gHe4,   1,  H3,  H1,  Nu0, He4, 2.61,  229.932 ),	/// H3 + p -> g + He4
+        Reaction(Li6p_gBe7,  1,  Li6, H1,  Nu0, Be7, 1.19,  65.054  ),	/// Li6 + p -> g + Be7
         Reaction(Li6p_hHe4,  2,  Li6, H1,  He3, He4, 1.07,  46.631  ),	/// Li6 + p -> h + He4
-        Reaction(Li7p_2He4,  4,  Li7, H1,  0,   He4, 4.69,  201.291 ),	/// Li7 + p -> 2He4
-        Reaction(He4d_gLi6,  1,  He4, H2,  0,   Li6, 1.53,  17.118  ),	/// He4 + d -> g + Li6
-        Reaction(He4t_gLi7,  1,  He4, H3,  0,   Li7, 1.11,  28.640  ),	/// He4 + t -> g + Li7
-        Reaction(He4h_gBe7,  1,  He4, He3, 0,   Be7, 1.11,  18.423  ),	/// He4 + h -> g + Be7
-        Reaction(H2d_nHe3,   5,  H2,  0,   Nu1, He3, 1.73,  37.935  ),	/// 2H2 -> n + He3
-        Reaction(H2d_pH3,    5,  H2,  0,   H1,  H3,  1.73,  46.798  ),	/// 2H2 -> p + H3
+        Reaction(Li7p_2He4,  4,  Li7, H1,  Nu0, He4, 4.69,  201.291 ),	/// Li7 + p -> 2He4
+        Reaction(He4d_gLi6,  1,  He4, H2,  Nu0, Li6, 1.53,  17.118  ),	/// He4 + d -> g + Li6
+        Reaction(He4t_gLi7,  1,  He4, H3,  Nu0, Li7, 1.11,  28.640  ),	/// He4 + t -> g + Li7
+        Reaction(He4h_gBe7,  1,  He4, He3, Nu0, Be7, 1.11,  18.423  ),	/// He4 + h -> g + Be7
+        Reaction(H2d_nHe3,   5,  H2,  Nu0, Nu1, He3, 1.73,  37.935  ),	/// 2H2 -> n + He3
+        Reaction(H2d_pH3,    5,  H2,  Nu0, H1,  H3,  1.73,  46.798  ),	/// 2H2 -> p + H3
         Reaction(H3d_nHe4,   2,  H3,  H2,  Nu1, He4, 5.54,  204.117 ),	/// H3 + H2 -> n + He4
         Reaction(He3d_pHe4,  2,  He3, H2,  H1,  He4, 5.55,  212.980 ),	/// He3 + H2 -> p + He4
-        Reaction(He3h_2pHe4, 10, He3, 0,   H1,  He4, 3.39,  149.230 ),	/// 2He3 -> 2p + He4
+        Reaction(He3h_2pHe4, 10, He3, Nu0, H1,  He4, 3.39,  149.230 ),	/// 2He3 -> 2p + He4
         Reaction(Li7d_n2He4, 8,  Li7, H2,  Nu1, He4, 9.95,  175.476 ),	/// Li7 + d -> n + 2He4
         Reaction(Be7d_p2He4, 8,  Be7, H2,  H1,  He4, 9.97,  194.557 ),	/// Be7 + d -> p + 2He4
-        Reaction(Li7n_gLi8,  1,  Li7, Nu1, 0,   Li8, 1.31,  23.59   ),	/// Li7 + n -> g + Li8
-        Reaction(B10n_gB11,  1,  B10, Nu1, 0,   B11, 3.04,  132.95  ),	/// B10 + n -> g + B11
-        Reaction(B11n_gB12,  1,  B11, Nu1, 0,   B12, 2.34,  39.10   ),	/// B11 + n -> g + B12
+        Reaction(Li7n_gLi8,  1,  Li7, Nu1, Nu0, Li8, 1.31,  23.59   ),	/// Li7 + n -> g + Li8
+        Reaction(B10n_gB11,  1,  B10, Nu1, Nu0, B11, 3.04,  132.95  ),	/// B10 + n -> g + B11
+        Reaction(B11n_gB12,  1,  B11, Nu1, Nu0, B12, 2.34,  39.10   ),	/// B11 + n -> g + B12
         Reaction(C11n_pB11,  2,  C11, Nu1, H1,  B11, 1.002, 32.080  ),	/// C11 + n -> p + B11
         Reaction(B10n_aLi7,  2,  B10, Nu1, He4, Li7, 0.758, 32.382  ),	/// B10 + n -> a + Li7
-        Reaction(Be7p_gB8,   1,  Be7, H1,  0,   B8,  1.30,  1.595   ),	/// Be7 + p -> g + B8
-        Reaction(Be9p_gB10,  1,  Be9, H1,  0,   B10, 0.973, 76.427  ),	/// Be9 + p -> g + B10
-        Reaction(B10p_gC11,  1,  B10, H1,  0,   C11, 3.03,  100.840 ),	/// B10 + p -> g + C11
-        Reaction(B11p_gC12,  1,  B11, H1,  0,   C12, 7.01,  185.173 ),	/// B11 + p -> g + C12
-        Reaction(C11p_gN12,  1,  C11, H1,  0,   N12, 2.33,  6.975   ),	/// C11 + p -> g + N12
+        Reaction(Be7p_gB8,   1,  Be7, H1,  Nu0, B8,  1.30,  1.595   ),	/// Be7 + p -> g + B8
+        Reaction(Be9p_gB10,  1,  Be9, H1,  Nu0, B10, 0.973, 76.427  ),	/// Be9 + p -> g + B10
+        Reaction(B10p_gC11,  1,  B10, H1,  Nu0, C11, 3.03,  100.840 ),	/// B10 + p -> g + C11
+        Reaction(B11p_gC12,  1,  B11, H1,  Nu0, C12, 7.01,  185.173 ),	/// B11 + p -> g + C12
+        Reaction(C11p_gN12,  1,  C11, H1,  Nu0, N12, 2.33,  6.975   ),	/// C11 + p -> g + N12
         Reaction(B12p_nC12,  2,  B12, H1,  Nu1, C12, 3.00,  146.08  ),	/// B12 + p -> n + C12
         Reaction(Be9p_aLi6,  2,  Be9, H1,  He4, Li6, 0.618, 24.674  ),	/// Be9 + p -> a + Li6
         Reaction(B10p_aBe7,  2,  B10, H1,  He4, Be7, 0.754, 13.301  ),	/// B10 + p -> a + Be7
         Reaction(B12p_aBe9,  2,  B12, H1,  He4, Be9, 0.292, 79.89   ),	/// B12 + p -> a + Be9
-        Reaction(Li6a_gB10,  1,  Li6, He4, 0,   B10, 1.58,  51.753  ),	/// Li6 + a -> g + B10
-        Reaction(Li7a_gB11,  1,  Li7, He4, 0,   B11, 4.02,  100.538 ),	/// Li7 + a -> g + B11
-        Reaction(Be7a_gC11,  1,  Be7, He4, 0,   C11, 4.02,  87.539  ),	/// Be7 + a -> g + C11
+        Reaction(Li6a_gB10,  1,  Li6, He4, Nu0, B10, 1.58,  51.753  ),	/// Li6 + a -> g + B10
+        Reaction(Li7a_gB11,  1,  Li7, He4, Nu0, B11, 4.02,  100.538 ),	/// Li7 + a -> g + B11
+        Reaction(Be7a_gC11,  1,  Be7, He4, Nu0, C11, 4.02,  87.539  ),	/// Be7 + a -> g + C11
         Reaction(B8a_pC11,   2,  B8,  He4, H1,  C11, 3.08,  86.00   ),	/// B8 + a -> p + C11 
         Reaction(Li8a_nB11,  2,  Li8, He4, Nu1, B11, 3.07,  76.96   ),	/// Li8 + a -> n + B11
         Reaction(Be9a_nC12,  2,  Be9, He4, Nu1, C12, 10.3,  66.160  ),	/// Be9 + a -> n + C12
         Reaction(Be9d_nB10,  2,  Be9, H2,  Nu1, B10, 2.07,  50.63   ),	/// Be9 + d -> n + B10
         Reaction(B10d_pB11,  2,  B10, H2,  H1,  B11, 6.44,  107.13  ),	/// B10 + d -> p + B11
         Reaction(B11d_nC12,  2,  B11, H2,  Nu1, C12, 14.9,  159.36  ),	/// B11 + d -> n + C12
-        Reaction(He4an_gBe9, 7,  He4, Nu1, 0,   Be9, 0.584, 18.260  ),	/// 2He4 + n -> g + Be9
-        Reaction(He4aa_gC12, 6,  He4, 0,   0,   C12, 2.00,  84.420  ),	/// 3He4 -> g + C12
+        Reaction(He4an_gBe9, 7,  He4, Nu1, Nu0, Be9, 0.584, 18.260  ),	/// 2He4 + n -> g + Be9
+        Reaction(He4aa_gC12, 6,  He4, Nu0, Nu0, C12, 2.00,  84.420  ),	/// 3He4 -> g + C12
         Reaction(Li8p_n2He4, 8,  Li8, H1,  Nu1, He4, 3.58,  177.73  ),	/// Li8 + p -> n + 2He4
         Reaction(B8n_p2He4,  8,  B8,  Nu1, H1,  He4, 3.58,  218.82  ),	/// B8 + n -> p + 2He4
         Reaction(Be9p_d2He4, 8,  Be9, H1,  H2,  He4, 0.807, 7.555   ),	/// Be9 + p -> d + 2He4
-        Reaction(B11p_3He4,  9,  B11, H1,  0,   He4, 3.50,  100.753 ),	/// B11 + p -> 3He4
-        Reaction(C11n_3He4,  9,  C11, Nu1, 0,   He4, 3.49,  132.83  ),	/// C11 + n -> 3He4
-        Reaction(C12n_gC13,  1,  C12, Nu1, 0,   C13, 0.886, 57.41   ),	/// C12 + n -> g + C13
-        Reaction(C13n_gC14,  1,  C13, Nu1, 0,   C14, 3.58,  94.88   ),	/// C13 + n -> g + C14
-        Reaction(N14n_gN15,  1,  N14, Nu1, 0,   N15, 2.71,  125.74  ),	/// N14 + n -> g + N15
+        Reaction(B11p_3He4,  9,  B11, H1,  Nu0, He4, 3.50,  100.753 ),	/// B11 + p -> 3He4
+        Reaction(C11n_3He4,  9,  C11, Nu1, Nu0, He4, 3.49,  132.83  ),	/// C11 + n -> 3He4
+        Reaction(C12n_gC13,  1,  C12, Nu1, Nu0, C13, 0.886, 57.41   ),	/// C12 + n -> g + C13
+        Reaction(C13n_gC14,  1,  C13, Nu1, Nu0, C14, 3.58,  94.88   ),	/// C13 + n -> g + C14
+        Reaction(N14n_gN15,  1,  N14, Nu1, Nu0, N15, 2.71,  125.74  ),	/// N14 + n -> g + N15
         Reaction(N13n_pC13,  2,  N13, Nu1, H1,  C13, 1.002, 34.846  ),	/// N13 + n -> p + C13
         Reaction(N14n_pC14,  2,  N14, Nu1, H1,  C14, 3.003, 7.263   ),	/// N14 + n -> p + C14
         Reaction(O15n_pN15,  2,  O15, Nu1, H1,  N15, 1.002, 41.037  ),	/// O15 + n -> p + N15
         Reaction(O15n_aC12,  2,  O15, Nu1, He4, C12, 0.709, 98.661  ),	/// O15 + n -> a + C12
-        Reaction(C12p_gN13,  1,  C12, H1,  0,   N13, 0.884, 22.553  ),	/// C12 + p -> g + N13
-        Reaction(C13p_gN14,  1,  C13, H1,  0,   N14, 1.19,  87.621  ),	/// C13 + p -> g + N14
-        Reaction(C14p_gN15,  1,  C14, H1,  0,   N15, 0.900, 118.452 ),	/// C14 + p -> g + N15
-        Reaction(N13p_gO14,  1,  N13, H1,  0,   O14, 3.57,  53.706  ),	/// N13 + p -> g + O14
-        Reaction(N14p_gO15,  1,  N14, H1,  0,   O15, 2.70,  84.678  ),	/// N14 + p -> g + O15
-        Reaction(N15p_gO16,  2,  N15, H1,  0,   O16, 3.62,  140.734 ),	/// N15 + p -> g + O16
+        Reaction(C12p_gN13,  1,  C12, H1,  Nu0, N13, 0.884, 22.553  ),	/// C12 + p -> g + N13
+        Reaction(C13p_gN14,  1,  C13, H1,  Nu0, N14, 1.19,  87.621  ),	/// C13 + p -> g + N14
+        Reaction(C14p_gN15,  1,  C14, H1,  Nu0, N15, 0.900, 118.452 ),	/// C14 + p -> g + N15
+        Reaction(N13p_gO14,  1,  N13, H1,  Nu0, O14, 3.57,  53.706  ),	/// N13 + p -> g + O14
+        Reaction(N14p_gO15,  1,  N14, H1,  Nu0, O15, 2.70,  84.678  ),	/// N14 + p -> g + O15
+        Reaction(N15p_gO16,  2,  N15, H1,  Nu0, O16, 3.62,  140.734 ),	/// N15 + p -> g + O16
         Reaction(N15p_aC12,  2,  N15, H1,  He4, C12, 0.706, 57.623  ),	/// N15 + p -> a + C12
-        Reaction(C12a_gO16,  1,  C12, He4, 0,   O16, 5.13,  83.111  ),	/// C12 + a -> g + O16
+        Reaction(C12a_gO16,  1,  C12, He4, Nu0, O16, 5.13,  83.111  ),	/// C12 + a -> g + O16
         Reaction(B10a_pC13,  2,  B10, He4, H1,  C13, 9.36,  47.16   ),	/// B10 + a -> p + C13
         Reaction(B11a_pC14,  2,  B11, He4, H1,  C14, 11.0,  9.098   ),	/// B11 + a -> p + C14
         Reaction(C11a_pN14,  2,  C11, He4, H1,  N14, 3.68,  33.915  ),	/// C11 + a -> p + N14
@@ -297,10 +297,10 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
         {O16, 16, 8,  8, -4.737036}
     };
 
-    NuclideIndex i,j;
+    //NuclideIndex i,j;
     //for (i=0; i<=O16-Nu0; i++) {
-    for (i=0; i<O16-Nu0; i++) {
-        j = _nuclide[i].id ;
+    for (int i=0; i<O16-Nu0; i++) {
+        int j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
         Dm[j] = _nuclide[i].dm;
@@ -348,32 +348,30 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	}
     */
 	
-	NuclideIndex i,j,k,l;
-	//for(i = Nu1; i <= O16; i++) 
-    //    for(j = Nu1; j <= O16; j++) 
+	//NuclideIndex i,j,k,l;
 	double a[NUCBUF][NUCBUF];
-	for(i=Nu1; i<=O16; i++) 
-        for(j=Nu1; j<=O16; j++) 
+	for(int i=Nu1; i<=O16; i++) 
+        for(int j=Nu1; j<=O16; j++) 
             a[i][j] = 0;
 
-    ReactionIndex n;
-	for (n = REACMIN; n <= REACMAX; n++) 
+    //ReactionIndex n;
+	for (int n = REACMIN; n <= REACMAX; n++) 
 	{
         assert(reaction[n].id == n);
 		Reaction reac = reaction[n]; // TODO use
         int type = reaction[n].type;
-		i = reaction[n].in_major;
-		j = reaction[n].in_minor;
-		k = reaction[n].out_minor;
-		l = reaction[n].out_major;
+		int i = reaction[n].in_major;
+		int j = reaction[n].in_minor;
+		int k = reaction[n].out_minor;
+		int l = reaction[n].out_major;
         //printf("Reading the indicies from the reaction tables.\n");
 		double Rn = reaction[n].reverse;
 		double Q9 = reaction[n].forward;
-        int rn1, rn2, rn3, rn4; // TODO change to NN
-        rn1=nn1[type];
-        rn2=nn2[type];
-        rn3=nn3[type];
-        rn4=nn4[type];
+        //int rn1, rn2, rn3, rn4; // TODO change to NN
+        int rn1=nn1[type];
+        int rn2=nn2[type];
+        int rn3=nn3[type];
+        int rn4=nn4[type];
 
         double cn1,cn2,cn3,cn4;
         cn1=cn2=cn3=cn4=0;
@@ -536,13 +534,14 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 	double bdln = 3e-5*H;   /// was H*3.*1.e-5;
 	
-	for(i=Nu1; i<=O16; i++)
+	for(int i=Nu1; i<=O16; i++)
 	{
-	    NuclideIndex i1,j1;
+	    //NuclideIndex i1,j1;
+	    int i1,j1;
 		//i1=NNUC+1-i;    /// TODO fix
 		i1=O16+Nu1-i;    /// TODO fix
 		//for(j=1;j<=NNUC;j++)
-		for(j=Nu1; j<=O16; j++)
+		for(int j=Nu1; j<=O16; j++)
 		{
 			//j1=NNUC+1-j;	/// TODO fix
 			j1=O16+Nu1-j;    /// TODO fix
@@ -573,18 +572,18 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 	nord=0;
 	fail=0;
-	for(i=Nu1; i<=O16; i++)
+	for(int i=Nu1; i<=O16; i++)
 	{
 		x[i]=b[i];
 		yx[i]=0;
 	}
 	
 	if(icnvm==inc) 
-        for(i=Nu1; i<=O16; i++) 
-            for(j=Nu1;j<=O16;j++) 
+        for(int i=Nu1; i<=O16; i++) 
+            for(int j=Nu1;j<=O16;j++) 
                 a0[j][i]=a[j][i];
 
-	for(i=Nu1; i<=O16; i++)
+	for(int i=Nu1; i<=O16; i++)
 	{
 		if(a[i][i]==0)
 		{
@@ -592,12 +591,12 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 			return fail;
 		}
 
-		for(j=i+1;j<=O16;j++)
+		for(int j=i+1;j<=O16;j++)
 		{
 			if(a[j][i]!=0)
 			{
 				cx=a[j][i]/a[i][i];
-				for(k=i+1;k<=O16;k++) 
+				for(int k=i+1;k<=O16;k++) 
                     a[j][k]-=cx*a[i][k];
 				a[j][i]=cx;
 				x[j]-=cx*x[i];
@@ -609,10 +608,10 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 		x[O16]/=a[O16][O16];
 		yx[O16]+=x[O16];
 		
-		for(i=O16-1;i>=Nu1;i--)
+		for(int i=O16-1;i>=Nu1;i--)
 		{
 			sum=0;
-			for(j=i+1;j<=O16;j++) 
+			for(int j=i+1;j<=O16;j++) 
                 sum+=a[i][j]*x[j];
 			x[i]=(x[i]-sum)/a[i][i];
 			yx[i]+=x[i];
@@ -622,7 +621,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 		if(icnvm==inc) 
 		{
-			for(i=Nu1; i<=O16; i++) 
+			for(int i=Nu1; i<=O16; i++) 
 			{
 				if(yx[i]!=0) 
 				{
@@ -633,16 +632,16 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 						{
 							nord++;
 							
-							for(j=Nu1;j<=O16;j++) 
+							for(int j=Nu1;j<=O16;j++) 
 							{
 								t = 0;
-								for(k=Nu1;k<=O16;k++) 
+								for(int k=Nu1;k<=O16;k++) 
                                     t += a0[j][k]*yx[k];
 								x[j] = b[j] - t;
 							}
 
-							for(j=H1;j<=O16;j++) 
-                                for(k=j+1;k<=O16;k++) 
+							for(int j=H1;j<=O16;j++) 
+                                for(int k=j+1;k<=O16;k++) 
                                     x[k] -= a[k][j]*x[j];
 							break;
 						}
@@ -662,7 +661,7 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	}
 	while(test);
 
-	for(i=Nu1; i<=O16; i++) 
+	for(int i=Nu1; i<=O16; i++) 
 	{
 		yY[i]=yx[O16+Nu1-i];  /// TODO fix
 		dY_dt[i]=(yY[i]-Y0[i])/dt;
@@ -689,8 +688,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
     //ReactionIndex REACMAX = C13a_nO16;
 	double f[REACBUF];
 	double r[REACBUF];
-	NuclideIndex i;
-	for(i=Nu0; i<=O16; i++)
+	//NuclideIndex i;
+	for(int i=Nu0; i<=O16; i++)
 	{
         ratioH[i]=0;
 		assert(ratioH[i]==0);
@@ -789,7 +788,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Y[H2] =Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (i=H3; i<=O16; ++i) 
+	for (int i=H3; i<=O16; ++i) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -885,7 +884,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			sum_DeltaMdY_dt=0;
 			sum_ZdY_dt=0;
 
-			for(i=Nu1; i<=O16; i++)
+			for(int i=Nu1; i<=O16; i++)
 			{
 				sum_Y+=Y[i];
 				sum_ZY+=Zm[i]*Y[i];
@@ -914,12 +913,12 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for(i=Nu1; i<=O16; i++) 
+				for(int i=Nu1; i<=O16; i++) 
                     ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
-				for(i=H1;i<=Be7;i++) 
+				for(int i=H1;i<=Be7;i++) 
                     ratioH[Li8]+=ratioH[i];
 				ratioH[Li8]-=1.;
 				ratioH[Nu0] = h_eta / 33683.;
@@ -936,7 +935,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				if(is>3)
 				{
 					dtmin=fabs(1./dlnT9_dt)*ct;
-					for(i=Nu1; i<=O16; i++)
+					for(int i=Nu1; i<=O16; i++)
 					{
 						if ((dY_dt[i]!=0)&&(Y[i]>Ytmin)) 
 						{
@@ -963,7 +962,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+dh_dt0*dt;
 				phie=phie0+dphie_dt0*dt;
 				
-				for(i=Nu1; i<=O16; i++) 
+				for(int i=Nu1; i<=O16; i++) 
 				{
 					Y0[i]=Y[i];
 					dY_dt0[i]=dY_dt[i];
@@ -978,7 +977,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+(dh_dt+dh_dt0)*0.5*dt;
 				phie=phie0+(dphie_dt+dphie_dt0)*0.5*dt;
 
-				for(i=Nu1; i<=O16; i++) 
+				for(int i=Nu1; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
 					if (Y[i]<Ytmin) 
@@ -992,7 +991,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	ratioH[He3] += ratioH[H3];
 	
 	//for (i=Nu0; i<=O16; i++) 
-	for (i=Nu1; i<=O16; i++) 
+	for (int i=Nu1; i<=O16; i++) 
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
@@ -1101,7 +1100,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Y[H2] = Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (i=H3; i<=O16; ++i) 
+	for (int i=H3; i<=O16; ++i) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -1220,12 +1219,12 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			{
 				it++;
 				//for (i=1;i<=NNUC;i++)
-				for(i=Nu1; i<=O16; i++)
+				for(int i=Nu1; i<=O16; i++)
 					ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
-				for(i=Nu1; i<=Be7; i++) 
+				for(int i=Nu1; i<=Be7; i++) 
 					ratioH[Li8] += ratioH[i];
 				ratioH[Li8] -= 1;
 				ratioH[Nu0] = h_eta/33683.;
@@ -1241,7 +1240,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				if(is>3)
 				{
 					dtmin=fabs(1./dlnT9_dt)*ct;
-					for(i=Nu1; i<=O16; i++)
+					for(int i=Nu1; i<=O16; i++)
 					{
 						if ((dY_dt[i]!=0.)&&(Y[i]>Ytmin)) 
 						{
@@ -1266,7 +1265,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+dh_dt0*dt;
 				phie=phie0+dphie_dt0*dt;
 				
-				for(i=Nu1; i<=O16; i++) 
+				for(int i=Nu1; i<=O16; i++) 
 				{
 					Y0[i]=Y[i];
 					dY_dt0[i]=dY_dt[i];
@@ -1280,7 +1279,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+(dh_dt+dh_dt0)*0.5*dt;
 				phie=phie0+(dphie_dt+dphie_dt0)*0.5*dt;
 
-				for(i=Nu1; i<=O16; i++) 
+				for(int i=Nu1; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
 					if (Y[i]<Ytmin) 
@@ -1293,7 +1292,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	ratioH[Li7] += ratioH[Be7];
 	ratioH[He3] += ratioH[H3];
 	
-	for (i=Nu0;i<=O16;i++)
+	for (int i=Nu0;i<=O16;i++)
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
@@ -1306,7 +1305,8 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 {	
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	NuclideIndex ie,je;
+	//NuclideIndex ie,je;
+	int ie,je;
 	for(ie=Nu0; ie<=O16; ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0;
 
@@ -1370,7 +1370,6 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 		if(optfail>0)
 		{
 			printf("Sorry, more precise calculation required, please wait...\n");
-
 			for(ie=Nu0; ie<=O16; ie++) 
                 ratioH_ref[ie]=ratioH[ie];
 			for(ie=Nu0; ie<=O16; ie++) 
