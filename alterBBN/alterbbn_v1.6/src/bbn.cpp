@@ -350,8 +350,8 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 	//NuclideIndex i,j,k,l;
 	double a[NUCBUF][NUCBUF];
-	for(int i=Nu1; i<=O16; i++) 
-        for(int j=Nu1; j<=O16; j++) 
+	for(NuclideIndex i=Nu1; i<=O16; i++) 
+        for(NuclideIndex j=Nu1; j<=O16; j++) 
             a[i][j] = 0;
 
     //ReactionIndex n;

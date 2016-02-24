@@ -174,7 +174,7 @@ enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-	None=0,
+	None=-1,
     Nu0=31,   Nu1,   // Nu2, Nu4
     H1,  H2,  H3,  
     He3, He4, //He6, He8,
@@ -186,6 +186,11 @@ enum NuclideIndex {
     NuclideIndexOverflow
 };
 
+NuclideIndex &operator++(NuclideIndex &index) {
+	assert(index != NuclideIndexOverflow);
+	index = static_cast<NuclideIndex>(index + 1);
+	return index;
+}
 
 
 #define NNUCREAC     	(ReactionIndexOverflow-n_p)
