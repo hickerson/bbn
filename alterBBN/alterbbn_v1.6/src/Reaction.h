@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <assert.h>
 
 /*--------------------------------------------------------------------*/
 
@@ -133,6 +134,12 @@ typedef enum ReactionIndex {
 	C13a_nO16,  /// C13 + a -> n + O16
     ReactionIndexOverflow
 } ReactionIndex;
+
+ReactionIndex &operator++(ReactionIndex &index) {
+	assert(index != ReactionIndexOverflow);
+	index = static_cast<ReactionIndex>(index + 1);
+	return index;
+}
 
 #define REACMIN n_p
 #define REACMAX C13a_nO16
