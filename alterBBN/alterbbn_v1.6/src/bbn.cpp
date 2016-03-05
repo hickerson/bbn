@@ -340,7 +340,12 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 
 
 //int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
-int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
+//int ReactionNetwork::linearize(
+int linearize(
+double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, 
+//double Y0[], double Y[], double dY_dt[], 
+NuclideArray Y0, NuclideArray Y, NuclideArray dY_dt, 
+double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
 	/* Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types */
@@ -562,15 +567,15 @@ int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, 
 	
 	for(NuclideIndex i=Nu1; i<=O16; ++i)
 	{
-	    //NuclideIndex i1,j1;
-	    int i1,j1;
+	    NuclideIndex i1,j1;
+	    //int i1,j1;
 		//i1=NNUC+1-i;    /// TODO fix
-		i1=O16+Nu1-i;    /// TODO fix
+		i1=O16+Nu1+(-i);    /// TODO fix
 		//for(j=1;j<=NNUC;j++)
 		for(NuclideIndex j=Nu1; j<=O16; ++j)
 		{
 			//j1=NNUC+1-j;	/// TODO fix
-			j1=O16+Nu1-j;    /// TODO fix
+			j1=O16+Nu1+(-j);    /// TODO fix
 			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
@@ -733,7 +738,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	double dT90_dt, dh_dt0, dphie_dt0;
 	//double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
 	//std::map <NuclideIndex,double> dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
-	std::map <NuclideIndex,double> dY_dt0, dY_dt, Y0, Y;
+	//std::map <NuclideIndex,double> dY_dt0, dY_dt, Y0, Y;
+	NuclideArray dY_dt0, dY_dt, Y0, Y;
 	double dtmin;
 	double z;
 	double H;
@@ -751,7 +757,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
     setup_reactions(reaction);
 		
     //ReactionIndex n;
-	for (ReactionIndex n = REACMIN; n <= REACMAX; ++n)
+	for (ReactionIndex n=REACMIN; n<=REACMAX; ++n)
 	{
 		f[n] = 0;
 		r[n] = 0;
@@ -813,7 +819,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	double drho_epem_dT9,drho_epem_dphie,P_epem,rho_neutrinos,rho_baryons;
 	double dM_epem_dT9,dN_epem_dphie;
 	
-	Y[H2] =Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
+	Y[H2]=Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
 	for (NuclideIndex i=H3; i<=O16; ++i) 
@@ -825,7 +831,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 
 	while(ltime == 0)
 	{
-		for(loop=1;loop<=2;loop++)
+		for(loop=1; loop<=2; loop++)
 		{
 			rhod=dark_density(T9/11.605,paramrelic);		
 			sd=dark_entropy(T9/11.605,paramrelic)/ 1.1605e10;
@@ -852,20 +858,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			}
 			else
 			{
-				cosh1=0;
-				cosh2=0;
-				cosh3=0;
-				cosh4=0;
-				cosh5=0;
-				cosh6=0;
-				cosh7=0;
-				sinh1=0;
-				sinh2=0;
-				sinh3=0;
-				sinh4=0;
-				sinh5=0;
-				sinh6=0;
-				sinh7=0;
+				cosh1=0; cosh2=0; cosh3=0; cosh4=0; cosh5=0; cosh6=0; cosh7=0;
+				sinh1=0; sinh2=0; sinh3=0; sinh4=0; sinh5=0; sinh6=0; sinh7=0;
 			}
 
 			rho_gamma=8.418*pow(T9,4.);
@@ -1042,7 +1036,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	double T90,h_eta0,phie0;
 	double dtl;
 	int loop;
-	double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
+	//double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
+	NuclideArray dY_dt0,dY_dt,Y0,Y;
 	//double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
 	double dT90_dt, dh_dt0, dphie_dt0;
 	//double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];

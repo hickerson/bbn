@@ -6,6 +6,7 @@
 #include <string.h>
 #include <strings.h>
 #include <assert.h>
+#include <map>
 
 /*--------------------------------------------------------------------*/
 
@@ -270,5 +271,20 @@ struct Reaction {
 	{};
 };
 
+typedef std::map<NuclideIndex,double> NuclideArray;
+
+class ReactionNetwork {
+	double T9;
+	Reaction reaction[];
+	double f[];
+	double r[];
+	int loop, inc, ip;
+	double dt;
+	double Y0[], Y[], dY_dt[];
+	double H, rhob;
+
+	int nucl();
+	int linearize();
+};
 
 #endif  /// __REACTION_H__
