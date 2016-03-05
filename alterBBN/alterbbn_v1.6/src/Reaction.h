@@ -135,11 +135,16 @@ typedef enum ReactionIndex {
     ReactionIndexOverflow
 } ReactionIndex;
 
-ReactionIndex &operator++(ReactionIndex &index) {
+ReactionIndex operator++(ReactionIndex);
+//ReactionIndex operator--(ReactionIndex);
+//ReactionIndex operator+(ReactionIndex a, int b);
+/*
+ReactionIndex &operator++(ReactionIndex index) {
 	assert(index != ReactionIndexOverflow);
 	index = static_cast<ReactionIndex>(index + 1);
 	return index;
 }
+*/
 
 #define REACMIN n_p
 #define REACMAX C13a_nO16
@@ -186,11 +191,23 @@ enum NuclideIndex {
     NuclideIndexOverflow
 };
 
-NuclideIndex &operator++(NuclideIndex &index) {
+// prefix operator ++i
+NuclideIndex operator++(NuclideIndex index);
+NuclideIndex operator--(NuclideIndex);
+NuclideIndex operator+(NuclideIndex a, int b);
+/*
+NuclideIndex operator++(NuclideIndex index) {
 	assert(index != NuclideIndexOverflow);
 	index = static_cast<NuclideIndex>(index + 1);
 	return index;
 }
+NuclideIndex operator++(NuclideIndex& index, int) {
+	NuclideIndex copy;
+	assert(index != NuclideIndexOverflow);
+	index = static_cast<NuclideIndex>(index + 1);
+	return copy;
+}
+*/
 
 
 #define NNUCREAC     	(ReactionIndexOverflow-n_p)
