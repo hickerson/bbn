@@ -119,7 +119,7 @@ void setup_nuclides(int A[], int Z[], double dm[]);
 //int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 //int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, 
-	double dt, NuclideArray y0, NuclideArray y, NuclideArray dydt, 
+	double dt, NuclideMap y0, NuclideMap y, NuclideMap dydt, 
 	double H, double rhob);
 int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);

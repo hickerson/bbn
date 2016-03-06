@@ -136,7 +136,7 @@ enum ReactionIndex {
     ReactionIndexOverflow
 };
 
-ReactionIndex operator++(ReactionIndex&);
+ReactionIndex operator++(ReactionIndex &,int);	// R++
 //ReactionIndex operator--(ReactionIndex);
 //ReactionIndex operator+(ReactionIndex a, int b);
 /*
@@ -202,8 +202,10 @@ enum NuclideIndex {
 #define MinNuclideIndex Nu1
 #define MaxNuclideIndex O16
 
-NuclideIndex operator++(NuclideIndex&); 	/// prefix operator ++i
-NuclideIndex operator--(NuclideIndex&); 	/// prefix operator --i
+//NuclideIndex & operator++(NuclideIndex &); 	/// prefix operator ++i
+//NuclideIndex & operator--(NuclideIndex &); 	/// prefix operator --i
+NuclideIndex operator++(NuclideIndex &, int); 	/// postfix operator i++
+NuclideIndex operator--(NuclideIndex &, int); 	/// postfix operator i--
 NuclideIndex operator+(NuclideIndex, NuclideIndex);
 NuclideIndex operator-(NuclideIndex, NuclideIndex);
 NuclideIndex operator+(NuclideIndex, int);
@@ -264,7 +266,7 @@ struct Reaction {
 	{};
 };
 
-typedef std::map<NuclideIndex,double> NuclideArray;
+typedef std::map<NuclideIndex,double> NuclideMap;
 
 class ReactionNetwork {
 	double T9;

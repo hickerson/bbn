@@ -114,7 +114,7 @@ void setup_reactions(Reaction reaction[])
     };
 
     ReactionIndex n,id;
-    for (n=0; n<NNUCREAC; ++n)
+    for (n=0; n<NNUCREAC; n++)
     {
         id = reac[n].id;
         reaction[id].id = id;
@@ -248,17 +248,31 @@ void setup_reactions(Reaction reaction[])
 	//printf("NNUCREAC: %d\n", NNUCREAC);
 }
 #endif
-
-NuclideIndex operator++(NuclideIndex& index) {
+/*
+NuclideIndex & operator++(NuclideIndex& index) {
 	assert(index != NuclideIndexOverflow);
 	index = static_cast<NuclideIndex>(1 + index);
 	return index;
 }
 
-NuclideIndex operator--(NuclideIndex& index) {
+NuclideIndex & operator--(NuclideIndex& index) {
 	assert(index != NuclideIndexUnderflow);
 	index = static_cast<NuclideIndex>(-1 + index);
 	return index;
+}
+*/
+NuclideIndex operator++(NuclideIndex & index, int) {
+	NuclideIndex rv = index;
+	assert(index != NuclideIndexOverflow);
+	index = static_cast<NuclideIndex>(1 + index);
+	return rv;
+}
+
+NuclideIndex operator--(NuclideIndex & index, int) {
+	NuclideIndex rv = index;
+	assert(index != NuclideIndexUnderflow);
+	index = static_cast<NuclideIndex>(-1 + index);
+	return rv;
 }
 
 NuclideIndex operator+(NuclideIndex a, NuclideIndex b) {
@@ -297,10 +311,11 @@ NuclideIndex operator-(NuclideIndex index) {
 	return index;
 }
 
-ReactionIndex operator++(ReactionIndex& index) {
+ReactionIndex operator++(ReactionIndex& index, int) {
+	ReactionIndex rv = index;
 	assert(index != ReactionIndexOverflow);
 	index = static_cast<ReactionIndex>(index + 1);
-	return index;
+	return rv;
 }
 
 
@@ -375,7 +390,7 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 int linearize(
 	double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, 
 	//double Y0[], double Y[], double dY_dt[], 
-	NuclideArray Y0, NuclideArray Y, NuclideArray dY_dt, 
+	NuclideMap Y0, NuclideMap Y, NuclideMap dY_dt, 
 	double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
@@ -411,12 +426,12 @@ int linearize(
 	
 	//NuclideIndex i,j,k,l;
 	double a[NUCBUF][NUCBUF];
-	for(NuclideIndex i=Nu1; i<=O16; ++i) 
-        for(NuclideIndex j=Nu1; j<=O16; ++j) 
+	for(NuclideIndex i=Nu1; i<=O16; i++) 
+        for(NuclideIndex j=Nu1; j<=O16; j++) 
             a[i][j] = 0;
 
     ReactionIndex n;
-	for (n=REACMIN; n<=REACMAX; ++n) 
+	for (n=REACMIN; n<=REACMAX; n++) 
 	{
         assert(reaction[n].id == n);
 		Reaction reac = reaction[n]; // TODO use
@@ -606,7 +621,7 @@ int linearize(
 	
 	double bdln = 3e-5*H;   /// was H*3.*1.e-5;
 	
-	for(NuclideIndex i=Nu1; i<=O16; ++i)
+	for(NuclideIndex i=Nu1; i<=O16; i++)
 	{
 	    NuclideIndex i1,j1;
 	    //int i1,j1;
@@ -614,7 +629,7 @@ int linearize(
 		//i1=O16+Nu1-i;    /// TODO fix
 		i1=-i;
 		//for(j=1;j<=NNUC;j++)
-		for(NuclideIndex j=Nu1; j<=O16; ++j)
+		for(NuclideIndex j=Nu1; j<=O16; j++)
 		{
 			//j1=NNUC+1-j;	/// TODO fix
 			//j1=O16+Nu1-j;    /// TODO fix
@@ -646,18 +661,18 @@ int linearize(
 	
 	nord=0;
 	fail=0;
-	for(NuclideIndex i=Nu1; i<=O16; ++i)
+	for(NuclideIndex i=Nu1; i<=O16; i++)
 	{
 		x[i]=b[i];
 		yx[i]=0;
 	}
 	
 	if(icnvm==inc) 
-        for(NuclideIndex i=Nu1; i<=O16; ++i) 
-            for(NuclideIndex j=Nu1;j<=O16; ++j) 
+        for(NuclideIndex i=Nu1; i<=O16; i++) 
+            for(NuclideIndex j=Nu1;j<=O16; j++) 
                 a0[j][i]=a[j][i];
 
-	for(NuclideIndex i=Nu1; i<=O16; ++i)
+	for(NuclideIndex i=Nu1; i<=O16; i++)
 	{
 		if(a[i][i]==0)
 		{
@@ -665,12 +680,12 @@ int linearize(
 			return fail;
 		}
 
-		for(NuclideIndex j=i+1; j<=O16; ++j)
+		for(NuclideIndex j=i+1; j<=O16; j++)
 		{
 			if(a[j][i]!=0)
 			{
 				cx=a[j][i]/a[i][i];
-				for(NuclideIndex k=i+1; k<=O16; ++k) 
+				for(NuclideIndex k=i+1; k<=O16; k++) 
                     a[j][k]-=cx*a[i][k];
 				a[j][i]=cx;
 				x[j]-=cx*x[i];
@@ -682,10 +697,10 @@ int linearize(
 		x[O16] /= a[O16][O16];
 		yx[O16] += x[O16];
 		
-		for(NuclideIndex i=O16-1; i>=Nu1; --i)
+		for(NuclideIndex i=O16-1; i>=Nu1; i--)
 		{
 			sum=0;
-			for(NuclideIndex j=i+1; j<=O16; ++j) 
+			for(NuclideIndex j=i+1; j<=O16; j++) 
                 sum+=a[i][j]*x[j];
 			x[i]=(x[i]-sum)/a[i][i];
 			yx[i]+=x[i];
@@ -694,22 +709,22 @@ int linearize(
 		test=1;
 	
 		if(icnvm==inc) {
-			for(NuclideIndex i=Nu1; i<=O16; ++i) {
+			for(NuclideIndex i=Nu1; i<=O16; i++) {
 				if(yx[i]!=0) {
 					xdy=fabs(x[i]/yx[i]);
 					if(xdy>2.e-4) {
 						if(nord<1) {
 							nord++;
 							
-							for(NuclideIndex j=Nu1; j<=O16; ++j) {
+							for(NuclideIndex j=Nu1; j<=O16; j++) {
 								t = 0;
-								for(NuclideIndex k=Nu1;k<=O16; ++k) 
+								for(NuclideIndex k=Nu1;k<=O16; k++) 
                                     t += a0[j][k]*yx[k];
 								x[j] = b[j] - t;
 							}
 
-							for(NuclideIndex j=H1; j<=O16; ++j) 
-                                for(NuclideIndex k=j+1; k<=O16; ++k) 
+							for(NuclideIndex j=H1; j<=O16; j++) 
+                                for(NuclideIndex k=j+1; k<=O16; k++) 
                                     x[k] -= a[k][j]*x[j];
 							break;
 						}
@@ -729,7 +744,7 @@ int linearize(
 	}
 	while(test);
 
-	for(NuclideIndex i=Nu1; i<=O16; ++i) 
+	for(NuclideIndex i=Nu1; i<=O16; i++) 
 	{
 		//yY[i]=yx[O16+Nu1-i];  /// TODO fix
 		yY[i]=yx[-i];  /// TODO fix
@@ -758,7 +773,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	double f[REACBUF];
 	double r[REACBUF];
 	//NuclideIndex i;
-	for(NuclideIndex i=Nu0; i<=O16; ++i)
+	for(NuclideIndex i=Nu0; i<=O16; i++)
 	{
         ratioH[i]=0;
 		assert(ratioH[i]==0);
@@ -777,7 +792,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	//double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
 	//std::map <NuclideIndex,double> dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
 	//std::map <NuclideIndex,double> dY_dt0, dY_dt, Y0, Y;
-	NuclideArray dY_dt0, dY_dt, Y0, Y;
+	NuclideMap dY_dt0, dY_dt, Y0, Y;
 	double dtmin;
 	double z;
 	double H;
@@ -795,7 +810,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
     setup_reactions(reaction);
 		
     //ReactionIndex n;
-	for (ReactionIndex n=REACMIN; n<=REACMAX; ++n)
+	for (ReactionIndex n=REACMIN; n<=REACMAX; n++)
 	{
 		f[n] = 0;
 		r[n] = 0;
@@ -860,7 +875,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Y[H2]=Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (NuclideIndex i=H3; i<=O16; ++i) 
+	for (NuclideIndex i=H3; i<=O16; i++) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -944,7 +959,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			sum_DeltaMdY_dt=0;
 			sum_ZdY_dt=0;
 
-			for(NuclideIndex i=Nu1; i<=O16; ++i)
+			for(NuclideIndex i=Nu1; i<=O16; i++)
 			{
 				sum_Y+=Y[i];
 				sum_ZY+=Zm[i]*Y[i];
@@ -973,12 +988,12 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for(NuclideIndex i=Nu1; i<=O16; ++i) 
+				for(NuclideIndex i=Nu1; i<=O16; i++) 
                     ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
-				for(NuclideIndex i=H1; i<=Be7; ++i) 
+				for(NuclideIndex i=H1; i<=Be7; i++) 
                     ratioH[Li8]+=ratioH[i];
 				ratioH[Li8]-=1.;
 				ratioH[Nu0] = h_eta / 33683.;
@@ -995,7 +1010,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				if(is>3)
 				{
 					dtmin=fabs(1./dlnT9_dt)*ct;
-					for(NuclideIndex i=Nu1; i<=O16; ++i)
+					for(NuclideIndex i=Nu1; i<=O16; i++)
 					{
 						if ((dY_dt[i]!=0)&&(Y[i]>Ytmin)) 
 						{
@@ -1022,7 +1037,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+dh_dt0*dt;
 				phie=phie0+dphie_dt0*dt;
 				
-				for(NuclideIndex i=Nu1; i<=O16; ++i) 
+				for(NuclideIndex i=Nu1; i<=O16; i++) 
 				{
 					Y0[i]=Y[i];
 					dY_dt0[i]=dY_dt[i];
@@ -1037,7 +1052,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+(dh_dt+dh_dt0)*0.5*dt;
 				phie=phie0+(dphie_dt+dphie_dt0)*0.5*dt;
 
-				for(NuclideIndex i=Nu1; i<=O16; ++i) 
+				for(NuclideIndex i=Nu1; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
 					if (Y[i]<Ytmin) 
@@ -1050,8 +1065,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	ratioH[Li7] += ratioH[Be7];
 	ratioH[He3] += ratioH[H3];
 	
-	//for (i=Nu0; i<=O16; ++i) 
-	for (NuclideIndex i=Nu1; i<=O16; ++i) 
+	//for (i=Nu0; i<=O16; i++) 
+	for (NuclideIndex i=Nu1; i<=O16; i++) 
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
@@ -1062,7 +1077,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
-	for(NuclideIndex i=Nu0; i<=O16; ++i) 
+	for(NuclideIndex i=Nu0; i<=O16; i++) 
 		ratioH[i]=0;
 	double f[REACBUF],r[REACBUF];
 	double sd;
@@ -1075,7 +1090,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	double dtl;
 	int loop;
 	//double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
-	NuclideArray dY_dt0,dY_dt,Y0,Y;
+	NuclideMap dY_dt0,dY_dt,Y0,Y;
 	//double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
 	double dT90_dt, dh_dt0, dphie_dt0;
 	//double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];
@@ -1094,7 +1109,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Reaction reaction[REACBUF];
     setup_reactions(reaction);
 		
-	for(ReactionIndex n=REACMIN; n<=REACMAX; ++n)
+	for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 	{
 		f[n] = 0;
 		r[n] = 0;
@@ -1130,7 +1145,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	double t=1./pow(T9*0.09615,2.);
 	double dt=dt0;
 
-	if (15.011 / T9 > 58.)
+	if (15.011 / T9 > 58.)	/// TODO
 	{
 		Y[Nu1] = 1.e-25;
 		Y[H1] = 1.;
@@ -1160,7 +1175,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Y[H2] = Y[Nu1]*Y[H1]*rhob0*exp(25.82/T9)/(pow(T9,1.5)*4.71e9);
 	
 	Y0[H2]=Y[H2];
-	for (NuclideIndex i=H3; i<=O16; ++i) 
+	for (NuclideIndex i=H3; i<=O16; i++) 
 	{
 		Y[i]=Ytmin;
 		Y0[i]=Y[i];
@@ -1254,7 +1269,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			sum_ZdY_dt=0.;
 
 			//for (i=1;i<=NNUC;i++)
-			for(NuclideIndex i=Nu1; i<=O16; ++i)
+			for(NuclideIndex i=Nu1; i<=O16; i++)
 			{
 				sum_Y+=Y[i];
 				sum_ZY+=Zm[i]*Y[i];
@@ -1279,12 +1294,12 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			{
 				it++;
 				//for (i=1;i<=NNUC;i++)
-				for(NuclideIndex i=Nu1; i<=O16; ++i)
+				for(NuclideIndex i=Nu1; i<=O16; i++)
 					ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
-				for(NuclideIndex i=Nu1; i<=Be7; ++i) 
+				for(NuclideIndex i=Nu1; i<=Be7; i++) 
 					ratioH[Li8] += ratioH[i];
 				ratioH[Li8] -= 1;
 				ratioH[Nu0] = h_eta/33683.;
@@ -1300,7 +1315,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				if(is>3)
 				{
 					dtmin=fabs(1./dlnT9_dt)*ct;
-					for(NuclideIndex i=Nu1; i<=O16; ++i)
+					for(NuclideIndex i=Nu1; i<=O16; i++)
 					{
 						if ((dY_dt[i]!=0.)&&(Y[i]>Ytmin)) 
 						{
@@ -1325,7 +1340,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+dh_dt0*dt;
 				phie=phie0+dphie_dt0*dt;
 				
-				for(NuclideIndex i=Nu1; i<=O16; ++i) 
+				for(NuclideIndex i=Nu1; i<=O16; i++) 
 				{
 					Y0[i]=Y[i];
 					dY_dt0[i]=dY_dt[i];
@@ -1339,7 +1354,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 				h_eta=h_eta0+(dh_dt+dh_dt0)*0.5*dt;
 				phie=phie0+(dphie_dt+dphie_dt0)*0.5*dt;
 
-				for(NuclideIndex i=Nu1; i<=O16; ++i) 
+				for(NuclideIndex i=Nu1; i<=O16; i++) 
 				{
 					Y[i]=Y0[i]+(dY_dt[i]+dY_dt0[i])*0.5*dt;
 					if (Y[i]<Ytmin) 
@@ -1352,7 +1367,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	ratioH[Li7] += ratioH[Be7];
 	ratioH[He3] += ratioH[H3];
 	
-	for (NuclideIndex i=Nu0; i<=O16; ++i)
+	for (NuclideIndex i=Nu0; i<=O16; i++)
         ratioH[i]=fabs(ratioH[i]);
 	
 	return fail;
@@ -1367,7 +1382,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
     //ReactionIndex REACMAX = C13a_nO16;
 	//NuclideIndex ie,je;
 	//int ie,je;
-	for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+	for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0;
 
 	if(err==0)
@@ -1383,7 +1398,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
             return 0;
 		if (nucl(0,paramrelic, ratioH)>0) 
             return 0;
-		for (NuclideIndex je=Nu0; je<=O16; ++je) 
+		for (NuclideIndex je=Nu0; je<=O16; je++) 
             sigma_ratioH[je]=fabs(sigma_ratioH[je]-ratioH[je]);
 		return 1;
 	}
@@ -1397,13 +1412,13 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 		
 		if (nucl(-10000, paramrelic, ratioH_ref)>0) 
             optfail=1;	
-		for (NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+		for (NuclideIndex ie=Nu0; ie<=O16; ie++) 
             optfail+=isnan(ratioH_ref[ie]);
 		
 		double ratioH_tmp[NUCBUF];
 		
 		//for(NuclideIndex ie=REACMIN; ie<=REACMAX; ie++)  /// TODO XXX <- THIS IS SUPER WRONG!
-		for(ReactionIndex n=REACMIN; n<=REACMAX; ++n)
+		for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 		{
 			if(optfail==0)
 			{
@@ -1414,42 +1429,42 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 				}
 			}
 						
-			for(NuclideIndex je=Nu0; je<=O16; ++je) 
+			for(NuclideIndex je=Nu0; je<=O16; je++) 
                 optfail += isnan(ratioH_tmp[je]);
 			
-            for(NuclideIndex je=Nu0; je<=O16; ++je) 
+            for(NuclideIndex je=Nu0; je<=O16; je++) 
                 sigma_ratioH[je] += pow(ratioH_tmp[je]-ratioH_ref[je],2);
 		}
 
-		for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+		for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
             sigma_ratioH[ie] = sqrt(sigma_ratioH[ie]);		
 		
-        for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+        for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
             if(sigma_ratioH[ie]/ratioH[ie] < 1.e-10) 
                 optfail+=1;
 		
 		if(optfail>0)
 		{
 			printf("Sorry, more precise calculation required, please wait...\n");
-			for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 ratioH_ref[ie]=ratioH[ie];
-			for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie]=0.;
 		    //for(ie=REACMIN; ie<=REACMAX; ie++)
-		    for(ReactionIndex n=REACMIN; n<=REACMAX; ++n)
+		    for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 			{
 				if(nucl_failsafe(-n, paramrelic, ratioH_tmp)>0) 
                     return 0;
 						
-				for(NuclideIndex je=Nu0; je<=O16; ++je) 
+				for(NuclideIndex je=Nu0; je<=O16; je++) 
                     sigma_ratioH[je] += pow(ratioH_tmp[je]-ratioH_ref[je],2.);
 			}
-			for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie] = sqrt(sigma_ratioH[ie]);
 		}
 
 
-		for(NuclideIndex ie=Nu0; ie<=O16; ++ie) 
+		for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
             sigma_ratioH[ie] *= ratioH[ie]/ratioH_ref[ie];
 
 		return 1;
