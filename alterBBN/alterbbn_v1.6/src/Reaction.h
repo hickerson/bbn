@@ -44,7 +44,7 @@
     h - helion (He3)
     a - alpha (He4)
 */
-typedef enum ReactionIndex {
+enum ReactionIndex {
 	n_p = 1,    /// n <-> p
 	H3_evHe3,   /// H3 -> e- + v + He3
 	Li8_ev2He4, /// Li8 -> e- + v + 2He4
@@ -134,7 +134,7 @@ typedef enum ReactionIndex {
 	B12a_nN15,  /// B12 + a -> n + N15
 	C13a_nO16,  /// C13 + a -> n + O16
     ReactionIndexOverflow
-} ReactionIndex;
+};
 
 ReactionIndex operator++(ReactionIndex);
 //ReactionIndex operator--(ReactionIndex);
@@ -193,23 +193,10 @@ enum NuclideIndex {
     NuclideIndexOverflow
 };
 
-// prefix operator ++i
-NuclideIndex operator++(NuclideIndex index);
-NuclideIndex operator--(NuclideIndex);
+NuclideIndex operator++(NuclideIndex index); 	/// prefix operator ++i
+NuclideIndex operator--(NuclideIndex); 			/// prefix operator --i
 NuclideIndex operator+(NuclideIndex a, int b);
-/*
-NuclideIndex operator++(NuclideIndex index) {
-	assert(index != NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(index + 1);
-	return index;
-}
-NuclideIndex operator++(NuclideIndex& index, int) {
-	NuclideIndex copy;
-	assert(index != NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(index + 1);
-	return copy;
-}
-*/
+NuclideIndex operator-(NuclideIndex a, int b);
 
 
 #define NNUCREAC     	(ReactionIndexOverflow-n_p)
@@ -221,7 +208,7 @@ NuclideIndex operator++(NuclideIndex& index, int) {
 
 
 struct Nuclide {
-    NuclideIndex id; /// Isotopic id
+    NuclideIndex id; 	/// Isotopic id
     //const char *S;    /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number

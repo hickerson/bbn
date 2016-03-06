@@ -264,6 +264,7 @@ NuclideIndex operator--(NuclideIndex index) {
 NuclideIndex operator+(NuclideIndex index, int a) {
 	assert(a>=0);
 	assert(index < NuclideIndexOverflow);
+	assert(index + a <= NuclideIndexOverflow);
 	index = static_cast<NuclideIndex>(index + a);
 	return index;
 }
@@ -271,9 +272,11 @@ NuclideIndex operator+(NuclideIndex index, int a) {
 NuclideIndex operator-(NuclideIndex index, int a) {
 	assert(a>=0);
 	assert(index > NuclideIndexUnderflow);
+	assert(index - a >= NuclideIndexUnderflow);
 	index = static_cast<NuclideIndex>(index - a);
 	return index;
 }
+
 
 ReactionIndex operator++(ReactionIndex index) {
 	assert(index != ReactionIndexOverflow);
