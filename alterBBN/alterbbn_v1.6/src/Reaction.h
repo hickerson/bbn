@@ -193,8 +193,10 @@ enum NuclideIndex {
     NuclideIndexOverflow
 };
 
-NuclideIndex operator++(NuclideIndex index); 	/// prefix operator ++i
-NuclideIndex operator--(NuclideIndex); 			/// prefix operator --i
+NuclideIndex operator++(NuclideIndex&); 	/// prefix operator ++i
+NuclideIndex operator--(NuclideIndex&); 	/// prefix operator --i
+NuclideIndex operator+(NuclideIndex a, NuclideIndex b);
+NuclideIndex operator-(NuclideIndex a, NuclideIndex b);
 NuclideIndex operator+(NuclideIndex a, int b);
 NuclideIndex operator-(NuclideIndex a, int b);
 

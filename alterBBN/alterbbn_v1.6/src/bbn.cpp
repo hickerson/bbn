@@ -249,32 +249,44 @@ void setup_reactions(Reaction reaction[])
 }
 #endif
 
-NuclideIndex operator++(NuclideIndex index) {
+NuclideIndex operator++(NuclideIndex& index) {
 	assert(index != NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(index + 1);
+	index = static_cast<NuclideIndex>(1 + index);
 	return index;
 }
 
-NuclideIndex operator--(NuclideIndex index) {
+NuclideIndex operator--(NuclideIndex& index) {
 	assert(index != NuclideIndexUnderflow);
-	index = static_cast<NuclideIndex>(index - 1);
+	index = static_cast<NuclideIndex>(-1 + index);
 	return index;
 }
 
-NuclideIndex operator+(NuclideIndex index, int a) {
-	assert(a>=0);
-	assert(index < NuclideIndexOverflow);
-	assert(index + a <= NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(index + a);
-	return index;
+NuclideIndex operator+(NuclideIndex a, NuclideIndex b) {
+	int index = int(a) + int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexUnderflow);
+	return static_cast<NuclideIndex>(index);
 }
 
-NuclideIndex operator-(NuclideIndex index, int a) {
-	assert(a>=0);
-	assert(index > NuclideIndexUnderflow);
-	assert(index - a >= NuclideIndexUnderflow);
-	index = static_cast<NuclideIndex>(index - a);
-	return index;
+NuclideIndex operator-(NuclideIndex a, NuclideIndex b) {
+	int index = int(a) - int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexUnderflow);
+	return static_cast<NuclideIndex>(index);
+}
+
+NuclideIndex operator+(NuclideIndex a, int b) {
+	int index = int(a) + int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexUnderflow);
+	return static_cast<NuclideIndex>(index);
+}
+
+NuclideIndex operator-(NuclideIndex a, int b) {
+	int index = int(a) - int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexUnderflow);
+	return static_cast<NuclideIndex>(index);
 }
 
 
@@ -354,10 +366,10 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 //int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
 //int ReactionNetwork::linearize(
 int linearize(
-double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, 
-//double Y0[], double Y[], double dY_dt[], 
-NuclideArray Y0, NuclideArray Y, NuclideArray dY_dt, 
-double H, double rhob)
+	double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, 
+	//double Y0[], double Y[], double dY_dt[], 
+	NuclideArray Y0, NuclideArray Y, NuclideArray dY_dt, 
+	double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
 	/* Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types */
@@ -526,10 +538,15 @@ double H, double rhob)
             //printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
             //printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
 
+			/*
 			i = static_cast<NuclideIndex>(O16-i+Nu1);
 			j = static_cast<NuclideIndex>(O16-j+Nu1);
 			k = static_cast<NuclideIndex>(O16-k+Nu1);
-			l = static_cast<NuclideIndex>(O16-k+Nu1);
+			l = static_cast<NuclideIndex>(O16-l+Nu1); */
+			i = O16+Nu1-i;
+			j = O16+Nu1-j;
+			k = O16+Nu1-k;
+			l = O16+Nu1-l;
             
 			if(j<=O16) 
                 a[j][i]+=rn2*cn1;
@@ -582,12 +599,12 @@ double H, double rhob)
 	    NuclideIndex i1,j1;
 	    //int i1,j1;
 		//i1=NNUC+1-i;    /// TODO fix
-		i1=O16+Nu1+(-i);    /// TODO fix
+		i1=O16+Nu1-i;    /// TODO fix
 		//for(j=1;j<=NNUC;j++)
 		for(NuclideIndex j=Nu1; j<=O16; ++j)
 		{
 			//j1=NNUC+1-j;	/// TODO fix
-			j1=O16+Nu1+(-j);    /// TODO fix
+			j1=O16+Nu1-j;    /// TODO fix
 			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
@@ -651,7 +668,7 @@ double H, double rhob)
 		x[O16] /= a[O16][O16];
 		yx[O16] += x[O16];
 		
-		for(NuclideIndex i= O16+int(-1); i>=Nu1; --i)
+		for(NuclideIndex i=O16-1; i>=Nu1; --i)
 		{
 			sum=0;
 			for(NuclideIndex j=i+1; j<=O16; ++j) 
