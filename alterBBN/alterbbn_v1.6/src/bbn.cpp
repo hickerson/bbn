@@ -264,33 +264,40 @@ NuclideIndex operator--(NuclideIndex& index) {
 NuclideIndex operator+(NuclideIndex a, NuclideIndex b) {
 	int index = int(a) + int(b);
 	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
 	return static_cast<NuclideIndex>(index);
 }
 
 NuclideIndex operator-(NuclideIndex a, NuclideIndex b) {
 	int index = int(a) - int(b);
 	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
 	return static_cast<NuclideIndex>(index);
 }
 
 NuclideIndex operator+(NuclideIndex a, int b) {
 	int index = int(a) + int(b);
 	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
 	return static_cast<NuclideIndex>(index);
 }
 
 NuclideIndex operator-(NuclideIndex a, int b) {
 	int index = int(a) - int(b);
 	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
 	return static_cast<NuclideIndex>(index);
 }
 
+NuclideIndex operator-(NuclideIndex index) {
+	int inverse = int(MaxNuclideIndex) + int(MinNuclideIndex) - int(index);
+	assert(inverse >= NuclideIndexUnderflow);
+	assert(inverse <= NuclideIndexOverflow);
+	index = static_cast<NuclideIndex>(inverse);
+	return index;
+}
 
-ReactionIndex operator++(ReactionIndex index) {
+ReactionIndex operator++(ReactionIndex& index) {
 	assert(index != ReactionIndexOverflow);
 	index = static_cast<ReactionIndex>(index + 1);
 	return index;
@@ -543,10 +550,15 @@ int linearize(
 			j = static_cast<NuclideIndex>(O16-j+Nu1);
 			k = static_cast<NuclideIndex>(O16-k+Nu1);
 			l = static_cast<NuclideIndex>(O16-l+Nu1); */
-			i = O16+Nu1-i;
-			j = O16+Nu1-j;
-			k = O16+Nu1-k;
-			l = O16+Nu1-l;
+			/*
+			i = O16-i+Nu1;
+			j = O16-j+Nu1;
+			k = O16-k+Nu1;
+			l = O16-l+Nu1; */
+			i = -i;
+			j = -j;
+			k = -k;
+			l = -l;
             
 			if(j<=O16) 
                 a[j][i]+=rn2*cn1;
@@ -599,12 +611,14 @@ int linearize(
 	    NuclideIndex i1,j1;
 	    //int i1,j1;
 		//i1=NNUC+1-i;    /// TODO fix
-		i1=O16+Nu1-i;    /// TODO fix
+		//i1=O16+Nu1-i;    /// TODO fix
+		i1=-i;
 		//for(j=1;j<=NNUC;j++)
 		for(NuclideIndex j=Nu1; j<=O16; ++j)
 		{
 			//j1=NNUC+1-j;	/// TODO fix
-			j1=O16+Nu1-j;    /// TODO fix
+			//j1=O16+Nu1-j;    /// TODO fix
+			j1=-j;
 			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
@@ -717,7 +731,8 @@ int linearize(
 
 	for(NuclideIndex i=Nu1; i<=O16; ++i) 
 	{
-		yY[i]=yx[O16+Nu1-i];  /// TODO fix
+		//yY[i]=yx[O16+Nu1-i];  /// TODO fix
+		yY[i]=yx[-i];  /// TODO fix
 		dY_dt[i]=(yY[i]-Y0[i])/dt;
 	}
 

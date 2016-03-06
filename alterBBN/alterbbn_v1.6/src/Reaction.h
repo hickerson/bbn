@@ -136,7 +136,7 @@ enum ReactionIndex {
     ReactionIndexOverflow
 };
 
-ReactionIndex operator++(ReactionIndex);
+ReactionIndex operator++(ReactionIndex&);
 //ReactionIndex operator--(ReactionIndex);
 //ReactionIndex operator+(ReactionIndex a, int b);
 /*
@@ -193,20 +193,23 @@ enum NuclideIndex {
     NuclideIndexOverflow
 };
 
-NuclideIndex operator++(NuclideIndex&); 	/// prefix operator ++i
-NuclideIndex operator--(NuclideIndex&); 	/// prefix operator --i
-NuclideIndex operator+(NuclideIndex a, NuclideIndex b);
-NuclideIndex operator-(NuclideIndex a, NuclideIndex b);
-NuclideIndex operator+(NuclideIndex a, int b);
-NuclideIndex operator-(NuclideIndex a, int b);
-
-
 #define NNUCREAC     	(ReactionIndexOverflow-n_p)
 #define NNUC          	(NuclideIndexOverflow-Nu1)
-//#define NNUC        	  26 
-//#define NNUCREAC   	  88
-//#define NBETA      	  11
+//#define NNUC        	26 
+//#define NNUCREAC   	88
+//#define NBETA      	11
 #define NUCBUF 			NuclideIndexOverflow
+#define MinNuclideIndex Nu1
+#define MaxNuclideIndex O16
+
+NuclideIndex operator++(NuclideIndex&); 	/// prefix operator ++i
+NuclideIndex operator--(NuclideIndex&); 	/// prefix operator --i
+NuclideIndex operator+(NuclideIndex, NuclideIndex);
+NuclideIndex operator-(NuclideIndex, NuclideIndex);
+NuclideIndex operator+(NuclideIndex, int);
+NuclideIndex operator-(NuclideIndex, int);
+NuclideIndex operator-(NuclideIndex);		/// prefix operator -i
+
 
 
 struct Nuclide {
