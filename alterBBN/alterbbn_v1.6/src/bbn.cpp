@@ -348,8 +348,8 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 
     //NuclideIndex i,j;
     //for (i=0; i<=O16-Nu0; i++) {
-    for (int i=0; i<O16-Nu0; i++) {
-        int j = _nuclide[i].id ;
+    for (int i=0; i<int(O16)-int(Nu0); i++) {
+        NuclideIndex j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
         Dm[j] = _nuclide[i].dm;
@@ -679,21 +679,15 @@ int linearize(
 
 		test=1;
 	
-		if(icnvm==inc) 
-		{
-			for(NuclideIndex i=Nu1; i<=O16; ++i) 
-			{
-				if(yx[i]!=0) 
-				{
+		if(icnvm==inc) {
+			for(NuclideIndex i=Nu1; i<=O16; ++i) {
+				if(yx[i]!=0) {
 					xdy=fabs(x[i]/yx[i]);
-					if(xdy>2.e-4) 
-					{
-						if(nord<1) 
-						{
+					if(xdy>2.e-4) {
+						if(nord<1) {
 							nord++;
 							
-							for(NuclideIndex j=Nu1; j<=O16; ++j) 
-							{
+							for(NuclideIndex j=Nu1; j<=O16; ++j) {
 								t = 0;
 								for(NuclideIndex k=Nu1;k<=O16; ++k) 
                                     t += a0[j][k]*yx[k];
@@ -969,7 +963,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
-				for(NuclideIndex i=H1;i<=Be7;++i) 
+				for(NuclideIndex i=H1; i<=Be7; ++i) 
                     ratioH[Li8]+=ratioH[i];
 				ratioH[Li8]-=1.;
 				ratioH[Nu0] = h_eta / 33683.;
