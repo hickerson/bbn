@@ -256,15 +256,22 @@ NuclideIndex operator++(NuclideIndex index) {
 }
 
 NuclideIndex operator--(NuclideIndex index) {
-	assert(index != None);
+	assert(index != NuclideIndexUnderflow);
 	index = static_cast<NuclideIndex>(index - 1);
 	return index;
 }
 
 NuclideIndex operator+(NuclideIndex index, int a) {
+	assert(a>=0);
+	assert(index < NuclideIndexOverflow);
 	index = static_cast<NuclideIndex>(index + a);
-	assert(index > NuclideIndexOverflow);
-	assert(index < None);
+	return index;
+}
+
+NuclideIndex operator-(NuclideIndex index, int a) {
+	assert(a>=0);
+	assert(index > NuclideIndexUnderflow);
+	index = static_cast<NuclideIndex>(index - a);
 	return index;
 }
 
@@ -273,6 +280,8 @@ ReactionIndex operator++(ReactionIndex index) {
 	index = static_cast<ReactionIndex>(index + 1);
 	return index;
 }
+
+
 
 //void setup_nuclides(Nuclide nuclide[]) {
 void setup_nuclides(int A[], int Z[], double Dm[]) {
