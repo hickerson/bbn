@@ -575,6 +575,8 @@ int linearize(
 			j = -j;
 			k = -k;
 			l = -l;
+            //printf("i j k l: %d %d %d %d\n",i,j,k,l);
+            //printf("-i -j -k -l: %d %d %d %d\n",-i,-j,-k,-l);
             
 			if(j<=O16) 
                 a[j][i]+=rj*ci;

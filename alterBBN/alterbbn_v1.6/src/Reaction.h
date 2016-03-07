@@ -180,9 +180,9 @@ enum NuclideIndex {
     //g=0, e=-1, v=0, 
     //n=1, p, 
     //d,   t,   h,   a, 
-    NuclideIndexUnderflow=30,
-	None,
-    Nu0, Nu1, // Nu2, Nu4
+    NuclideIndexUnderflow=-2,
+	None=-1,
+    Nu0=0, Nu1, // Nu2, Nu4
     H1,  H2,  H3,  
     He3, He4, //He6, He8,
     Li6, Li7, Be7, Li8,
