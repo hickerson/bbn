@@ -444,121 +444,122 @@ int linearize(
         //printf("Reading the indicies from the reaction tables.\n");
 		double Rn = reaction[n].reverse;
 		double Q9 = reaction[n].forward;
-        //int rn1, rn2, rn3, rn4; // TODO change to NN
-        int rn1=nn1[type];
-        int rn2=nn2[type];
-        int rn3=nn3[type];
-        int rn4=nn4[type];
+        //int ri, rj, rk, rl; // TODO change to NN
+        int ri=nn1[type];
+        int rj=nn2[type];
+        int rk=nn3[type];
+        int rl=nn4[type];
 
-        double cn1,cn2,cn3,cn4;
-        cn1=cn2=cn3=cn4=0;
+        double ci,cj,ck,cl;
+        ci=cj=ck=cl=0;
 			
         //printf("State of coefficients....\n");
         //printf("i j k l: %d %d %d %d\n",i,j,k,l);
-        //printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
+        //printf("ri rj rk rl: %d %d %d %d\n",ri,rj,rk,rl);
         //printf("n f[n] r[n]: %d %f %f\n",n,r[n],f[n]);
 		if (i <= O16 && l <= O16)
 		{
 			switch(type) 
 			{
 				case 0:	{ /* (1,0,0,1) type */
-					cn1=f[n];
-					cn2=0;
-					cn3=0;
-					cn4=r[n];
-					break;}
-
+					ci=f[n];
+					cj=0;
+					ck=0;
+					cl=r[n];
+					break;
+				}
 				case 1: { /* (1,1,0,1) type */
 					r[n]=Rn*1e10*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*f[n];
-					cn1=Y[j]*f[n]/2.;
-					cn2=Y[i]*f[n]/2.;
-					cn3=0;
-					cn4=r[n];
+					ci=Y[j]*f[n]/2.;
+					cj=Y[i]*f[n]/2.;
+					ck=0;
+					cl=r[n];
                     //printf("rohb: %f\n", rhob);
-					break;}
-
+					break;
+				}
 				case 2:	{ /* (1,1,1,1) type */
 					f[n]=rhob*f[n];
 					r[n]=Rn*exp(-Q9/T9)*f[n];
-					cn1=Y[j]*f[n]/2.;
-					cn2=Y[i]*f[n]/2.;
-					cn3=Y[l]*r[n]/2.;
-					cn4=Y[k]*r[n]/2.;
-					break;}
-
+					ci=Y[j]*f[n]/2.;
+					cj=Y[i]*f[n]/2.;
+					ck=Y[l]*r[n]/2.;
+					cl=Y[k]*r[n]/2.;
+					break;
+				}
 				case 3:	{ /* (1,0,0,2) type */
-					cn1=f[n];
-					cn2=0;
-					cn3=0;
-					cn4=Y[l]*r[n]/2.;
-					break;}
-
+					ci=f[n];
+					cj=0;
+					ck=0;
+					cl=Y[l]*r[n]/2.;
+					break;
+				}
 				case 4:	{ /* (1,1,0,2) type */
 					f[n]=rhob*f[n];
 					r[n]=Rn*exp(-Q9/T9)*f[n];
-					cn1=Y[j]*f[n]/2.;
-					cn2=Y[i]*f[n]/2.;
-					cn3=0;
-					cn4=Y[l]*r[n]/2.;
-					break;}
-
+					ci=Y[j]*f[n]/2.;
+					cj=Y[i]*f[n]/2.;
+					ck=0;
+					cl=Y[l]*r[n]/2.;
+					break;
+				}
 				case 5:	{ /* (2,0,1,1) type */
 					f[n]=rhob*f[n];
 					r[n]=Rn*exp(-Q9/T9)*f[n];
-					cn1=Y[i]*f[n]/2.;
-					cn2=0;
-					cn3=Y[l]*r[n]/2.;
-					cn4=Y[k]*r[n]/2.;
-					break;}
-
+					ci=Y[i]*f[n]/2.;
+					cj=0;
+					ck=Y[l]*r[n]/2.;
+					cl=Y[k]*r[n]/2.;
+					break;
+				}
 				case 6:	{ /* (3,0,0,1) type */
 					r[n]=Rn*1.e20*pow(T9,1.5)*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*rhob*f[n];
-					cn1=Y[i]*Y[i]*f[n]/6.;
-					cn2=0;
-					cn3=0;
-					cn4=r[n];
-					break;}
-		
+					ci=Y[i]*Y[i]*f[n]/6.;
+					cj=0;
+					ck=0;
+					cl=r[n];
+					break;
+				}
 				case 7:	{ /* (2,1,0,1) type */
 					r[n]=Rn*1.e20*pow(T9,1.5)*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*rhob*f[n];
-					cn1=Y[j]*Y[i]*f[n]/3.;
-					cn2=Y[i]*Y[i]*f[n]/6.;
-					cn3=0;
-					cn4=r[n];
-					break;}
-
+					ci=Y[j]*Y[i]*f[n]/3.;
+					cj=Y[i]*Y[i]*f[n]/6.;
+					ck=0;
+					cl=r[n];
+					break;
+				}
 				case 8:	{ /* (1,1,1,2) type */
 					f[n]=rhob*f[n];
 					r[n]=Rn*1.e-10*pow(T9,-1.5)*rhob*exp(-Q9/T9)*f[n];
-					cn1=Y[j]*f[n]/2.;
-					cn2=Y[i]*f[n]/2.;
-					cn3=Y[l]*Y[l]*r[n]/6.;
-					cn4=Y[k]*Y[l]*r[n]/3.;
-					break;}
-
+					ci=Y[j]*f[n]/2.;
+					cj=Y[i]*f[n]/2.;
+					ck=Y[l]*Y[l]*r[n]/6.;
+					cl=Y[k]*Y[l]*r[n]/3.;
+					break;
+				}
 				case 9:	{ /* (1,1,0,3) type */
 					f[n]=rhob*f[n];
 					r[n]=Rn*1.e-10*pow(T9,-1.5)*rhob*exp(-Q9/T9)*f[n];
-					cn1=Y[j]*f[n]/2.;
-					cn2=Y[i]*f[n]/2.;
-					cn3=0;
-					cn4=Y[l]*Y[l]*r[n]/6.;
-					break;}
-
+					ci=Y[j]*f[n]/2.;
+					cj=Y[i]*f[n]/2.;
+					ck=0;
+					cl=Y[l]*Y[l]*r[n]/6.;
+					break;
+				}
 				case 10:{ /* (2,0,2,1) type */
 					f[n]=rhob*f[n];
 					r[n]=Rn*1.e-10*pow(T9,-1.5)*rhob*exp(-Q9/T9)*f[n];
-					cn1=Y[i]*f[n]/2.;
-					cn2=0;
-					cn3=Y[l]*Y[k]*r[n]/3.;
-					cn4=Y[k]*Y[k]*r[n]/6.;}
+					ci=Y[i]*f[n]/2.;
+					cj=0;
+					ck=Y[l]*Y[k]*r[n]/3.;
+					cl=Y[k]*Y[k]*r[n]/6.;
+				}
 			}
             //printf("type: %d\n", type);
-            //printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
-            //printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
+            //printf("ri rj rk rl: %d %d %d %d\n",ri,rj,rk,rl);
+            //printf("ci cj ck cl: %f %f %f %f\n",ci,cj,ck,cl);
 
 			/*
 			i = static_cast<NuclideIndex>(O16-i+Nu1);
@@ -576,26 +577,26 @@ int linearize(
 			l = -l;
             
 			if(j<=O16) 
-                a[j][i]+=rn2*cn1;
+                a[j][i]+=rj*ci;
 			if(k<=O16) 
-                a[k][i]-=rn3*cn1;
-			a[i][i]+=rn1*cn1;
-			a[l][i]-=rn4*cn1;
+                a[k][i]-=rk*ci;
+			a[i][i]+=ri*ci;
+			a[l][i]-=rl*ci;
             //printf("i j k l: %d %d %d %d\n",i,j,k,l);
             //printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
 			//assert(a[i][j]>=0 && a[k][l]>=0);
 			
 			if (j<=O16) 
 			{
-				a[j][j]+=rn2*cn2;
+				a[j][j]+=rj*cj;
 				if(k<=O16) 
-                    a[k][j]-=rn3*cn2;
-				a[i][j]+=rn1*cn2;
-				a[l][j]-=rn4*cn2;
+                    a[k][j]-=rk*cj;
+				a[i][j]+=ri*cj;
+				a[l][j]-=rl*cj;
                 //printf("NUCBUF %d Nu1 %d O16 %d\n", NUCBUF, Nu1, O16);
                 //printf("i j k l: %d %d %d %d\n",i,j,k,l);
-                //printf("rn1 rn2 rn3 rn4: %d %d %d %d\n",rn1,rn3,rn3,rn4);
-                //printf("cn1 cn2 cn3 cn4: %f %f %f %f\n",cn1,cn2,cn3,cn4);
+                //printf("ri rj rk rl: %d %d %d %d\n",ri,rj,rk,rl);
+                //printf("ci cj ck cl: %f %f %f %f\n",ci,cj,ck,cl);
 			    //assert(a[i][j]>=0);
 			    //assert(a[l][j]>=0);
 			}
@@ -603,19 +604,19 @@ int linearize(
 			if (k<=O16)
 			{
 				if(j<=O16) 
-                    a[j][k]-=rn2*cn3;
-				a[k][k]+=rn3*cn3;
-				a[i][k]-=rn1*cn3;
-				a[l][k]+=rn4*cn3;
+                    a[j][k]-=rj*ck;
+				a[k][k]+=rk*ck;
+				a[i][k]-=ri*ck;
+				a[l][k]+=rl*ck;
 			    //assert(a[j][k]>=0);
 			}
 
 			if(j<=O16) 
-                a[j][l]-=rn2*cn4;
+                a[j][l]-=rj*cl;
 			if(k<=O16) 
-                a[k][l]+=rn3*cn4;
-			a[i][l]-=rn1*cn4;
-			a[l][l]+=rn4*cn4;
+                a[k][l]+=rk*cl;
+			a[i][l]-=ri*cl;
+			a[l][l]+=rl*cl;
 		}
 	}
 	
