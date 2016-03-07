@@ -1,7 +1,8 @@
 #include "include.h"
 #include "assert.h"
 
-void rate_weak(int err, double f[])
+//void rate_weak(int err, double f[])
+void rate_weak(int err, ReactionMap & f[]) // TODO
 /* calculates the nuclear forward rates of weak interaction reactions */
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
@@ -76,7 +77,10 @@ double weak_phase_space(double Ex, double Ee, double Enu)
 /*----------------------------------------------------*/
 
 
-void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu)
+void rate_pn(int err, struct relicparam paramrelic, 
+    //double f[], double r[], 
+    ReactionMap & f, ReactionMap & r, 
+    double T9, double Tnu)
 /* calculates the nuclear forward and reverse rates f[] and r[] of the reaction p <-> n at the temperature T9 */
 /*err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err)*/
 {
@@ -258,7 +262,9 @@ void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], doub
 
 /*----------------------------------------------------*/
 
-void rate_all(int err, double f[], double T9)
+void rate_all(int err, 
+    //double f[], double T9)
+    ReactionMap & f, ReactionMap & r)
 /* calculates the nuclear forward rates f[] of the nuclear reactions given below at the temperature T9 */
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {

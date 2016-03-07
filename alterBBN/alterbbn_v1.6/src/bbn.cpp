@@ -390,17 +390,19 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 //int ReactionNetwork::linearize(
 int linearize(
 	double T9, ReactionList & reactions, 
-	double f[], double r[], int loop, int inc, int ip, double dt, 
+	//double f[], double r[], 
+	ReactionMap & f, ReactionMap & r, 
+    int loop, int inc, int ip, double dt, 
 	//double Y0[], double Y[], double dY_dt[], 
 	NuclideMap & Y0, NuclideMap & Y, NuclideMap & dY_dt, 
 	double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
 	/* Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types */
-	double nn1[11]={1.,1.,1.,1.,1.,2.,3.,2.,1.,1.,2.};
-	double nn2[11]={0.,1.,1.,0.,1.,0.,0.,1.,1.,1.,0.};
-	double nn3[11]={0.,0.,1.,0.,0.,1.,0.,0.,1.,0.,2.};
-	double nn4[11]={1.,1.,1.,2.,2.,1.,1.,1.,2.,3.,1.};
+	double nn1[11] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
+	double nn2[11] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
+	double nn3[11] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
+	double nn4[11] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
@@ -774,8 +776,9 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 {
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	double f[REACBUF];
-	double r[REACBUF];
+	//double f[REACBUF];
+	//double r[REACBUF];
+	ReactionMap f,r;
 	for(NuclideIndex i=Nu0; i<=O16; i++)
 	{
         ratioH[i]=0;
@@ -1083,7 +1086,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 {
 	for(NuclideIndex i=Nu0; i<=O16; i++) 
 		ratioH[i]=0;
-	double f[REACBUF],r[REACBUF];
+	//double f[REACBUF],r[REACBUF];
+	ReactionMap f,r;
 	double sd;
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
