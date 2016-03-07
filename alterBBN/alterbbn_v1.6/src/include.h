@@ -112,7 +112,7 @@ void rate_all(int err, double f[], double T9);
 
 
 /* bbn.c */
-void setup_reactions(Reaction reaction[]);
+void setup_reactions(ReactionList & reaction);
 //void setup_reactions(double reacparam[][8]);
 //void setup_nuclides(Nuclide nuclide[]);
 void setup_nuclides(int A[], int Z[], double dm[]);

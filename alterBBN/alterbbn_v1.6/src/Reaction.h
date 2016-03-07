@@ -267,6 +267,9 @@ struct Reaction {
 };
 
 typedef std::map<NuclideIndex,double> NuclideMap;
+typedef std::map<NuclideIndex,Nuclide> NuclideList;
+typedef std::map<ReactionIndex,double> ReactionMap;
+typedef std::map<ReactionIndex,Reaction> ReactionList;
 
 class ReactionNetwork {
 	double T9;

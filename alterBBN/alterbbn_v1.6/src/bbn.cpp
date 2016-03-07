@@ -132,12 +132,13 @@ void setup_reactions(Reaction reaction[])
 	//printf("NNUCREAC: %d\n", NNUCREAC);
 }
 #else
-void setup_reactions(Reaction reaction[]) 
+//void setup_reactions(Reaction reaction[]) 
+void setup_reactions(ReactionList & reaction) 
 //void setup_reactions() 
 {
 	//map<ReactionIndex, Reaction> reaction;
-	Reaction reac[NNUCREAC] = {
-    /// beta decay  type i    j    k    l    rev    Q   rate        Reaction
+	Reaction r[NNUCREAC] = {
+    /// beta decay         type  i    j    k    l    rev    Q   rate        Reaction
 		Reaction(n_p,        0,  Nu1, Nu0, Nu0, H1,  0,     0       ),	/// n <-> p
         Reaction(H3_evHe3,   0,  H3,  Nu0, Nu0, He3, 0,     0       ),	/// H3 -> e- + v + He3
         Reaction(Li8_ev2He4, 3,  Li8, Nu0, Nu0, He4, 0,     0       ),	/// Li8 -> e- + v + 2He4
@@ -150,7 +151,7 @@ void setup_reactions(Reaction reaction[])
         Reaction(O14_evN14,  0,  O14, Nu0, Nu0, N14, 0,     0       ),	/// O14 -> e+ + v + N14
         Reaction(O15_evN15,  0,  O15, Nu0, Nu0, N15, 0,     0       ),	/// O15 -> e+ + v + N15
 
-    /// reaction    type i    j    k    l    rev    Q[MeV]          Reaction
+    /// reaction           type  i    j    k    l    rev    Q[MeV]          Reaction
         Reaction(H1n_gH2,    1,  H1,  Nu1, Nu0, H2,  0.471, 25.82   ),	/// H1 + n -> g + H2
         Reaction(H2n_gH3,    1,  H2,  Nu1, Nu0, H3,  1.63,  72.62   ),	/// H2 + n -> g + H3
         Reaction(He3n_gHe4,  1,  He3, Nu1, Nu0, He4, 2.61,  238.81  ),	/// He3 + n -> g + He4
@@ -232,16 +233,16 @@ void setup_reactions(Reaction reaction[])
 
     for (int n=0; n<NNUCREAC; n++)
     {
-        ReactionIndex id = reac[n].id;
+        ReactionIndex id = r[n].id;
         reaction[id].id = id;
-        reaction[id].type = reac[n].type;
-        reaction[id].in_major = reac[n].in_major;
-        reaction[id].in_minor = reac[n].in_minor;   // TODO don't set to zero.
-        reaction[id].out_minor = reac[n].out_minor; // TODO don't set to zero.
-        reaction[id].out_major = reac[n].out_major;
-        reaction[id].reverse = reac[n].reverse;
-        reaction[id].forward = reac[n].forward;
-		assert(reac[n].type < 11);
+        reaction[id].type = r[n].type;
+        reaction[id].in_major = r[n].in_major;
+        reaction[id].in_minor = r[n].in_minor;   // TODO don't set to zero.
+        reaction[id].out_minor = r[n].out_minor; // TODO don't set to zero.
+        reaction[id].out_major = r[n].out_major;
+        reaction[id].reverse = r[n].reverse;
+        reaction[id].forward = r[n].forward;
+		assert(r[n].type < 11);
     }
 	//printf("Reaction Index Overflow: %d\n", ReactionIndexOverflow);
 	//printf("C13a_nO16: %d\n", C13a_nO16);
@@ -388,9 +389,10 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 //int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
 //int ReactionNetwork::linearize(
 int linearize(
-	double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, 
+	double T9, ReactionList & reactions, 
+	double f[], double r[], int loop, int inc, int ip, double dt, 
 	//double Y0[], double Y[], double dY_dt[], 
-	NuclideMap Y0, NuclideMap Y, NuclideMap dY_dt, 
+	NuclideMap & Y0, NuclideMap & Y, NuclideMap & dY_dt, 
 	double H, double rhob)
 /* solves for new abundances using gaussian elimination with back substitution */
 {
@@ -433,22 +435,21 @@ int linearize(
     ReactionIndex n;
 	for (n=REACMIN; n<=REACMAX; n++) 
 	{
-        assert(reaction[n].id == n);
-		Reaction reac = reaction[n]; // TODO use
-        int type = reaction[n].type;
-		NuclideIndex i,j,k,l;
-		i = reaction[n].in_major;
-		j = reaction[n].in_minor;
-		k = reaction[n].out_minor;
-		l = reaction[n].out_major;
+		Reaction reaction = reactions[n];
+        assert(reaction.id == n);
+        int type = reaction.type;
+		NuclideIndex i = reaction.in_major;
+		NuclideIndex j = reaction.in_minor;
+		NuclideIndex k = reaction.out_minor;
+		NuclideIndex l = reaction.out_major;
         //printf("Reading the indicies from the reaction tables.\n");
-		double Rn = reaction[n].reverse;
-		double Q9 = reaction[n].forward;
+		double Rn = reaction.reverse;
+		double Q9 = reaction.forward;
         //int ri, rj, rk, rl; // TODO change to NN
-        int ri=nn1[type];
-        int rj=nn2[type];
-        int rk=nn3[type];
-        int rl=nn4[type];
+        int ri = nn1[type];
+        int rj = nn2[type];
+        int rk = nn3[type];
+        int rl = nn4[type];
 
         double ci,cj,ck,cl;
         ci=cj=ck=cl=0;
@@ -775,7 +776,6 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
     //ReactionIndex REACMAX = C13a_nO16;
 	double f[REACBUF];
 	double r[REACBUF];
-	//NuclideIndex i;
 	for(NuclideIndex i=Nu0; i<=O16; i++)
 	{
         ratioH[i]=0;
@@ -809,7 +809,8 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 
 	//double reacparam[NNUCREAC+1][8];
     //Reaction reaction[ReactionIndexOverflow];
-    Reaction reaction[REACBUF];
+    //Reaction reaction[REACBUF];
+	ReactionList reaction;
     setup_reactions(reaction);
 		
     //ReactionIndex n;
@@ -1109,8 +1110,9 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
     setup_nuclides(Am,Zm,Dm);
 
 	//double reacparam[REACBUF][8];
-	Reaction reaction[REACBUF];
-    setup_reactions(reaction);
+	//Reaction reaction[REACBUF];
+	ReactionList reactions;
+    setup_reactions(reactions);
 		
 	for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 	{
@@ -1261,7 +1263,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			
 			rate_all(err,f,T9);
 		
-			fail=linearize(T9,reaction,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
+			fail=linearize(T9,reactions,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
 
 			if(fail>0) return 0;
 			
