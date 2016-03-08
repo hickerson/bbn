@@ -771,7 +771,8 @@ int linearize(
 
 /*----------------------------------------------------*/
 
-int nucl(int err, CosmologyModel relic, double ratioH[NUCBUF])
+//int nucl(int err, CosmologyModel relic, double ratioH[NUCBUF])
+int nucl(int err, CosmologyModel relic, NuclideMap & ratioH)
 /* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in relic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
     //ReactionIndex REACMIN = n_p;
