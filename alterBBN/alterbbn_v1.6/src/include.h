@@ -153,9 +153,12 @@ int linearize(double T9, ReactionList & reactions,
               ReactionMap & f, ReactionMap & r, int loop, int inc, int ip, 
 	double dt, NuclideMap & y0, NuclideMap & y, NuclideMap & dydt, 
 	double H, double rhob);
-int nucl(int err, CosmologyModel relic, double ratioH[]);
-int nucl_failsafe(int err, CosmologyModel relic, double ratioH[]);
-int nucl_witherrors(int err, CosmologyModel relic, double ratioH[], double sigma_ratioH[]);
+//int nucl(int err, CosmologyModel relic, double ratioH[]);
+int nucl(int err, CosmologyModel relic, NuclideMap & ratioH);
+//int nucl_failsafe(int err, CosmologyModel relic, double ratioH[]);
+int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH);
+//int nucl_witherrors(int err, CosmologyModel relic, double ratioH[], double sigma_ratioH[]);
+int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH);
 int bbn_excluded(int err, CosmologyModel relic);
 
 #endif  /// __INCLUDE_H__

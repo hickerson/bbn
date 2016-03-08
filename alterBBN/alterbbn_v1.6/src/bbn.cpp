@@ -1081,7 +1081,8 @@ int nucl(int err, CosmologyModel relic, double ratioH[NUCBUF])
 
 /*----------------------------------------------------*/
 
-int nucl_failsafe(int err, CosmologyModel relic, double ratioH[NUCBUF])
+//int nucl_failsafe(int err, CosmologyModel relic, double ratioH[NUCBUF])
+int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH)
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
 	for(NuclideIndex i=Nu0; i<=O16; i++) 
@@ -1383,8 +1384,8 @@ int nucl_failsafe(int err, CosmologyModel relic, double ratioH[NUCBUF])
 }
 
 /*----------------------------------------------------*/
-
-int nucl_witherrors(int err, CosmologyModel relic, double ratioH[NUCBUF], double sigma_ratioH[NUCBUF])
+//int nucl_witherrors(int err, CosmologyModel relic, double ratioH[NUCBUF], double sigma_ratioH[NUCBUF])
+int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH)
 /* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in relic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
     //ReactionIndex REACMIN = n_p;
@@ -1416,7 +1417,8 @@ int nucl_witherrors(int err, CosmologyModel relic, double ratioH[NUCBUF], double
 		if (nucl(0, relic, ratioH)>0) 
             return 0;
 		
-		double ratioH_ref[NUCBUF];
+		//double ratioH_ref[NUCBUF];
+		NuclideMap ratioH_ref;
 		int optfail=0;
 		
 		if (nucl(-10000, relic, ratioH_ref)>0) 
@@ -1424,7 +1426,8 @@ int nucl_witherrors(int err, CosmologyModel relic, double ratioH[NUCBUF], double
 		for (NuclideIndex ie=Nu0; ie<=O16; ie++) 
             optfail+=isnan(ratioH_ref[ie]);
 		
-		double ratioH_tmp[NUCBUF];
+		//double ratioH_tmp[NUCBUF];
+		NuclideMap ratioH_tmp;
 		
 		//for(NuclideIndex ie=REACMIN; ie<=REACMAX; ie++)  /// TODO XXX <- THIS IS SUPER WRONG!
 		for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
@@ -1487,7 +1490,8 @@ int bbn_excluded(int err, CosmologyModel relic)
 /* "container" function which computes the abundances of the elements using the parameters of relic and compares them to observational limits. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. Returns 1 if the considered BBN scenario is allowed, 0 otherwise. */
 {	 
 	double H2_H,Yp,Li7_H,Be7_H,He3_H,Li6_H;
-	double ratioH[NUCBUF];
+	//double ratioH[NUCBUF];
+	NuclideMap ratioH;
 		
 	if(nucl(err,relic,ratioH)==0)
 	{
