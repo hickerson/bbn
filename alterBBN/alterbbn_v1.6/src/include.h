@@ -35,7 +35,8 @@
 
 /* structure containing the cosmological model parameters */
 // TODO make name not suck
-typedef struct relicparam {
+//typedef struct relicparam {
+class CosmologyModel {
 	int dummy;
 	int entropy_model;
 	double dd0,ndd,Tdend;
@@ -49,8 +50,48 @@ typedef struct relicparam {
 	double life_neutron;
 	double xinu1,xinu2,xinu3;
     double fierz;
-} relicparam;
 
+public:
+	void Init_modeleff(int model_eff);
+	void Init_cosmomodel();
+	void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3);
+	void Init_dark_density(double dd0, double ndd, double T_end);
+	void Init_dark_entropy(double sd0, double nsd, double T_end);
+	void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end);
+	void Init_nonthermal(double nt0, double nnt, double T_end);
+	void Init_fierz(double eta, double nbnu, double life_neutron, double fierz);
+
+public:
+	double heff(double Temp);
+	double sgStar(double Temp);
+	double geff(double Temp);
+	double dark_density(double T);
+	double dark_entropy(double T);
+	double dark_entropy_derivative(double T);
+	double dark_entropy_Sigmad(double T);
+	double nonthermal(double T);
+	double neutdens(double Tnu);
+};
+//} relicparam;
+
+/* omega.c */ // TODO all of this goes into RelicModel
+void Init_modeleff(int model_eff, struct relicparam* paramrelic);
+double heff(double Temp, struct relicparam paramrelic);
+double sgStar(double Temp, struct relicparam paramrelic);
+double geff(double Temp, struct relicparam paramrelic);
+void Init_cosmomodel(struct relicparam* paramrelic);
+void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3, struct relicparam* paramrelic);
+void Init_dark_density(double dd0, double ndd, double T_end, struct relicparam* paramrelic);
+void Init_dark_entropy(double sd0, double nsd, double T_end, struct relicparam* paramrelic);
+void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end, struct relicparam* paramrelic);
+void Init_nonthermal(double nt0, double nnt, double T_end, struct relicparam* paramrelic);
+double dark_density(double T, struct relicparam paramrelic);
+double dark_entropy(double T, struct relicparam paramrelic);
+double dark_entropy_derivative(double T, struct relicparam paramrelic);
+double dark_entropy_Sigmad(double T, struct relicparam paramrelic);
+double nonthermal(double T, struct relicparam paramrelic);
+double neutdens(double Tnu, struct relicparam paramrelic);
+void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic);
 
 /*--------------------------------------------------------------------*/
 
@@ -85,24 +126,6 @@ int test_integer(char name[]);
 int test_file(char *name);
 
 
-/* omega.c */
-void Init_modeleff(int model_eff, struct relicparam* paramrelic);
-double heff(double Temp, struct relicparam paramrelic);
-double sgStar(double Temp, struct relicparam paramrelic);
-double geff(double Temp, struct relicparam paramrelic);
-void Init_cosmomodel(struct relicparam* paramrelic);
-void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3, struct relicparam* paramrelic);
-void Init_dark_density(double dd0, double ndd, double T_end, struct relicparam* paramrelic);
-void Init_dark_entropy(double sd0, double nsd, double T_end, struct relicparam* paramrelic);
-void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end, struct relicparam* paramrelic);
-void Init_nonthermal(double nt0, double nnt, double T_end, struct relicparam* paramrelic);
-double dark_density(double T, struct relicparam paramrelic);
-double dark_entropy(double T, struct relicparam paramrelic);
-double dark_entropy_derivative(double T, struct relicparam paramrelic);
-double dark_entropy_Sigmad(double T, struct relicparam paramrelic);
-double nonthermal(double T, struct relicparam paramrelic);
-double neutdens(double Tnu, struct relicparam paramrelic);
-void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic);
 
 
 /* bbnrate.c */
