@@ -1,10 +1,15 @@
 #include "include.h"
 #include "assert.h"
 
+/** -----------------------------------------------------------------
+/* calculates the nuclear forward rates of weak interaction reactions
+/*     err=0: central values; 
+/*     err=1: high values; 
+/*     err=2: low values; 
+/*     err>100000: random gaussian error; 
+/*     err<0: error only for process number (-err)  */
 //void rate_weak(int err, double f[])
 void rate_weak(int err, ReactionMap & f) // TODO
-/* calculates the nuclear forward rates of weak interaction reactions */
-/* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
     //double Nbeta = 11;
     ReactionIndex first = H3_evHe3;
@@ -30,8 +35,7 @@ void rate_weak(int err, ReactionMap & f) // TODO
 		ferrlow[first] = -5.e-3;
 		ferr[first] = 5.e-3;
 		
-	    //int reac;
-		for(ReactionIndex reac = first; reac<=last; reac++)
+		for(ReactionIndex reac=first; reac<=last; reac++)
 		{
 			ferrhigh[reac] = 9.;
 			ferrlow[reac] = -0.9;
@@ -56,9 +60,13 @@ void rate_weak(int err, ReactionMap & f) // TODO
                 f[reac] *= fabs(1+ferr[reac]*rand_gauss());
 		}
 		
-		if(err<0) 
-            exit(-err);
-            //f[-err] *= fabs(1+ferr[-err]);
+		//if(err<0) {
+        if(err<=-first and err>=-last) {
+            //exit(-err);
+            ReactionIndex reac = static_cast<ReactionIndex>(-err);
+            f[reac] *= fabs(1+ferr[reac]);
+            //f[-err]*=fabs(1.+ferr[-err]);
+        }
 	}
 
 	return;
@@ -885,9 +893,12 @@ void rate_all(int err, ReactionMap & f, double T9)
                 f[reac]*=fabs(1.+ferr[reac]*rand_gauss());
 		}
 	}
-	else if(err<=-first&&err>=-last) 
-        exit(-err);
+	else if(err<=-first and err>=-last) {
+        //exit(-err);
+        ReactionIndex reac = static_cast<ReactionIndex>(-err);
+        f[reac] *= fabs(1+ferr[reac]);
         //f[-err]*=fabs(1.+ferr[-err]);
+    }
 	
 	return;
 }

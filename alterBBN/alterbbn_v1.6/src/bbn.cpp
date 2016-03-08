@@ -304,7 +304,10 @@ NuclideIndex operator-(NuclideIndex a, int b) {
 	return static_cast<NuclideIndex>(index);
 }
 
-NuclideIndex operator-(NuclideIndex index) {
+/**
+ * reverse the index order
+ */
+NuclideIndex operator!(NuclideIndex index) { 
 	int inverse = int(MaxNuclideIndex) + int(MinNuclideIndex) - int(index);
 	assert(inverse >= NuclideIndexUnderflow);
 	assert(inverse <= NuclideIndexOverflow);
@@ -371,7 +374,7 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 
     //NuclideIndex i,j;
     //for (i=0; i<=O16-Nu0; i++) {
-    for (int i=0; i<int(O16)-int(Nu0); i++) {
+    for (int i=0; i<int(O16)-int(Nu0); i++) { // TODO just set up nuclideList, not these arrays
         NuclideIndex j = _nuclide[i].id ;
         A[j] = _nuclide[i].A;
         Z[j] = _nuclide[i].Z;
@@ -574,12 +577,12 @@ int linearize(
 			j = O16-j+Nu1;
 			k = O16-k+Nu1;
 			l = O16-l+Nu1; */
-			i = -i;
-			j = -j;
-			k = -k;
-			l = -l;
+			i = !i;
+			j = !j;
+			k = !k;
+			l = !l;
             //printf("i j k l: %d %d %d %d\n",i,j,k,l);
-            //printf("-i -j -k -l: %d %d %d %d\n",-i,-j,-k,-l);
+            //printf("!i !j !k !l: %d %d %d %d\n",!i,!j,!k,!l);
             
 			if(j<=O16) 
                 a[j][i]+=rj*ci;
@@ -633,13 +636,13 @@ int linearize(
 	    //int i1,j1;
 		//i1=NNUC+1-i;    /// TODO fix
 		//i1=O16+Nu1-i;    /// TODO fix
-		i1=-i;
+		i1=!i;
 		//for(j=1;j<=NNUC;j++)
 		for(NuclideIndex j=Nu1; j<=O16; j++)
 		{
 			//j1=NNUC+1-j;	/// TODO fix
 			//j1=O16+Nu1-j;    /// TODO fix
-			j1=-j;
+			j1=!j;
 			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
@@ -752,8 +755,8 @@ int linearize(
 
 	for(NuclideIndex i=Nu1; i<=O16; i++) 
 	{
-		//yY[i]=yx[O16+Nu1-i];  /// TODO fix
-		yY[i]=yx[-i];  /// TODO fix
+		//yY[i]=yx[O16+Nu1-i];
+		yY[i]=yx[!i]; 
 		dY_dt[i]=(yY[i]-Y0[i])/dt;
 	}
 
@@ -1403,7 +1406,7 @@ int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideM
 		else 
             return 1;
 	}
-	else if(err==1||err==2)
+	else if(err==1 or err==2)
 	{
 		if (nucl(err,relic, sigma_ratioH)>0) 
             return 0;

@@ -11,9 +11,9 @@ int main(int argc,char** argv)
 { 
 	//double ratioH[NUCBUF],sigma_ratioH[NUCBUF]; // TODO replace with map
 	NuclideMap ratioH, sigma_ratioH;
-	double eta,H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
+	double H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
 	double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
-	double nbnu,tau;
+	double eta,nbnu,tau;
     double fierz;
 
 	if(argc<5) 

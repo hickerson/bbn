@@ -210,7 +210,7 @@ NuclideIndex operator+(NuclideIndex, NuclideIndex);
 NuclideIndex operator-(NuclideIndex, NuclideIndex);
 NuclideIndex operator+(NuclideIndex, int);
 NuclideIndex operator-(NuclideIndex, int);
-NuclideIndex operator-(NuclideIndex);		/// prefix operator -i
+NuclideIndex operator!(NuclideIndex);		/// prefix operator !i
 
 
 
