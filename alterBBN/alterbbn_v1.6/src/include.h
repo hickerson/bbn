@@ -37,6 +37,7 @@
 // TODO make name not suck
 //typedef struct relicparam {
 class CosmologyModel {
+public:
 	int dummy;
 	int entropy_model;
 	double dd0,ndd,Tdend;
@@ -75,6 +76,7 @@ public:
 //} relicparam;
 
 /* omega.c */ // TODO all of this goes into RelicModel
+/*
 void Init_modeleff(int model_eff, struct relicparam* paramrelic);
 double heff(double Temp, struct relicparam paramrelic);
 double sgStar(double Temp, struct relicparam paramrelic);
@@ -92,6 +94,7 @@ double dark_entropy_Sigmad(double T, struct relicparam paramrelic);
 double nonthermal(double T, struct relicparam paramrelic);
 double neutdens(double Tnu, struct relicparam paramrelic);
 void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic);
+*/
 
 /*--------------------------------------------------------------------*/
 
@@ -133,7 +136,7 @@ int test_file(char *name);
 //void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu);
 //void rate_all(int err, double f[], double T9);
 void rate_weak(int err, ReactionMap & f);
-void rate_pn(int err, struct relicparam paramrelic, 
+void rate_pn(int err, CosmologyModel relic,
             ReactionMap & f, ReactionMap & r, double T9, double Tnu);
 void rate_all(int err, ReactionMap & f, double T9);
 
@@ -150,9 +153,9 @@ int linearize(double T9, ReactionList & reactions,
               ReactionMap & f, ReactionMap & r, int loop, int inc, int ip, 
 	double dt, NuclideMap & y0, NuclideMap & y, NuclideMap & dydt, 
 	double H, double rhob);
-int nucl(int err, struct relicparam paramrelic, double ratioH[]);
-int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
-int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[], double sigma_ratioH[]);
-int bbn_excluded(int err, struct relicparam paramrelic);
+int nucl(int err, CosmologyModel relic, double ratioH[]);
+int nucl_failsafe(int err, CosmologyModel relic, double ratioH[]);
+int nucl_witherrors(int err, CosmologyModel relic, double ratioH[], double sigma_ratioH[]);
+int bbn_excluded(int err, CosmologyModel relic);
 
 #endif  /// __INCLUDE_H__

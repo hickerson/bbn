@@ -82,7 +82,7 @@ double weak_phase_space(double Ex, double Ee, double Enu)
 /*----------------------------------------------------*/
 
 
-void rate_pn(int err, struct relicparam paramrelic, 
+void rate_pn(int err, CosmologyModel relic, 
     //double f[], double r[], 
     ReactionMap & f, ReactionMap & r, 
     double T9, double Tnu)
@@ -91,9 +91,9 @@ void rate_pn(int err, struct relicparam paramrelic,
 {
 	double ferr,rerr;
 	ferr = rerr = 0.;
-    double b = paramrelic.fierz;            /// beta-decay Fierz interference term */
-	double tau = paramrelic.life_neutron;   /// measured neutron lifetime at T=0 in s */
-    double xi1 = paramrelic.xinu1;          /// neutrino chemical potential
+    double b = relic.fierz;            /// beta-decay Fierz interference term */
+	double tau = relic.life_neutron;   /// measured neutron lifetime at T=0 in s */
+    double xi1 = relic.xinu1;          /// neutrino chemical potential
 	
 	if(((xi1==0)&&(b==0))||(Tnu==0))
 	{

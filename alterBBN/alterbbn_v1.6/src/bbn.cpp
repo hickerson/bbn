@@ -771,8 +771,8 @@ int linearize(
 
 /*----------------------------------------------------*/
 
-int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
-/* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in paramrelic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
+int nucl(int err, CosmologyModel relic, double ratioH[NUCBUF])
+/* Main routine with computes the abundance ratios H2_H, ..., Be7_H as well as the baryon-to-photon ratio eta, using the parameters contained in relic. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. If (err) is negative, the lower value of only the nuclear rate number "-err" is used. If (err=4), the value of the nuclear rates is taken (gaussianly) randomly for a MC analysis. */
 {
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
@@ -872,7 +872,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Y0[H1]=Y[H1];
 
 	z=5.929862032115561/T9;
-	double h_eta=paramrelic.eta0*33683.*2.75;
+	double h_eta=relic.eta0*33683.*2.75;
 	double phie=h_eta*(Y[H1]*1.784e-5)/(pow(z,3.)*0.5*(Lbessel(z)-Lbessel(2.*z)*2.+Lbessel(3.*z)*3.-Lbessel(4.*z)*4.+Lbessel(5.*z)*5.-Lbessel(6.*z)*6.+Lbessel(7.*z)*7.));
 	double rhob0=h_eta*pow(T9,3.);	
 	double rho_gamma,drho_gamma_dT9,P_gamma,rho_epem;
@@ -893,9 +893,9 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	{
 		for(loop=1; loop<=2; loop++)
 		{
-			rhod=dark_density(T9/11.605,paramrelic);		
-			sd=dark_entropy(T9/11.605,paramrelic)/ 1.1605e10;
-			dsd_dT9=dark_entropy_derivative(T9/11.605,paramrelic)/11.605/1.1605e10;
+			rhod=relic.dark_density(T9/11.605);		
+			sd=relic.dark_entropy(T9/11.605)/ 1.1605e10;
+			dsd_dT9=relic.dark_entropy_derivative(T9/11.605)/11.605/1.1605e10;
 
 			z=5.929862032115561/T9;
 			Tnu=pow(h_eta*T9*T9*T9/rhob0,1./3.)*T9i;
@@ -935,7 +935,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			
 			P_epem=(Lbessel(z)*cosh1/z-Lbessel(2.*z)*cosh2/(z*2.)+Lbessel(3.*z)*cosh3/(z*3.)-Lbessel(4.*z)*cosh4/(z*4.)+Lbessel(5.*z)*cosh5/(z*5.)-Lbessel(6.*z)*cosh6/(z*6.)+Lbessel(7.*z)*cosh7/(z*7.))*3206.; /* P_e+ + P_e- */
 			
-			rho_neutrinos=12.79264*neutdens(Tnu,paramrelic);
+			rho_neutrinos=12.79264*relic.neutdens(Tnu);
 										
 			rho_baryons=h_eta*T9*T9*T9;
             //printf("rho_baryons: %f h_eta: %f T9: %f\n", rho_baryons, h_eta, T9);
@@ -947,7 +947,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			
 			H=sqrt(Gn*8.*pi/3.*(rho_gamma+rho_epem+rho_neutrinos+rho_baryons+rhod));
 			
-			rate_pn(err,paramrelic,f,r,T9,Tnu);
+			rate_pn(err,relic,f,r,T9,Tnu);
             /*
 			f[n_p]*=norm;
 			r[n_p]*=norm;
@@ -1081,7 +1081,7 @@ int nucl(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 
 /*----------------------------------------------------*/
 
-int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
+int nucl_failsafe(int err, CosmologyModel relic, double ratioH[NUCBUF])
 /* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
 {
 	for(NuclideIndex i=Nu0; i<=O16; i++) 
@@ -1126,11 +1126,11 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	
     /* DONE in loop now
 	double norm=1.;
-	if(paramrelic.xinu1!=0.)
+	if(relic.xinu1!=0.)
 	{
 		double f_tmp[2],r_tmp[2];
-		rate_pn(0,paramrelic,f_tmp,r_tmp,0.00001,0.00001);
-		norm=1./f_tmp[1]/paramrelic.life_neutron;
+		rate_pn(0,relic,f_tmp,r_tmp,0.00001,0.00001);
+		norm=1./f_tmp[1]/relic.life_neutron;
 	}
     */
 
@@ -1174,7 +1174,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	Y0[H1]=Y[H1];
 
 	z=5.929862032115561/T9;
-	double h_eta=paramrelic.eta0*33683.*2.75;
+	double h_eta=relic.eta0*33683.*2.75;
 	double phie=h_eta*(Y[H1]*1.784e-5)/(pow(z,3.)*0.5*(Lbessel(z)-Lbessel(2.*z)*2.+Lbessel(3.*z)*3.-Lbessel(4.*z)*4.+Lbessel(5.*z)*5.-Lbessel(6.*z)*6.+Lbessel(7.*z)*7.));
 	double rhob0=h_eta*pow(T9,3.);	
 	double rho_gamma,drho_gamma_dT9,P_gamma,rho_epem;
@@ -1197,9 +1197,9 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 	{
 		for(loop=1;loop<=2;loop++)
 		{
-			rhod=dark_density(T9/11.605,paramrelic);		
-			sd=dark_entropy(T9/11.605,paramrelic)/ 1.1605e10;
-			dsd_dT9=dark_entropy_derivative(T9/11.605,paramrelic)/11.605/1.1605e10;
+			rhod=relic.dark_density(T9/11.605);		
+			sd=relic.dark_entropy(T9/11.605)/ 1.1605e10;
+			dsd_dT9=relic.dark_entropy_derivative(T9/11.605)/11.605/1.1605e10;
 
 			z=5.929862032115561/T9;
 			Tnu=pow(h_eta*T9*T9*T9/rhob0,1./3.)*T9i;
@@ -1251,7 +1251,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			
 			P_epem=(Lbessel(z)*cosh1/z-Lbessel(2.*z)*cosh2/(z*2.)+Lbessel(3.*z)*cosh3/(z*3.)-Lbessel(4.*z)*cosh4/(z*4.)+Lbessel(5.*z)*cosh5/(z*5.)-Lbessel(6.*z)*cosh6/(z*6.)+Lbessel(7.*z)*cosh7/(z*7.))*3206.; /* P_e+ + P_e- */
 			
-			rho_neutrinos=12.79264*neutdens(Tnu,paramrelic);
+			rho_neutrinos=12.79264*relic.neutdens(Tnu);
 										
 			rho_baryons=h_eta*T9*T9*T9;
 			dM_epem_dT9=-(z*z*z/T9)*(sinh1*(Lbessel(z)*3.-z*Mbessel(z))-sinh2*(Lbessel(2.*z)*3.-z*2.*Mbessel(2.*z))+sinh3*(Lbessel(3.*z)*3.-z*3.*Mbessel(3.*z))-sinh4*(Lbessel(4.*z)*3.-z*4.*Mbessel(4.*z))+sinh5*(Lbessel(5.*z)*3.-z*5.*Mbessel(5.*z))-sinh6*(Lbessel(6.*z)*3.-z*6.*Mbessel(6.*z))+sinh7*(Lbessel(7.*z)*3.-z*7.*Mbessel(7.*z))); /* d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) */
@@ -1261,7 +1261,7 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 			
 			H=sqrt(Gn*8.*pi/3.*(rho_gamma+rho_epem+rho_neutrinos+rho_baryons+rhod));
 			
-			rate_pn(err,paramrelic,f,r,T9,Tnu);
+			rate_pn(err,relic,f,r,T9,Tnu);
 			//f[1]*=norm;
 			//r[1]*=norm;
 			
@@ -1384,8 +1384,8 @@ int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[NUCBUF])
 
 /*----------------------------------------------------*/
 
-int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF], double sigma_ratioH[NUCBUF])
-/* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in paramrelic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
+int nucl_witherrors(int err, CosmologyModel relic, double ratioH[NUCBUF], double sigma_ratioH[NUCBUF])
+/* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in relic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
 {	
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
@@ -1396,16 +1396,16 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 
 	if(err==0)
 	{
-		if (nucl(0, paramrelic, ratioH)>0) 
+		if (nucl(0, relic, ratioH)>0) 
             return 0; 
 		else 
             return 1;
 	}
 	else if(err==1||err==2)
 	{
-		if (nucl(err,paramrelic, sigma_ratioH)>0) 
+		if (nucl(err,relic, sigma_ratioH)>0) 
             return 0;
-		if (nucl(0,paramrelic, ratioH)>0) 
+		if (nucl(0,relic, ratioH)>0) 
             return 0;
 		for (NuclideIndex je=Nu0; je<=O16; je++) 
             sigma_ratioH[je]=fabs(sigma_ratioH[je]-ratioH[je]);
@@ -1413,13 +1413,13 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 	}
 	else if(err==3)
 	{	
-		if (nucl(0, paramrelic, ratioH)>0) 
+		if (nucl(0, relic, ratioH)>0) 
             return 0;
 		
 		double ratioH_ref[NUCBUF];
 		int optfail=0;
 		
-		if (nucl(-10000, paramrelic, ratioH_ref)>0) 
+		if (nucl(-10000, relic, ratioH_ref)>0) 
             optfail=1;	
 		for (NuclideIndex ie=Nu0; ie<=O16; ie++) 
             optfail+=isnan(ratioH_ref[ie]);
@@ -1431,7 +1431,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 		{
 			if(optfail==0)
 			{
-				if(nucl(-n, paramrelic, ratioH_tmp)>0)
+				if(nucl(-n, relic, ratioH_tmp)>0)
 				{
 					optfail=1;
 					break;break;
@@ -1462,7 +1462,7 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 		    //for(ie=REACMIN; ie<=REACMAX; ie++)
 		    for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 			{
-				if(nucl_failsafe(-n, paramrelic, ratioH_tmp)>0) 
+				if(nucl_failsafe(-n, relic, ratioH_tmp)>0) 
                     return 0;
 						
 				for(NuclideIndex je=Nu0; je<=O16; je++) 
@@ -1483,13 +1483,13 @@ int nucl_witherrors(int err, struct relicparam paramrelic, double ratioH[NUCBUF]
 
 /*----------------------------------------------------*/
 
-int bbn_excluded(int err, struct relicparam paramrelic)
-/* "container" function which computes the abundances of the elements using the parameters of paramrelic and compares them to observational limits. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. Returns 1 if the considered BBN scenario is allowed, 0 otherwise. */
+int bbn_excluded(int err, CosmologyModel relic)
+/* "container" function which computes the abundances of the elements using the parameters of relic and compares them to observational limits. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. Returns 1 if the considered BBN scenario is allowed, 0 otherwise. */
 {	 
 	double H2_H,Yp,Li7_H,Be7_H,He3_H,Li6_H;
 	double ratioH[NUCBUF];
 		
-	if(nucl(err,paramrelic,ratioH)==0)
+	if(nucl(err,relic,ratioH)==0)
 	{
 		H2_H = ratioH[H2];
 		Yp = ratioH[He4];
