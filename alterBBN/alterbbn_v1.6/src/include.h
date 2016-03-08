@@ -106,9 +106,13 @@ void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, stru
 
 
 /* bbnrate.c */
-void rate_weak(int err, double f[]);
-void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu);
-void rate_all(int err, double f[], double T9);
+//void rate_weak(int err, double f[]);
+//void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu);
+//void rate_all(int err, double f[], double T9);
+void rate_weak(int err, ReactionMap & f);
+void rate_pn(int err, struct relicparam paramrelic, 
+            ReactionMap & f, ReactionMap & r, double T9, double Tnu);
+void rate_all(int err, ReactionMap & f, double T9);
 
 
 /* bbn.c */
@@ -118,8 +122,10 @@ void setup_reactions(ReactionList & reaction);
 void setup_nuclides(int A[], int Z[], double dm[]);
 //int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
 //int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
-int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, 
-	double dt, NuclideMap y0, NuclideMap y, NuclideMap dydt, 
+//int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, 
+int linearize(double T9, ReactionList & reactions, 
+              ReactionMap & f, ReactionMap & r, int loop, int inc, int ip, 
+	double dt, NuclideMap & y0, NuclideMap & y, NuclideMap & dydt, 
 	double H, double rhob);
 int nucl(int err, struct relicparam paramrelic, double ratioH[]);
 int nucl_failsafe(int err, struct relicparam paramrelic, double ratioH[]);
