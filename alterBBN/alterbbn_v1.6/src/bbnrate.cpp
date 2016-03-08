@@ -2,13 +2,13 @@
 #include "assert.h"
 
 //void rate_weak(int err, double f[])
-void rate_weak(int err, ReactionMap & f[]) // TODO
+void rate_weak(int err, ReactionMap & f) // TODO
 /* calculates the nuclear forward rates of weak interaction reactions */
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
     //double Nbeta = 11;
-    int first = H3_evHe3;
-    int last = O15_evN15;
+    ReactionIndex first = H3_evHe3;
+    ReactionIndex last = O15_evN15;
 	double ferrlow[REACBUF]; 
     double ferrhigh[REACBUF]; 
     double ferr[REACBUF];
@@ -30,30 +30,35 @@ void rate_weak(int err, ReactionMap & f[]) // TODO
 		ferrlow[first] = -5.e-3;
 		ferr[first] = 5.e-3;
 		
-	    int reac;
-		for(reac = first+1; reac <= last; reac++)
+	    //int reac;
+		for(ReactionIndex reac = first; reac<=last; reac++)
 		{
 			ferrhigh[reac] = 9.;
 			ferrlow[reac] = -0.9;
 			ferr[reac] = ferrhigh[reac];
 		}
 		
+		ferrhigh[first] = 5.e-3;
+		ferrlow[first] = -5.e-3;
+		ferr[first] = 5.e-3;
+		
 		if(err == 1) 
-		    for(reac = first; reac <= last; reac++)
+		    for(ReactionIndex reac = first; reac <= last; reac++)
                 f[reac] *= fabs(1+ferrhigh[reac]);
 		if(err == 2) 
-		    for(reac = first; reac <= last; reac++)
+		    for(ReactionIndex reac = first; reac <= last; reac++)
                 f[reac] *= fabs(1+ferrlow[reac]);
 				
 		if(err>100000)
 		{
 			srand((unsigned int)(getpid()+err));
-		    for(reac = first; reac <= last; reac++)
+		    for(ReactionIndex reac = first; reac <= last; reac++)
                 f[reac] *= fabs(1+ferr[reac]*rand_gauss());
 		}
 		
 		if(err<0) 
-            f[-err] *= fabs(1+ferr[-err]);
+            exit(-err);
+            //f[-err] *= fabs(1+ferr[-err]);
 	}
 
 	return;
@@ -262,22 +267,20 @@ void rate_pn(int err, struct relicparam paramrelic,
 
 /*----------------------------------------------------*/
 
-void rate_all(int err, 
+void rate_all(int err, ReactionMap & f, double T9)
     //double f[], double T9)
-    ReactionMap & f, ReactionMap & r)
 /* calculates the nuclear forward rates f[] of the nuclear reactions given below at the temperature T9 */
 /* err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err) */
 {
-    int first = H1n_gH2;
-    int last = C13a_nO16; 
+    ReactionIndex first = H1n_gH2;
+    ReactionIndex last = C13a_nO16; 
 	double ferrlow[REACBUF];
     double ferrhigh[REACBUF];
     double ferr[REACBUF];
-	int reac;
+	//int reac;
 
 	if((err!=0)&&(err!=-10000)) 
-        for(reac = first; reac <= last; reac++)
-        {
+        for(ReactionIndex reac = first; reac<=last; reac++) {
             ferrhigh[reac]=9.;
             ferrlow[reac]=-0.9;
             ferr[reac]=ferrhigh[reac];
@@ -861,13 +864,13 @@ void rate_all(int err,
         f[C13a_nO16]= 3.78e14/T9/T9*exp(-32.333*pow(T9,-1./3.)-pow(T9/0.71,2.))*(1.+4.68e1*T9-2.92e2*T9*T9+7.38e2*T9*T9*T9)+2.3e7*pow(T9,0.45)*exp(-13.03/T9);
 	f[C13a_nO16]*=(1.+7.3318e1*exp(-58.176/T9-1.98e-1*T9));
 	
-	for(reac=first; reac <= last; reac++)
+	for(ReactionIndex reac=first; reac<=last; reac++)
         f[reac] = fabs(f[reac]);
 	
 	if(err>0)
 	{
 		if(err>100000) srand((unsigned int)(getpid()+err));
-		for(reac = first; reac <= last; reac++) 
+		for(ReactionIndex reac = first; reac<=last; reac++) 
 		{
 			if((fabs(1.+ferrhigh[reac])<1.)||(fabs(1.+ferrhigh[reac])>10.)) 
                 ferrhigh[reac]=9.;
@@ -878,11 +881,13 @@ void rate_all(int err,
 			if(err==2) 
                 f[reac]*=fabs(1.+ferrlow[reac]);
 			
-			if(err>100000) f[reac]*=fabs(1.+ferr[reac]*rand_gauss());
+			if(err>100000) 
+                f[reac]*=fabs(1.+ferr[reac]*rand_gauss());
 		}
 	}
 	else if(err<=-first&&err>=-last) 
-        f[-err]*=fabs(1.+ferr[-err]);
+        exit(-err);
+        //f[-err]*=fabs(1.+ferr[-err]);
 	
 	return;
 }
