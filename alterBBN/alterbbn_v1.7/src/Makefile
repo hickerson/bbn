@@ -25,10 +25,11 @@ clean:
 distclean: 
 	rm -f *.a *.o *.x
 	
-libbbn.a: libbbn.a(general.o) libbbn.a(omega.o) libbbn.a(bbn.o) libbbn.a(bbnrate.o)
+libbbn.a: libbbn.a(general.o) libbbn.a(omega.o) libbbn.a(bbn.o) libbbn.a(bbnrate.o) libbbn.a(bbnio.o)
 	$(RANL)
 
 libbbn.a(general.o): general.cpp include.h
 libbbn.a(omega.o): omega.cpp include.h
 libbbn.a(bbn.o): bbn.cpp include.h
-libbbn.a(bbn.o): bbnrate.cpp include.h
+libbbn.a(bbnrate.o): bbnrate.cpp include.h
+libbbn.a(bbnio.o): bbnio.cpp bbnio.h include.h

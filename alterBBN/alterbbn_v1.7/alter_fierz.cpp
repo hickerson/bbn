@@ -1,9 +1,15 @@
-#include "src/include.h"
+#include "src/bbnio.h"
+
+/*
+void printlables() {
+	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
+}
 
 void printratios(const char *lable, const NuclideIndex ni[], NuclideMap & nm) {
 	printf("%s\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", lable,
             nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
-}  
+} 
+*/ 
 
 /*--------------------------------------------------------*/
 /* Calculation of the observables in the Standard Model   */
@@ -37,8 +43,11 @@ int main(int argc,char** argv)
 	relic.Init_fierz(eta,nbnu,tau,fierz);
 	
 	NuclideMap ratioH, sigma_ratioH;
-	NuclideIndex ratioIndex[6] = {He4,H2,He3,Li7,Li6,Be7};
+	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};
 
+    return computeratios(relic, ni, ratioH, sigma_ratioH);
+
+    /**
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 	nucl(2,relic,ratioH);
 	printratios("  low:", ratioIndex, ratioH);
@@ -56,7 +65,7 @@ int main(int argc,char** argv)
 	    printratios("value:", ratioIndex, ratioH);
 	    printratios("  +/-:", ratioIndex, sigma_ratioH);
 	}
-    printf("b    :\t %.3e\n",relic.fierz);
+    printf("    b:\t %.3e\n",relic.fierz);
 	
 	int compat=bbn_excluded(0,relic);
 
@@ -66,6 +75,6 @@ int main(int argc,char** argv)
         printf("Compatible with BBN constraints\n");
 	else
         printf("Computation failed\n");
-
 	return 1;
+        */
 }
