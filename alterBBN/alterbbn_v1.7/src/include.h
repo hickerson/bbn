@@ -34,8 +34,6 @@
 /*--------------------------------------------------------------------*/
 
 /* structure containing the cosmological model parameters */
-// TODO make name not suck
-//typedef struct relicparam {
 class CosmologyModel {
 public:
 	int dummy;
@@ -51,6 +49,20 @@ public:
 	double life_neutron;
 	double xinu1,xinu2,xinu3;
     double fierz;
+
+public:
+    CosmologyModel() { 
+        Init_cosmomodel(); 
+    }
+    CosmologyModel(double eta, double nbnu, double life_neutron, 
+                   double xinu1, double xinu2, double xinu3) {
+        Init_cosmomodel(); 
+	    Init_cosmomodel_param(eta, nbnu, life_neutron, xinu1, xinu2, xinu3);
+    }
+    CosmologyModel(double eta, double nbnu, double life_neutron) {
+        Init_cosmomodel(); 
+	    Init_cosmomodel_param(eta, nbnu, life_neutron, 0, 0, 0);
+    }
 
 public:
 	void Init_modeleff(int model_eff);

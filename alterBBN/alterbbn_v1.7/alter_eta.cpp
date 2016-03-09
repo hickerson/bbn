@@ -8,28 +8,22 @@
 /*--------------------------------------------------------*/
 int main(int argc,char** argv)
 { 
-	double eta, nbnu, tau, fierz;
+	double eta;
 
-	if(argc<5) 
+	if(argc<2) 
   	{ 
-        printf(" This program needs 4 parameters:\n"
-            "   eta     value of the baryon-to-photon ratio\n"
-            "   nbnu    number of neutrinos\n"
-            "   tau     neutron lifetime\n"
-            "   fierz   beta-decay Fierz interference term\n");
+        printf(" This program needs 1 parameter:\n"
+               "   eta     value of the baryon-to-photon ratio\n");
         exit(1); 
   	} 
 	else 
   	{
   		sscanf(argv[1],"%lf",&eta);
-  		sscanf(argv[2],"%lf",&nbnu);
-  		sscanf(argv[3],"%lf",&tau);
-  		sscanf(argv[4],"%lf",&fierz);
   	}
 	
-	CosmologyModel relic;      /// The parameters from the big bang relic before bbn.
-	relic.Init_cosmomodel();	
-	relic.Init_fierz(eta,nbnu,tau,fierz);
+	CosmologyModel relic;       /// The parameters from the big bang relic before bbn.
+	relic.Init_cosmomodel();    /// Standard Model constructor.
+	relic.eta0 = eta;           /// value of the baryon-to-photon ratio.
 	
 	NuclideMap ratioH, sigma_ratioH;
 	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};
