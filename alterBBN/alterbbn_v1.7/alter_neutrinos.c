@@ -15,13 +15,13 @@ int main(int argc,char** argv)
 
 	if(argc<2) 
   	{ 
-    		printf(" This program needs at least 1 parameter:\n"
-           	"   nbnu    number of neutrinos\n"
-           	" 3 optional parameters:\n"
-           	"   xi_1     electron neutrino degeneracy parameter\n"
-            	"   xi_2     muon neutrino degeneracy parameter\n"
-           	"   xi_3     tau neutrino degeneracy parameter\n");
-    		exit(1); 
+        printf(" This program needs at least 1 parameter:\n"
+        "   nbnu    number of neutrinos\n"
+        " 3 optional parameters:\n"
+        "   xi_1     electron neutrino degeneracy parameter\n"
+        "   xi_2     muon neutrino degeneracy parameter\n"
+        "   xi_3     tau neutrino degeneracy parameter\n");
+        exit(1); 
   	} 
 	else 
   	{

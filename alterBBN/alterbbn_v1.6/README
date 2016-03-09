@@ -1,7 +1,7 @@
-AlterBBN Version 1.6 (1 July 2015)
+AlterBBN Version 1.6 (Feb 2016)
 -----------------------------------
-By Alexandre Arbey (alexandre.arbey@ens-lyon.fr)
-Additions by Kevin Peter Hickerson (hickerson@physics.ucla.edu)
+By Alexandre Arbey (alexandre.arbey@ens-lyon.fr) v1.0 - v1.4
+Additions by Kevin Peter Hickerson (hickerson@physics.ucla.edu) v1.5 - v1.6
 
 INTRODUCTION
 ------------
@@ -59,16 +59,24 @@ README
 
 History
 -------
-v1.5 - 07/19/2015 -     Added calculation Fierz interference term to the n<->p rates. 
+v1.6 - 02/29/2016 -     
+            Changed all indicies for Reactions and Nuclides to enums
+            Improved the readability of some code and comments.
+            Instead of arrays, stl maps are now used.
+
+v1.5 - 07/19/2015 -     
+            Added calculation Fierz interference term to the n<->p rates. 
             Improved the direct integration section of n<->p.
             Fixed normalizer and added Coulomb correction n lifetime.
             Improved the readability of some code and comments.
 
-v1.4 - 06/28/2013 -     Added calculation of the errors, inspired by astro-ph/9803177 (thanks to S. Sarkar).
+v1.4 - 06/28/2013 -     
+            Added calculation of the errors, inspired by astro-ph/9803177 (thanks to S. Sarkar).
 			Routine prototypes modified.
 			Neutrino degeneracy added.
 
-v1.3 - 03/04/2012 -     Reaction rate moved to separate file bbnrate.c.
+v1.3 - 03/04/2012 -     
+            Reaction rate moved to separate file bbnrate.c.
 			Evaluation of errors using low and high rates.
 			Several comments modified in the .c files (thanks to A. Mishra).
 
