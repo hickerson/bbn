@@ -1488,31 +1488,3 @@ int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideM
 	return 0;
 }
 
-/*----------------------------------------------------*/
-
-int bbn_excluded(int err, CosmologyModel relic)
-/* "container" function which computes the abundances of the elements using the parameters of relic and compares them to observational limits. The err parameter is a switch to choose if the central (err=0), high (err=1) or low (err=2) values of the nuclear rates is used. Returns 1 if the considered BBN scenario is allowed, 0 otherwise. */
-{	 
-	double H2_H,Yp,Li7_H,Be7_H,He3_H,Li6_H;
-	//double ratioH[NUCBUF];
-	NuclideMap ratioH;
-		
-	if(nucl(err,relic,ratioH)==0)
-	{
-		H2_H = ratioH[H2];
-		Yp = ratioH[He4];
-		Li7_H = ratioH[Li7];
-		Be7_H = ratioH[Be7];
-		He3_H = ratioH[He3];
-		Li6_H = ratioH[Li6];
-	
-#ifdef DEBUG
-		printf("Yp\t\t H2/H\t\t He3/H2\t\t Li7/H\t\t Li6/Li7\t Be7/H\n");
-		printf("%.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n",Yp,H2_H,He3_H/H2_H,Li7_H,Li6_H/Li7_H,Be7_H);	
-#endif		
-		if(isnan(Yp)||isnan(H2_H)||isnan(He3_H/H2_H)||isnan(Li7_H)||isnan(Li6_H/Li7_H)||isnan(Be7_H)) return -1;
-		if((Yp<0.258)&&((H2_H>1.2e-5)&&(H2_H<5.3e-5))&&(He3_H/H2_H<1.52)&&(Li7_H>0.85e-10)&&(Li6_H/Li7_H<0.66)) return 0; /* Conservative intervals from hep-ph/0604251 */ 
-		else return 1;
-	}
-	else return -1;
-}

@@ -32,9 +32,11 @@ int main(int argc,char** argv)
 	relic.Init_fierz(eta,nbnu,tau,fierz);
 	
 	NuclideMap ratioH, sigma_ratioH;
-	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};
-
-    computeratios(relic, ni, ratioH, sigma_ratioH);
+	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};	/// only display this subset
+	
+    compute_ratios(relic, ni, ratioH, sigma_ratioH);
+    //compute_constraints(relic, ni, ratioH);
+    bbn_excluded(0, relic, ni, ratioH);
 
 	printlables();
     for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {

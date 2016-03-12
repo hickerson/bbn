@@ -102,7 +102,7 @@ enum ErrorType {
 
 /*--------------------------------------------------------------------*/
 
-/* general.c */
+/* general.cpp */
 double max(double x, double y);
 double min(double x, double y);
 double complex polylog(int n, int m, double x);
@@ -135,7 +135,7 @@ int test_file(char *name);
 
 
 
-/* bbnrate.c */
+/* bbnrate.cpp */
 void rate_weak(int err, ReactionMap & f);
 void rate_pn(int err, CosmologyModel relic,
             ReactionMap & f, ReactionMap & r, double T9, double Tnu);
@@ -144,7 +144,7 @@ void rate_all(int err, ReactionMap & f, double T9);
 
 
 
-/* bbn.c */
+/* bbn.cpp */
 void setup_reactions(ReactionList & reaction);
 void setup_nuclides(int A[], int Z[], double dm[]);
 int linearize(double T9, ReactionList & reactions, 
@@ -154,6 +154,6 @@ int linearize(double T9, ReactionList & reactions,
 int nucl(int err, CosmologyModel relic, NuclideMap & ratioH);
 int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH);
 int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH);
-int bbn_excluded(int err, CosmologyModel relic);
+//int bbn_excluded(int err, CosmologyModel relic);
 
 #endif  /// __INCLUDE_H__
