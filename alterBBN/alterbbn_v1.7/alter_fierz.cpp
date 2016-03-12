@@ -34,5 +34,15 @@ int main(int argc,char** argv)
 	NuclideMap ratioH, sigma_ratioH;
 	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};
 
-    return computeratios(relic, ni, ratioH, sigma_ratioH);
+    computeratios(relic, ni, ratioH, sigma_ratioH);
+
+	printlables();
+    for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
+        relic.fierz = b;
+        if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
+        {
+            printratios("value:", ni, ratioH);
+            printratios("  +/-:", ni, sigma_ratioH);
+        }
+    }
 }

@@ -33,7 +33,9 @@
 
 /*--------------------------------------------------------------------*/
 
-/* structure containing the cosmological model parameters */
+/**
+ * structure containing the cosmological model parameters 
+ */
 class CosmologyModel {
 public:
 	int dummy;
@@ -85,28 +87,18 @@ public:
 	double nonthermal(double T);
 	double neutdens(double Tnu);
 };
-//} relicparam;
 
-/* omega.c */ // TODO all of this goes into RelicModel
-/*
-void Init_modeleff(int model_eff, struct relicparam* paramrelic);
-double heff(double Temp, struct relicparam paramrelic);
-double sgStar(double Temp, struct relicparam paramrelic);
-double geff(double Temp, struct relicparam paramrelic);
-void Init_cosmomodel(struct relicparam* paramrelic);
-void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3, struct relicparam* paramrelic);
-void Init_dark_density(double dd0, double ndd, double T_end, struct relicparam* paramrelic);
-void Init_dark_entropy(double sd0, double nsd, double T_end, struct relicparam* paramrelic);
-void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end, struct relicparam* paramrelic);
-void Init_nonthermal(double nt0, double nnt, double T_end, struct relicparam* paramrelic);
-double dark_density(double T, struct relicparam paramrelic);
-double dark_entropy(double T, struct relicparam paramrelic);
-double dark_entropy_derivative(double T, struct relicparam paramrelic);
-double dark_entropy_Sigmad(double T, struct relicparam paramrelic);
-double nonthermal(double T, struct relicparam paramrelic);
-double neutdens(double Tnu, struct relicparam paramrelic);
-void Init_fierz(double eta, double nbnu, double life_neutron, double fierz, struct relicparam* paramrelic);
-*/
+
+/**
+ * Strongly typed Flag for type of error computation to perform and display
+ */
+enum ErrorType {
+    mean,
+    high,
+    low,
+    gaussian
+};
+
 
 /*--------------------------------------------------------------------*/
 
@@ -144,32 +136,23 @@ int test_file(char *name);
 
 
 /* bbnrate.c */
-//void rate_weak(int err, double f[]);
-//void rate_pn(int err, struct relicparam paramrelic, double f[], double r[], double T9, double Tnu);
-//void rate_all(int err, double f[], double T9);
 void rate_weak(int err, ReactionMap & f);
 void rate_pn(int err, CosmologyModel relic,
             ReactionMap & f, ReactionMap & r, double T9, double Tnu);
 void rate_all(int err, ReactionMap & f, double T9);
 
 
+
+
 /* bbn.c */
 void setup_reactions(ReactionList & reaction);
-//void setup_reactions(double reacparam[][8]);
-//void setup_nuclides(Nuclide nuclide[]);
 void setup_nuclides(int A[], int Z[], double dm[]);
-//int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
-//int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, double dt, double y0[], double y[], double dydt[], double H, double rhob);
-//int linearize(double T9, Reaction reaction[], double f[], double r[], int loop, int inc, int ip, 
 int linearize(double T9, ReactionList & reactions, 
               ReactionMap & f, ReactionMap & r, int loop, int inc, int ip, 
 	double dt, NuclideMap & y0, NuclideMap & y, NuclideMap & dydt, 
 	double H, double rhob);
-//int nucl(int err, CosmologyModel relic, double ratioH[]);
 int nucl(int err, CosmologyModel relic, NuclideMap & ratioH);
-//int nucl_failsafe(int err, CosmologyModel relic, double ratioH[]);
 int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH);
-//int nucl_witherrors(int err, CosmologyModel relic, double ratioH[], double sigma_ratioH[]);
 int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH);
 int bbn_excluded(int err, CosmologyModel relic);
 
