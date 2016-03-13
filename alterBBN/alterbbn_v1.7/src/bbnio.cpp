@@ -1,34 +1,42 @@
 #include "bbnio.h"
 
-void printlables() {
+void print_lables() {
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 }
 
 // TODO, change to vector< >
-void printratios(const char *lable, const NuclideIndex ni[], NuclideMap & nm) {
+void print_ratios(const char *lable, const NuclideIndex ni[], NuclideMap & nm) {
 	printf("%s\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", lable,
             nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
+}
+
+void print_ratios_errors(double var, NuclideIndex ni[], NuclideMap & nm, NuclideMap & snm) {
+	printf("%.4e\t %.4e\t %.4e\t %.4e\t %.4e\t %.4e\t %.4e\t", 
+			var, nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
+	printf("%.4e\t %.4e\t %.4e\t %.4e\t %.4e\t %.4e\n", 
+            snm[He4], snm[H2], snm[He3], snm[Li7], snm[Li6], snm[Be7]);
+	
 }
 
 int compute_ratios(CosmologyModel relic, NuclideIndex ni[], 
                    NuclideMap & ratioH, NuclideMap & sigma_ratioH)
 { 
-    printlables();
+    print_lables();
 	nucl(1, relic, ratioH);
-	printratios("  low:", ni, ratioH);
+	print_ratios("  low:", ni, ratioH);
 
 	nucl(0, relic, ratioH);
-	printratios(" cent:", ni, ratioH);
+	print_ratios(" cent:", ni, ratioH);
 	
 	nucl(2, relic, ratioH);
-	printratios(" high:", ni, ratioH);
+	print_ratios(" high:", ni, ratioH);
 			
 	if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
 	{
 		printf("With uncertainties:\n");
-		printlables();
-	    printratios("value:", ni, ratioH);
-	    printratios("  +/-:", ni, sigma_ratioH);
+		print_lables();
+	    print_ratios("value:", ni, ratioH);
+	    print_ratios("  +/-:", ni, sigma_ratioH);
 	}
 	
 	/*
@@ -67,10 +75,10 @@ int bbn_excluded(int err, CosmologyModel relic,
 		return -1;
 	}
 #ifdef DEBUG
-	printlables();
-	printratios(" mean:", ni, ratioH);
-	printratios(" obsH:", ni, observedLow);
-	printratios(" obsL:", ni, observedHigh);
+	print_lables();
+	print_ratios(" mean:", ni, ratioH);
+	print_ratios(" obsH:", ni, observedLow);
+	print_ratios(" obsL:", ni, observedHigh);
 #endif	
 
 	for (int i = 0; i < 6; i++) {
