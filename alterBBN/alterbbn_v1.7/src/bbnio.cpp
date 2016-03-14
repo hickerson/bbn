@@ -33,8 +33,15 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
 {
     int i=0;
     int id=0;
-    if (ni==He4)
-        return "Yp";
+    if (ni==H1) {
+        sprintf(buffer, "Xp");
+        return;
+    }
+
+    if (ni==He4) {
+        sprintf(buffer, "Yp");
+        return;
+    }
 
     while (id!=ni) 
     {
@@ -42,13 +49,12 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
         or  ni<NuclideIndexUnderflow)
             return;
 
-        id=_nuclide[i].id;
+        id=_nuclide[i++].id;
         if (ni==id) {
             sprintf(buffer, "%s/H", _nuclide[i].name);
-            return buffer;
+            return;
         }
     }
-    return;
 }
 
 void print_lables(const char *title, const NuclideIndex ni[])
@@ -57,8 +63,9 @@ void print_lables(const char *title, const NuclideIndex ni[])
     if (title[0] != 0)
 	printf("%*s", COLSIZE, title);
 	for (int i=0; i<6; i++) {
-		name = get_ratio_name(ni[i],name);
+		get_ratio_name(ni[i], name);
 		printf("%*s", COLSIZE, name);
+    }
 	printf("\n");
 }
 
@@ -67,7 +74,7 @@ void print_lables_errors(const char *title, const NuclideIndex ni[])
     char name[12];
 	printf("%s\t", title);
 	for (int i=0; i<6; i++) {
-		name = get_ratio_name(ni[i],name);
+		get_ratio_name(ni[i], name);
 		printf("%*s%*s err", COLSIZE, name, COLSIZE, name);
     }
 	printf("\n");
