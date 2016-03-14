@@ -1,7 +1,33 @@
 #include "bbnio.h"
 
+static const unsigned int col=10;    /// column width;
+
 void print_lables() {
 	printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
+    /*
+	printf("%*s\t", col, lable);
+	for (int i=0 ; i<6; i++)
+		printf("%*.3e", col, nm[ni[i]]);
+	printf("\n");
+    */
+}
+
+void print_lables(const char *title, const NuclideIndex ni[],
+										   NuclideMap & nm)
+{
+	printf("%*s\t", col, title);
+	for (int i=0 ; i<6; i++)
+		printf("%*.3e", col, nm[ni[i]]);
+	printf("\n");
+}
+
+void print_lables_errors(const char *title, const NuclideIndex ni[],
+										          NuclideMap & nm)
+{
+	printf("%s\t", title);
+	for (int i=0 ; i<6; i++)
+		printf("%.3e\t", nm[ni[i]]);
+	printf("\n");
 }
 
 // TODO, change to vector< >
@@ -127,6 +153,8 @@ int bbn_excluded(int err, CosmologyModel relic,
 			printf("Computation diverged.\n");
 	}
 
+    /// There needs to be way better ways to do this 
+    /// and it needs to come from updatable sources
 	/// Conservative intervals from hep-ph/0604251 
 	//if ((Yp<0.258)&&((H2_H>1.2e-5)&&(H2_H<5.3e-5))
 	//&&(He3_H/H2_H<1.52)&&(Li7_H>0.85e-10)&&(Li6_H/Li7_H<0.66))
