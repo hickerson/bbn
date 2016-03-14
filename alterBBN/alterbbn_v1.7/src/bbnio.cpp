@@ -2,16 +2,6 @@
 
 static const unsigned int COLSIZE=10;    /// column width;
 
-void print_lables() {
-	printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
-    /*
-	printf("%*s\t", COLSIZE, lable);
-	for (int i=0 ; i<6; i++)
-		printf("%*.3e", COLSIZE, nm[ni[i]]);
-	printf("\n");
-    */
-}
-
 const char * get_nuclide_name(const NuclideIndex ni)
 {
     int i=0;
@@ -55,6 +45,17 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
             return;
         }
     }
+}
+
+void print_lables() {
+
+	//printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
+    /*
+	printf("%*s\t", COLSIZE, lable);
+	for (int i=0 ; i<6; i++)
+		printf("%*.3e", COLSIZE, nm[ni[i]]);
+	printf("\n");
+    */
 }
 
 void print_lables(const char *title, const NuclideIndex ni[])
