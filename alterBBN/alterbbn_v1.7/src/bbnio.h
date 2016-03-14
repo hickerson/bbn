@@ -6,7 +6,7 @@
 
 
 /*-- output --------------------------------------------------------*/
-void print_lables();
+//void print_lables();  // depreciated 
 void print_lables(const char *title, const NuclideIndex ni[]);
 void print_lables_errors(const char *title, const NuclideIndex ni[]);
 void print_ratios(const char *lable, const NuclideIndex ni[],

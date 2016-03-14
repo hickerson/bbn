@@ -38,8 +38,8 @@ int main(int argc,char** argv)
     //compute_constraints(relic, ni, ratioH);
     bbn_excluded(0, relic, ni, ratioH);
 	
-	printf("\n");
-	print_lables();
+	printf("\ngnuplot formated bounded range.");
+	print_lables("#", ni);
     for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
         relic.fierz = b;
         if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))

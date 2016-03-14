@@ -47,16 +47,18 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
     }
 }
 
-void print_lables() {
-
+/*
+void print_lables() 
+{
+    print_lables(" ", {H1,H2,He3,Li7,Li6,Be7});
 	//printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
     /*
 	printf("%*s\t", COLSIZE, lable);
 	for (int i=0 ; i<6; i++)
 		printf("%*.3e", COLSIZE, nm[ni[i]]);
 	printf("\n");
-    */
 }
+*/
 
 void print_lables(const char *title, const NuclideIndex ni[])
 {
@@ -139,7 +141,7 @@ void print_ratios_bounds(double var, NuclideIndex ni[],
 int compute_ratios(CosmologyModel relic, NuclideIndex ni[], 
                    NuclideMap & ratioH, NuclideMap & sigma_ratioH)
 { 
-    print_lables();
+    print_lables("value", ni);
 	nucl(1, relic, ratioH);
 	print_ratios("  low:", ni, ratioH);
 
@@ -152,7 +154,7 @@ int compute_ratios(CosmologyModel relic, NuclideIndex ni[],
 	if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
 	{
 		printf("With uncertainties:\n");
-		print_lables();
+		print_lables(" ", ni);
 	    print_ratios("value:", ni, ratioH);
 	    print_ratios("  +/-:", ni, sigma_ratioH);
 	}
