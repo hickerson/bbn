@@ -20,6 +20,7 @@ void print_ratios_error_bounds(double, NuclideIndex ni[],
 void print_ratios_bounds(double, NuclideIndex ni[], 
                                  NuclideMap & low_ratioH, 
 								 NuclideMap & high_ratioH);
+const char * get_nuclide_name(const NuclideIndex ni)
 
 /*-- compute -------------------------------------------------------*/
 int compute_ratios(CosmologyModel relic, NuclideIndex ni[], 

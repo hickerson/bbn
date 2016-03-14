@@ -12,21 +12,61 @@ void print_lables() {
     */
 }
 
-void print_lables(const char *title, const NuclideIndex ni[],
-										   NuclideMap & nm)
+const char * get_nuclide_name(const NuclideIndex ni)
 {
-	printf("%*s\t", col, title);
-	for (int i=0 ; i<6; i++)
-		printf("%*.3e", col, nm[ni[i]]);
+    int i=0;
+    int id=0;
+    while (id!=ni)
+    {
+        if(ni>=NuclideIndexOverflow 
+        or ni<NuclideIndexUnderflow) {
+            return "";
+        }
+        id=nuclide[i].id;
+        if (ni==id)
+            return _nuclide[i].name;
+    }
+    return "error";
+}
+
+const char * get_ratio_name(const NuclideIndex ni, const char buffer[8])
+{
+    int i=0;
+    int id=0;
+    if (ni==He4)
+        return "Yp";
+
+    while (id!=ni) 
+    {
+        if(ni>=NuclideIndexOverflow 
+        or ni<NuclideIndexUnderflow)
+            return buffer;
+
+        id=nuclide[i].id;
+        if (ni==id) {
+            sprintf(buffer, "%s/H", _nuclide[i].name);
+            return buffer;
+        }
+    }
+    return "error";
+}
+
+void print_lables(const char *title, const NuclideIndex ni[])
+{
+	printf("%*s", col, title);
+	for (int i=0; i<6; i++)
+		printf("%*s", col, get_ratio_name(ni[i]));
 	printf("\n");
 }
 
-void print_lables_errors(const char *title, const NuclideIndex ni[],
-										          NuclideMap & nm)
+void print_lables_errors(const char *title, const NuclideIndex ni[])
 {
+    name[12];
 	printf("%s\t", title);
-	for (int i=0 ; i<6; i++)
-		printf("%.3e\t", nm[ni[i]]);
+	for (int i=0; i<6; i++) {
+		const char * name = get_ratio_name(ni[i],name);
+		printf("%*s%*s err", col, name, col, name);
+    }
 	printf("\n");
 }
 
@@ -70,7 +110,7 @@ void print_ratios_error_bounds(double var, NuclideIndex ni[],
 {
 	printf("%.3e\t", var);
 	for (int i=0 ; i<6; i++)
-		printf("%.3e\t%.3e\t", nm[ni[i]] - snm[ni[i]], nm[ni[i]] + snm[ni[i]]);
+		printf("%.3e\t%.3e\t", nm[ni[i]]-snm[ni[i]], nm[ni[i]]+snm[ni[i]]);
 	printf("\n");
 }
 
