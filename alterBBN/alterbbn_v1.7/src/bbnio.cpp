@@ -1,13 +1,13 @@
 #include "bbnio.h"
 
-static const unsigned int col=10;    /// column width;
+static const unsigned int COLSIZE=10;    /// column width;
 
 void print_lables() {
 	printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
     /*
-	printf("%*s\t", col, lable);
+	printf("%*s\t", COLSIZE, lable);
 	for (int i=0 ; i<6; i++)
-		printf("%*.3e", col, nm[ni[i]]);
+		printf("%*.3e", COLSIZE, nm[ni[i]]);
 	printf("\n");
     */
 }
@@ -22,14 +22,14 @@ const char * get_nuclide_name(const NuclideIndex ni)
         or ni<NuclideIndexUnderflow) {
             return "";
         }
-        id=nuclide[i].id;
+        id=_nuclide[i].id;
         if (ni==id)
             return _nuclide[i].name;
     }
     return "error";
 }
 
-const char * get_ratio_name(const NuclideIndex ni, const char buffer[8])
+void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
 {
     int i=0;
     int id=0;
@@ -38,34 +38,37 @@ const char * get_ratio_name(const NuclideIndex ni, const char buffer[8])
 
     while (id!=ni) 
     {
-        if(ni>=NuclideIndexOverflow 
-        or ni<NuclideIndexUnderflow)
-            return buffer;
+        if (ni>=NuclideIndexOverflow 
+        or  ni<NuclideIndexUnderflow)
+            return;
 
-        id=nuclide[i].id;
+        id=_nuclide[i].id;
         if (ni==id) {
             sprintf(buffer, "%s/H", _nuclide[i].name);
             return buffer;
         }
     }
-    return "error";
+    return;
 }
 
 void print_lables(const char *title, const NuclideIndex ni[])
 {
-	printf("%*s", col, title);
-	for (int i=0; i<6; i++)
-		printf("%*s", col, get_ratio_name(ni[i]));
+    char name[12];
+    if (title[0] != 0)
+	printf("%*s", COLSIZE, title);
+	for (int i=0; i<6; i++) {
+		name = get_ratio_name(ni[i],name);
+		printf("%*s", COLSIZE, name);
 	printf("\n");
 }
 
 void print_lables_errors(const char *title, const NuclideIndex ni[])
 {
-    name[12];
+    char name[12];
 	printf("%s\t", title);
 	for (int i=0; i<6; i++) {
-		const char * name = get_ratio_name(ni[i],name);
-		printf("%*s%*s err", col, name, col, name);
+		name = get_ratio_name(ni[i],name);
+		printf("%*s%*s err", COLSIZE, name, COLSIZE, name);
     }
 	printf("\n");
 }
