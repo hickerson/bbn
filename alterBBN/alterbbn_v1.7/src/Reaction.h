@@ -7,6 +7,7 @@
 #include <strings.h>
 #include <assert.h>
 #include <map>
+#include <string>
 
 /*--------------------------------------------------------------------*/
 
@@ -216,13 +217,50 @@ NuclideIndex operator!(NuclideIndex);		/// prefix operator !i
 
 struct Nuclide {
     NuclideIndex id; 	/// Isotopic id
-    //const char *S;    /// Symbol name
+    const char *name;   /// Symbol name
+    //string name;        /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
     int N;              /// Neutron number 
     double dm;          /// Mass excess [MeV]
 };
 
+
+const static Nuclide _nuclide[] = {
+    ///  S    name    A   Z   N   dm
+    {Nu0, "none", 0,  0,  0,  0 },
+    {Nu1, "n",    1,  0,  1,  8.071388},
+    {H1,  "H",    1,  1,  0,  7.289028},
+    {H2,  "D",    1,  1,  1,  13.135825},
+    {H3,  "T",    2,  1,  2,  14.949915},
+    {He3, "He3",  3,  2,  1,  14.931325},
+    {He4, "He4",  4,  2,  2,  2.424931},
+
+    {Li6, "Li6",  6,  3,  3,  14.9078},
+    {Li7, "Li7",  7,  3,  4,  15.7696},
+    {Be7, "Be7",  7,  4,  3,  15.7696},
+    {Li8, "Li8",  8,  3,  5,  20.9464},
+
+    {B8,  "B8",   8,  5,  3,  22.9212},
+    {Be9, "Be9",  9,  4,  5,  11.34758},
+    {B10, "Be10", 10, 5,  5,  12.05086},
+    {B11, "Be11", 11, 5,  6,  8.6680},
+
+    {C11, "C11",  11, 6,  5,  10.6506},
+    {B12, "B12",  12, 5,  7,  13.3690},
+    {C12, "C12",  12, 6,  6,  0},
+    {N12, "N12",  12, 7,  5,  17.3382},
+
+    {C13, "C13",  13, 6,  7,  3.125036},
+    {N13, "N13",  14, 7,  6,  5.3455},
+    {C14, "C14",  14, 6,  8,  3.019916},
+    {N14, "N14",  14, 7,  7,  2.863440},
+
+    {O14, "O14",  14, 8,  6,  8.006521},
+    {N15, "N15",  15, 7,  8,  0.101439},
+    {O15, "O15",  15, 8,  7,  2.8554},
+    {O16, "O16",  16, 8,  8,  -4.737036}
+};
 
 struct Reaction {
     ReactionIndex id;
