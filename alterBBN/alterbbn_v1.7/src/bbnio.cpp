@@ -5,18 +5,59 @@ void print_lables() {
 }
 
 // TODO, change to vector< >
-void print_ratios(const char *lable, const NuclideIndex ni[], NuclideMap & nm) {
-	printf("%s\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", lable,
-            nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
+void print_ratios(const char *lable, const NuclideIndex ni[],
+										   NuclideMap & nm)
+{
+	//printf("%s\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", lable,
+    //        nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
+	printf("%s\t", lable);
+	for (int i=0 ; i<6; i++)
+		printf("%.3e\t", nm[ni[i]]);
+	printf("\n");
 }
 
-void print_ratios_errors(double var, NuclideIndex ni[], NuclideMap & nm, NuclideMap & snm) {
-	printf("%.4e\t %.4e\t %.4e\t %.4e\t %.4e\t %.4e\t %.4e\t", 
-			var, nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
-	printf("%.4e\t %.4e\t %.4e\t %.4e\t %.4e\t %.4e\n", 
-            snm[He4], snm[H2], snm[He3], snm[Li7], snm[Li6], snm[Be7]);
-	
+/*
+void print_ratios_errors(double var, NuclideIndex ni[], 
+									 NuclideMap & nm, 
+									 NuclideMap & snm)
+{
+	//printf("%.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t", 
+	//		var, nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
+	//printf("%.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", 
+    //        snm[He4], snm[H2], snm[He3], snm[Li7], snm[Li6], snm[Be7]);
 }
+*/
+
+void print_ratios_errors(double var, const NuclideIndex ni[], 
+									       NuclideMap & ratioH, 
+									       NuclideMap & sigma_ratioH) 
+{
+	printf("%.3e\t", var);
+	for (int i=0 ; i<6; i++)
+		printf("%.3e\t%.3e\t", ratioH[ni[i]], sigma_ratioH[ni[i]]);
+	printf("\n");
+}
+
+void print_ratios_error_bounds(double var, NuclideIndex ni[], 
+									       NuclideMap & nm,
+									       NuclideMap & snm) 
+{
+	printf("%.3e\t", var);
+	for (int i=0 ; i<6; i++)
+		printf("%.3e\t%.3e\t", nm[ni[i]] - snm[ni[i]], nm[ni[i]] + snm[ni[i]]);
+	printf("\n");
+}
+
+void print_ratios_bounds(double var, NuclideIndex ni[], 
+                                     NuclideMap & low, 
+								     NuclideMap & high) 
+{
+	printf("%.3e\t", var);
+	for (int i=0 ; i<6; i++)
+		printf("%.3e\t%.3e\t", low[ni[i]], high[ni[i]]);
+	printf("\n");
+}
+
 
 int compute_ratios(CosmologyModel relic, NuclideIndex ni[], 
                    NuclideMap & ratioH, NuclideMap & sigma_ratioH)

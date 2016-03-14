@@ -37,15 +37,17 @@ int main(int argc,char** argv)
     compute_ratios(relic, ni, ratioH, sigma_ratioH);
     //compute_constraints(relic, ni, ratioH);
     bbn_excluded(0, relic, ni, ratioH);
-
+	
+	printf("\n");
 	print_lables();
     for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
         relic.fierz = b;
         if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
         {
-            print_ratios("value:", ni, ratioH);
-            print_ratios("  +/-:", ni, sigma_ratioH);
-            print_ratios_errors(b, ni, ratioH, sigma_ratioH);
+            //print_ratios("value:", ni, ratioH);
+            //print_ratios("  +/-:", ni, sigma_ratioH);
+            //print_ratios_errors(b, ni, ratioH, sigma_ratioH);
+            print_ratios_bounds(b, ni, ratioH, sigma_ratioH);
         }
     }
 }
