@@ -1,7 +1,7 @@
 #include "bbnio.h"
 
 void print_lables() {
-	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
+	printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
 }
 
 // TODO, change to vector< >
