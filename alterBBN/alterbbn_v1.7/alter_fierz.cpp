@@ -38,7 +38,7 @@ int main(int argc,char** argv)
     //compute_constraints(relic, ni, ratioH);
     bbn_excluded(0, relic, ni, ratioH);
 	
-	printf("\ngnuplot formated bounded range.");
+	printf("\nGnuplot formated bounded range.\n");
 	print_lables("#", ni);
     for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
         relic.fierz = b;

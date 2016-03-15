@@ -1,6 +1,6 @@
 #include "bbnio.h"
 
-static const unsigned int COLSIZE=10;    /// column width;
+static const unsigned int COLSIZE=11;    /// column width;
 static const char * numf = "%12.3e";     /// unused for now
 
 const char * get_nuclide_name(const NuclideIndex ni)
@@ -13,7 +13,7 @@ const char * get_nuclide_name(const NuclideIndex ni)
         or ni<NuclideIndexUnderflow) {
             return "";
         }
-        id=_nuclide[i].id;
+        id=_nuclide[++i].id;
         if (ni==id)
             return _nuclide[i].name;
     }
@@ -39,9 +39,9 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
         or  ni<NuclideIndexUnderflow)
             return;
 
-        id=_nuclide[i++].id;
+        id=_nuclide[++i].id;
         if (ni==id) {
-            sprintf(buffer, "%*s/H", COLSIZE, _nuclide[i].name);
+            sprintf(buffer, "%*s/H", COLSIZE-2, _nuclide[i].name);
             return;
         }
     }
@@ -61,7 +61,7 @@ void print_lables()
 
 void print_lables(const char *title, const NuclideIndex ni[])
 {
-    char name[12];
+    char name[COLSIZE+1];
     if (title[0] != 0)
 	printf("%*s", COLSIZE, title);
 	for (int i=0; i<6; i++) {
@@ -73,11 +73,12 @@ void print_lables(const char *title, const NuclideIndex ni[])
 
 void print_lables_errors(const char *title, const NuclideIndex ni[])
 {
-    char name[12];
+    char name[COLSIZE+1];
 	printf("%*s", COLSIZE, title);
 	for (int i=0; i<6; i++) {
 		get_ratio_name(ni[i], name);
-		printf("%*s%*s err", COLSIZE, name, COLSIZE, name);
+		printf("%*s", COLSIZE, name);
+		printf("%*s err", COLSIZE-4, name);
     }
 	printf("\n");
 }
@@ -110,9 +111,11 @@ void print_ratios_errors(double var, const NuclideIndex ni[],
 									       NuclideMap & ratioH, 
 									       NuclideMap & sigma_ratioH) 
 {
-	printf("%*.3e", COLSIZE, var);
-	for (int i=0 ; i<6; i++)
-		printf("%*.3e%*.3e", COLSIZE, ratioH[ni[i]], COLSIZE, sigma_ratioH[ni[i]]);
+	printf("%*.f", COLSIZE, var);
+	for (int i=0 ; i<6; i++) {
+		printf("%*.3e", COLSIZE, ratioH[ni[i]]);
+		printf("%*.3e", COLSIZE, sigma_ratioH[ni[i]]);
+	}
 	printf("\n");
 }
 
@@ -120,9 +123,11 @@ void print_ratios_error_bounds(double var, NuclideIndex ni[],
 									       NuclideMap & nm,
 									       NuclideMap & snm) 
 {
-	printf("%*.3e", COLSIZE, var);
-	for (int i=0 ; i<6; i++)
-		printf("%*.3e%*.3e", COLSIZE, nm[ni[i]]-snm[ni[i]], COLSIZE, nm[ni[i]]+snm[ni[i]]);
+	printf("%*.f", COLSIZE, var);
+	for (int i=0 ; i<6; i++) {
+		printf("%*.3e", COLSIZE, nm[ni[i]]-snm[ni[i]]);
+		printf("%*.3e", COLSIZE, nm[ni[i]]+snm[ni[i]]);
+	}
 	printf("\n");
 }
 
@@ -131,8 +136,10 @@ void print_ratios_bounds(double var, NuclideIndex ni[],
 								     NuclideMap & high) 
 {
 	printf("%*.3e", COLSIZE, var);
-	for (int i=0 ; i<6; i++)
-		printf("%*.3e%*.3e", COLSIZE, low[ni[i]], COLSIZE, high[ni[i]]);
+	for (int i=0 ; i<6; i++) {
+		printf("%*.3e", COLSIZE, low[ni[i]]);
+		printf("%*.3e", COLSIZE, high[ni[i]]);
+	}
 	printf("\n");
 }
 
@@ -140,22 +147,22 @@ void print_ratios_bounds(double var, NuclideIndex ni[],
 int compute_ratios(CosmologyModel relic, NuclideIndex ni[], 
                    NuclideMap & ratioH, NuclideMap & sigma_ratioH)
 { 
-    print_lables("value", ni);
+    print_lables("ratio:", ni);
 	nucl(1, relic, ratioH);
-	print_ratios("  low:", ni, ratioH);
+	print_ratios("low:", ni, ratioH);
 
 	nucl(0, relic, ratioH);
-	print_ratios(" cent:", ni, ratioH);
+	print_ratios("cent:", ni, ratioH);
 	
 	nucl(2, relic, ratioH);
-	print_ratios(" high:", ni, ratioH);
+	print_ratios("high:", ni, ratioH);
 			
 	if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
 	{
-		printf("With uncertainties:\n");
-		print_lables(" ", ni);
-	    print_ratios("value:", ni, ratioH);
-	    print_ratios("  +/-:", ni, sigma_ratioH);
+		printf("\nWith uncertainties:\n");
+		print_lables("ratio:", ni);
+	    print_ratios("cent:", ni, ratioH);
+	    print_ratios("+/-:", ni, sigma_ratioH);
 	}
 	
 	/*
@@ -195,9 +202,9 @@ int bbn_excluded(int err, CosmologyModel relic,
 	}
 #ifdef DEBUG
 	print_lables();
-	print_ratios(" mean:", ni, ratioH);
-	print_ratios(" obsH:", ni, observedLow);
-	print_ratios(" obsL:", ni, observedHigh);
+	print_ratios("mean:", ni, ratioH);
+	print_ratios("high:", ni, observedLow);
+	print_ratios("low:", ni, observedHigh);
 #endif	
 
 	for (int i = 0; i < 6; i++) {
@@ -216,11 +223,11 @@ int bbn_excluded(int err, CosmologyModel relic,
 	and ratioH[He3]/ratioH[H2] < 1.52
 	and ratioH[Li7] > 0.85e-10
 	and ratioH[Li6]/ratioH[Li7] < 0.66) {
-		printf("Compatible with BBN constraints\n");
+		printf("Compatible with BBN constraints.\n");
 		return 0;
 	}
 	else {
-		printf("Excluded by BBN constraints\n");
+		printf("Excluded by BBN constraints.\n");
 		return 1;
 	}
 
