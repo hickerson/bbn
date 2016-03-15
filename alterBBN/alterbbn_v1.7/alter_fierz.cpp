@@ -48,7 +48,7 @@ int main(int argc,char** argv)
             //print_ratios("value:", ni, ratioH);
             //print_ratios("  +/-:", ni, sigma_ratioH);
             //print_ratios_errors(b, ni, ratioH, sigma_ratioH);
-            print_ratios_bounds(b, ni, ratioH, sigma_ratioH);
+            print_ratios_error_bounds(b, ni, ratioH, sigma_ratioH);
         }
     }
 }
