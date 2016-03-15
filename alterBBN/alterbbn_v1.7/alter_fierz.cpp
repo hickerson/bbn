@@ -33,13 +33,14 @@ int main(int argc,char** argv)
 	
 	NuclideMap ratioH, sigma_ratioH;
 	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};	/// only display this subset
-	
+
+	printf("Primary central values:\n");	
     compute_ratios(relic, ni, ratioH, sigma_ratioH);
     //compute_constraints(relic, ni, ratioH);
     bbn_excluded(0, relic, ni, ratioH);
 	
 	printf("\nGnuplot formated bounded range.\n");
-	print_lables("#", ni);
+	print_lables_errors("Fierz b", ni);
     for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
         relic.fierz = b;
         if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
