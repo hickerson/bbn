@@ -59,7 +59,7 @@ void print_lables()
 }
 */
 
-void print_lables(const char *title, const NuclideIndex ni[])
+void print_lables(const char *title, NuclideIndex ni[])
 {
     char name[COLSIZE+1];
     if (title[0] != 0)
@@ -71,7 +71,7 @@ void print_lables(const char *title, const NuclideIndex ni[])
 	printf("\n");
 }
 
-void print_lables_errors(const char *title, const NuclideIndex ni[])
+void print_lables_errors(const char *title, NuclideIndex ni[])
 {
     char name[COLSIZE+1];
 	printf("%*s", COLSIZE, title);
@@ -84,7 +84,7 @@ void print_lables_errors(const char *title, const NuclideIndex ni[])
 }
 
 // TODO, change to vector< >
-void print_ratios(const char *lable, const NuclideIndex ni[],
+void print_ratios(const char *lable, NuclideIndex ni[],
 										   NuclideMap & nm)
 {
 	//printf("%s\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", lable,
@@ -95,21 +95,9 @@ void print_ratios(const char *lable, const NuclideIndex ni[],
 	printf("\n");
 }
 
-/*
 void print_ratios_errors(double var, NuclideIndex ni[], 
-									 NuclideMap & nm, 
-									 NuclideMap & snm)
-{
-	//printf("%.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t", 
-	//		var, nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
-	//printf("%.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", 
-    //        snm[He4], snm[H2], snm[He3], snm[Li7], snm[Li6], snm[Be7]);
-}
-*/
-
-void print_ratios_errors(double var, const NuclideIndex ni[], 
-									       NuclideMap & ratioH, 
-									       NuclideMap & sigma_ratioH) 
+									 NuclideMap & ratioH, 
+									 NuclideMap & sigma_ratioH) 
 {
 	printf("%*f", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
@@ -125,27 +113,28 @@ void print_ratios_error_bounds(double var, NuclideIndex ni[],
 {
 	printf("%*f", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
-		printf("%*.3e", COLSIZE, nm[ni[i]]-snm[ni[i]]);
-		printf("%*.3e", COLSIZE, nm[ni[i]]+snm[ni[i]]);
+		printf("min %*.3e", COLSIZE-4, nm[ni[i]]-snm[ni[i]]);
+		printf("max %*.3e", COLSIZE-4, nm[ni[i]]+snm[ni[i]]);
 	}
 	printf("\n");
 }
 
 void print_ratios_bounds(double var, NuclideIndex ni[], 
-                                     NuclideMap & low, 
-								     NuclideMap & high) 
+                                     NuclideMap & min, 
+								     NuclideMap & max) 
 {
 	printf("%*f", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
-		printf("%*.3e", COLSIZE, low[ni[i]]);
-		printf("%*.3e", COLSIZE, high[ni[i]]);
+		printf("min %*.3e", COLSIZE-4, min[ni[i]]);
+		printf("max %*.3e", COLSIZE-4, max[ni[i]]);
 	}
 	printf("\n");
 }
 
 
 int compute_ratios(CosmologyModel relic, NuclideIndex ni[], 
-                   NuclideMap & ratioH, NuclideMap & sigma_ratioH)
+                   						 NuclideMap & ratioH, 
+										 NuclideMap & sigma_ratioH)
 { 
     print_lables("ratio:", ni);
 	nucl(1, relic, ratioH);
@@ -192,8 +181,10 @@ int compute_ratios(CosmologyModel relic, NuclideIndex ni[],
  * values of the nuclear rates is used. Returns 1 if 
  * the considered BBN scenario is allowed, 0 otherwise.
  */
-int bbn_excluded(int err, CosmologyModel relic, 
-	NuclideIndex ni[], NuclideMap & ratioH)//, NuclideMap & observedHigh, NuclideMap & observedLow)
+int bbn_excluded(int err, CosmologyModel relic, NuclideIndex ni[], 
+												NuclideMap & ratioH)
+												//, const NuclideMap & observedHigh, 
+												//NuclideMap & observedLow)
 {	 
 	int error = nucl(err, relic, ratioH);
 	if(error != 0) {
@@ -207,10 +198,9 @@ int bbn_excluded(int err, CosmologyModel relic,
 	print_ratios("low:", ni, observedHigh);
 #endif	
 
-	for (int i = 0; i < 6; i++) {
-		if(isnan(ratioH[ni[i]]))
+	for(int i=0; i<6; i++)
+		if (isnan(ratioH[ni[i]]))
 			printf("Computation diverged.\n");
-	}
 
     /// There needs to be way better ways to do this 
     /// and it needs to come from updatable sources
