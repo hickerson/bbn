@@ -1,17 +1,17 @@
-Primary central values:
-     ratio:         Yp        D/H      He3/H      Li7/H      Li6/H      Be7/H
-       low:  2.464e-01  2.451e-05  4.345e-06  1.862e-10  3.514e-14  1.763e-10
-      cent:  2.464e-01  2.509e-05  1.014e-05  4.682e-10  1.090e-14  4.423e-10
-      high:  2.465e-01  2.575e-05  1.081e-05  5.005e-10  1.689e-15  4.164e-10
-
-With uncertainties:
-     ratio:         Yp        D/H      He3/H      Li7/H      Li6/H      Be7/H
-      cent:  2.464e-01  2.509e-05  1.014e-05  4.682e-10  1.090e-14  4.423e-10
-       +/-:  2.997e-05  4.357e-07  4.490e-07  3.348e-11  9.460e-15  3.233e-11
-Compatible with BBN constraints.
-
-Gnuplot formated bounded range.
-    Fierz b     Yp min     Yp max    D/H min    D/H max  He3/H min  He3/H max  Li7/H min  Li7/H max  Li6/H min  Li6/H max  Be7/H min  Be7/H max
+# Primary central values:
+#     ratio:         Yp        D/H      He3/H      Li7/H      Li6/H      Be7/H
+#       low:  2.464e-01  2.451e-05  4.345e-06  1.862e-10  3.514e-14  1.763e-10
+#      cent:  2.464e-01  2.509e-05  1.014e-05  4.682e-10  1.090e-14  4.423e-10
+#      high:  2.465e-01  2.575e-05  1.081e-05  5.005e-10  1.689e-15  4.164e-10
+# 
+# With uncertainties:
+#     ratio:         Yp        D/H      He3/H      Li7/H      Li6/H      Be7/H
+#      cent:  2.464e-01  2.509e-05  1.014e-05  4.682e-10  1.090e-14  4.423e-10
+#       +/-:  2.997e-05  4.357e-07  4.490e-07  3.348e-11  9.460e-15  3.233e-11
+# Compatible with BBN constraints.
+# 
+# Gnuplot formated bounded range.
+#    Fierz b     Yp min     Yp max    D/H min    D/H max  He3/H min  He3/H max  Li7/H min  Li7/H max  Li6/H min  Li6/H max  Be7/H min  Be7/H max
   -0.040000  2.430e-01  2.431e-01  2.446e-05  2.536e-05  9.670e-06  1.056e-05  4.302e-10  4.971e-10  1.406e-15  1.986e-14  4.061e-10  4.706e-10
   -0.030000  2.438e-01  2.439e-01  2.452e-05  2.539e-05  9.677e-06  1.057e-05  4.313e-10  4.981e-10  1.413e-15  1.999e-14  4.071e-10  4.714e-10
   -0.020000  2.447e-01  2.447e-01  2.457e-05  2.543e-05  9.683e-06  1.058e-05  4.324e-10  4.991e-10  1.423e-15  2.011e-14  4.079e-10  4.723e-10
