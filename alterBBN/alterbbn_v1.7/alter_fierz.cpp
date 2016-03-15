@@ -41,7 +41,7 @@ int main(int argc,char** argv)
 	
 	printf("\nGnuplot formated bounded range.\n");
 	print_lables_bounds("Fierz b", ni);
-    for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
+    for (double b = fierz - 0.2; b <= fierz + 0.2; b += 0.01) {
         relic.fierz = b;
         if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
         {
