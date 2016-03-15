@@ -47,18 +47,6 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
     }
 }
 
-/*
-void print_lables() 
-{
-    print_lables(" ", {H1,H2,He3,Li7,Li6,Be7});
-	//printf("\tYp\t\tH2/H\t\tHe3/H\t\tLi7/H\t\tLi6/H\t\tBe7/H\n");
-	printf("%*s\t", COLSIZE, lable);
-	for (int i=0 ; i<6; i++)
-		printf("%*.3e", COLSIZE, nm[ni[i]]);
-	printf("\n");
-}
-*/
-
 void print_lables(const char *title, NuclideIndex ni[])
 {
     char name[COLSIZE+1];
@@ -79,6 +67,18 @@ void print_lables_errors(const char *title, NuclideIndex ni[])
 		get_ratio_name(ni[i], name);
 		printf("%*s", COLSIZE, name);
 		printf("%*s err", COLSIZE-4, name);
+    }
+	printf("\n");
+}
+
+void print_lables_bounds(const char *title, NuclideIndex ni[])
+{
+    char name[COLSIZE+1];
+	printf("%*s", COLSIZE, title);
+	for (int i=0; i<6; i++) {
+		get_ratio_name(ni[i], name);
+		printf("%*s min", COLSIZE-4, name);
+		printf("%*s max", COLSIZE-4, name);
     }
 	printf("\n");
 }
@@ -113,8 +113,8 @@ void print_ratios_error_bounds(double var, NuclideIndex ni[],
 {
 	printf("%*f", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
-		printf("min %*.3e", COLSIZE-4, nm[ni[i]]-snm[ni[i]]);
-		printf("max %*.3e", COLSIZE-4, nm[ni[i]]+snm[ni[i]]);
+		printf("%*.3e", COLSIZE, nm[ni[i]]-snm[ni[i]]);
+		printf("%*.3e", COLSIZE, nm[ni[i]]+snm[ni[i]]);
 	}
 	printf("\n");
 }
@@ -125,8 +125,8 @@ void print_ratios_bounds(double var, NuclideIndex ni[],
 {
 	printf("%*f", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
-		printf("min %*.3e", COLSIZE-4, min[ni[i]]);
-		printf("max %*.3e", COLSIZE-4, max[ni[i]]);
+		printf("%*.3e", COLSIZE, min[ni[i]]);
+		printf("%*.3e", COLSIZE, max[ni[i]]);
 	}
 	printf("\n");
 }

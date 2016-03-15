@@ -9,7 +9,7 @@
 //void print_lables();  // depreciated 
 void print_lables(const char *title, NuclideIndex ni[]);
 void print_lables_errors(const char *title, NuclideIndex ni[]);
-void print_lables_minmax(const char *title, NuclideIndex ni[]);
+void print_lables_bounds(const char *title, NuclideIndex ni[]);
 void print_ratios(const char *lable, NuclideIndex ni[],
                                      NuclideMap & nm);
 void print_ratios_error_bars(double, NuclideIndex ni[], 

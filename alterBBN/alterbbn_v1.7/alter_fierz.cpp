@@ -40,7 +40,7 @@ int main(int argc,char** argv)
     bbn_excluded(0, relic, ni, ratioH);
 	
 	printf("\nGnuplot formated bounded range.\n");
-	print_lables_error_bounds("Fierz b", ni);
+	print_lables_bounds("Fierz b", ni);
     for (double b = fierz - 0.04; b <= fierz + 0.04; b += 0.01) {
         relic.fierz = b;
         if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
