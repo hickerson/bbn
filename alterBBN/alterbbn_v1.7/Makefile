@@ -8,7 +8,7 @@ AUTHORS =
 # Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
 CXX = g++
-CFLAGS=-O3 -Wmaybe-uninitialized -Wuninitialized -Winit-self #-std=c++11 -g
+CFLAGS=-Wmaybe-uninitialized -Wuninitialized -Winit-self -g #-std=c++11
 
 
 # CC = clang
