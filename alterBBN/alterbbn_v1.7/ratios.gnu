@@ -22,11 +22,11 @@ top(n)  = 1-((mpl_top+(mpl_ny-n)*(mpl_height+mpl_dy))/ysize)
 left(n) = (mpl_left+(n-1)*mpl_width+(n-1)*mpl_dx)/xsize
 right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/xsize)
 
-set terminal postscript eps enhanced color dl 2.0 size xsize,ysize "Helvetica" 28
+#set terminal postscript eps enhanced color dl 2.0 size xsize,ysize "Helvetica" 28
 set encoding iso_8859_1
 set tics scale 1.5
 
-set output 'nxm_plot.eps'
+#set output 'nxm_plot.eps'
 
 set offsets
 set autoscale fix
@@ -212,9 +212,7 @@ with lines lt 1 lc 6 lw 2\
 #-----------------------------------------------
 # subplot  
 # 
-#set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0 size 500, 350 
-# set output 'fillbetween.1.png'
-set style data lines
+#set style data lines
 set title "Fill area between two curves" 
 set lmargin at screen left(2)
 set rmargin at screen right(2)
