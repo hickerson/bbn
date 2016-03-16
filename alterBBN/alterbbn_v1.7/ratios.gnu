@@ -35,7 +35,7 @@ set size 1,1
 set nokey
 
 # define x-axis settings for all subplots
-set xrange [ -0.1 : 0.1  ] noreverse nowriteback
+set xrange [ -0.2 : 0.2  ] noreverse nowriteback
 #set xrange [-4:4]
 set xlabel 'Fierz b'
 #set format x ''
@@ -81,7 +81,7 @@ plot 'fierz-study.dat' u 1:3:2 "%lf %lf %lf" w filledcu, \
 
 
 #-----------------------------------------------
-# D/H
+# D/H and He3/H
 # subplot  1-2
 #  set horizontal margins for first column
 set lmargin at screen left(1)
@@ -98,8 +98,6 @@ set logscale y 10
 
 set ylabel "He3/H\t\t\tD/H"
 set format y "%1.E0"
-#set ytics mirror 1
-set ytics 1
 set mytics 10
 
 plot 'fierz-study.dat' u 1:5:4 "%lf %lf %lf" w filledcu, \
@@ -117,8 +115,8 @@ plot 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
 
 
 #-----------------------------------------------
-# D/H
-# subplot  1-2
+# Li7/H
+# subplot  1-1
 #  set horizontal margins for first column
 set lmargin at screen left(1)
 set rmargin at screen right(1)
@@ -140,8 +138,8 @@ set mytics 10
 
 plot 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
       '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
-plot 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
-      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle;
+#plot 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
+#      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle;
 # 'fierz-study.dat' u 1:12:13 "%lf %lf %lf" w filledcu, \
 #      '' u 1:12 lt -1 notitle, '' u 1:13 lt -1 notitle \
 #;
