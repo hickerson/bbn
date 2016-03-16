@@ -7,8 +7,8 @@ mpl_height = 1.5 #inch  height of individual plots
 mpl_width  = 2.0 #inch  width of individual plots
 mpl_dx     = 0.1 #inch  inter-plot horizontal spacing
 mpl_dy     = 0.1 #inch  inter-plot vertical spacing
-mpl_ny     = 4   #number of rows
-mpl_nx     = 2   #number of columns
+mpl_ny     = 3   #number of rows
+mpl_nx     = 1   #number of columns
 
 # calculate full dimensions
 xsize = mpl_left+mpl_right+(mpl_width*mpl_nx)+(mpl_nx-1)*mpl_dx
@@ -49,8 +49,8 @@ set multiplot
 set lmargin at screen left(1)
 set rmargin at screen right(1)
 #  set horizontal margins for third row (top)
-set tmargin at screen top(3)
-set bmargin at screen bot(3)
+set tmargin at screen top(1)
+set bmargin at screen bot(1)
 
 set title 'left'
 
@@ -60,180 +60,20 @@ set format y "%-2.1f"
 set ytics mirror 1
 set mytics 2
 
-set arrow 1 from graph 0, first 0 rto graph 1,0 nohead lt 1 lw 1 lc 0
-set arrow 2 from first 0, graph 0 rto 0, graph 1 nohead lt 1 lw 1 lc 0
-
-plot          \
-sin(x) \
-axes x1y1 \
-title '' \
-with lines lt 1 lc 1 lw 2\
-;
-
-#-----------------------------------------------
-# subplot  2-3
-#  set horizontal margins for second column
-set lmargin at screen left(2)
-set rmargin at screen right(2)
-#  set horizontal margins for third row (top)
-set tmargin at screen top(3)
-set bmargin at screen bot(3)
-
-set title 'right'
-
-set ylabel ""             # no label here
-set yrange [-1.5:1.5]
-set format y ""           # no tic labels
-set ytics mirror 1
-set mytics 2
-
-set arrow 1 from graph 0, first 0 rto graph 1,0 nohead lt 1 lw 1 lc 0
-set arrow 2 from first 0, graph 0 rto 0, graph 1 nohead lt 1 lw 1 lc 0
-
-plot          \
-cos(x) \
-axes x1y1 \
-title '' \
-with lines lt 1 lc 2 lw 2\
-;
-
-#-----------------------------------------------
-# subplot  1-2
-#  set horizontal margins for first column
-set lmargin at screen left(1)
-set rmargin at screen right(1)
-#  set horizontal margins for second row (middle)
-set tmargin at screen top(2)
-set bmargin at screen bot(2)
-
-set title ''
-
-set ylabel "amplitude"
-set yrange [-1.5:1.5]
-set format y "%-1.1f"
-set ytics mirror 1
-set mytics 2
-
-set arrow 1 from graph 0, first 0 rto graph 1,0 nohead lt 1 lw 1 lc 0
-set arrow 2 from first 0, graph 0 rto 0, graph 1 nohead lt 1 lw 1 lc 0
-
-plot          \
--sin(x) \
-axes x1y1 \
-title '' \
-with lines lt 1 lc 3 lw 2\
-;
-
-#-----------------------------------------------
-# subplot  2-2
-#  set horizontal margins for second column
-set lmargin at screen left(2)
-set rmargin at screen right(2)
-#  set horizontal margins for second row (middle)
-set tmargin at screen top(2)
-set bmargin at screen bot(2)
-
-set title ''
-
-set ylabel ""             # no label here
-set yrange [-1.5:1.5]
-set format y ""           # no tic labels
-set ytics mirror 1
-set mytics 2
-
-set arrow 1 from graph 0, first 0 rto graph 1,0 nohead lt 1 lw 1 lc 0
-set arrow 2 from first 0, graph 0 rto 0, graph 1 nohead lt 1 lw 1 lc 0
-
-plot          \
--cos(x) \
-axes x1y1 \
-title '' \
-with lines lt 1 lc 4 lw 2\
-;
-
-#-----------------------------------------------
-# subplot  1-2
-#  set horizontal margins for first column
-set lmargin at screen left(1)
-set rmargin at screen right(1)
-#  set horizontal margins for first row (bottom)
-set tmargin at screen top(1)
-set bmargin at screen bot(1)
-
-set title ''
-
-# now set a label and tic marks for the x-axis
-set xlabel "phase angle"
-set xtics add ("-{/Symbol p}" -pi, "0" 0, "{/Symbol p}" pi)
-
-set ylabel "amplitude"
-set yrange [0:1.5]
-set format y "%-1.1f"
-set ytics mirror 1
-set mytics 2
-
-set arrow 1 from graph 0, first 0 rto graph 1,0 nohead lt 1 lw 1 lc 0
-set arrow 2 from first 0, graph 0 rto 0, graph 1 nohead lt 1 lw 1 lc 0
-
-plot          \
-(sin(x))**2 \
-axes x1y1 \
-title '' \
-with lines lt 1 lc 5 lw 2\
-;
-
-#-----------------------------------------------
-# subplot  2-2
-#  set horizontal margins for second column
-set lmargin at screen left(1)
-set rmargin at screen right(1)
-#  set horizontal margins for first row (bottom)
-set tmargin at screen top(4)
-set bmargin at screen bot(4)
-
-set title ''
-
-set ylabel ""             # no label here
-set yrange [0:1.5]
-set format y ""           # no tic labels
-set ytics mirror 1
-set mytics 2
-
-set arrow 1 from graph 0, first 0 rto graph 1,0 nohead lt 1 lw 1 lc 0
-set arrow 2 from first 0, graph 0 rto 0, graph 1 nohead lt 1 lw 1 lc 0
-
-plot          \
-(cos(x))**2 \
-axes x1y1 \
-title '' \
-with lines lt 1 lc 6 lw 2\
-;
-
-#-----------------------------------------------
-# subplot  
-# 
-#set style data lines
-set title "Fill area between two curves" 
-set lmargin at screen left(2)
-set rmargin at screen right(2)
-#  set horizontal margins for first row (bottom)
-set tmargin at screen top(4)
-set bmargin at screen bot(4)
-
 #set logscale y 10
 set xrange [ -0.1 : 0.1 ] noreverse nowriteback
 set yrange [ 1e-1 : 0.25 ] noreverse nowriteback
 plot 'fierz-study.dat' u 1:2:3 "%lf %lf %lf" w filledcu, \
-      '' u 1:2 lt -1 notitle, '' u 1:3 lt -1 notitle, \
- 'fierz-study.dat' u 1:4:5 "%lf %lf %lf" w filledcu, \
-      '' u 1:4 lt -1 notitle, '' u 1:5 lt -1 notitle, \
- 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
-      '' u 1:8 lt -1 notitle, '' u 1:7 lt -1 notitle, \
- 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
-      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle, \
- 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
-      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle, \
- 'fierz-study.dat' u 1:12:13 "%lf %lf %lf" w filledcu, \
-      '' u 1:12 lt -1 notitle, '' u 1:13 lt -1 notitle \
-;
+      '' u 1:2 lt -1 notitle, '' u 1:3 lt -1 notitle #; #, \
+# 'fierz-study.dat' u 1:4:5 "%lf %lf %lf" w filledcu, \
+#      '' u 1:5 lt -1 notitle, '' u 1:4 lt -1 notitle; #, \
+# 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
+#      '' u 1:8 lt -1 notitle, '' u 1:7 lt -1 notitle, \
+# 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
+#      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle, \
+# 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
+#      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle, \
+# 'fierz-study.dat' u 1:12:13 "%lf %lf %lf" w filledcu, \
+#      '' u 1:12 lt -1 notitle, '' u 1:13 lt -1 notitle \
+#;
 unset multiplot
