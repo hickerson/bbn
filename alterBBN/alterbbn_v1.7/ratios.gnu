@@ -49,22 +49,22 @@ set multiplot
 set lmargin at screen left(1)
 set rmargin at screen right(1)
 #  set horizontal margins for third row (top)
-set tmargin at screen top(1)
-set bmargin at screen bot(1)
+set tmargin at screen top(3)
+set bmargin at screen bot(3)
 
 set title 'left'
 
-set ylabel "amplitude"
-set yrange [-1.5:1.5]
-set format y "%-2.1f"
-set ytics mirror 1
-set mytics 2
-
 #set logscale y 10
 set xrange [ -0.1 : 0.1 ] noreverse nowriteback
-set yrange [ 1e-1 : 0.25 ] noreverse nowriteback
+set yrange [ 0.25 : 0.23 ] noreverse nowriteback
+
+set ylabel "Y_p"
+set format y "%-2.1f"
+set ytics mirror 1
+set mytics 10
+
 plot 'fierz-study.dat' u 1:2:3 "%lf %lf %lf" w filledcu, \
-      '' u 1:2 lt -1 notitle, '' u 1:3 lt -1 notitle #; #, \
+      '' u 1:2 lt -1 notitle, '' u 1:3 lt -1 notitle; #; #, \
 # 'fierz-study.dat' u 1:4:5 "%lf %lf %lf" w filledcu, \
 #      '' u 1:5 lt -1 notitle, '' u 1:4 lt -1 notitle; #, \
 # 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
