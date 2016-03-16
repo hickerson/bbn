@@ -22,6 +22,7 @@ top(n)  = 1-((mpl_top+(mpl_ny-n)*(mpl_height+mpl_dy))/ysize)
 left(n) = (mpl_left+(n-1)*mpl_width+(n-1)*mpl_dx)/xsize
 right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/xsize)
 
+#set terminal latex
 set terminal postscript eps enhanced color dl 2.0 size xsize,ysize "Helvetica" 14
 set encoding iso_8859_1
 set tics scale 1.5
@@ -44,6 +45,7 @@ set mxtics 10
 # start plotting
 set multiplot
 
+
 #-----------------------------------------------
 # Yp
 # subplot  1-3
@@ -54,12 +56,12 @@ set rmargin at screen right(1)
 set tmargin at screen top(3)
 set bmargin at screen bot(3)
 
-set title 'left'
+set title 'BBN from Fierz'
 
 set yrange [ 0.22 : 0.27 ] noreverse nowriteback
 
 set ylabel "Yp"
-set format y "%-2.2f"
+set format y "%f"
 set ytics mirror 1
 set ytics 10
 set mytics 5
@@ -76,6 +78,7 @@ plot 'fierz-study.dat' u 1:3:2 "%lf %lf %lf" w filledcu, \
 #      '' u 1:12 lt -1 notitle, '' u 1:13 lt -1 notitle \
 #;
 
+
 #-----------------------------------------------
 # D/H
 # subplot  1-2
@@ -86,23 +89,23 @@ set rmargin at screen right(1)
 set tmargin at screen top(2)
 set bmargin at screen bot(2)
 
-set title 'left'
+set title 'BBN from Fierz'
 
-set yrange [ 1e-5 : 1e-4 ] noreverse nowriteback
+set yrange [ 1e-6 : 1e-4 ] noreverse nowriteback
 set logscale y 10
 
-set ylabel "D/H"
-set format y "%-2.2f"
+set ylabel "He3/H\t\t\tD/H"
+set format y "%1.E0"
 #set ytics mirror 1
 #set ytics 1
 set mytics 10
 
 plot 'fierz-study.dat' u 1:5:4 "%lf %lf %lf" w filledcu, \
-      '' u 1:5 lt -1 notitle, '' u 1:4 lt -1 notitle;
-#plot 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
-#      '' u 1:6 lt -1 notitle, '' u 1:7 lt -1 notitle;
-# 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
-#      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle, \
+      '' u 1:5 lt 1 notitle, '' u 1:4 lt 1 notitle;
+plot 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
+      '' u 1:7 lt 2 notitle, '' u 1:6 lt 2 notitle;
+#plot 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
+#      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
 # 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
 #      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle, \
 # 'fierz-study.dat' u 1:12:13 "%lf %lf %lf" w filledcu, \
@@ -110,5 +113,34 @@ plot 'fierz-study.dat' u 1:5:4 "%lf %lf %lf" w filledcu, \
 #;
 
 
+
+#-----------------------------------------------
+# D/H
+# subplot  1-2
+#  set horizontal margins for first column
+set lmargin at screen left(1)
+set rmargin at screen right(1)
+#  set horizontal margins for third row (top)
+set tmargin at screen top(1)
+set bmargin at screen bot(1)
+
+set title ''
+
+set yrange [ 1e-10 : 1e-9 ] noreverse nowriteback
+set logscale y 10
+
+set ylabel "Li7/H"
+set format y "%1.E0"
+#set ytics mirror 1
+#set ytics 1
+set mytics 100
+
+plot 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
+      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
+plot 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
+      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle;
+# 'fierz-study.dat' u 1:12:13 "%lf %lf %lf" w filledcu, \
+#      '' u 1:12 lt -1 notitle, '' u 1:13 lt -1 notitle \
+#;
 
 unset multiplot;
