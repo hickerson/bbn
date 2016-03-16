@@ -38,7 +38,7 @@ set nokey
 set xrange [ -0.1 : 0.1  ] noreverse nowriteback
 #set xrange [-4:4]
 set xlabel 'Fierz b'
-set format x ''
+#set format x ''
 set xtics 1
 set mxtics 10
 
@@ -57,13 +57,14 @@ set tmargin at screen top(3)
 set bmargin at screen bot(3)
 
 set title 'BBN from Fierz'
+set xlabel ''
 
 set yrange [ 0.22 : 0.27 ] noreverse nowriteback
 
 set ylabel "Yp"
 set format y "%f"
-set ytics mirror 1
-set ytics 10
+#set ytics mirror 1
+#set ytics 10
 set mytics 5
 
 plot 'fierz-study.dat' u 1:3:2 "%lf %lf %lf" w filledcu, \
@@ -89,7 +90,8 @@ set rmargin at screen right(1)
 set tmargin at screen top(2)
 set bmargin at screen bot(2)
 
-set title 'BBN from Fierz'
+set title ''
+set xlabel ''
 
 set yrange [ 1e-6 : 1e-4 ] noreverse nowriteback
 set logscale y 10
@@ -97,7 +99,7 @@ set logscale y 10
 set ylabel "He3/H\t\t\tD/H"
 set format y "%1.E0"
 #set ytics mirror 1
-#set ytics 1
+set ytics 1
 set mytics 10
 
 plot 'fierz-study.dat' u 1:5:4 "%lf %lf %lf" w filledcu, \
@@ -125,6 +127,7 @@ set tmargin at screen top(1)
 set bmargin at screen bot(1)
 
 set title ''
+set xlabel 'Fierz b'
 
 set yrange [ 1e-10 : 1e-9 ] noreverse nowriteback
 set logscale y 10
@@ -133,7 +136,7 @@ set ylabel "Li7/H"
 set format y "%1.E0"
 #set ytics mirror 1
 #set ytics 1
-set mytics 100
+set mytics 10
 
 plot 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
       '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
