@@ -62,7 +62,7 @@ set xlabel ''
 set yrange [ 0.22 : 0.27 ] noreverse nowriteback
 
 set ylabel "Yp"
-set format y "%f"
+set format y "%1.2f"
 #set ytics mirror 1
 #set ytics 10
 set mytics 5
@@ -97,13 +97,13 @@ set yrange [ 1e-6 : 1e-4 ] noreverse nowriteback
 set logscale y 10
 
 set ylabel "He3/H\t\t\tD/H"
-set format y "%1.E0"
+set format y "%1.e"
 set mytics 10
 
-plot 'fierz-study.dat' u 1:5:4 "%lf %lf %lf" w filledcu, \
-      '' u 1:5 lt 1 notitle, '' u 1:4 lt 1 notitle;
-plot 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
-      '' u 1:7 lt 2 notitle, '' u 1:6 lt 2 notitle;
+plot 'fierz-study.dat' using 1:5:4 with filledcurves;
+#      '' u 1:5 lt 1 notitle, '' u 1:4 lt 1 notitle;
+plot 'fierz-study.dat' using 1:6:7 with filledcurves;
+#      '' u 1:7 lt 2 notitle, '' u 1:6 lt 2 notitle;
 #plot 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
 #      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
 # 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
@@ -131,13 +131,13 @@ set yrange [ 1e-10 : 1e-9 ] noreverse nowriteback
 set logscale y 10
 
 set ylabel "Li7/H"
-set format y "%1.E0"
+set format y "%1.e"
 #set ytics mirror 1
 #set ytics 1
 set mytics 10
 
-plot 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
-      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
+plot 'fierz-study.dat' using 1:8:9 with filledcurves;
+#      '' u 1:8 lt -1 notitle, '' u 1:9 lt -1 notitle;
 #plot 'fierz-study.dat' u 1:10:11 "%lf %lf %lf" w filledcu, \
 #      '' u 1:10 lt -1 notitle, '' u 1:11 lt -1 notitle;
 # 'fierz-study.dat' u 1:12:13 "%lf %lf %lf" w filledcu, \
