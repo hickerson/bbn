@@ -6,7 +6,7 @@ mpl_right  = 0.1 #inch  outer right margin, y2 label goes here
 mpl_height = 2.0 #inch  height of individual plots
 mpl_width  = 3.0 #inch  width of individual plots
 mpl_dx     = 0.3 #inch  inter-plot horizontal spacing
-mpl_dy     = 0.3 #inch  inter-plot vertical spacing
+mpl_dy     = 0.2 #inch  inter-plot vertical spacing
 mpl_ny     = 3   #number of rows
 mpl_nx     = 1   #number of columns
 
@@ -25,7 +25,7 @@ right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/xsize)
 #set terminal latex
 set terminal postscript eps enhanced color dl 2.0 size xsize,ysize "Helvetica" 14
 set encoding iso_8859_1
-set tics scale 1.5
+set tics scale 1.8
 
 set output 'bbn-fierz.eps'
 
@@ -36,10 +36,9 @@ set nokey
 
 # define x-axis settings for all subplots
 set xrange [ -0.2 : 0.2  ] noreverse nowriteback
-#set xrange [-4:4]
 set xlabel 'Fierz b'
-#set format x ''
-set xtics 1
+set format x ''
+set xtics 0.1
 set mxtics 10
 
 # start plotting
@@ -58,17 +57,16 @@ set bmargin at screen bot(3)
 
 set title 'BBN from Fierz'
 set xlabel ''
+set format x '' 
 
 set yrange [ 0.22 : 0.27 ] noreverse nowriteback
 
 set ylabel "Yp"
 set format y "%1.2f"
-#set ytics mirror 1
-#set ytics 10
 set mytics 5
 
-plot 'fierz-study.dat' u 1:3:2 "%lf %lf %lf" w filledcu, \
-      '' u 1:3 lt -1 notitle, '' u 1:2 lt -1 notitle; 
+plot 'fierz-study.dat' using 1:2:3 with filledcurves;
+#      '' u 1:3 lt -1 notitle, '' u 1:2 lt -1 notitle; 
 # 'fierz-study.dat' u 1:6:7 "%lf %lf %lf" w filledcu, \
 #      '' u 1:6 lt -1 notitle, '' u 1:7 lt -1 notitle, \
 # 'fierz-study.dat' u 1:8:9 "%lf %lf %lf" w filledcu, \
@@ -91,15 +89,16 @@ set tmargin at screen top(2)
 set bmargin at screen bot(2)
 
 set title ''
+
 set xlabel ''
+set format x '' 
 
-set yrange [ 1e-6 : 1e-4 ] noreverse nowriteback
+set ylabel "^3He/H \t\t\t\t\t\t D/H"
+set yrange [ 3e-6 : 3e-4 ] noreverse nowriteback
 set logscale y 10
-
-set ylabel "He3/H\t\t\tD/H"
-set format y "%1.e"
+set format y "10^{%L}"
+set ytics 10
 set mytics 10
-
 plot 'fierz-study.dat' using 1:5:4 with filledcurves;
 #      '' u 1:5 lt 1 notitle, '' u 1:4 lt 1 notitle;
 plot 'fierz-study.dat' using 1:6:7 with filledcurves;
@@ -127,13 +126,11 @@ set bmargin at screen bot(1)
 set title ''
 set xlabel 'Fierz b'
 
-set yrange [ 1e-10 : 1e-9 ] noreverse nowriteback
+set ylabel "^7Li/H"
+set yrange [ 5e-11 : 3e-9 ] noreverse nowriteback
 set logscale y 10
-
-set ylabel "Li7/H"
-set format y "%1.e"
-#set ytics mirror 1
-#set ytics 1
+set format y "10^{%L}"
+set ytics 10
 set mytics 10
 
 plot 'fierz-study.dat' using 1:8:9 with filledcurves;
