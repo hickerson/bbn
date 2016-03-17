@@ -99,7 +99,7 @@ void print_ratios_errors(double var, NuclideIndex ni[],
 									 NuclideMap & ratioH, 
 									 NuclideMap & sigma_ratioH) 
 {
-	printf("%*f", COLSIZE, var);
+	printf("%*g", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
 		printf("%*.4e", COLSIZE, ratioH[ni[i]]);
 		printf("%*.4e", COLSIZE, sigma_ratioH[ni[i]]);
@@ -111,7 +111,7 @@ void print_ratios_error_bounds(double var, NuclideIndex ni[],
 									       NuclideMap & nm,
 									       NuclideMap & snm) 
 {
-	printf("%*f", COLSIZE, var);
+	printf("%*g", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
 		printf("%*.4e", COLSIZE, nm[ni[i]]-snm[ni[i]]);
 		printf("%*.4e", COLSIZE, nm[ni[i]]+snm[ni[i]]);
@@ -123,7 +123,7 @@ void print_ratios_bounds(double var, NuclideIndex ni[],
                                      NuclideMap & min, 
 								     NuclideMap & max) 
 {
-	printf("%*f", COLSIZE, var);
+	printf("%*g", COLSIZE, var);
 	for (int i=0 ; i<6; i++) {
 		printf("%*.4e", COLSIZE, min[ni[i]]);
 		printf("%*.4e", COLSIZE, max[ni[i]]);
