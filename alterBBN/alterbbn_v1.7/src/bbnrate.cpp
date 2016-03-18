@@ -90,12 +90,19 @@ double weak_phase_space(double Ex, double Ee, double Enu)
 /*----------------------------------------------------*/
 
 
+/** 
+ * calculates the nuclear forward and reverse rates 
+ * f[] and r[] of the reaction p <-> n at the 
+ * E&M temperature T9 and neutrino temperature Tnu 
+ *      err=0: central values; 
+ *      err=1: high values; 
+ *      err=2: low values; 
+ *      err>100000: random gaussian error; 
+ *      err<0: error only for process number (-err)
+ */
 void rate_pn(int err, CosmologyModel relic, 
-    //double f[], double r[], 
     ReactionMap & f, ReactionMap & r, 
     double T9, double Tnu)
-/* calculates the nuclear forward and reverse rates f[] and r[] of the reaction p <-> n at the temperature T9 */
-/*err=0: central values; err=1: high values; err=2: low values; err>100000: random gaussian error; err<0: error only for process number (-err)*/
 {
 	double ferr,rerr;
 	ferr = rerr = 0.;
@@ -103,7 +110,7 @@ void rate_pn(int err, CosmologyModel relic,
 	double tau = relic.life_neutron;   /// measured neutron lifetime at T=0 in s */
     double xi1 = relic.xinu1;          /// neutrino chemical potential
 	
-	if(((xi1==0)&&(b==0))||(Tnu==0))
+	if (xi1==0 and b==0 and Tnu==0)
 	{
 		int i;
 		double z9 = T9*kB/me;               /// inverse of old z def in v1.4
