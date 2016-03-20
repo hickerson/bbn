@@ -4,7 +4,7 @@
 #include "include.h"
 
 
-class distribution {
+struct distribution {
 	double mean;
 	double min;
 	double max;
@@ -43,12 +43,17 @@ class distribution {
 		samples = 1;
 		return *this;
 	}
+
+	/*
+	public:init(const char* str) {
+		scanf("%f", str)
+	} */
 };
 
+/*-- input ---------------------------------------------------------*/
 
 
 /*-- output --------------------------------------------------------*/
-//void print_lables();  // depreciated 
 void print_lables(const char *title, NuclideIndex ni[]);
 void print_lables_errors(const char *title, NuclideIndex ni[]);
 void print_lables_bounds(const char *title, NuclideIndex ni[]);
