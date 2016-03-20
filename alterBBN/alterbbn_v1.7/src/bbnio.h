@@ -4,6 +4,48 @@
 #include "include.h"
 
 
+class distribution {
+	double mean;
+	double min;
+	double max;
+	double error;
+	int samples;
+
+	distribution(double value) :
+		mean(value),
+		min(value),
+		max(value),
+		error(0),
+		samples(1)
+		{}
+
+	distribution(double mean, double error, int samples) :
+		mean(mean),
+		min(mean-samples*error),
+		max(mean+samples*error),
+		error(error),
+		samples(samples)
+		{}
+
+	distribution(double mean, double min, double max, int samples) :
+		mean(mean),
+		min(min),
+		max(max),
+		error((max-min)/2),
+		samples(samples)
+		{}
+
+	distribution & operator=(double value) {
+		mean = value;
+		min = value;
+		max = value;
+		error = 0;
+		samples = 1;
+		return *this;
+	}
+};
+
+
 
 /*-- output --------------------------------------------------------*/
 //void print_lables();  // depreciated 
