@@ -27,6 +27,10 @@ int main(int argc,char** argv)
   		sscanf(argv[4],"%lf",&fierz);
   	}
 	
+	distribution d(3,1,10);
+	for (int i = 1; i<10; i++)
+		printf("%d: %f\n",i, d.values[i]);
+
 	CosmologyModel relic;      /// The parameters from the big bang relic before bbn.
 	relic.Init_cosmomodel();	
 	relic.Init_fierz(baryon, neutrinos, lifetime, fierz);

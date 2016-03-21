@@ -132,7 +132,7 @@ double kron(int x, int y);
 double rand_gauss(void);
 int test_integer(char name[]);
 int test_file(char *name);
-double erfinv(double x);
+float erfinv(float x);	// TODO change to double
 
 
 using namespace std;
