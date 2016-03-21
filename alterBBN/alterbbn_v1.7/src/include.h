@@ -15,6 +15,7 @@
 #include <string.h>
 #include <strings.h>
 #include "Reaction.h"
+#include <vector>
 
 /*--------------------------------------------------------------------*/
 
@@ -131,8 +132,88 @@ double kron(int x, int y);
 double rand_gauss(void);
 int test_integer(char name[]);
 int test_file(char *name);
+double erfinv(double x);
 
 
+using namespace std;
+
+struct distribution {
+	double mean;
+	double min;
+	double max;
+	double error;
+	int samples;
+	vector<double> values;
+
+	distribution(double value) :
+		mean(value),
+		min(value),
+		max(value),
+		error(0),
+		samples(1) {
+		values.push_back(mean);
+	}
+
+	/** gaussian distribution */
+	distribution(double mean, double error, int samples) :
+		mean(mean),
+		error(error),
+		samples(samples)
+	{
+		double x;
+		double value=mean;
+		if (samples < 1) 
+			samples = 1;
+		double bin = 1/samples;
+		for (x=bin-1; x<=1-bin; x+=2*bin) 
+		{
+			value = mean + error*erfinv(x);
+			values.push_back(value);
+		}
+		max = value;
+		min = mean-2*value;
+	}
+
+	/** uniformish distribution */
+	distribution(double mean, double min, double max, int samples) :
+		mean(mean),
+		min(min),
+		max(max),
+		error((max-min)/sqrt(12)),
+		samples(samples)
+	{
+		double bin = (max-min)/(samples-1);
+		for (double x=min; x<=max; x+=bin) 
+			values.push_back(x);
+	}
+
+	distribution & operator=(double value) {
+		mean = value;
+		min = value;
+		max = value;
+		error = 0;
+		samples = 1;
+		values.clear();
+		values.push_back(mean);
+		return *this;
+	}
+
+	distribution & operator=(distribution d) {
+		mean = d.mean;
+		min = d.min;
+		max = d.max;
+		error = d.error;
+		samples = d.samples;
+		values.clear();
+		values = d.values;
+		return *this;
+	}
+	/*
+	public:init(const char* str) {
+		scanf("%f", str)
+	}
+	*/
+};
 
 
 /* bbnrate.cpp */
