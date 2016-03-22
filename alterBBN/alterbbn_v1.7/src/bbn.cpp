@@ -4,7 +4,7 @@
 //#include "memcheck.h"
 
 
-/*----------------------------------------------------
+/**----------------------------------------------------
  * type: 0-10, each type has a unique (#n1,#n2,#n3,#n4) quartet
  * n1: incoming nuclide number 
  * n2: incoming light nuclide number
@@ -788,7 +788,7 @@ int linearize(
  * If (err=4), the value of the nuclear rates is taken 
  * (gaussianly) randomly for a MC analysis.
  */
-int nucl(int err, CosmologyModel relic, NuclideMap & ratioH)
+int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 {
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
@@ -1011,14 +1011,14 @@ int nucl(int err, CosmologyModel relic, NuclideMap & ratioH)
 			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
 			{
 				it++;
-				for(NuclideIndex i=Nu1; i<=O16; i++) 
+				for(NuclideIndex i=He4+1; i<=O16; i++) 
                     ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
 				ratioH[He4]=Y[He4]*Am[He4];
 				for(NuclideIndex i=H1; i<=Be7; i++) 
                     ratioH[Li8]+=ratioH[i];
-				ratioH[Li8]-=1.;
+				ratioH[Li8] -= 1;
 				ratioH[Nu0] = h_eta / 33683.;
 				if((it==nitmax)||(ip<inc))
                     ltime = 1;
@@ -1095,15 +1095,16 @@ int nucl(int err, CosmologyModel relic, NuclideMap & ratioH)
 	return fail;
 }
 
-/*----------------------------------------------------*/
-
-//int nucl_failsafe(int err, CosmologyModel relic, double ratioH[NUCBUF])
-int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH)
-/* This routine is similar to nucl(...), the only difference is that it does not try to optimize the calculation time. */
+/**----------------------------------------------------
+ * This routine is similar to nucl(...), 
+ * the only difference is that it does not try to 
+ * optimize the calculation time. 
+ */
+int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 {
 	for(NuclideIndex i=Nu0; i<=O16; i++) 
 		ratioH[i]=0;
-	//double f[REACBUF],r[REACBUF];
+
 	ReactionMap f,r;
 	double sd;
 	double rhod, sum_Y;
@@ -1399,17 +1400,24 @@ int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH)
 	return fail;
 }
 
-/*----------------------------------------------------*/
-//int nucl_witherrors(int err, CosmologyModel relic, double ratioH[NUCBUF], double sigma_ratioH[NUCBUF])
-int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH)
-/* Routine which computes the abundance ratios (in ratioH[]) and their uncertainties (in sigma_ratioH[]), using the parameters contained in relic. The err parameter is a switch to choose the evaluation error method (0=no error, 1=high values of the nuclear rates, 2=low values, 3=linear error calculation). */
+/**----------------------------------------------------
+ * Routine which computes the abundance ratios (in ratioH[]) 
+ * and their uncertainties (in sigma_ratioH[]), 
+ * using the parameters contained in relic. 
+ *
+ * The err parameter is a switch to choose the 
+ * evaluation error method 
+ * 	   0=no error
+ *     1=high values of the nuclear rates
+ *     2=low values
+ *     3=linear error calculation
+ */
+int nucl_with_errors(int err, const CosmologyModel & relic, 
+									NuclideMap & ratioH, 
+									NuclideMap & sigma_ratioH)
 {	
-    //ReactionIndex REACMIN = n_p;
-    //ReactionIndex REACMAX = C13a_nO16;
-	//NuclideIndex ie,je;
-	//int ie,je;
 	for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
-        ratioH[ie]=sigma_ratioH[ie]=0;
+        ratioH[ie]=sigma_ratioH[ie]=0;         // TODO FIX to make more readable
 
 	if(err==0)
 	{
@@ -1433,7 +1441,6 @@ int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideM
 		if (nucl(0, relic, ratioH)>0) 
             return 0;
 		
-		//double ratioH_ref[NUCBUF];
 		NuclideMap ratioH_ref;
 		int optfail=0;
 		
@@ -1442,10 +1449,8 @@ int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideM
 		for (NuclideIndex ie=Nu0; ie<=O16; ie++) 
             optfail+=isnan(ratioH_ref[ie]);
 		
-		//double ratioH_tmp[NUCBUF];
 		NuclideMap ratioH_tmp;
 		
-		//for(NuclideIndex ie=REACMIN; ie<=REACMAX; ie++)  /// TODO XXX <- THIS IS SUPER WRONG!
 		for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 		{
 			if(optfail==0)
@@ -1478,7 +1483,6 @@ int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideM
                 ratioH_ref[ie]=ratioH[ie];
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie]=0.;
-		    //for(ie=REACMIN; ie<=REACMAX; ie++)
 		    for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 			{
 				if(nucl_failsafe(-n, relic, ratioH_tmp)>0) 

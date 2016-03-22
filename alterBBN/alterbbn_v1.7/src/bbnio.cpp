@@ -85,7 +85,7 @@ void print_lables_bounds(const char *title, NuclideIndex ni[])
 
 // TODO, change to vector< >
 void print_ratios(const char *lable, NuclideIndex ni[],
-										   NuclideMap & nm)
+									 NuclideMap & nm)
 {
 	//printf("%s\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\t %.3e\n", lable,
     //        nm[He4], nm[H2], nm[He3], nm[Li7], nm[Li6], nm[Be7]);
