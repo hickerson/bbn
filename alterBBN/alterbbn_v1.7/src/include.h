@@ -25,6 +25,8 @@
 
 #define pi      3.1415926535897932385
 #define zeta3   1.2020569031595942855
+#define sqrt12  3.4641016151377545870
+#define sqrtpi  1.7724538509055160273
 
 #define hbar    6.58211889e-25    /// Planck constant in GeV.s
 #define Gn      6.67428e-8        /// Gravitational constant in m^3.g^-1.s^-2
@@ -145,8 +147,8 @@ struct distribution {
 	int samples;
 	vector<double> values;
 
-	distribution(double value) :
-		mean(value),
+	distribution(double value)
+	  : mean(value),
 		min(value),
 		max(value),
 		error(0),
@@ -155,8 +157,10 @@ struct distribution {
 	}
 
 	/** gaussian distribution */
-	distribution(double mean, double error, int samples) :
-		mean(mean),
+	distribution(double mean, double error, double sigma, int samples)
+	  :	mean(mean),
+		min(mean-sigma*error),
+		max(mean+sigma*error),
 		error(error),
 		samples(samples)
 	{
@@ -164,25 +168,28 @@ struct distribution {
 		double value=mean;
 		if (samples < 1) 
 			samples = 1;
-		double bin = 1/samples;
-		for (x=bin-1; x<=1-bin; x+=2*bin) 
+		double xmin = erf(min);
+		double xmax = erf(max);
+		double bin = (xmax-xmin)/samples;
+		for (x=xmin; x<=xmax; x+=bin) 
 		{
 			value = mean + error*erfinv(x);
 			values.push_back(value);
 		}
-		max = value;
-		min = mean-2*value;
+		//max = value;
+		//min = mean-2*value;
 	}
 
 	/** uniformish distribution */
-	distribution(double mean, double min, double max, int samples) :
-		mean(mean),
+	distribution(double min, double max, int samples) :
+		mean((max-min)/2),
 		min(min),
 		max(max),
-		error((max-min)/sqrt(12)),
-		samples(samples)
+		error((max-min)/sqrt12),
+		samples(samples<2?2:samples)
 	{
-		double bin = (max-min)/(samples-1);
+		double bin = (max-min)/samples;
+		if (bin <= 0)
 		for (double x=min; x<=max; x+=bin) 
 			values.push_back(x);
 	}

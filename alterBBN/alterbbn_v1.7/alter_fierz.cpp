@@ -27,7 +27,8 @@ int main(int argc,char** argv)
   		sscanf(argv[4],"%lf",&fierz);
   	}
 	
-	distribution d(3,1,10);
+	distribution d(3,1,5,10);
+	printf("size: %d\n",d.samples);
 	for (int i = 1; i<10; i++)
 		printf("%d: %f\n",i, d.values[i]);
 
