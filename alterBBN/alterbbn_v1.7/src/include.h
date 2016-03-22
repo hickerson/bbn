@@ -156,7 +156,12 @@ struct distribution {
 		values.push_back(mean);
 	}
 
-	/** gaussian distribution */
+	/** 
+	 * gaussian distribution
+	 * mean		the central value of the gussian
+	 * error	the standard error of the gaussian
+	 * sigma	the number of standard deviations from the mean to include
+	 */
 	distribution(double mean, double error, double sigma, int samples)
 	  :	mean(mean),
 		min(mean-sigma*error),
@@ -180,7 +185,9 @@ struct distribution {
 		//min = mean-2*value;
 	}
 
-	/** uniformish distribution */
+	/** 
+	 * uniform distribution 
+	 */
 	distribution(double min, double max, int samples) :
 		mean((max-min)/2),
 		min(min),

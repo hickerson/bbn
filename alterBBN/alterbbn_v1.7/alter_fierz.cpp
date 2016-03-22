@@ -27,10 +27,12 @@ int main(int argc,char** argv)
   		sscanf(argv[4],"%lf",&fierz);
   	}
 	
+	/*
 	distribution d(3,1,5,10);
 	printf("size: %d\n",d.samples);
 	for (int i = 1; i<10; i++)
-		printf("%d: %f\n",i, d.values[i]);
+		printf("%d: %f\n",i,d.values[i]);
+		*/
 
 	CosmologyModel relic;      /// The parameters from the big bang relic before bbn.
 	relic.Init_cosmomodel();	
@@ -43,6 +45,7 @@ int main(int argc,char** argv)
     compute_ratios(relic, ni, ratioH, sigma_ratioH);
     bbn_excluded(0, relic, ni, ratioH);
 	
+	/*
 	printf("\nFormated bounded range:\n");
 	print_lables_bounds("eta", ni);
 	//print_lables_bounds("Fierz b", ni);
@@ -58,4 +61,5 @@ int main(int argc,char** argv)
 			}
 		}
 	}
+	*/
 }
