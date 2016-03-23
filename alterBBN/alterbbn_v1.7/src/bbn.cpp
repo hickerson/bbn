@@ -388,22 +388,18 @@ void setup_nuclides(int A[], int Z[], double Dm[]) {
 	//printf("NNUC: %d\n", NNUC);
 }
     
-/*----------------------------------------------------*/
-
-
-//int linearize(double T9, double reacparam[][8], double f[], double r[], int loop, int inc, int ip, double dt, double Y0[], double Y[], double dY_dt[], double H, double rhob)
-//int ReactionNetwork::linearize(
+/**----------------------------------------------------
+ * solves for new abundances using gaussian elimination 
+ * with back substitution 
+ */
 int linearize(
 	double T9, ReactionList & reactions, 
-	//double f[], double r[], 
 	ReactionMap & f, ReactionMap & r, 
     int loop, int inc, int ip, double dt, 
-	//double Y0[], double Y[], double dY_dt[], 
 	NuclideMap & Y0, NuclideMap & Y, NuclideMap & dY_dt, 
 	double H, double rhob)
-/* solves for new abundances using gaussian elimination with back substitution */
 {
-	/* Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types */
+	/// Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types
 	double nn1[11] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 	double nn2[11] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	double nn3[11] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
@@ -417,23 +413,11 @@ int linearize(
 	int fail;
 	int ierror;
 	int c0 = 0;
-	//double rev[REACBUF],q9[REACBUF];
 	double b[NUCBUF],yx[NUCBUF];
 	int icnvm;
 	double x[NUCBUF], a0[NUCBUF][NUCBUF], cx, sum, xdy, t;
 	int nord,test;
 	
-    /*
-    ReactionIndex reac;
-	for (reac = REACMIN; reac <= REACMAX; reac++) 
-	{
-        // TODO use struct instead of raw double array.
-		rev[reac]=reacparam[reac][6];
-		q9[reac]=reacparam[reac][7];
-	}
-    */
-	
-	//NuclideIndex i,j,k,l;
 	double a[NUCBUF][NUCBUF];
 	for(NuclideIndex i=Nu1; i<=O16; i++) 
         for(NuclideIndex j=Nu1; j<=O16; j++) 
@@ -569,11 +553,6 @@ int linearize(
             //printf("ri rj rk rl: %d %d %d %d\n",ri,rj,rk,rl);
             //printf("ci cj ck cl: %f %f %f %f\n",ci,cj,ck,cl);
 
-			/*
-			i = static_cast<NuclideIndex>(O16-i+Nu1);
-			j = static_cast<NuclideIndex>(O16-j+Nu1);
-			k = static_cast<NuclideIndex>(O16-k+Nu1);
-			l = static_cast<NuclideIndex>(O16-l+Nu1); */
 			/*
 			i = O16-i+Nu1;
 			j = O16-j+Nu1;
@@ -792,8 +771,6 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 {
     //ReactionIndex REACMIN = n_p;
     //ReactionIndex REACMAX = C13a_nO16;
-	//double f[REACBUF];
-	//double r[REACBUF];
 	ReactionMap f,r;
 	for(NuclideIndex i=Nu0; i<=O16; i++)
 	{
@@ -804,8 +781,6 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 	double rhod, sum_Y;
 	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
     double dphie_dlna3, dphie_dZY, sum_DeltaMdY_dt, sum_ZdY_dt;
-	double cosh1, cosh2, cosh3, cosh4, cosh5, cosh6, cosh7;
-    double sinh1, sinh2, sinh3, sinh4, sinh5, sinh6, sinh7;
 	double T90,h_eta0,phie0;
 	double dtl;
 	int loop;
@@ -914,7 +889,81 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			dsd_dT9=relic.dark_entropy_derivative(T9/11.605)/11.605/1.1605e10;
 
 			z=5.929862032115561/T9;
-			Tnu=pow(h_eta*T9*T9*T9/rhob0,1./3.)*T9i;
+			Tnu=pow(h_eta*T9*T9*T9/rhob0,1/3)*T9i;
+				
+			double ch[8], sh[8];
+			double Lb[8], Mb[8], Nb[8];
+			for (int n=1; n<=8; n++) {
+				ch[n] = phie<17? cosh(n*phie):0;
+				sh[n] = phie<17? sinh(n*phie):0;
+				Lb[n] = Lbessel(n*z);
+				Mb[n] = Mbessel(n*z);
+				Nb[n] = Nbessel(n*z);
+			}
+
+			rho_gamma = 8.418*pow(T9,4.);
+			drho_gamma_dT9 = rho_gamma*4./T9;
+			P_gamma = rho_gamma/3.;
+			
+			/// rho_e+ + rho_e-
+			rho_epem = 3206*(Mb[1]*ch[1] 
+			               - Mb[2]*ch[2] 
+			               + Mb[3]*ch[3] 
+						   - Mb[4]*ch[4]
+						   + Mb[5]*ch[5] 
+						   - Mb[6]*ch[6]
+						   + Mb[7]*ch[7]); 
+
+			/// d(rho_e+ + rho_e-)/d(T9)
+			drho_epem_dT9 = 3206*z/T9*(Nb[1]*ch[1] 
+			                       - 2*Nb[2]*ch[2]
+			                       + 3*Nb[3]*ch[3] 
+								   - 4*Nb[4]*ch[4]
+								   + 5*Nb[5]*ch[5] 
+								   - 6*Nb[6]*ch[6]
+								   + 7*Nb[7]*ch[7]); 
+			
+			/// d(rho_e+ + rho_e-)/d(phie)
+			drho_epem_dphie = 3206*(Mb[1]*sh[1] 
+			                    - 2*Mb[2]*sh[2]
+			                    + 3*Mb[3]*sh[3] 
+								- 4*Mb[4]*sh[4]
+								+ 5*Mb[5]*sh[5] 
+								- 6*Mb[6]*sh[6]
+								+ 7*Mb[7]*sh[7]); 
+			
+			/// P_e+ + P_e-
+			P_epem = 3206*(Lb[1]*ch[1]/z 
+			             - Lb[2]*ch[2]/(2*z)
+			             + Lb[3]*ch[3]/(3*z)
+						 - Lb[4]*ch[4]/(4*z)
+						 + Lb[5]*ch[5]/(5*z)
+						 - Lb[6]*ch[6]/(6*z)
+						 + Lb[7]*ch[7]/(7*z)); 
+			
+			rho_neutrinos = 12.79264*relic.neutrino_density(Tnu);
+			rho_baryons=h_eta*T9*T9*T9;
+
+			/// d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) 
+			dM_epem_dT9 = -(z*z*z/T9)*(sh[1]*(3*Lb[1] -   z*Mb[1])
+			                         - sh[2]*(3*Lb[2] - 2*z*Mb[2])
+									 + sh[3]*(3*Lb[3] - 3*z*Mb[3])
+									 - sh[4]*(3*Lb[4] - 4*z*Mb[4])
+									 + sh[5]*(3*Lb[5] - 5*z*Mb[5])
+									 - sh[6]*(3*Lb[6] - 6*z*Mb[6])
+									 + sh[7]*(3*Lb[7] - 7*z*Mb[7])); 
+			
+			dN_epem_dphie = z*z*z*(ch[1]*Lb[1]
+			                     - ch[2]*2.*Lb[2]
+								 + ch[3]*3.*Lb[3]
+								 - ch[4]*4.*Lb[4]
+								 + ch[5]*5.*Lb[5]
+								 - ch[6]*6.*Lb[6]
+								 + ch[7]*7.*Lb[7]);
+
+#if 0
+			double cosh1, cosh2, cosh3, cosh4, cosh5, cosh6, cosh7;
+			double sinh1, sinh2, sinh3, sinh4, sinh5, sinh6, sinh7;
 			if (phie<=17.)
 			{
 				cosh1=cosh(phie);
@@ -958,6 +1007,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			dM_epem_dT9=-(z*z*z/T9)*(sinh1*(Lbessel(z)*3.-z*Mbessel(z))-sinh2*(Lbessel(2.*z)*3.-z*2.*Mbessel(2.*z))+sinh3*(Lbessel(3.*z)*3.-z*3.*Mbessel(3.*z))-sinh4*(Lbessel(4.*z)*3.-z*4.*Mbessel(4.*z))+sinh5*(Lbessel(5.*z)*3.-z*5.*Mbessel(5.*z))-sinh6*(Lbessel(6.*z)*3.-z*6.*Mbessel(6.*z))+sinh7*(Lbessel(7.*z)*3.-z*7.*Mbessel(7.*z))); /* d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) */
 			
 			dN_epem_dphie=z*z*z*(cosh1*Lbessel(z)-cosh2*2.*Lbessel(2.*z)+cosh3*3.*Lbessel(3.*z)-cosh4*4.*Lbessel(4.*z)+cosh5*5.*Lbessel(5.*z)-cosh6*6.*Lbessel(6.*z)+cosh7*7.*Lbessel(7.*z));
+#endif
 			if(dN_epem_dphie!=0) 
 				dN_epem_dphie=1/dN_epem_dphie; /* d(pi^2/2 N_A (hbar*c/k)^3 h sum Z_i Y_i)/d(phie) */
 			
@@ -1008,10 +1058,13 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
             //printf("dlnT9_dt: %f\n", dlnT9_dt );
             //printf("ip: %d\n", ip );
             //printf("inc: %d\n", inc);
-			if (T9 <= T9f || dt < fabs(1e-16 / dlnT9_dt) || ip == inc) 
+			if (T9 <= T9f 
+			or  dt < fabs(1e-16 / dlnT9_dt) 
+			or  ip == inc) 
 			{
 				it++;
-				for(NuclideIndex i=He4+1; i<=O16; i++) 
+				//for(NuclideIndex i=He4+1; i<=O16; i++) 
+				for(NuclideIndex i=Nu1; i<=O16; i++) 
                     ratioH[i]=Y[i]/Y[H1];
 			
 				ratioH[H1]=Y[H1]*Am[H1];
@@ -1108,36 +1161,28 @@ int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 	ReactionMap f,r;
 	double sd;
 	double rhod, sum_Y;
-	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
-    double dphie_dlna3, dphie_dZY, sum_DeltaMdY_dt, sum_ZdY_dt;
-	double cosh1, cosh2, cosh3, cosh4, cosh5, cosh6, cosh7;
-    double sinh1, sinh2, sinh3, sinh4, sinh5, sinh6, sinh7;
-	double T90,h_eta0,phie0;
 	double dtl;
 	int loop;
-	//double dY_dt0[NUCBUF],dY_dt[NUCBUF],Y0[NUCBUF],Y[NUCBUF];
-	NuclideMap dY_dt0,dY_dt,Y0,Y;
-	//double dh_dt, dphie_dt, dT9_dt, dlnT9_dt;
-	double dT90_dt, dh_dt0, dphie_dt0;
-	//double dY_dt0[O16+Nu1],dY_dt[O16+Nu1],Y0[O16+Nu1],Y[O16+Nu1];
 	double dtmin;
 	double z;
 	double H;
-	dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
+	NuclideMap dY_dt0,dY_dt,Y0,Y;
 
+	//dphie_dt0=dh_dt0=dT90_dt=phie0=h_eta0=T90=0.;
+	double dT90_dt=0, dh_dt0=0, dphie_dt0=0;
+	double T90=0, h_eta0=0, phie0=0;
+	double sum_dY_dt, sum_ZY, dsd_dT9, dphie_dT9, dlna3_dT9;
+    double dphie_dlna3, dphie_dZY, sum_DeltaMdY_dt, sum_ZdY_dt;
 
     int Am[NUCBUF];
     int Zm[NUCBUF];
     double Dm[NUCBUF];
     setup_nuclides(Am,Zm,Dm);
 
-	//double reacparam[REACBUF][8];
-	//Reaction reaction[REACBUF];
 	ReactionList reactions;
     setup_reactions(reactions);
 		
-	for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
-	{
+	for(ReactionIndex n=REACMIN; n<=REACMAX; n++) {
 		f[n] = 0;
 		r[n] = 0;
 	}
@@ -1169,23 +1214,24 @@ int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 
 	double T9=T9i;
 	double Tnu=T9;
-	double t=1./pow(T9*0.09615,2.);
+	//double t=1./pow(T9*0.09615,2.);
+	double t=pow(T9*0.09615, -2);
 	double dt=dt0;
 
-	if (15.011 / T9 > 58.)	/// TODO
+	if (15.011/T9 > 58.)	/// TODO out of date based fortran floats
 	{
 		Y[Nu1] = 1.e-25;
 		Y[H1] = 1.;
 	} 
-	else if (15.011 / T9 < -58.)
+	else if (15.011/T9 < -58.)
 	{
 		Y[Nu1] = 1.;
 		Y[H1] = 1.e-25;
 	} 
 	else 
 	{
-		Y[Nu1] = 1. / (exp(15.011 / T9) + 1.);
-		Y[H1] = 1. / (exp(-15.011 / T9) + 1.);
+		Y[Nu1] = 1. / (exp(15.011 / T9) + 1);
+		Y[H1] = 1. / (exp(-15.011 / T9) + 1);
 	}
 
 	Y0[Nu1]=Y[Nu1];
@@ -1215,9 +1261,11 @@ int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 	{
 		for(loop=1;loop<=2;loop++)
 		{
-			rhod=relic.dark_density(T9/11.605);		
-			sd=relic.dark_entropy(T9/11.605)/ 1.1605e10;
-			dsd_dT9=relic.dark_entropy_derivative(T9/11.605)/11.605/1.1605e10;
+			double cosh1, cosh2, cosh3, cosh4, cosh5, cosh6, cosh7;
+			double sinh1, sinh2, sinh3, sinh4, sinh5, sinh6, sinh7;
+			double rhod=relic.dark_density(T9/11.605);		
+			double sd=relic.dark_entropy(T9/11.605)/ 1.1605e10;
+			double dsd_dT9=relic.dark_entropy_derivative(T9/11.605)/11.605/1.1605e10;
 
 			z=5.929862032115561/T9;
 			Tnu=pow(h_eta*T9*T9*T9/rhob0,1./3.)*T9i;
