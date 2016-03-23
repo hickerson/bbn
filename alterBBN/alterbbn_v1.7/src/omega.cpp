@@ -1,9 +1,9 @@
 #include "include.h"
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the model of the QCD equations of state 
+ */
 void CosmologyModel::Init_modeleff(int model_eff)
-/* modifies the model of the QCD equations of state */
 {
 	int ie,je;
 	
@@ -60,10 +60,10 @@ void CosmologyModel::Init_modeleff(int model_eff)
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * computes heff at the temperature Temp 
+ */
 double CosmologyModel::heff(double Temp)
-/* computes heff at the temperature Temp */
 {
 	int ie;
 	
@@ -83,10 +83,10 @@ double CosmologyModel::heff(double Temp)
 	return (heff2-heff1)/(T2-T1)*(Temp-T1)+heff1;
 }
 
-/*--------------------------------------------------------------*/
-
+/**-------------------------------------------------------------
+ * computes sgStar at the temperature Temp 
+ */
 double CosmologyModel::sgStar(double Temp)
-/* computes sgStar at the temperature Temp */
 {
 	int ie;
 	
@@ -106,21 +106,21 @@ double CosmologyModel::sgStar(double Temp)
 	return (sgStar2-sgStar1)/(T2-T1)*(Temp-T1)+sgStar1;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * computes geff at the temperature Temp 
+ */
 double CosmologyModel::geff(double Temp)
-/* computes geff at the temperature Temp */
 {
 	double heff0=heff(Temp);
 	
 	return pow(heff0/sgStar(Temp)*(1.+(heff(Temp*1.001)-heff(Temp*0.999))/0.006/heff0),2.);
 }
 
-/*--------------------------------------------------------------*/
-
-// TODO replace with constructor
+/*--------------------------------------------------------------
+ * initializes the parameters contained in paramrelic 
+ * TODO replace with constructor
+ */
 void CosmologyModel::Init_cosmomodel()
-/* initializes the parameters contained in paramrelic */
 {
 	eta0=6.19e-10; /* baryon-to-photon ratio from WMAP */
 	life_neutron=880.1; /* neutron lifetime PDG2012 */
@@ -140,10 +140,12 @@ void CosmologyModel::Init_cosmomodel()
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the values of the baryon-to-photon ratio eta, 
+ * the effective number of neutrinos nbnu and 
+ * the neutron lifetime life_neutron 
+ */
 void CosmologyModel::Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3)
-/* modifies the values of the baryon-to-photon ratio eta, the effective number of neutrinos nbnu and the neutron lifetime life_neutron */
 {
 	this->eta0=eta;
 	this->nbnu=nbnu;
@@ -154,10 +156,13 @@ void CosmologyModel::Init_cosmomodel_param(double eta, double nbnu, double life_
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the values of the baryon-to-photon ratio eta, 
+ * the effective number of neutrinos nbnu and the neutron 
+ * lifetime life_neutron and the beta-decay 
+ * Fierz interference term
+ */
 void CosmologyModel::Init_fierz(double eta, double nbnu, double life_neutron, double fierz)
-/* modifies the values of the baryon-to-photon ratio eta, the effective number of neutrinos nbnu and the neutron lifetime life_neutron and the beta-decay Fierz interference term */
 {
     Init_cosmomodel_param(eta, nbnu, life_neutron, 0, 0, 0);
 	this->fierz=fierz;
@@ -176,10 +181,11 @@ void CosmologyModel::Init_dark_density(double dd0, double ndd, double T_end)
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the parameters of the dark entropy density which 
+ * appears in the cosmological equations 
+ */
 void CosmologyModel::Init_dark_entropy(double sd0, double nsd, double T_end)
-/* modifies the parameters of the dark entropy density which appears in the cosmological equations */
 {
 	this->sd0=sd0;
 	this->nsd=nsd;
@@ -188,10 +194,11 @@ void CosmologyModel::Init_dark_entropy(double sd0, double nsd, double T_end)
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the parameters of the dark entropy generation which 
+ * appears in the cosmological equations
+ */
 void CosmologyModel::Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end)
-/* modifies the parameters of the dark entropy generation which appears in the cosmological equations */
 {
 	this->Sigmad0=Sigmad0;
 	this->nSigmad=nSigmad;
@@ -200,10 +207,11 @@ void CosmologyModel::Init_dark_entropySigmaD(double Sigmad0, double nSigmad, dou
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the parameters of the non-thermal relic particle 
+ * production which appears in the cosmological equations 
+ */
 void CosmologyModel::Init_nonthermal(double nt0, double nnt, double T_end)
-/* modifies the parameters of the non-thermal relic particle production which appears in the cosmological equations */
 {
 	this->nt0=nt0;
 	this->nnt=nnt;
@@ -212,10 +220,10 @@ void CosmologyModel::Init_nonthermal(double nt0, double nnt, double T_end)
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
-double CosmologyModel::dark_density(double T)
-/* computes the dark energy density at temperature T */
+/**--------------------------------------------------------------
+ * computes the dark energy density at temperature T
+ */
+double CosmologyModel::dark_density(double T) const
 {
 	if((dd0==0.)||(T<Tdend)) return 0.;
 	
@@ -224,10 +232,10 @@ double CosmologyModel::dark_density(double T)
 	return dd0*rho_rad_1MeV*pow(T/1.e-3,ndd);
 }
 
-/*--------------------------------------------------------------*/
-
-double CosmologyModel::dark_entropy(double T)
-/* computes the dark entropy density at temperature T */
+/**--------------------------------------------------------------
+ * computes the dark entropy density at temperature T 
+ */
+double CosmologyModel::dark_entropy(double T) const
 {
 	if((sd0==0.)&&(Sigmad0==0.)) return 0.;
 	
@@ -262,16 +270,16 @@ integ+=sgStar(T)*dark_entropy_Sigmad(T)/sqrt(1.+dark_density(T)/(pi*pi/30.*geff(
 		
 		integ*=dlnT;
 
-		double Mplanck=1.2209e19;	
+		//double Mplanck=1.2209e19;	
 
 		return 3.*Mplanck*sqrt(5./4./pi/pi/pi)*heff(T)*T*T*T*integ;	
 	}
 }
 
-/*--------------------------------------------------------------*/
-
-double CosmologyModel::dark_entropy_derivative(double T)
-/* computes the dark energy entropy derivative at temperature T */
+/**--------------------------------------------------------------/
+ * computes the dark energy entropy derivative at temperature T 
+ */
+double CosmologyModel::dark_entropy_derivative(double T) const
 {
 	if((sd0==0.)&&(Sigmad0==0.)) return 0.;
 	
@@ -284,21 +292,21 @@ double CosmologyModel::dark_entropy_derivative(double T)
 	else
 	{
 	
-		double Mplanck=1.2209e19;	
+		//double Mplanck=1.2209e19;	
 		return 3.*sgStar(T)/T/heff(T)*(sqrt(geff(T))*dark_entropy(T)-sqrt(5.*Mplanck/4./pi/pi/pi)/T/T*dark_entropy_Sigmad(T)/sqrt(1.+dark_density(T)/(pi*pi/30.*geff(T)*pow(T,4.))));
 	}
 }
 
-/*--------------------------------------------------------------*/
-
-double CosmologyModel::dark_entropy_Sigmad(double T)
-/* computes the dark entropy production at temperature T */
+/**--------------------------------------------------------------
+ * computes the dark entropy production at temperature T
+ */
+double CosmologyModel::dark_entropy_Sigmad(double T) const
 {
 	if((sd0==0.)&&(Sigmad0==0.)) return 0.;
 	
 	if((Sigmad0==0.)&&(T<Tsend)) return 0.;
 	
-	double Mplanck=1.2209e19;
+	//double Mplanck=1.2209e19;
 	
 	if(Sigmad0==0.)
 	{	
@@ -316,20 +324,22 @@ double CosmologyModel::dark_entropy_Sigmad(double T)
 	}
 }
 
-/*--------------------------------------------------------------*/
-
-double CosmologyModel::nonthermal(double T)
-/* computes the non-thermally produced relic particle number density at temperature T */
+/**--------------------------------------------------------------
+ * computes the non-thermally produced relic particle number 
+ * density at temperature T 
+ */
+double CosmologyModel::nonthermal(double T) const
 {
 	if((nt0==0.)||(T<Tnend)) return 0.;
 	
 	return nt0*1.e-50*pow(T/1.e-3,nnt);
 }
 
-/*--------------------------------------------------------------*/
-
-double CosmologyModel::neutdens(double Tnu)
-/* computes the neutrino density in case of degeneracies at temperature Tnu */
+/**--------------------------------------------------------------
+ * computes the neutrino density in case of degeneracies at 
+ * temperature Tnu 
+ */
+double CosmologyModel::neutrino_density(double Tnu) const
 {
 	if((xinu1==0.)&&(xinu2==0.)&&(xinu3==0.)) return nbnu*2.*pi*pi/30.*pow(Tnu,4.)*7./8.;
 

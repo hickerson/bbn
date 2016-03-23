@@ -29,9 +29,10 @@
 #define sqrtpi  1.7724538509055160273
 
 #define hbar    6.58211889e-25    /// Planck constant in GeV.s
-#define Gn      6.67428e-8        /// Gravitational constant in m^3.g^-1.s^-2
-#define me      0.510998928       /// electron mass in MeV
+#define Gn      6.67428e-8        /// Gravitational constant in m^3/g.s^2
+#define me      0.510998928       /// electron mass in MeV/c^2
 #define kB      0.0861733238      /// Boltzmann constant in MeV/GK
+#define Mplanck 1.2209e19         /// Planck mass in GeV/c^2
 
 
 /*--------------------------------------------------------------------*/
@@ -80,15 +81,15 @@ public:
 	void Init_fierz(double eta, double nbnu, double life_neutron, double fierz);
 
 public:
-	double heff(double Temp);
-	double sgStar(double Temp);
-	double geff(double Temp);
-	double dark_density(double T);
-	double dark_entropy(double T);
-	double dark_entropy_derivative(double T);
-	double dark_entropy_Sigmad(double T);
-	double nonthermal(double T);
-	double neutdens(double Tnu);
+	double heff(double Temp) const;
+	double sgStar(double Temp) const;
+	double geff(double Temp) const;
+	double dark_density(double T) const;
+	double dark_entropy(double T) const;
+	double dark_entropy_derivative(double T) const;
+	double dark_entropy_Sigmad(double T) const;
+	double nonthermal(double T) const;
+	double neutdens(double Tnu) const;
 };
 
 
@@ -232,7 +233,7 @@ struct distribution {
 
 /* bbnrate.cpp */
 void rate_weak(int err, ReactionMap & f);
-void rate_pn(int err, CosmologyModel relic,
+void rate_pn(int err, const CosmologyModel & relic,
             ReactionMap & f, ReactionMap & r, double T9, double Tnu);
 void rate_all(int err, ReactionMap & f, double T9);
 
@@ -246,9 +247,9 @@ int linearize(double T9, ReactionList & reactions,
               ReactionMap & f, ReactionMap & r, int loop, int inc, int ip, 
 	double dt, NuclideMap & y0, NuclideMap & y, NuclideMap & dydt, 
 	double H, double rhob);
-int nucl(int err, CosmologyModel relic, NuclideMap & ratioH);
-int nucl_failsafe(int err, CosmologyModel relic, NuclideMap & ratioH);
-int nucl_witherrors(int err, CosmologyModel relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH);
+int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH);
+int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH);
+int nucl_errors(int err, const CosmologyModel & relic, NuclideMap & ratioH, NuclideMap & sigma_ratioH);
 //int bbn_excluded(int err, CosmologyModel relic);
 
 #endif  /// __INCLUDE_H__

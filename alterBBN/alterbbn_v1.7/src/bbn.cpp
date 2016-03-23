@@ -1412,9 +1412,9 @@ int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH)
  *     2=low values
  *     3=linear error calculation
  */
-int nucl_with_errors(int err, const CosmologyModel & relic, 
-									NuclideMap & ratioH, 
-									NuclideMap & sigma_ratioH)
+int nucl_errors(int err, const CosmologyModel & relic, 
+							   NuclideMap & ratioH, 
+							   NuclideMap & sigma_ratioH)
 {	
 	for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0;         // TODO FIX to make more readable

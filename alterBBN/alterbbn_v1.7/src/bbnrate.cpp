@@ -100,7 +100,7 @@ double weak_phase_space(double Ex, double Ee, double Enu)
  *      err>100000: random gaussian error; 
  *      err<0: error only for process number (-err)
  */
-void rate_pn(int err, CosmologyModel relic, 
+void rate_pn(int err, const CosmologyModel & relic, 
     ReactionMap & f, ReactionMap & r, 
     double T9, double Tnu)
 {
