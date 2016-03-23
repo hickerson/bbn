@@ -460,6 +460,13 @@ int linearize(
 					cl=r[n];
 					break;
 				}
+				case 3:	{ /* (1,0,0,2) type */
+					ci=f[n];
+					cj=0;
+					ck=0;
+					cl=Y[l]*r[n]/2.;
+					break;
+				}
 				case 1: { /* (1,1,0,1) type */
 					r[n]=Rn*1e10*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*f[n];
@@ -477,13 +484,6 @@ int linearize(
 					cj=Y[i]*f[n]/2.;
 					ck=Y[l]*r[n]/2.;
 					cl=Y[k]*r[n]/2.;
-					break;
-				}
-				case 3:	{ /* (1,0,0,2) type */
-					ci=f[n];
-					cj=0;
-					ck=0;
-					cl=Y[l]*r[n]/2.;
 					break;
 				}
 				case 4:	{ /* (1,1,0,2) type */
