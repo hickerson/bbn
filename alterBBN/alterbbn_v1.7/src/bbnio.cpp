@@ -146,7 +146,7 @@ int compute_ratios(CosmologyModel relic, NuclideIndex ni[],
 	nucl(2, relic, ratioH);
 	print_ratios("high:", ni, ratioH);
 			
-	if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
+	if(nucl_errors(3, relic, ratioH, sigma_ratioH))
 	{
 		printf("\nWith uncertainties:\n");
 		print_lables("ratio:", ni);

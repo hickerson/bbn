@@ -63,7 +63,7 @@ void CosmologyModel::Init_modeleff(int model_eff)
 /**--------------------------------------------------------------
  * computes heff at the temperature Temp 
  */
-double CosmologyModel::heff(double Temp)
+double CosmologyModel::heff(double Temp) const
 {
 	int ie;
 	
@@ -86,7 +86,7 @@ double CosmologyModel::heff(double Temp)
 /**-------------------------------------------------------------
  * computes sgStar at the temperature Temp 
  */
-double CosmologyModel::sgStar(double Temp)
+double CosmologyModel::sgStar(double Temp) const
 {
 	int ie;
 	
@@ -109,7 +109,7 @@ double CosmologyModel::sgStar(double Temp)
 /**--------------------------------------------------------------
  * computes geff at the temperature Temp 
  */
-double CosmologyModel::geff(double Temp)
+double CosmologyModel::geff(double Temp) const
 {
 	double heff0=heff(Temp);
 	

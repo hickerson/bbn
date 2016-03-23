@@ -89,7 +89,7 @@ public:
 	double dark_entropy_derivative(double T) const;
 	double dark_entropy_Sigmad(double T) const;
 	double nonthermal(double T) const;
-	double neutdens(double Tnu) const;
+	double neutrino_density(double Tnu) const;
 };
 
 

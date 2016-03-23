@@ -55,7 +55,7 @@ int main(int argc,char** argv)
 			for (double tau = lifetime - 1.1; tau <= lifetime + 1.1; tau += 2*1.1/3) {
 				double nnu = neutrinos;
 				relic.Init_fierz(eta,nnu,tau,fierz);
-				if(nucl_witherrors(3, relic, ratioH, sigma_ratioH))
+				if(nucl_errors(3, relic, ratioH, sigma_ratioH))
 				{
 					print_ratios_error_bounds(eta, ni, ratioH, sigma_ratioH);
 				}

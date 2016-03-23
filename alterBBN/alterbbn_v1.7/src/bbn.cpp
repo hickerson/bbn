@@ -951,7 +951,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			
 			P_epem=(Lbessel(z)*cosh1/z-Lbessel(2.*z)*cosh2/(z*2.)+Lbessel(3.*z)*cosh3/(z*3.)-Lbessel(4.*z)*cosh4/(z*4.)+Lbessel(5.*z)*cosh5/(z*5.)-Lbessel(6.*z)*cosh6/(z*6.)+Lbessel(7.*z)*cosh7/(z*7.))*3206.; /* P_e+ + P_e- */
 			
-			rho_neutrinos=12.79264*relic.neutdens(Tnu);
+			rho_neutrinos=12.79264*relic.neutrino_density(Tnu);
 										
 			rho_baryons=h_eta*T9*T9*T9;
             //printf("rho_baryons: %f h_eta: %f T9: %f\n", rho_baryons, h_eta, T9);
@@ -1269,7 +1269,7 @@ int nucl_failsafe(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			
 			P_epem=(Lbessel(z)*cosh1/z-Lbessel(2.*z)*cosh2/(z*2.)+Lbessel(3.*z)*cosh3/(z*3.)-Lbessel(4.*z)*cosh4/(z*4.)+Lbessel(5.*z)*cosh5/(z*5.)-Lbessel(6.*z)*cosh6/(z*6.)+Lbessel(7.*z)*cosh7/(z*7.))*3206.; /* P_e+ + P_e- */
 			
-			rho_neutrinos=12.79264*relic.neutdens(Tnu);
+			rho_neutrinos=12.79264*relic.neutrino_density(Tnu);
 										
 			rho_baryons=h_eta*T9*T9*T9;
 			dM_epem_dT9=-(z*z*z/T9)*(sinh1*(Lbessel(z)*3.-z*Mbessel(z))-sinh2*(Lbessel(2.*z)*3.-z*2.*Mbessel(2.*z))+sinh3*(Lbessel(3.*z)*3.-z*3.*Mbessel(3.*z))-sinh4*(Lbessel(4.*z)*3.-z*4.*Mbessel(4.*z))+sinh5*(Lbessel(5.*z)*3.-z*5.*Mbessel(5.*z))-sinh6*(Lbessel(6.*z)*3.-z*6.*Mbessel(6.*z))+sinh7*(Lbessel(7.*z)*3.-z*7.*Mbessel(7.*z))); /* d(pi^2 (hbar*c)^3 (ne- - ne+)*z^3 / 2(m c^2)^3) / d(T9) */
