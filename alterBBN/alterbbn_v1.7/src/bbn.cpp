@@ -127,19 +127,7 @@ void setup_reactions(ReactionList & reaction)
 	//printf("C13a_nO16: %d\n", C13a_nO16);
 	//printf("NNUCREAC: %d\n", NNUCREAC);
 }
-/*
-NuclideIndex & operator++(NuclideIndex& index) {
-	assert(index != NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(1 + index);
-	return index;
-}
 
-NuclideIndex & operator--(NuclideIndex& index) {
-	assert(index != NuclideIndexUnderflow);
-	index = static_cast<NuclideIndex>(-1 + index);
-	return index;
-}
-*/
 NuclideIndex operator++(NuclideIndex & index, int) {
 	NuclideIndex rv = index;
 	assert(index != NuclideIndexOverflow);
@@ -328,6 +316,7 @@ int linearize(
         //printf("i j k l: %d %d %d %d\n",i,j,k,l);
         //printf("ri rj rk rl: %d %d %d %d\n",ri,rj,rk,rl);
         //printf("n f[n] r[n]: %d %f %f\n",n,r[n],f[n]);
+		assert (i <= O16 && l <= O16);
 		if (i <= O16 && l <= O16)
 		{
 			switch(type) 
@@ -436,7 +425,8 @@ int linearize(
 			i = O16-i+Nu1;
 			j = O16-j+Nu1;
 			k = O16-k+Nu1;
-			l = O16-l+Nu1; */
+			l = O16-l+Nu1;
+			*/
 			i = !i;
 			j = !j;
 			k = !k;
@@ -616,8 +606,8 @@ int linearize(
 	for(NuclideIndex i=Nu1; i<=O16; i++) 
 	{
 		//yY[i]=yx[O16+Nu1-i];
-		yY[i]=yx[!i]; 
-		dY_dt[i]=(yY[i]-Y0[i])/dt;
+		yY[i] = yx[!i]; 
+		dY_dt[i] = (yY[i]-Y0[i])/dt;
 	}
 
 #ifdef DEBUG
@@ -1426,6 +1416,7 @@ int nucl_errors(int err, const CosmologyModel & relic,
 		if(optfail>0)
 		{
 			printf("Sorry, more precise calculation required, please wait...\n");
+			exit(1);
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 ratioH_ref[ie]=ratioH[ie];
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
