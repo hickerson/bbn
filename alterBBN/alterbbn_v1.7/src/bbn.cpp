@@ -4,6 +4,7 @@
 //#include "memcheck.h"
 
 
+#if 0
 /**----------------------------------------------------
  * type: 0-10, each type has a unique 
  * (#n1,#n2,#n3,#n4) quartet
@@ -232,7 +233,8 @@ void setup_nuclides(NuclideList & nuclide) {
 	//printf("O16: %d\n", O16);
 	//printf("NNUC: %d\n", NNUC);
 }
-    
+#endif     
+
 NuclideIndex operator++(NuclideIndex & index, int) {
 	NuclideIndex rv = index;
 	assert(index != NuclideIndexOverflow);
@@ -301,7 +303,7 @@ ReactionIndex operator++(ReactionIndex& index, int) {
  * with back substitution 
  */
 int linearize(
-	double T9, ReactionList & reactions, 
+	double T9, const ReactionList & reactions, 
 	ReactionMap & f, ReactionMap & r, 
     int loop, int inc, int ip, double dt, 
 	NuclideMap & Y0, NuclideMap & Y, NuclideMap & dY_dt, 
@@ -334,7 +336,7 @@ int linearize(
     ReactionIndex n;
 	for (n=REACMIN; n<=REACMAX; n++) 
 	{
-		Reaction reaction = reactions[n];
+		Reaction & reaction = reactions[n];
         assert(reaction.id == n);
         int type = reaction.type;
 		NuclideIndex i = reaction.in_major;
@@ -462,6 +464,7 @@ int linearize(
             //printf("ri rj rk rl: %d %d %d %d\n",ri,rj,rk,rl);
             //printf("ci cj ck cl: %f %f %f %f\n",ci,cj,ck,cl);
 
+#if 1
 			/*
 			i = O16-i+Nu1;
 			j = O16-j+Nu1;
@@ -516,6 +519,13 @@ int linearize(
                 a[k][l]+=rk*cl;
 			a[i][l]-=ri*cl;
 			a[l][l]+=rl*cl;
+#else		/// TODO Use this if you ALWAYS know each index is not an overflow
+			i = !i; j = !j; k = !k; l = !l;
+			a[j][i]+=rj*ci; a[k][i]-=rk*ci; a[i][i]+=ri*ci; a[l][i]-=rl*ci;
+			a[j][j]+=rj*cj; a[k][j]-=rk*cj; a[i][j]+=ri*cj; a[l][j]-=rl*cj;
+			a[j][k]-=rj*ck; a[k][k]+=rk*ck; a[i][k]-=ri*ck; a[l][k]+=rl*ck;
+			a[j][l]-=rj*cl; a[k][l]+=rk*cl; a[i][l]-=ri*cl; a[l][l]+=rl*cl;
+#endif
 		}
 	}
 	
@@ -710,14 +720,14 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
     //int Zm[NUCBUF];
     //double Dm[NUCBUF];
     //setup_nuclides(Am,Zm,Dm);
-	NuclideList nuclides;
-    setup_nuclides(nuclides);
+	const NuclideList & nuclides = relic.nuclides;
+    //setup_nuclides(nuclides);
 
 	//double reacparam[NNUCREAC+1][8];
     //Reaction reaction[ReactionIndexOverflow];
     //Reaction reaction[REACBUF];
-	ReactionList reaction;
-    setup_reactions(reaction);
+	const ReactionList & reactions = relic.reactions;
+    //setup_reactions(reaction);
 		
 	for (ReactionIndex n=REACMIN; n<=REACMAX; n++) {
 		f[n] = 0;
@@ -931,7 +941,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
             	
 			rate_all(err,f,T9);
 		
-			fail=linearize(T9,reaction,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
+			fail=linearize(T9,reactions,f,r,loop,inc,ip,dt,Y0,Y,dY_dt,H,rho_baryons);
 
 			if( fail>0 ) 
                 return 0;
@@ -1003,8 +1013,8 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 				for(NuclideIndex i=Nu1; i<=O16; i++) 
                     ratioH[i]=Y[i]/Y[H1];
 			
-				ratioH[H1]=Y[H1]*nuclides[H1].A;
-				ratioH[He4]=Y[He4]*nuclides[He4].A;
+				ratioH[H1]=Y[H1];//*nuclides[H1].A;
+				ratioH[He4]=Y[He4]*4;//*nuclides[He4].A;
 				for(NuclideIndex i=H1; i<=Be7; i++) 
                     ratioH[Li8]+=ratioH[i];
 				ratioH[Li8] -= 1;

@@ -249,7 +249,7 @@ void rate_all(int err, ReactionMap & f, double T9);
 void setup_reactions(ReactionList & reaction);
 void setup_nuclides(NuclideList & nuclides);
 
-int linearize(double T9, ReactionList & reactions, 
+int linearize(double T9, const ReactionList & reactions, 
               ReactionMap & f, ReactionMap & r, int loop, int inc, int ip, 
 	double dt, NuclideMap & y0, NuclideMap & y, NuclideMap & dydt, 
 	double H, double rhob);
