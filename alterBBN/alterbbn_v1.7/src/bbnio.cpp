@@ -5,6 +5,7 @@ static const char * numf = "%12.3e";     /// unused for now
 
 const char * get_nuclide_name(const NuclideIndex ni)
 {
+	/*
     int i=0;
     int id=0;
     while (id!=ni)
@@ -18,6 +19,41 @@ const char * get_nuclide_name(const NuclideIndex ni)
             return _nuclide[i].name;
     }
     return "error";
+	*/
+	switch(ni) {
+		case Nu0: return "none"; break;
+		case Nu1: return "n";    break;
+		case H1:  return "H";    break;
+		case H2:  return "D";    break;
+		case H3:  return "T";    break;
+		case He3: return "He3";  break;
+		case He4: return "He4";  break;
+
+		case Li6: return "Li6";  break;
+		case Li7: return "Li7";  break;
+		case Be7: return "Be7";  break;
+		case Li8: return "Li8";  break;
+
+		case B8:  return  "B8";  break;
+		case Be9: return "Be9";  break;
+		case B10: return "Be10"; break;
+		case B11: return "Be11"; break;
+
+		case C11: return "C11";  break;
+		case B12: return "B12";  break;
+		case C12: return "C12";  break;
+		case N12: return "N12";  break;
+
+		case C13: return "C13";  break;
+		case N13: return "N13";  break;
+		case C14: return "C14";  break;
+		case N14: return "N14";  break;
+
+		case O14: return "O14";  break;
+		case N15: return "N15";  break;
+		case O15: return "O15";  break;
+		case O16: return "O16";  break;
+	};
 }
 
 void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
@@ -39,9 +75,8 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
         or  ni<NuclideIndexUnderflow)
             return;
 
-        id=_nuclide[++i].id;
         if (ni==id) {
-            sprintf(buffer, "%s/H", _nuclide[i].name);
+            sprintf(buffer, "%s/H", get_nuclide_name(ni));
             return;
         }
     }
