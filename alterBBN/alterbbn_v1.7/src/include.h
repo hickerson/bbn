@@ -56,6 +56,9 @@ public:
 	double xinu1,xinu2,xinu3;
     double fierz;
 
+	NuclideList nuclides;
+	ReactionList reactions;
+
 public:
     CosmologyModel() { 
         Init_cosmomodel(); 
@@ -79,6 +82,8 @@ public:
 	void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end);
 	void Init_nonthermal(double nt0, double nnt, double T_end);
 	void Init_fierz(double eta, double nbnu, double life_neutron, double fierz);
+	void Init_nuclides();
+	void Init_reactions();
 
 public:
 	double heff(double Temp) const;

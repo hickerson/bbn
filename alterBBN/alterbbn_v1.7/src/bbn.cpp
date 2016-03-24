@@ -129,67 +129,6 @@ void setup_reactions(ReactionList & reaction)
 	//printf("NNUCREAC: %d\n", NNUCREAC);
 }
 
-NuclideIndex operator++(NuclideIndex & index, int) {
-	NuclideIndex rv = index;
-	assert(index != NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(1 + index);
-	return rv;
-}
-
-NuclideIndex operator--(NuclideIndex & index, int) {
-	NuclideIndex rv = index;
-	assert(index != NuclideIndexUnderflow);
-	index = static_cast<NuclideIndex>(-1 + index);
-	return rv;
-}
-
-NuclideIndex operator+(NuclideIndex a, NuclideIndex b) {
-	int index = int(a) + int(b);
-	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexOverflow);
-	return static_cast<NuclideIndex>(index);
-}
-
-NuclideIndex operator-(NuclideIndex a, NuclideIndex b) {
-	int index = int(a) - int(b);
-	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexOverflow);
-	return static_cast<NuclideIndex>(index);
-}
-
-NuclideIndex operator+(NuclideIndex a, int b) {
-	int index = int(a) + int(b);
-	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexOverflow);
-	return static_cast<NuclideIndex>(index);
-}
-
-NuclideIndex operator-(NuclideIndex a, int b) {
-	int index = int(a) - int(b);
-	assert(index >= NuclideIndexUnderflow);
-	assert(index <= NuclideIndexOverflow);
-	return static_cast<NuclideIndex>(index);
-}
-
-/**
- * reverse the index order
- */
-NuclideIndex operator!(NuclideIndex index) { 
-	int inverse = int(MaxNuclideIndex) + int(MinNuclideIndex) - int(index);
-	assert(inverse >= NuclideIndexUnderflow);
-	assert(inverse <= NuclideIndexOverflow);
-	index = static_cast<NuclideIndex>(inverse);
-	return index;
-}
-
-ReactionIndex operator++(ReactionIndex& index, int) {
-	ReactionIndex rv = index;
-	assert(index != ReactionIndexOverflow);
-	index = static_cast<ReactionIndex>(index + 1);
-	return rv;
-}
-
-
 
 //void setup_nuclides(Nuclide nuclide[]) {
 //void setup_nuclides(int A[], int Z[], double Dm[]) {
@@ -294,7 +233,70 @@ void setup_nuclides(NuclideList & nuclide) {
 	//printf("NNUC: %d\n", NNUC);
 }
     
+NuclideIndex operator++(NuclideIndex & index, int) {
+	NuclideIndex rv = index;
+	assert(index != NuclideIndexOverflow);
+	index = static_cast<NuclideIndex>(1 + index);
+	return rv;
+}
+
+NuclideIndex operator--(NuclideIndex & index, int) {
+	NuclideIndex rv = index;
+	assert(index != NuclideIndexUnderflow);
+	index = static_cast<NuclideIndex>(-1 + index);
+	return rv;
+}
+
+NuclideIndex operator+(NuclideIndex a, NuclideIndex b) {
+	int index = int(a) + int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
+	return static_cast<NuclideIndex>(index);
+}
+
+NuclideIndex operator-(NuclideIndex a, NuclideIndex b) {
+	int index = int(a) - int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
+	return static_cast<NuclideIndex>(index);
+}
+
+NuclideIndex operator+(NuclideIndex a, int b) {
+	int index = int(a) + int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
+	return static_cast<NuclideIndex>(index);
+}
+
+NuclideIndex operator-(NuclideIndex a, int b) {
+	int index = int(a) - int(b);
+	assert(index >= NuclideIndexUnderflow);
+	assert(index <= NuclideIndexOverflow);
+	return static_cast<NuclideIndex>(index);
+}
+
+/**
+ * reverse the index order
+ */
+NuclideIndex operator!(NuclideIndex index) { 
+	int inverse = int(MaxNuclideIndex) + int(MinNuclideIndex) - int(index);
+	assert(inverse >= NuclideIndexUnderflow);
+	assert(inverse <= NuclideIndexOverflow);
+	index = static_cast<NuclideIndex>(inverse);
+	return index;
+}
+
+ReactionIndex operator++(ReactionIndex& index, int) {
+	ReactionIndex rv = index;
+	assert(index != ReactionIndexOverflow);
+	index = static_cast<ReactionIndex>(index + 1);
+	return rv;
+}
+
+
+
 /**----------------------------------------------------
+ * TODO move to ReactionNetwork
  * solves for new abundances using gaussian elimination 
  * with back substitution 
  */
