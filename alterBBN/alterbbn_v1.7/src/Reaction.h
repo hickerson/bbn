@@ -238,6 +238,7 @@ struct Nuclide {
 };
 
 /// TODO remove. Needed by bbnio.cpp, nothing else.
+#if 0
 const static Nuclide _nuclide[] = {
 ///  S    name    A   Z   N   dm
     {Nu0, "none", 0,  0,  0,  0 },
@@ -273,6 +274,7 @@ const static Nuclide _nuclide[] = {
     {O15, "O15",  15, 8,  7,  2.8554},
     {O16, "O16",  16, 8,  8,  -4.737036}
 };
+#endif
 
 struct Reaction {
     ReactionIndex id;
