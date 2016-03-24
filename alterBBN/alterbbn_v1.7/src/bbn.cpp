@@ -943,7 +943,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			for(NuclideIndex i=Nu1; i<=O16; i++)
 			{
 				double Z = nuclides[i].Z;
-				double DeltaM = nuclides[i].dm;
+				double DeltaM = nuclides[i].DM;
 				sum_Y 			+= Y[i];
 				sum_ZY 			+= Z*Y[i];
 				sum_dY_dt 		+= dY_dt[i];

@@ -225,7 +225,7 @@ struct Nuclide {
     double DM;          /// Mass excess [MeV]
 
 	Nuclide()	// only needed by std::map operator []. TODO Once that's gone, remove.
-	  : id(0), name("erorr"), A(-1), Z(-1), N(-1), DM(0)
+	  : id(Nu0), name("error"), A(-1), Z(-1), N(-1), DM(0)
 	{}
 
 	Nuclide(NuclideIndex id, const char* name, int A, int Z, int N, double DM) 
@@ -237,7 +237,7 @@ struct Nuclide {
 	{}
 };
 
-/*
+/// TODO remove. Needed by bbnio.cpp, nothing else.
 const static Nuclide _nuclide[] = {
 ///  S    name    A   Z   N   dm
     {Nu0, "none", 0,  0,  0,  0 },
@@ -273,7 +273,6 @@ const static Nuclide _nuclide[] = {
     {O15, "O15",  15, 8,  7,  2.8554},
     {O16, "O16",  16, 8,  8,  -4.737036}
 };
-*/
 
 struct Reaction {
     ReactionIndex id;
