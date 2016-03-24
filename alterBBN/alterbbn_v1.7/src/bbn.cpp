@@ -5,7 +5,8 @@
 
 
 /**----------------------------------------------------
- * type: 0-10, each type has a unique (#n1,#n2,#n3,#n4) quartet
+ * type: 0-10, each type has a unique 
+ * (#n1,#n2,#n3,#n4) quartet
  * n1: incoming nuclide number 
  * n2: incoming light nuclide number
  * n3: outgoing light nuclide number
@@ -202,6 +203,39 @@ void setup_nuclides(NuclideList & nuclide) {
     /   N - neutron number
     /   M - mass excess 
     /------------------------------------*/
+	///  				   S    name    A   Z   N   dm
+	nuclide[Nu0] = Nuclide(Nu0, "none", 0,  0,  0,  0 );
+	nuclide[Nu1] = Nuclide(Nu1, "n",    1,  0,  1,  8.071388);
+	nuclide[H1]  = Nuclide(H1,  "H",    1,  1,  0,  7.289028);
+	nuclide[H2]  = Nuclide(H2,  "D",    1,  1,  1,  13.135825);
+	nuclide[H3]  = Nuclide(H3,  "T",    2,  1,  2,  14.949915);
+	nuclide[He3] = Nuclide(He3, "He3",  3,  2,  1,  14.931325);
+	nuclide[He4] = Nuclide(He4, "He4",  4,  2,  2,  2.424931);
+
+	nuclide[Li6] = Nuclide(Li6, "Li6",  6,  3,  3,  14.9078);
+	nuclide[Li7] = Nuclide(Li7, "Li7",  7,  3,  4,  15.7696);
+	nuclide[Be7] = Nuclide(Be7, "Be7",  7,  4,  3,  15.7696);
+	nuclide[Li8] = Nuclide(Li8, "Li8",  8,  3,  5,  20.9464);
+
+	nuclide[B8]  = Nuclide(B8,  "B8",   8,  5,  3,  22.9212);
+	nuclide[Be9] = Nuclide(Be9, "Be9",  9,  4,  5,  11.34758);
+	nuclide[B10] = Nuclide(B10, "B10",  10, 5,  5,  12.05086);
+	nuclide[B11] = Nuclide(B11, "B11",  11, 5,  6,  8.6680);
+
+	nuclide[C11] = Nuclide(C11, "C11",  11, 6,  5,  10.6506);
+	nuclide[B12] = Nuclide(B12, "B12",  12, 5,  7,  13.3690);
+	nuclide[C12] = Nuclide(C12, "C12",  12, 6,  6,  0);
+	nuclide[N12] = Nuclide(N12, "N12",  12, 7,  5,  17.3382);
+
+	nuclide[C13] = Nuclide(C13, "C13",  13, 6,  7,  3.125036);
+	nuclide[N13] = Nuclide(N13, "N13",  14, 7,  6,  5.3455);
+	nuclide[C14] = Nuclide(C14, "C14",  14, 6,  8,  3.019916);
+	nuclide[N14] = Nuclide(N14, "N14",  14, 7,  7,  2.863440);
+
+	nuclide[O14] = Nuclide(O14, "O14",  14, 8,  6,  8.006521);
+	nuclide[N15] = Nuclide(N15, "N15",  15, 7,  8,  0.101439);
+	nuclide[O15] = Nuclide(O15, "O15",  15, 8,  7,  2.8554);
+	nuclide[O16] = Nuclide(O16, "O16",  16, 8,  8,  -4.737036);
 
     /*
     Nuclide _nuclide[] = {
@@ -242,14 +276,18 @@ void setup_nuclides(NuclideList & nuclide) {
     */
 
     //NuclideIndex i,j;
+	/*
     for (int i=0; i<int(O16)-int(Nu0); i++) { // TODO just set up nuclideList, not these arrays
         NuclideIndex j = _nuclide[i].id ;
         //nuclide[j].id = _nuclide[i].id ;
+        //nuclide[j].name = _nuclide[i].name ;
         //nuclide[j].A = _nuclide[i].A;
         //nuclide[j].Z = _nuclide[i].Z;
+        //nuclide[j].N = _nuclide[i].N;
         //nuclide[j].dm = _nuclide[i].dm;
 		nuclide[j] = _nuclide[i];
     }
+	*/
 
 	//printf("Nuclide Index Overflow: %d\n", NuclideIndexOverflow);
 	//printf("O16: %d\n", O16);
@@ -329,13 +367,6 @@ int linearize(
 					cl=r[n];
 					break;
 				}
-				case 3:	{ /* (1,0,0,2) type */
-					ci=f[n];
-					cj=0;
-					ck=0;
-					cl=Y[l]*r[n]/2.;
-					break;
-				}
 				case 1: { /* (1,1,0,1) type */
 					r[n]=Rn*1e10*pow(T9,1.5)*exp(-Q9/T9)*f[n];
 					f[n]=rhob*f[n];
@@ -353,6 +384,13 @@ int linearize(
 					cj=Y[i]*f[n]/2.;
 					ck=Y[l]*r[n]/2.;
 					cl=Y[k]*r[n]/2.;
+					break;
+				}
+				case 3:	{ /* (1,0,0,2) type */
+					ci=f[n];
+					cj=0;
+					ck=0;
+					cl=Y[l]*r[n]/2.;
 					break;
 				}
 				case 4:	{ /* (1,1,0,2) type */

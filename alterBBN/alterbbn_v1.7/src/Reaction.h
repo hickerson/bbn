@@ -218,16 +218,28 @@ NuclideIndex operator!(NuclideIndex);		/// prefix operator !i
 struct Nuclide {
     NuclideIndex id; 	/// Isotopic id
     const char *name;   /// Symbol name
-    //string name;        /// Symbol name
+    //string name;      /// Symbol name
     int A;              /// Atomic number
     int Z;              /// Proton number
     int N;              /// Neutron number 
-    double dm;          /// Mass excess [MeV]
+    double DM;          /// Mass excess [MeV]
+
+	Nuclide()	// only needed by std::map operator []. TODO Once that's gone, remove.
+	  : id(0), name("erorr"), A(-1), Z(-1), N(-1), DM(0)
+	{}
+
+	Nuclide(NuclideIndex id, const char* name, int A, int Z, int N, double DM) 
+	  : id(id), name(name), A(A), Z(Z), N(N), DM(DM)
+	{}
+
+	Nuclide(const Nuclide & copy) 
+	  : id(copy.id), name(copy.name), A(copy.A), Z(copy.Z), N(copy.N), DM(copy.DM)
+	{}
 };
 
-
+/*
 const static Nuclide _nuclide[] = {
-    ///  S    name    A   Z   N   dm
+///  S    name    A   Z   N   dm
     {Nu0, "none", 0,  0,  0,  0 },
     {Nu1, "n",    1,  0,  1,  8.071388},
     {H1,  "H",    1,  1,  0,  7.289028},
@@ -261,6 +273,7 @@ const static Nuclide _nuclide[] = {
     {O15, "O15",  15, 8,  7,  2.8554},
     {O16, "O16",  16, 8,  8,  -4.737036}
 };
+*/
 
 struct Reaction {
     ReactionIndex id;
