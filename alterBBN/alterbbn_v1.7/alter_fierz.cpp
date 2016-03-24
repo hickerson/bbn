@@ -41,11 +41,9 @@ int main(int argc,char** argv)
 	NuclideMap ratioH, sigma_ratioH;
 	NuclideIndex ni[6] = {He4,H2,He3,Li7,Li6,Be7};	/// only display this subset
 
-/*
 	printf("Primary central values:\n");	
     compute_ratios(relic, ni, ratioH, sigma_ratioH);
     bbn_excluded(0, relic, ni, ratioH);
-	*/
 
 	printf("\nFormated bounded range:\n");
 	print_lables_bounds("eta", ni);

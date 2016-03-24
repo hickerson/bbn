@@ -244,9 +244,10 @@ void setup_nuclides(NuclideList & nuclide) {
     //NuclideIndex i,j;
     for (int i=0; i<int(O16)-int(Nu0); i++) { // TODO just set up nuclideList, not these arrays
         NuclideIndex j = _nuclide[i].id ;
-        //A[j] = _nuclide[i].A;
-        //Z[j] = _nuclide[i].Z;
-        //Dm[j] = _nuclide[i].dm;
+        //nuclide[j].id = _nuclide[i].id ;
+        //nuclide[j].A = _nuclide[i].A;
+        //nuclide[j].Z = _nuclide[i].Z;
+        //nuclide[j].dm = _nuclide[i].dm;
 		nuclide[j] = _nuclide[i];
     }
 
@@ -760,6 +761,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			z=5.929862032115561/T9;
 			Tnu=pow(h_eta*T9*T9*T9/rhob0,1/3)*T9i;
 				
+#if 0
 			double ch[8], sh[8];
 			double Lb[8], Mb[8], Nb[8];
 			for (int n=1; n<=8; n++) {
@@ -829,8 +831,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 								 + ch[5]*5.*Lb[5]
 								 - ch[6]*6.*Lb[6]
 								 + ch[7]*7.*Lb[7]);
-
-#if 0
+#else
 			double cosh1, cosh2, cosh3, cosh4, cosh5, cosh6, cosh7;
 			double sinh1, sinh2, sinh3, sinh4, sinh5, sinh6, sinh7;
 			if (phie<=17.)
@@ -904,14 +905,25 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			for(NuclideIndex i=Nu1; i<=O16; i++)
 			{
 				double Z = nuclides[i].Z;
-				double dM = nuclides[i].dm;
+				double DeltaM = nuclides[i].dm;
 				sum_Y 			+= Y[i];
 				sum_ZY 			+= Z*Y[i];
 				sum_dY_dt 		+= dY_dt[i];
-				sum_DeltaMdY_dt += dM*dY_dt[i];
+				sum_DeltaMdY_dt += DeltaM*dY_dt[i];
 				sum_ZdY_dt 		+= Z*dY_dt[i];
 			}
 		
+			#if 1
+			dphie_dT9=dN_epem_dphie*(-1.07e-4*h_eta*sum_ZY/T9-dM_epem_dT9);
+			dphie_dlna3=-dN_epem_dphie*3.568e-5*h_eta*sum_ZY;
+			dphie_dZY=dN_epem_dphie*3.568e-5*h_eta;
+			dlna3_dT9=-(drho_gamma_dT9+drho_epem_dT9+drho_epem_dphie*dphie_dT9+rho_baryons*1.388e-4*sum_Y+T9*1e9*dsd_dT9)/(rho_gamma+P_gamma+rho_epem+P_epem+rho_baryons*(9.25e-5*T9*sum_Y+1.388e-4*T9*sum_dY_dt/(H*3.)+sum_DeltaMdY_dt/(H*3.))+T9*1.e9*sd+drho_epem_dphie*(dphie_dlna3+dphie_dZY*sum_ZdY_dt/(H*3.)));
+			  
+			dT9_dt=3.*H/dlna3_dT9;
+			dlnT9_dt=dT9_dt/T9;
+			dh_dt=-h_eta*(H*3.+dlnT9_dt*3.);
+			dphie_dt=dphie_dT9*dT9_dt+dphie_dlna3*(H*3.)+dphie_dZY*sum_ZdY_dt;
+			#else
 			dphie_dT9   =  dN_epem_dphie*(-1.07e-4*h_eta*sum_ZY/T9-dM_epem_dT9);
 			dphie_dlna3 = -dN_epem_dphie*3.568e-5*h_eta*sum_ZY;
 			dphie_dZY   =  dN_epem_dphie*3.568e-5*h_eta;
@@ -933,6 +945,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			dphie_dt =     dphie_dT9*dT9_dt 
 			             + 3*H*dphie_dlna3
 						 + dphie_dZY*sum_ZdY_dt;
+			#endif
 			
 			/// tmp to test inits
             //printf("T9: %f\n", T9 );
