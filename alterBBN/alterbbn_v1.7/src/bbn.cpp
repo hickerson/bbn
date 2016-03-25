@@ -954,10 +954,13 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			sum_DeltaMdY_dt=0;
 			sum_ZdY_dt=0;
 
-			for(NuclideIndex i=Nu1; i<=O16; i++)
+			//for(NuclideIndex i=Nu1; i<=O16; i++)
+			for (auto const & nuclide_itr : relic.nuclides)
 			{
-				double Z = relic.nuclides[i].Z;
-				double DeltaM = relic.nuclides[i].DM;
+				const Nuclide & nuclide = nuclide_itr.second;
+				const NuclideIndex i = nuclide.id;
+				double Z = nuclide.Z;
+				double DeltaM = nuclide.DM;
 				sum_Y 			+= Y[i];
 				sum_ZY 			+= Z*Y[i];
 				sum_dY_dt 		+= dY_dt[i];
@@ -1449,7 +1452,7 @@ int nucl_errors(int err, const CosmologyModel & relic,
 		if (nucl(-10000, relic, ratioH_ref)>0) 
             optfail=1;	
 		for (NuclideIndex ie=Nu0; ie<=O16; ie++) 
-            optfail+=isnan(ratioH_ref[ie]);
+            optfail+=isnan(double(ratioH_ref[ie]));
 		
 		NuclideMap ratioH_tmp;
 		
@@ -1486,6 +1489,7 @@ int nucl_errors(int err, const CosmologyModel & relic,
                 ratioH_ref[ie]=ratioH[ie];
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie]=0.;
+				/*
 		    for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 			{
 				//if(nucl_failsafe(-n, relic, ratioH_tmp)>0) 
@@ -1494,6 +1498,7 @@ int nucl_errors(int err, const CosmologyModel & relic,
 				for(NuclideIndex je=Nu0; je<=O16; je++) 
                     sigma_ratioH[je] += pow(ratioH_tmp[je]-ratioH_ref[je],2.);
 			}
+			*/
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie] = sqrt(sigma_ratioH[ie]);
 		}

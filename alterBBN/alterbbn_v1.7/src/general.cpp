@@ -1,9 +1,13 @@
 #include "include.h"
 
-/*----------------------------------------------------*/
 
+#if __cplusplus!=201103L
+/**----------------------------------------------------
+/* calculates the polylogarithm function of orders n and m of x 
+ * TODO make this work with c++11 
+ * for some reason the type double complex doesn't work.
+ */
 double complex polylog(int n, int m, double x)
-/* calculates the polylogarithm function of orders n and m of x */
 {
 	double complex z,u[5],v[6],sk,sj;
 
@@ -389,6 +393,7 @@ double complex polylog(int n, int m, double x)
        }
        return z;
 }
+#endif /// don't use with c++11 for some reason
 
 /*--------------------------------------------------------------------*/
 
@@ -470,6 +475,7 @@ double Li3(double x)
 
 /*--------------------------------------------------------------------*/
 
+#if __cplusplus!=201103L
 double Li4(double x)
 /* calculates the quadrilogarithm function of x */
 {
@@ -534,6 +540,7 @@ double Cl3(double x)
 {
 	return creal(CLi3(cos(x)+I*sin(x)));
 }
+#endif /// don't use with c++11 for some reason
 
 /*--------------------------------------------------------------------*/
 

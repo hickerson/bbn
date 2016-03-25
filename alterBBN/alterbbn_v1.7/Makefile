@@ -8,8 +8,7 @@ AUTHORS = Dr. Kevin Peter Hickerson
 # Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
 CXX = g++
-CFLAGS=-Wmaybe-uninitialized -Wuninitialized -Winit-self -g -std=c++11
-
+CFLAGS=-Wmaybe-uninitialized -Wuninitialized -Winit-self -g -std=c++11 -fext-numeric-literals
 
 # CC = clang
 # CFLAGS= -O3

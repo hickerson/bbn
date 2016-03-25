@@ -11,11 +11,12 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include <complex.h>
 #include <string.h>
 #include <strings.h>
 #include "Reaction.h"
 #include <vector>
+//#include <complex>
+#include <complex.h>
 
 /*--------------------------------------------------------------------*/
 
@@ -114,12 +115,14 @@ enum ErrorType {
 /* general.cpp */
 double max(double x, double y);
 double min(double x, double y);
+#if __cplusplus!=201103L
 double complex polylog(int n, int m, double x);
+double complex CLi2(double complex x);
+double complex CLi3(double complex x);
+#endif 
 double Li2(double x);
 double Li3(double x);
 double Li4(double x);
-double complex CLi2(double complex x);
-double complex CLi3(double complex x);
 double Cl2(double x);
 double Cl3(double x);
 double I0(double x);
