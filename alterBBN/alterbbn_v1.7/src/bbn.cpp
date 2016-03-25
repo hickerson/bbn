@@ -1451,8 +1451,10 @@ int nucl_errors(int err, const CosmologyModel & relic,
 		
 		if (nucl(-10000, relic, ratioH_ref)>0) 
             optfail=1;	
-		for (NuclideIndex ie=Nu0; ie<=O16; ie++) 
-            optfail+=isnan(double(ratioH_ref[ie]));
+		for (NuclideIndex ie=Nu0; ie<=O16; ie++) {
+            double d = ratioH_ref[ie];
+            optfail+=isnan(d);
+		}
 		
 		NuclideMap ratioH_tmp;
 		
