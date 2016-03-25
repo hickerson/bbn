@@ -333,11 +333,13 @@ int linearize(
         for(NuclideIndex j=Nu1; j<=O16; j++) 
             a[i][j] = 0;
 
-    ReactionIndex n;
-	for (n=REACMIN; n<=REACMAX; n++) 
+    //ReactionIndex n;
+	//for (n=REACMIN; n<=REACMAX; n++) 
+	for (auto const & reaction_itr : reactions)
 	{
-		Reaction & reaction = reactions[n];
-        assert(reaction.id == n);
+		const Reaction & reaction = reaction_itr.second;
+        ReactionIndex n = reaction.id;
+		assert(reaction.id == n);
         int type = reaction.type;
 		NuclideIndex i = reaction.in_major;
 		NuclideIndex j = reaction.in_minor;
@@ -720,7 +722,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
     //int Zm[NUCBUF];
     //double Dm[NUCBUF];
     //setup_nuclides(Am,Zm,Dm);
-	const NuclideList & nuclides = relic.nuclides;
+	//const NuclideList & nuclides = relic.nuclides;
     //setup_nuclides(nuclides);
 
 	//double reacparam[NNUCREAC+1][8];
@@ -954,8 +956,8 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 
 			for(NuclideIndex i=Nu1; i<=O16; i++)
 			{
-				double Z = nuclides[i].Z;
-				double DeltaM = nuclides[i].DM;
+				double Z = relic.nuclides[i].Z;
+				double DeltaM = relic.nuclides[i].DM;
 				sum_Y 			+= Y[i];
 				sum_ZY 			+= Z*Y[i];
 				sum_dY_dt 		+= dY_dt[i];
