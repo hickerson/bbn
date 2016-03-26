@@ -123,11 +123,9 @@ double CosmologyModel::geff(double Temp) const
 void CosmologyModel::Init_cosmomodel()
 {
 	eta0 = 6.19e-10; 			/// baryon-to-photon ratio from WMAP
-	life_neutron = 880.1; 		/// neutron lifetime PDG2012
+	neutron_lifetime = 880.1; 		/// neutron lifetime PDG2012
 	nbnu = 3; 					/// number of neutrinos
-	
 	xinu1 = xinu2 = xinu3 = 0; 	/// neutrino chemical potentials?
-
 	fierz = 0;  				/// beta-decay Fierz interference term
 
 	dd0 = ndd = Tdend = 0;
@@ -135,6 +133,8 @@ void CosmologyModel::Init_cosmomodel()
 	nt0 = nnt = Tnend = 0;
 	Sigmad0 = nSigmad = TSigmaend = 0;
 
+	Init_reactions();			/// set up standard default reactions
+	Init_nuclides();			/// set up standard default reactions
 	Init_modeleff(2);
 	
 	return;
@@ -143,13 +143,15 @@ void CosmologyModel::Init_cosmomodel()
 /**--------------------------------------------------------------
  * modifies the values of the baryon-to-photon ratio eta, 
  * the effective number of neutrinos nbnu and 
- * the neutron lifetime life_neutron 
+ * the neutron lifetime neutron_lifetime 
  */
-void CosmologyModel::Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3)
+void CosmologyModel::Init_cosmomodel(
+		double eta, double nbnu, double neutron_lifetime, 
+		double xinu1, double xinu2, double xinu3)
 {
 	this->eta0=eta;
 	this->nbnu=nbnu;
-	this->life_neutron=life_neutron;
+	this->neutron_lifetime=neutron_lifetime;
 	this->xinu1=xinu1;
 	this->xinu2=xinu2;
 	this->xinu3=xinu3;
@@ -159,12 +161,13 @@ void CosmologyModel::Init_cosmomodel_param(double eta, double nbnu, double life_
 /**--------------------------------------------------------------
  * modifies the values of the baryon-to-photon ratio eta, 
  * the effective number of neutrinos nbnu and the neutron 
- * lifetime life_neutron and the beta-decay 
+ * lifetime neutron_lifetime and the beta-decay 
  * Fierz interference term
  */
-void CosmologyModel::Init_fierz(double eta, double nbnu, double life_neutron, double fierz)
+void CosmologyModel::Init_fierz(double eta, double nbnu, 
+								double neutron_lifetime, double fierz)
 {
-    Init_cosmomodel_param(eta, nbnu, life_neutron, 0, 0, 0);
+    Init_cosmomodel(eta, nbnu, neutron_lifetime, 0, 0, 0);
 	this->fierz=fierz;
 	return;
 }
@@ -342,7 +345,10 @@ double CosmologyModel::nonthermal(double T) const
  */
 double CosmologyModel::neutrino_density(double Tnu) const
 {
-	if((xinu1==0.)&&(xinu2==0.)&&(xinu3==0.)) return nbnu*2.*pi*pi/30.*pow(Tnu,4.)*7./8.;
+	if (xinu1==0
+	and xinu2==0
+	and xinu3==0)
+		return nbnu*2.*pi*pi/30.*pow(Tnu,4.)*7./8.;
 
 	int ie,je,n;
 	double rho=0.;

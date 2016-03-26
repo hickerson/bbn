@@ -53,7 +53,7 @@ public:
 	double table_eff[276][3];
 	double eta0;
 	double nbnu;
-	double life_neutron;
+	double neutron_lifetime;
 	double xinu1,xinu2,xinu3;
     double fierz;
 
@@ -64,25 +64,26 @@ public:
     CosmologyModel() { 
         Init_cosmomodel(); 
     }
-    CosmologyModel(double eta, double nbnu, double life_neutron, 
+    CosmologyModel(double eta, double nbnu, double neutron_lifetime, 
                    double xinu1, double xinu2, double xinu3) {
         Init_cosmomodel(); 
-	    Init_cosmomodel_param(eta, nbnu, life_neutron, xinu1, xinu2, xinu3);
+	    Init_cosmomodel(eta, nbnu, neutron_lifetime, xinu1, xinu2, xinu3);
     }
-    CosmologyModel(double eta, double nbnu, double life_neutron) {
+    CosmologyModel(double eta, double nbnu, double neutron_lifetime) {
         Init_cosmomodel(); 
-	    Init_cosmomodel_param(eta, nbnu, life_neutron, 0, 0, 0);
+	    Init_cosmomodel(eta, nbnu, neutron_lifetime, 0, 0, 0);
     }
 
 public:
 	void Init_modeleff(int model_eff);
 	void Init_cosmomodel();
-	void Init_cosmomodel_param(double eta, double nbnu, double life_neutron, double xinu1, double xinu2, double xinu3);
+	void Init_cosmomodel(double eta, double nbnu, double neutron_lifetime, 
+						 double xinu1, double xinu2, double xinu3);
 	void Init_dark_density(double dd0, double ndd, double T_end);
 	void Init_dark_entropy(double sd0, double nsd, double T_end);
 	void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end);
 	void Init_nonthermal(double nt0, double nnt, double T_end);
-	void Init_fierz(double eta, double nbnu, double life_neutron, double fierz);
+	void Init_fierz(double eta, double nbnu, double neutron_lifetime, double fierz);
 	void Init_nuclides();
 	void Init_reactions();
 

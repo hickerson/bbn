@@ -106,9 +106,9 @@ void rate_pn(int err, const CosmologyModel & relic,
 {
 	double ferr,rerr;
 	ferr = rerr = 0.;
-    double b = relic.fierz;            /// beta-decay Fierz interference term */
-	double tau = relic.life_neutron;   /// measured neutron lifetime at T=0 in s */
-    double xi1 = relic.xinu1;          /// neutrino chemical potential
+    double b = relic.fierz;       			/// beta-decay Fierz interference term 
+	double tau = relic.neutron_lifetime;    /// measured neutron lifetime at T=0 in s 
+    double xi1 = relic.xinu1;     			/// neutrino chemical potential
 	
 	if (xi1==0 and b==0 and Tnu==0)
 	{
