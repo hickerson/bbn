@@ -116,27 +116,27 @@ double CosmologyModel::geff(double Temp) const
 	return pow(heff0/sgStar(Temp)*(1.+(heff(Temp*1.001)-heff(Temp*0.999))/0.006/heff0),2.);
 }
 
-/*--------------------------------------------------------------
+/**--------------------------------------------------------------
  * initializes the parameters contained in paramrelic 
- * TODO replace with constructor
+ * TODO replace with constructor?
  */
 void CosmologyModel::Init_cosmomodel()
 {
-	eta0=6.19e-10; /* baryon-to-photon ratio from WMAP */
-	life_neutron=880.1; /* neutron lifetime PDG2012 */
-	nbnu=3.; /* number of neutrinos */
+	eta0 = 6.19e-10; 			/// baryon-to-photon ratio from WMAP
+	life_neutron = 880.1; 		/// neutron lifetime PDG2012
+	nbnu = 3; 					/// number of neutrinos
 	
-	xinu1=0.; 
-	xinu2=0.; 
-	xinu3=0.; 
+	xinu1 = xinu2 = xinu3 = 0; 	/// neutrino chemical potentials?
 
-	fierz=0.;  /* beta-decay Fierz interference term */
+	fierz = 0;  				/// beta-decay Fierz interference term
 
-	dd0=ndd=Tdend=0.;
-	sd0=nsd=Tsend=0.;
-	nt0=nnt=Tnend=0.;
-	Sigmad0=nSigmad=TSigmaend=0.;
+	dd0 = ndd = Tdend = 0;
+	sd0 = nsd = Tsend = 0;
+	nt0 = nnt = Tnend = 0;
+	Sigmad0 = nSigmad = TSigmaend = 0;
+
 	Init_modeleff(2);
+	
 	return;
 }
 
@@ -169,10 +169,11 @@ void CosmologyModel::Init_fierz(double eta, double nbnu, double life_neutron, do
 	return;
 }
 
-/*--------------------------------------------------------------*/
-
+/**--------------------------------------------------------------
+ * modifies the parameters of the dark energy density which 
+ * appears in the Friedmann equation 
+ */
 void CosmologyModel::Init_dark_density(double dd0, double ndd, double T_end)
-/* modifies the parameters of the dark energy density which appears in the Friedmann equation */
 {
 	this->dd0=dd0;
 	this->ndd=ndd;
@@ -402,7 +403,7 @@ double CosmologyModel::neutrino_density(double Tnu) const
  * n4: outgoing nuclide number
  * rev: reverse reaction coefficient
  * q: energy release in reaction
- *----------------------------------------------------*/
+ */
 void CosmologyModel::Init_reactions() //ReactionList & reaction) 
 {
 	//map<ReactionIndex, Reaction> reaction;
@@ -520,17 +521,17 @@ void CosmologyModel::Init_reactions() //ReactionList & reaction)
 }
 
 
+/**----------------------------------------------------
+ *  Data from http://www.nndc.bnl.gov/masses/mass.mas03
+ *
+ *  S - isotopic symbol
+ *  A - atomic mass number
+ *  Z - atomic charge number
+ *  N - neutron number
+ *  M - mass excess 
+ *-----------------------------------------------------*/
 void CosmologyModel::Init_nuclides() 
-{ //NuclideList & nuclide) {
-    /*-----------------------------------
-    /   Data from http://www.nndc.bnl.gov/masses/mass.mas03
-    /
-    /   S - isotopic symbol
-    /   A - atomic mass number
-    /   Z - atomic charge number
-    /   N - neutron number
-    /   M - mass excess 
-    /------------------------------------*/
+{
 	///  				   S    name    A   Z   N   dm
 	nuclides[Nu0] = Nuclide(Nu0, "none", 0,  0,  0,  0 );
 	nuclides[Nu1] = Nuclide(Nu1, "n",    1,  0,  1,  8.071388);
