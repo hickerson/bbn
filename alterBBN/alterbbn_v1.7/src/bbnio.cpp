@@ -70,6 +70,8 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
         return;
     }
 
+    sprintf(buffer, "%s/H", get_nuclide_name(ni));
+	/*
     while (id!=ni) {
         if (ni>=NuclideIndexOverflow 
         or  ni<NuclideIndexUnderflow)
@@ -80,6 +82,7 @@ void get_ratio_name(const NuclideIndex ni, char buffer[COLSIZE])
             return;
         }
     }
+	*/
 }
 
 void print_lables(const char *title, NuclideIndex ni[])

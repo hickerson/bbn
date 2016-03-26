@@ -309,17 +309,12 @@ int linearize(
 	NuclideMap & Y0, NuclideMap & Y, NuclideMap & dY_dt, 
 	double H, double rhob)
 {
-	printf("linearize\n");
 	/// Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types
 	double nn1[11] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 	double nn2[11] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
 	double nn3[11] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2};
 	double nn4[11] = {1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 1};
 
-    //ReactionIndex REACMIN = n_p;
-    //ReactionIndex REACMAX = C13a_nO16;
-	//ReactionIndex REACBUF = REACMAX + REACMIN + 1;
-	
 	double yY[NUCBUF];
 	int fail;
 	int ierror;
@@ -547,7 +542,7 @@ int linearize(
 			//j1=NNUC+1-j;	/// TODO fix
 			//j1=O16+Nu1-j;    /// TODO fix
 			j1=!j;
-			printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
+			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
 			assert(j >= Nu1& j <= O16);
