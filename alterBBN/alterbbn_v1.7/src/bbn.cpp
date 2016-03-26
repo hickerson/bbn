@@ -687,7 +687,6 @@ int linearize(
  */
 int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 {
-	printf("nucl: err: %d\n", err);
 	ReactionMap f,r;
 	for(NuclideIndex i=Nu0; i<=O16; i++)
 	{
@@ -1416,7 +1415,6 @@ int nucl_errors(int err, const CosmologyModel & relic,
 							   NuclideMap & ratioH, 
 							   NuclideMap & sigma_ratioH)
 {	
-	printf("nucl_errors: err: %d\n", err);
 	for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0;         // TODO FIX to make more readable
 

@@ -132,7 +132,6 @@ double CosmologyModel::geff(double Temp) const
  */
 void CosmologyModel::Init_cosmomodel()
 {
-	printf("init\n");
 	eta0 = 6.19e-10; 			/// baryon-to-photon ratio from WMAP
 	neutron_lifetime = 880.1; 	/// neutron lifetime PDG2012
 	nbnu = 3; 					/// number of neutrinos
