@@ -23,7 +23,9 @@ void CosmologyModel::Init_modeleff(int model_eff)
 		{
 #include "sgStar_heff/sgStar_heff_B.tab"
   		};
-		for(ie=0;ie<=275;ie++) for(je=0;je<=2;je++) table_eff[ie][je]=tableB[ie][je];
+		for(ie=0;ie<=275;ie++)
+			for(je=0;je<=2;je++)
+				table_eff[ie][je]=tableB[ie][je];
 	}
 	else if(model_eff==3)
 	{
@@ -31,7 +33,9 @@ void CosmologyModel::Init_modeleff(int model_eff)
 		{
 #include "sgStar_heff/sgStar_heff_B2.tab"
   		};
-		for(ie=0;ie<=275;ie++) for(je=0;je<=2;je++) table_eff[ie][je]=tableB2[ie][je];
+		for(ie=0;ie<=275;ie++)
+			for(je=0;je<=2;je++)
+				table_eff[ie][je]=tableB2[ie][je];
 		}
 	else if(model_eff==4)
 	{
@@ -39,7 +43,9 @@ void CosmologyModel::Init_modeleff(int model_eff)
 		{
 #include "sgStar_heff/sgStar_heff_B3.tab"
   		};	
-		for(ie=0;ie<=275;ie++) for(je=0;je<=2;je++) table_eff[ie][je]=tableB3[ie][je];
+		for(ie=0;ie<=275;ie++)
+			for(je=0;je<=2;je++)
+				table_eff[ie][je]=tableB3[ie][je];
 	}
 	else if(model_eff==5)
 	{
@@ -47,7 +53,9 @@ void CosmologyModel::Init_modeleff(int model_eff)
 		{
 #include "sgStar_heff/sgStar_heff_C.tab"
   		};
-		for(ie=0;ie<=275;ie++) for(je=0;je<=2;je++) table_eff[ie][je]=tableC[ie][je];
+		for(ie=0;ie<=275;ie++)
+			for(je=0;je<=2;je++) 
+				table_eff[ie][je]=tableC[ie][je];
 	}
 	else
 	{
@@ -55,7 +63,9 @@ void CosmologyModel::Init_modeleff(int model_eff)
 		{
 #include "sgStar_heff/sgStar_heff_old.tab"
   		};
-		for(ie=0;ie<=275;ie++) for(je=0;je<=2;je++) table_eff[ie][je]=tableold[ie][je];
+		for(ie=0;ie<=275;ie++)
+			for(je=0;je<=2;je++)
+				table_eff[ie][je]=tableold[ie][je];
 	}
 	return;
 }
@@ -122,6 +132,7 @@ double CosmologyModel::geff(double Temp) const
  */
 void CosmologyModel::Init_cosmomodel()
 {
+	printf("init\n");
 	eta0 = 6.19e-10; 			/// baryon-to-photon ratio from WMAP
 	neutron_lifetime = 880.1; 		/// neutron lifetime PDG2012
 	nbnu = 3; 					/// number of neutrinos

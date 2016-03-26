@@ -309,6 +309,7 @@ int linearize(
 	NuclideMap & Y0, NuclideMap & Y, NuclideMap & dY_dt, 
 	double H, double rhob)
 {
+	printf("linearize\n");
 	/// Number of nuclides (#n1,#n2,#n3,#n4) for each of the 11 reaction types
 	double nn1[11] = {1, 1, 1, 1, 1, 2, 3, 2, 1, 1, 2};
 	double nn2[11] = {0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0};
@@ -546,7 +547,7 @@ int linearize(
 			//j1=NNUC+1-j;	/// TODO fix
 			//j1=O16+Nu1-j;    /// TODO fix
 			j1=!j;
-			//printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
+			printf("j: %d j1: %d i: %d i1: %d\n",j,j1,i,i1);
 			assert(i >= Nu1 && i <= O16);
 			assert(i1 >= Nu1& i1 <= O16);
 			assert(j >= Nu1& j <= O16);
@@ -691,8 +692,7 @@ int linearize(
  */
 int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 {
-    //ReactionIndex REACMIN = n_p;
-    //ReactionIndex REACMAX = C13a_nO16;
+	printf("nucl: err: %d\n", err);
 	ReactionMap f,r;
 	for(NuclideIndex i=Nu0; i<=O16; i++)
 	{
@@ -1089,9 +1089,9 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 		}	
 	}
 			
-	/// slow beta decays past bbn
-	ratioH[Li7] += ratioH[Be7];	
-	ratioH[He3] += ratioH[H3];
+	/// slow beta decays long after bbn epoc at t ~ 3 minutes
+	ratioH[Li7] += ratioH[Be7];		/// for t >> 53 days	
+	ratioH[He3] += ratioH[H3];		/// for t >> 12 years
 	
 	//for (i=Nu0; i<=O16; i++) 
 	for (NuclideIndex i=Nu1; i<=O16; i++) 
@@ -1421,6 +1421,7 @@ int nucl_errors(int err, const CosmologyModel & relic,
 							   NuclideMap & ratioH, 
 							   NuclideMap & sigma_ratioH)
 {	
+	printf("nucl_errors: err: %d\n", err);
 	for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
         ratioH[ie]=sigma_ratioH[ie]=0;         // TODO FIX to make more readable
 
@@ -1491,7 +1492,6 @@ int nucl_errors(int err, const CosmologyModel & relic,
                 ratioH_ref[ie]=ratioH[ie];
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie]=0.;
-				/*
 		    for(ReactionIndex n=REACMIN; n<=REACMAX; n++)
 			{
 				//if(nucl_failsafe(-n, relic, ratioH_tmp)>0) 
@@ -1500,7 +1500,6 @@ int nucl_errors(int err, const CosmologyModel & relic,
 				for(NuclideIndex je=Nu0; je<=O16; je++) 
                     sigma_ratioH[je] += pow(ratioH_tmp[je]-ratioH_ref[je],2.);
 			}
-			*/
 			for(NuclideIndex ie=Nu0; ie<=O16; ie++) 
                 sigma_ratioH[ie] = sqrt(sigma_ratioH[ie]);
 		}

@@ -48,9 +48,9 @@ int main(int argc,char** argv)
 	printf("\nFormated bounded range:\n");
 	print_lables_bounds("eta", ni);
 	//print_lables_bounds("Fierz b", ni);
-    for (double b = fierz - 0.2; b <= fierz + 0.2; b += 0.01) {
+    for (double b = fierz-0.2; b <= fierz+0.2; b += 0.01) {
 		for (double eta = 1e-10; eta <= 10e-10; eta*=pow(10,0.1)) {
-			for (double tau = lifetime - 1.1; tau <= lifetime + 1.1; tau += 2*1.1/3) {
+			for (double tau = lifetime-1.1; tau <= lifetime+1.1; tau += 2*1.1/3) {
 				double nnu = neutrinos;
 				relic.Init_fierz(eta,nnu,tau,fierz);
 				if(nucl_errors(3, relic, ratioH, sigma_ratioH))
