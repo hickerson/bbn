@@ -549,7 +549,7 @@ void CosmologyModel::Init_reactions() //ReactionList & reaction)
 void CosmologyModel::Init_nuclides() 
 {
 	///  				   S    name    A   Z   N   dm
-	nuclides[Nu0] = Nuclide(Nu0, "none", 0,  0,  0,  0 );
+	//nuclides[Nu0] = Nuclide(Nu0, "none", 0,  0,  0,  0 );
 	nuclides[Nu1] = Nuclide(Nu1, "n",    1,  0,  1,  8.071388);
 	nuclides[H1]  = Nuclide(H1,  "H",    1,  1,  0,  7.289028);
 	nuclides[H2]  = Nuclide(H2,  "D",    1,  1,  1,  13.135825);
