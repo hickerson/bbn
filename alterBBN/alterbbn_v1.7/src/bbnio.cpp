@@ -28,27 +28,22 @@ const char * get_nuclide_name(const NuclideIndex ni)
 		case H3:  return "T";    break;
 		case He3: return "He3";  break;
 		case He4: return "He4";  break;
-
 		case Li6: return "Li6";  break;
 		case Li7: return "Li7";  break;
 		case Be7: return "Be7";  break;
 		case Li8: return "Li8";  break;
-
 		case B8:  return  "B8";  break;
 		case Be9: return "Be9";  break;
 		case B10: return "Be10"; break;
 		case B11: return "Be11"; break;
-
 		case C11: return "C11";  break;
 		case B12: return "B12";  break;
 		case C12: return "C12";  break;
 		case N12: return "N12";  break;
-
 		case C13: return "C13";  break;
 		case N13: return "N13";  break;
 		case C14: return "C14";  break;
 		case N14: return "N14";  break;
-
 		case O14: return "O14";  break;
 		case N15: return "N15";  break;
 		case O15: return "O15";  break;

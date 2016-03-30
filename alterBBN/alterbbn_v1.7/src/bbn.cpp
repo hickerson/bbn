@@ -962,16 +962,17 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			for (auto const & nuclide_itr : relic.nuclides)
 			{
 				const Nuclide & nuclide = nuclide_itr.second;
-				const NuclideIndex i = nuclide.id;
+				const NuclideIndex id = nuclide.id;
 				double Z = nuclide.Z;
 				double DeltaM = nuclide.DM;
-				sum_Y 			+= Y[i];
-				sum_ZY 			+= Z*Y[i];
-				sum_dY_dt 		+= dY_dt[i];
-				sum_DeltaMdY_dt += DeltaM*dY_dt[i];
-				sum_ZdY_dt 		+= Z*dY_dt[i];
-                if (i != nuclide_test)
-                    printf("i and nuclide_test don't match: i: %d nuclide_test: %d\n", i, nuclide_test);
+				sum_Y 			+= Y[id];
+				sum_ZY 			+= Z*Y[id];
+				sum_dY_dt 		+= dY_dt[id];
+				sum_DeltaMdY_dt += DeltaM*dY_dt[id];
+				sum_ZdY_dt 		+= Z*dY_dt[id];
+
+                if (id != nuclide_test)
+                    printf("id and nuclide_test don't match: id: %d nuclide_test: %d\n", id, nuclide_test);
                 nuclide_test++;
 			}
 		
