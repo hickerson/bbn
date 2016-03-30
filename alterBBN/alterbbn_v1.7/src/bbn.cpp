@@ -331,16 +331,22 @@ int linearize(
 
     //ReactionIndex n;
 	//for (n=REACMIN; n<=REACMAX; n++) 
+    ReactionIndex reac_test = REACMIN;
 	for (auto const & reaction_itr : reactions)
 	{
 		const Reaction & reaction = reaction_itr.second;
         ReactionIndex n = reaction.id;
+        if (n != reac_test)
+            printf("n and react test don't match: n: %d reac_test: %d\n", n, reac_test);
+        reac_test++;
+        
 		assert(reaction.id == n);
         int type = reaction.type;
 		NuclideIndex i = reaction.in_major;
 		NuclideIndex j = reaction.in_minor;
 		NuclideIndex k = reaction.out_minor;
 		NuclideIndex l = reaction.out_major;
+        // TODO reaction.getNuclideIndex(i,j,k,l);
         //printf("Reading the indicies from the reaction tables.\n");
 		double Rn = reaction.reverse;
 		double Q9 = reaction.forward;
@@ -349,9 +355,12 @@ int linearize(
         int rj = nn2[type];
         int rk = nn3[type];
         int rl = nn4[type];
+        // TODO int ri=0; rj=0; rk=0; rl=0;
+        // TODO reaction.getNuclideCount(ri,rj,rk,rl);
 
-        double ci,cj,ck,cl;
-        ci=cj=ck=cl=0;
+        double ci=0, cj=0, ck=0, cl=0;
+        // TODO reaction.getNuclideCount(ri,rj,rk,rl);
+        //ci=cj=ck=cl=0;
 			
         //printf("State of coefficients....\n");
         //printf("i j k l: %d %d %d %d\n",i,j,k,l);
@@ -655,7 +664,7 @@ int linearize(
 	for(NuclideIndex i=Nu1; i<=O16; i++) 
 	{
 		//yY[i]=yx[O16+Nu1-i];
-		yY[i] = yx[!i]; 
+		yY[i] = yx[!i];  // TODO 
 		dY_dt[i] = (yY[i]-Y0[i])/dt;
 	}
 
@@ -949,6 +958,7 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 			sum_ZdY_dt=0;
 
 			//for(NuclideIndex i=Nu1; i<=O16; i++)
+			NuclideIndex nuclide_test=Nu1;
 			for (auto const & nuclide_itr : relic.nuclides)
 			{
 				const Nuclide & nuclide = nuclide_itr.second;
@@ -960,6 +970,9 @@ int nucl(int err, const CosmologyModel & relic, NuclideMap & ratioH)
 				sum_dY_dt 		+= dY_dt[i];
 				sum_DeltaMdY_dt += DeltaM*dY_dt[i];
 				sum_ZdY_dt 		+= Z*dY_dt[i];
+                if (i != nuclide_test)
+                    printf("i and nuclide_test don't match: i: %d nuclide_test: %d\n", i, nuclide_test);
+                nuclide_test++;
 			}
 		
 			#if 1
