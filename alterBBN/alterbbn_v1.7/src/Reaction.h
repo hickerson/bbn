@@ -358,6 +358,7 @@ typedef std::map<NuclideIndex,Nuclide> NuclideList;
 typedef std::map<ReactionIndex,double> ReactionMap;
 typedef std::map<ReactionIndex,Reaction> ReactionList;
 
+/* variable length arrays compile with an error in c++17
 class ReactionNetwork {
 	double T9;
 	Reaction reaction[];
@@ -371,5 +372,6 @@ class ReactionNetwork {
 	int nucl();
 	int linearize();
 };
+*/
 
 #endif  /// __REACTION_H__
