@@ -107,6 +107,8 @@ typedef struct relicparam
     int EM_coupled, neut_coupled, neuteq_coupled;
     double chi2;
     int nobs;    
+	double fierz;				// Fierz interference term from LQ sector
+	double B_chi;				// branching ratio of WIMP DM of mass m_p < m_chi < m_n to explain tau_n anomaly
 }
 relicparam;
 

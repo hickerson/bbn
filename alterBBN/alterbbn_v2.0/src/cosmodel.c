@@ -76,7 +76,18 @@ void Init_cosmomodel(struct relicparam* paramrelic)
 	paramrelic->xinu3=0.; 
 
     paramrelic->wimp=0;
-	paramrelic->m_chi=paramrelic->g_chi=paramrelic->SMC_wimp=paramrelic->selfConjugate=paramrelic->fermion=paramrelic->EM_coupled=paramrelic->neut_coupled=paramrelic->neuteq_coupled=0;
+	//paramrelic->m_chi=paramrelic->g_chi=paramrelic->SMC_wimp=paramrelic->selfConjugate=paramrelic->fermion=paramrelic->EM_coupled=paramrelic->neut_coupled=paramrelic->neuteq_coupled=0;
+	paramrelic->m_chi=0;
+	paramrelic->g_chi=0;
+	paramrelic->SMC_wimp=0;
+	paramrelic->selfConjugate=0;
+	paramrelic->fermion=0;
+	paramrelic->EM_coupled=0;
+	paramrelic->neut_coupled=0;
+	paramrelic->neuteq_coupled=0;
+
+	paramrelic->fierz=0.;			// no fierz interface in the standard model 
+	paramrelic->B_chi=0.;			// default is no branching to dark matter m_p < m_chi < m_n
 
 	paramrelic->dd0=paramrelic->ndd=paramrelic->Tdend=paramrelic->Tddeq=0.;
 	paramrelic->sd0=paramrelic->nsd=paramrelic->Tsend=0.;
