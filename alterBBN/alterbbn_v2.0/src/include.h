@@ -205,6 +205,7 @@ void Init_nonthermal(double nt0, double nnt, double T_end, struct relicparam* pa
 void Init_gravitino(double mgravitino, struct relicparam* paramrelic);
 void Init_scalarfield(double rhotilde_phi_Tmax, double Tmax, double T_RH, double eta_phi, struct relicparam* paramrelic);
 void Init_dark_density_table(double table[2][NTABMAX], int nlines, relicparam* paramrelic);
+void Init_neutron_decay(double tau_n, double tau_n_error, double fierz, double m_chi, double B_chi, relicparam* paramrelic);
 double dark_density(double T, struct relicparam* paramrelic);
 double dark_density_pressure(double T, struct relicparam* paramrelic);
 double sigma_entropy(double T, struct relicparam* paramrelic);

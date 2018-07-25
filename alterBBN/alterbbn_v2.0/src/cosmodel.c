@@ -403,6 +403,27 @@ void Init_dark_density_table(double table[2][NTABMAX], int nlines, relicparam* p
 	return;
 }
 
+
+/*--------------------------------------------------------------*/
+
+void Init_neutron_decay(double tau, double tau_err, double fierz, double m_chi, double B_chi, relicparam* paramrelic)
+{
+    paramrelic->life_neutron=tau;
+    paramrelic->life_neutron_error=tau_err; // Neutron lifetime uncertainty (PDG2017)
+    paramrelic->wimp=0;
+	paramrelic->m_chi=m_chi;
+	paramrelic->g_chi=0;
+	paramrelic->SMC_wimp=0;
+	paramrelic->selfConjugate=0;
+	paramrelic->fermion=0;
+	paramrelic->EM_coupled=0;
+	paramrelic->neut_coupled=0;
+	paramrelic->neuteq_coupled=0;
+	paramrelic->fierz=fierz;			// no fierz interface in the standard model 
+	paramrelic->B_chi=B_chi;			// default is no branching to dark matter m_p < m_chi < m_n
+}
+
+
 /*--------------------------------------------------------------*/
 
 double dark_density(double T, struct relicparam* paramrelic)
