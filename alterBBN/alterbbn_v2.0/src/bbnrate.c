@@ -72,21 +72,21 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
         int ie;
         double z=5.929862032115561/T9;
 
-        double a[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,
+        double cf[13]={0.15735,0.46172e1,-0.40520e2,0.13875e3,-0.59898e2,
                       0.66752e2,-0.16705e2,0.38071e1,-0.39140,0.23590e-1,
                       -0.83696e-4,-0.42095e-4,0.17675e-5};
 
-        double b[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,
+        double cr[10]={0.22211e2,-0.72798e2,0.11571e3,-0.11763e2,0.45521e2,
                       -0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
 
         f[1]=1.;
-        for(ie=1;ie<=13;ie++) f[1]+=a[ie-1]/pow(z,ie);
+        for(ie=1;ie<=13;ie++) f[1]+=cf[ie-1]/pow(z,ie);
         f[1]*=exp(-0.33979/z)/paramerror->life_neutron; /* n->p */
 
         if(z<5.10998997931)
         {
             r[1]=-0.62173;
-            for(ie=1;ie<=10;ie++) r[1]+=b[ie-1]/pow(z,ie);
+            for(ie=1;ie<=10;ie++) r[1]+=cr[ie-1]/pow(z,ie);
             r[1]*=exp(-2.8602*z)/paramerror->life_neutron; /* p->n */
         }
         else r[1]=0.; /* weak freeze-out */
