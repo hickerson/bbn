@@ -57,14 +57,22 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 /*----------------------------------------------------*/
 
 void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* paramrelic, struct errorparam* paramerror)
-/* Calculates the nuclear forward and reverse rates f[] and r[] of the reaction
- * p <-> n at the temperature T9 */
-/*err=0: central values; err=1: high values; err=2: low values;
- * err=3: error only for process number paramerror->errnumber; 
- * err=4: random gaussian error*/
+/** 
+ * Calculates the nuclear forward and reverse rates f[] and r[] 
+ * of the reaction p <-> n at the temperature T9
+ * 		err=0: central values; 
+ * 		err=1: high values; 
+ * 		err=2: low values;
+ * 		err=3: error only for process number paramerror->errnumber; 
+ * 		err=4: random gaussian error
+ */
 {
     double ferr,rerr;
     ferr=rerr=0.;
+	double tau = relic.neutron_lifetime;    /// measured neutron lifetime at T=0 in s 
+	double b = relic.fierz;                 /// beta-decay Fierz interference term 
+	double xi1 = relic.xinu1;               /// neutrino chemical potential
+
 	
     if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.)))
         /* No neutrino degeneracy */
@@ -80,13 +88,15 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
                       -0.37973e1,0.41266e0,-0.26210e-1,0.87934e-3,-0.12016e-4};
 
         f[1]=1.;
-        for(ie=1;ie<=13;ie++) f[1]+=cf[ie-1]/pow(z,ie);
+        for(ie=1;ie<=13;ie++) 
+			f[1]+=cf[ie-1]/pow(z,ie);
         f[1]*=exp(-0.33979/z)/paramerror->life_neutron; /* n->p */
 
         if(z<5.10998997931)
         {
             r[1]=-0.62173;
-            for(ie=1;ie<=10;ie++) r[1]+=cr[ie-1]/pow(z,ie);
+            for(ie=1;ie<=10;ie++) 
+				r[1]+=cr[ie-1]/pow(z,ie);
             r[1]*=exp(-2.8602*z)/paramerror->life_neutron; /* p->n */
         }
         else r[1]=0.; /* weak freeze-out */
