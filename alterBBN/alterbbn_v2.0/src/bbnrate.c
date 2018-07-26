@@ -134,11 +134,11 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
             x=1.+(double)je/(double)n*(max1-1.);
             if(x>1.)
             {
-               // int1+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/
-               //         (1.+exp((x-q)*me/Tnumev-paramrelic->xinu1));
-			 	int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1)
+                int1+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(-m_e*x/T9mev))/
+                        (1.+exp((x-q)*m_e/Tnumev-paramrelic->xinu1));
+			 /*	int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1)
 						/(1+exp(-x/z9))
-						/(1+exp((x-q)/znu-xi));
+						/(1+exp((x-q)/znu-xi));*/
 
             }
         }
