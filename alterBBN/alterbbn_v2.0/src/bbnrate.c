@@ -105,11 +105,15 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
     else
         /* Degeneracy amongst the electron neutrinos */
     {
-        double T9mev=T9*0.086171;
-        double Tnumev=Tnu*0.086171;
+        //double T9mev=T9*0.086171;
+        //double Tnumev=Tnu*0.086171;
+        double kB=0.086171;			/// Boltzmann's constant
+		double T9mev = T9*kB;
+		double Tnumev = Tnu*kB;
+		double z9 = T9*kB/m_e;
+		double znu = Tnu*kB/m_e;
+		double q = 1.29333217/m_e;   /// q=(mn-mp)/m_e
 
-        double me=0.510998928;
-        double q=1.29333217/me; /* q=(mn-mp)/me */
 
         double int1=0.;
         double int2=0.;
@@ -120,23 +124,27 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
         int je;
 
 		// TODO use xi
-        double max1=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+paramrelic->xinu1)+q));
-        double max2=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-paramrelic->xinu1)-q));
-        double max3=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-paramrelic->xinu1)-q));
-        double max4=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+paramrelic->xinu1)+q));
+        double max1=max(50.*T9mev/m_e,fabs((Tnumev/m_e)*(50.+paramrelic->xinu1)+q));
+        double max2=max(50.*T9mev/m_e,fabs((Tnumev/m_e)*(50.-paramrelic->xinu1)-q));
+        double max3=max(50.*T9mev/m_e,fabs((Tnumev/m_e)*(50.-paramrelic->xinu1)-q));
+        double max4=max(50.*T9mev/m_e,fabs((Tnumev/m_e)*(50.+paramrelic->xinu1)+q));
 
         for(je=1;je<=n-1;je++)
         {
             x=1.+(double)je/(double)n*(max1-1.);
             if(x>1.)
             {
-                int1+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/
-                        (1.+exp((x-q)*me/Tnumev-paramrelic->xinu1));
+               // int1+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/
+               //         (1.+exp((x-q)*me/Tnumev-paramrelic->xinu1));
+			 	int1+=(x+b)*pow(x-q,2.)*sqrt(x*x-1)
+						/(1+exp(-x/z9))
+						/(1+exp((x-q)/znu-xi));
+
             }
         }
         if(max1>1.) 
 			int1+=0.5*max1*pow(max1-q,2.)*sqrt(max1*max1-1.)/
-                (1.+exp(-me*max1/T9mev))/(1.+exp((max1-q)*me/Tnumev-
+                (1.+exp(-m_e*max1/T9mev))/(1.+exp((max1-q)*m_e/Tnumev-
                                                  paramrelic->xinu1));
         int1*=(max1-1.)/(double)n;
 
@@ -145,13 +153,13 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
             x=1.+(double)je/(double)n*(max2-1.);
             if(x>1.)
             {
-                int2+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(me*x/T9mev))/
-                        (1.+exp(-(x+q)*me/Tnumev-paramrelic->xinu1));
+                int2+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(m_e*x/T9mev))/
+                        (1.+exp(-(x+q)*m_e/Tnumev-paramrelic->xinu1));
             }
         }
         if(max2>1.) 
 			int2+=0.5*max2*pow(max2+q,2.)*sqrt(max2*max2-1.)/
-                (1.+exp(me*max2/T9mev))/(1.+exp(-(max2+q)*me/Tnumev-
+                (1.+exp(m_e*max2/T9mev))/(1.+exp(-(max2+q)*m_e/Tnumev-
                                                 paramrelic->xinu1));
         int2*=(max2-1.)/(double)n;
 
@@ -160,15 +168,15 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
             x=1.+(double)je/(double)n*(max3-1.);
             if(x>1.)
             {
-                int3+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/
-                        (1.+exp((x+q)*me/Tnumev+
+                int3+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(-m_e*x/T9mev))/
+                        (1.+exp((x+q)*m_e/Tnumev+
 											xi));
 											//paramrelic->xinu1));
             }
         }
         if(max3>1.) 
 			int3+=0.5*max3*pow(max3+q,2.)*sqrt(max3*max3-1.)/
-                (1.+exp(-me*max3/T9mev))/(1.+exp((max3+q)*me/Tnumev+
+                (1.+exp(-m_e*max3/T9mev))/(1.+exp((max3+q)*m_e/Tnumev+
 												xi));
                                                  //paramrelic->xinu1));
         int3*=(max3-1.)/(double)n;
@@ -178,15 +186,15 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
             x=1.+(double)je/(double)n*(max4-1.);
             if(x>1.)
             {
-                int4+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(me*x/T9mev))/
-                        (1.+exp(-(x-q)*me/Tnumev+ 
+                int4+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(m_e*x/T9mev))/
+                        (1.+exp(-(x-q)*m_e/Tnumev+ 
 												xi));
 			//									paramrelic->xinu1));
             }
         }
         if(max4>1.) 
 			int4+=0.5*max4*pow(max4-q,2.)*sqrt(max4*max4-1.)/
-                (1.+exp(me*max4/T9mev))/(1.+exp(-(max4-q)*me/Tnumev+
+                (1.+exp(m_e*max4/T9mev))/(1.+exp(-(max4-q)*m_e/Tnumev+
 												  xi));
            //                                     paramrelic->xinu1));
         int4*=(max4-1.)/(double)n;
