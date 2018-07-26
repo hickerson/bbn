@@ -70,7 +70,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
     double ferr,rerr;
     ferr=rerr=0.;
 	double tau = paramrelic->life_neutron;    /// measured neutron lifetime at T=0 in s 
-	double b = paramrelic->fierz;             /// beta-decay Fierz interference term 
+	//double b = paramrelic->fierz;             /// beta-decay Fierz interference term 
 	double xi = paramrelic->xinu1;            /// neutrino chemical potential
 
 	
@@ -105,12 +105,12 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
     else
         /* Degeneracy amongst the electron neutrinos */
     {
-        //double T9mev=T9*0.086171;
-        //double Tnumev=Tnu*0.086171;
+        double T9mev=T9*0.086171;
+        double Tnumev=Tnu*0.086171;
         double kB=0.086171;			/// Boltzmann's constant
-		double T9mev = T9*kB;
-		double Tnumev = Tnu*kB;
-		double z9 = T9*kB/m_e;
+		//double T9mev = T9*kB;
+		//double Tnumev = Tnu*kB;
+		//double z9 = T9*kB/m_e;
 		double znu = Tnu*kB/m_e;
 		double q = 1.29333217/m_e;   /// q=(mn-mp)/m_e
 
