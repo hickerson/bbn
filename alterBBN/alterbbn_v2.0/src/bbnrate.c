@@ -56,7 +56,7 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 
 /*----------------------------------------------------*/
 
-void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* paramrelic, struct errorparam* paramerror)
+void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 /** 
  * Calculates the nuclear forward and reverse rates f[] and r[] 
  * of the reaction p <-> n at the temperature T9
@@ -69,9 +69,9 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
 {
     double ferr,rerr;
     ferr=rerr=0.;
-	double tau = relic.neutron_lifetime;    /// measured neutron lifetime at T=0 in s 
-	double b = relic.fierz;                 /// beta-decay Fierz interference term 
-	double xi1 = relic.xinu1;               /// neutrino chemical potential
+	double tau = paramrelic->life_neutron;    /// measured neutron lifetime at T=0 in s 
+	double b = paramrelic->fierz;             /// beta-decay Fierz interference term 
+	double xi = paramrelic->xinu1;            /// neutrino chemical potential
 
 	
     if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.)))
@@ -119,6 +119,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
         double x;
         int je;
 
+		// TODO use xi
         double max1=max(50.*T9mev/me,fabs((Tnumev/me)*(50.+paramrelic->xinu1)+q));
         double max2=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-paramrelic->xinu1)-q));
         double max3=max(50.*T9mev/me,fabs((Tnumev/me)*(50.-paramrelic->xinu1)-q));
@@ -133,7 +134,8 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
                         (1.+exp((x-q)*me/Tnumev-paramrelic->xinu1));
             }
         }
-        if(max1>1.) int1+=0.5*max1*pow(max1-q,2.)*sqrt(max1*max1-1.)/
+        if(max1>1.) 
+			int1+=0.5*max1*pow(max1-q,2.)*sqrt(max1*max1-1.)/
                 (1.+exp(-me*max1/T9mev))/(1.+exp((max1-q)*me/Tnumev-
                                                  paramrelic->xinu1));
         int1*=(max1-1.)/(double)n;
@@ -147,7 +149,8 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
                         (1.+exp(-(x+q)*me/Tnumev-paramrelic->xinu1));
             }
         }
-        if(max2>1.) int2+=0.5*max2*pow(max2+q,2.)*sqrt(max2*max2-1.)/
+        if(max2>1.) 
+			int2+=0.5*max2*pow(max2+q,2.)*sqrt(max2*max2-1.)/
                 (1.+exp(me*max2/T9mev))/(1.+exp(-(max2+q)*me/Tnumev-
                                                 paramrelic->xinu1));
         int2*=(max2-1.)/(double)n;
@@ -158,12 +161,16 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
             if(x>1.)
             {
                 int3+=x*pow(x+q,2.)*sqrt(x*x-1.)/(1.+exp(-me*x/T9mev))/
-                        (1.+exp((x+q)*me/Tnumev+paramrelic->xinu1));
+                        (1.+exp((x+q)*me/Tnumev+
+											xi));
+											//paramrelic->xinu1));
             }
         }
-        if(max3>1.) int3+=0.5*max3*pow(max3+q,2.)*sqrt(max3*max3-1.)/
+        if(max3>1.) 
+			int3+=0.5*max3*pow(max3+q,2.)*sqrt(max3*max3-1.)/
                 (1.+exp(-me*max3/T9mev))/(1.+exp((max3+q)*me/Tnumev+
-                                                 paramrelic->xinu1));
+												xi));
+                                                 //paramrelic->xinu1));
         int3*=(max3-1.)/(double)n;
 
         for(je=1;je<=n-1;je++)
@@ -172,12 +179,16 @@ void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* p
             if(x>1.)
             {
                 int4+=x*pow(x-q,2.)*sqrt(x*x-1.)/(1.+exp(me*x/T9mev))/
-                        (1.+exp(-(x-q)*me/Tnumev+paramrelic->xinu1));
+                        (1.+exp(-(x-q)*me/Tnumev+ 
+												xi));
+			//									paramrelic->xinu1));
             }
         }
-        if(max4>1.) int4+=0.5*max4*pow(max4-q,2.)*sqrt(max4*max4-1.)/
+        if(max4>1.) 
+			int4+=0.5*max4*pow(max4-q,2.)*sqrt(max4*max4-1.)/
                 (1.+exp(me*max4/T9mev))/(1.+exp(-(max4-q)*me/Tnumev+
-                                                paramrelic->xinu1));
+												  xi));
+           //                                     paramrelic->xinu1));
         int4*=(max4-1.)/(double)n;
 
         f[1]=int1+int2;
