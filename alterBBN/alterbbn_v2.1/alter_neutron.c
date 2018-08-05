@@ -37,6 +37,7 @@ int main(int argc,char** argv)
                 //if(argc>=5) sscanf(argv[5],"%lf",&tau_err); else tau_err=1.0;
   	}
 	
+
 	Init_cosmomodel(&paramrelic);	
     //Init_cosmomodel_param(eta,Nnu,dNnu,tau,tau_err,0.,0.,0.,&paramrelic);
 	Init_neutron_decay(tau, tau_err, fierz, m_chi, B_chi, &paramrelic);

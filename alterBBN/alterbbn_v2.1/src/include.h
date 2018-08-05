@@ -218,6 +218,7 @@ double neutdens(double Tnu, struct relicparam* paramrelic);
 double neutdens_deriv(double Tnu, struct relicparam* paramrelic);
 
 /* bbnrate.c */
+double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror);
 void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* paramerror);
 void rate_pn(double f[], double r[], double T9, double Tnu, struct relicparam* paramrelic, struct errorparam* paramerror);
 void rate_all(double f[], double T9, struct relicparam* paramrelic, struct errorparam* paramerror);

@@ -54,6 +54,73 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
     return;
 }
 
+
+
+double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
+{
+		double dM = 1.29333217;     /// q=(mn-mp)/me
+        double kB=0.086171;			/// Boltzmann's constant
+		double me=m_e*10e3; 		/// GeV to MeV
+		double T9mev = T9*kB;
+		double Tnumev = Tnu*kB;
+		double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
+		double znu = ((type == 1 || type == 3)? Tnumev/me : -Tnumev/me);
+		double q = ((type == 1 || type == 4)? dM/me : -dM/me);
+		double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);
+		double b = ((type == 1 || type == 4)? paramrelic->fierz : -paramrelic->fierz);
+
+        double integral=0.;
+        int n=50;
+        double x;
+        int i;
+
+
+		// TODO use xi
+        //double max1=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
+        //double max2=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
+        //double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
+        //double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
+
+        //double z9max = max(fabs(n*z9),fabs(znu*(n+xi)+q));
+        double z9max = fabs(n*znu) + abs(q);
+        for(i=1;i<=n;i++)
+        {
+			if(i<n)
+            	x=1.+(double)i/(double)n*(z9max-1.);
+			else
+				x=z9max;
+
+            if(x>1.)
+            {
+				double dI;
+				dI = (x+b)*pow(x-q,2.)*sqrt(x*x-1.)     	/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
+					/(1.+exp(-x/z9)) 					
+					/(1.+exp((x-q)/znu-xi));
+					/*
+				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)			/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
+					/(1+exp(x/z9))
+					/(1+exp(-(x+q)/znu-xi));
+				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)			/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
+					/(1+exp(-x/z9))
+					/(1+exp((x+q)/znu+xi));
+				dI =(x+b)*pow(x-q,2.)*sqrt(x*x-1)			/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
+					/(1+exp(x/z9))
+					/(1+exp(-(x-q)/znu+xi));
+					*/
+
+				if (x<n)
+					integral += dI;
+				else
+					integral += dI/2;
+			}
+
+        }
+
+        integral*=(z9max-1.)/(double)n;
+		return integral;
+}
+
+
 /*----------------------------------------------------*/
 
 void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
@@ -76,7 +143,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 	
     //if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.)))
         /* No neutrino degeneracy */
-	if (xi!=0)
+	if (0)
     {
         int ie;
         double z=5.929862032115561/T9;
@@ -105,6 +172,10 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
     else
         /* Degeneracy amongst the electron neutrinos */
     {
+		//double rate_pn_enu(type, T9, Tnu, paramrelic, paramerror);
+		double I0 = rate_pn_enu(1, 0, 0, paramrelic, paramerror);
+		printf("np T = 0 integral is %f\n", I0);
+
         //double T9mev=T9*0.086171;
         //double Tnumev=Tnu*0.086171;
         double kB=0.086171;			/// Boltzmann's constant
@@ -120,7 +191,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
         double int2=0.;
         double int3=0.;
         double int4=0.;
-        int n=1000;
+        int n=50;
         double x;
         int je;
 
