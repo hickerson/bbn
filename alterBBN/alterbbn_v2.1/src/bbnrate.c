@@ -80,18 +80,6 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	double b = paramrelic->fierz;
 #endif
 
-/*
-	if(type == 1 || type == 3) {
-		 z9 = T9mev/me;
-		 znu = Tnumev/me;
-	}
-	if(type == 1 || type == 4) {
-		 q = dM/me;
-	} else {
-		 q = -dM/me;
-	}
-	*/
-
 	double integral=0.;
 	int n=100;
 	int i;
