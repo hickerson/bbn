@@ -60,7 +60,7 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 {
 	double dM = 1.29333217;     /// dM=mn-mp
 	//double kB=0.086171;			/// Boltzmann's constant
-	double me=m_e*10e3; 		/// GeV to MeV
+	double me=m_e; 		/// GeV to MeV
 	//double me=m_e; 		/// GeV to MeV
 	//double alpha = 0.007297353; /// fine-structure constant
 
@@ -74,6 +74,9 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 
 	double integral=0;
 	double x, dI, beta, eta, zmax, norm;
+
+	//printf("m_e=%f n=%d\n", m_e, d);
+
 
 	if(type== 1 || type == 4)
 		zmax = max(n*z9,fabs(znu*(n+xi))+q*(1-1e-6));		/// epsilon needed to avoid nan pole at zmax=q

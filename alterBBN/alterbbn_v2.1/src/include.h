@@ -23,7 +23,7 @@
 #define zeta3 		1.2020569031595942855
 #define Gn    		6.67428e-8  /* in cm^3.g^-1.s^-2 */
 #define K_to_GeV    8.617330637338339e-05 /* conversion factor T(10**9 K) * K_to_GeV = T(GeV) */
-#define m_e_GeV     5.109989461e-4 /* electron mass in GeV */
+//#define m_e_GeV     5.109989461e-4 /* electron mass in GeV */
 #define m_e     	5.109989461e-1 /* electron mass in MeV */
 #define M_u         1.660538921e-24 /* unit atomic mass M_u in g */
 #define g_to_GeV    5.60958884538932e+23 /* conversion factor M(g) * g_to_GeV = M(GeV) */
