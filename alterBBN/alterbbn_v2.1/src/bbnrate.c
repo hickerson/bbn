@@ -71,7 +71,7 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 
 	double integral=0;
 	int i, n=1000;
-	double x, dI, beta, eta, F, zmax, norm;
+	double x, dI, beta, eta, zmax, norm;
 
 	if(type== 1 || type == 4)
 		zmax = max(n*z9,fabs(znu*(n+xi))+0.999999*q);		/// TODO why does it need 0.9999999? Fails if exactly q
@@ -84,38 +84,35 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	{
 		x = 1+i/norm;				/// electron reduced relativistic energy
 		beta = sqrt(x*x-1);			/// TODO needs factor of m_e?, check
-		eta = 2*pi*alpha/beta;		/// p and e are on the same side of the reverse reaction
-		//printf("x=%f type=%d zmax=%f q=%f\n", x, type, zmax, q);
+		eta = 2*pi*alpha/beta;		/// Fermi function parameter
 		switch(type) {
-			case 1:								/// n --> peu
-				F = eta/(1-exp(-eta)); 			/// p and e- are on the same side of the forward reaction
-				dI = (x+b)*pow(x-q,2)*beta*eta /// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
-					  /(1-exp(-eta))
-					  /(1+exp(-x/z9)) 					
+			case 1:								
+				dI = (x+b)*pow(x-q,2)*beta*eta  /// n --> peu
+					  /(1-exp(-eta)) 			/// p and e- are on the same side of the forward reaction
+					  /(1+exp(-x/z9)) 			/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
 					  /(1+exp((x-q)/znu-xi));
 				break;
 
-			case 2: 							/// ne+ <--> pu
-				dI = (x-b)*pow(x+q,2)*beta		/// p and e+ are on opposite sides of the same reaction
-					  /(1+exp(x/z9)) 			/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
-					  /(1+exp(-(x+q)/znu-xi));
+			case 2: 							
+				dI = (x-b)*pow(x+q,2)*beta		/// ne+ <--> pu
+					  /(1+exp(x/z9)) 			/// p and e+ are on opposite sides of the reaction
+					  /(1+exp(-(x+q)/znu-xi));  /// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
 				break;
 
-			case 3:								/// nu --> pe-
-				F = eta/(1-exp(-eta)); 			/// p and e- are on the same side of the forward reaction
-				dI = (x-b)*pow(x+q,2)*beta*eta	/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
-					  /(1-exp(-eta))
-					  /(1+exp(-x/z9))
+			case 3:								
+				dI = (x-b)*pow(x+q,2)*beta*eta	/// nu --> pe-
+					  /(1-exp(-eta)) 			/// p and e- are on the same side of the forward reaction
+					  /(1+exp(-x/z9)) 			/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
 					  /(1+exp((x+q)/znu+xi));
 				break;
 
-			case 4:								/// pe- --> nu
-				F = -eta/(1-exp(eta)); 			/// p and e- are on the same side of the reverse reaction
-				dI = (x+b)*pow(x-q,2)*beta*eta	/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
-					  /(exp(eta)-1)
-					  /(1+exp(x/z9))
+			case 4:								
+				dI = (x+b)*pow(x-q,2)*beta*eta	/// pe- <--> nu
+					  /(exp(eta)-1) 			/// p and e- are on the same side of the reverse reaction
+					  /(1+exp(x/z9)) 			/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
 					  /(1+exp(-(x-q)/znu+xi)); 
 				break;
+
 			default:
 				printf("Error calling unknown type of n <--> p beta reaction.");
 				exit(1);
