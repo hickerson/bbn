@@ -59,57 +59,59 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
 	double dM = 1.29333217;     /// dM=mn-mp
-	double kB=0.086171;			/// Boltzmann's constant
-	double me=m_e*10e2; 		/// GeV to MeV
-	double alpha = 0.007297353; /// fine-structure constant
+	//double kB=0.086171;			/// Boltzmann's constant
+	double me=m_e*10e3; 		/// GeV to MeV
+	//double me=m_e; 		/// GeV to MeV
+	//double alpha = 0.007297353; /// fine-structure constant
 
 	double z9 = T9*kB/me;
 	double znu = Tnu*kB/me;
 	double q = dM/me;
 	double xi = paramrelic->xinu1;
 	double b = paramrelic->fierz;
+	int i, n=paramrelic->beta_samples;
+	//if (n != 100) exit(1);
 
 	double integral=0;
-	int i, n=1000;
 	double x, dI, beta, eta, zmax, norm;
 
 	if(type== 1 || type == 4)
-		zmax = max(n*z9,fabs(znu*(n+xi))+0.999999*q);		/// TODO why does it need 0.9999999? Fails if exactly q
+		zmax = max(n*z9,fabs(znu*(n+xi))+q*(1-1e-6));		/// epsilon needed to avoid nan pole at zmax=q
 	else
-		zmax = max(n*z9,fabs(znu*(n-xi))-0.999999*q);
+		zmax = max(n*z9,fabs(znu*(n-xi))-q*(1-1e-6));
 
 	norm = n/(zmax-1.);
 
 	for(i=1;i<=n;i++)
 	{
-		x = 1+i/norm;				/// electron reduced relativistic energy
-		beta = sqrt(x*x-1);			/// TODO needs factor of m_e?, check
+		x = 1+i/norm;				/// electron mass reduced relativistic energy
+		beta = sqrt(x*x-1);			/// relativistic velocity beta
 		eta = 2*pi*alpha/beta;		/// Fermi function parameter
 		switch(type) {
 			case 1:								
-				dI = (x+b)*pow(x-q,2)*beta*eta  /// n --> peu
+				dI = (x+b)*pow(x-q,2)*beta*eta  /// n --> pe-u
 					  /(1-exp(-eta)) 			/// p and e- are on the same side of the forward reaction
-					  /(1+exp(-x/z9)) 			/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
+					  /(1+exp(-x/z9)) 			/// x+b, x-q, -x/z9, +(x-q)/znu, -xi, +eta -> +--+-+
 					  /(1+exp((x-q)/znu-xi));
 				break;
 
 			case 2: 							
 				dI = (x-b)*pow(x+q,2)*beta		/// ne+ <--> pu
 					  /(1+exp(x/z9)) 			/// p and e+ are on opposite sides of the reaction
-					  /(1+exp(-(x+q)/znu-xi));  /// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
+					  /(1+exp(-(x+q)/znu-xi));  /// x-b, x+q, +x/z9, -(x+q)/znu, -xi, -> -++--
 				break;
 
 			case 3:								
 				dI = (x-b)*pow(x+q,2)*beta*eta	/// nu --> pe-
 					  /(1-exp(-eta)) 			/// p and e- are on the same side of the forward reaction
-					  /(1+exp(-x/z9)) 			/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
+					  /(1+exp(-x/z9)) 			/// x-b, x+q, -x/z9, +(x+q)/znu, +xi, eta -> -+-+++
 					  /(1+exp((x+q)/znu+xi));
 				break;
 
 			case 4:								
 				dI = (x+b)*pow(x-q,2)*beta*eta	/// pe- <--> nu
 					  /(exp(eta)-1) 			/// p and e- are on the same side of the reverse reaction
-					  /(1+exp(x/z9)) 			/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
+					  /(1+exp(x/z9)) 			/// x+b, x-q, +x/z9, -(x-q)/znu, +xi, -eta -> +-+-+-
 					  /(1+exp(-(x-q)/znu+xi)); 
 				break;
 

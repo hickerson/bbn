@@ -74,6 +74,7 @@ void Init_cosmomodel(struct relicparam* paramrelic)
 	paramrelic->xinu1=0.; 
 	paramrelic->xinu2=0.; 
 	paramrelic->xinu3=0.; 
+	paramrelic->beta_samples=100;	// how accurately to model n<-->p beta reactions
 
     paramrelic->wimp=0;
 	//paramrelic->m_chi=paramrelic->g_chi=paramrelic->SMC_wimp=paramrelic->selfConjugate=paramrelic->fermion=paramrelic->EM_coupled=paramrelic->neut_coupled=paramrelic->neuteq_coupled=0;
@@ -135,6 +136,7 @@ void Init_cosmomodel_param(double eta, double Nnu, double dNnu, double life_neut
     paramrelic->xinu1=xinu1;
     paramrelic->xinu2=xinu2;
     paramrelic->xinu3=xinu3;
+	paramrelic->beta_samples=1000;	// how accurately to model n<-->p beta reactions
     return;
 }
 
