@@ -59,9 +59,7 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
 	double dM = 1.29333217;     /// dM=mn-mp
-	double kB=0.0861733;		/// Boltzmann's constant
-	//double me=0.511; 	
-	double me=m_e*10e2; 			/// GeV to MeV
+	//double me=m_e*1e3; 			/// GeV to MeV
 	//double alpha = 0.007297353; /// fine-structure constant
 
 	double z9 = T9*kB/me;
