@@ -58,9 +58,9 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
-		double dM = 1.29333217;     /// q=(mn-mp)/me
+		double dM = 1.29333217;     /// q=mn-mp
         double kB=0.086171;			/// Boltzmann's constant
-		double me=m_e*10e3; 		/// GeV to MeV
+		double me=m_e*10e2; 		/// GeV to MeV
 		double T9mev = T9*kB;
 		double Tnumev = Tnu*kB;
 		double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
@@ -69,8 +69,19 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 		double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);
 		double b = ((type == 1 || type == 4)? paramrelic->fierz : -paramrelic->fierz);
 
+
+		if(type == 1 || type == 3) {
+			 z9 = T9mev/me;
+			 znu = Tnumev/me;
+		}
+		if(type == 1 || type == 4) {
+			 q = dM/me;
+		} else {
+			 q = -dM/me;
+		}
+
         double integral=0.;
-        int n=50;
+        int n=1000;
         double x;
         int i;
 
@@ -82,11 +93,13 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
         //double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
 
         //double z9max = max(fabs(n*z9),fabs(znu*(n+xi)+q));
-        double z9max = fabs(n*znu) + abs(q);
+        double z9max = fabs(n*z9) + fabs(3*q);
         for(i=1;i<=n;i++)
         {
-			if(i<n)
+			if(i<n) {
             	x=1.+(double)i/(double)n*(z9max-1.);
+				//printf("x=%f type=%d z9max=%f q=%f\n", x, type, z9max, q);
+			}
 			else
 				x=z9max;
 
@@ -108,8 +121,10 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 					/(1+exp(-(x-q)/znu+xi));
 					*/
 
-				if (x<n)
+				if (i<n) {
 					integral += dI;
+					//printf("x=%f dI=%f\n",x, dI);
+				}
 				else
 					integral += dI/2;
 			}
@@ -174,7 +189,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
     {
 		//double rate_pn_enu(type, T9, Tnu, paramrelic, paramerror);
 		double I0 = rate_pn_enu(1, 0, 0, paramrelic, paramerror);
-		printf("np T = 0 integral is %f\n", I0);
+		//printf("np T = 0 integral is %f\n", I0);
 
         //double T9mev=T9*0.086171;
         //double Tnumev=Tnu*0.086171;
@@ -191,7 +206,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
         double int2=0.;
         double int3=0.;
         double int4=0.;
-        int n=50;
+        int n=1000;
         double x;
         int je;
 
@@ -286,8 +301,8 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 				paramrelic->xinu1));
         int4*=(max4-1.)/(double)n;
 
-        f[1]=int1+int2;
-        r[1]=int3+int4;
+        f[1]=(int1+int2)/I0/tau;
+        r[1]=(int3+int4)/I0/tau;
     }
 
 
