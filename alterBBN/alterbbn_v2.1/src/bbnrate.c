@@ -58,38 +58,20 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
-	double dM = 1.29333217;     /// q=mn-mp
+	double dM = 1.29333217;     /// dM=mn-mp
 	double kB=0.086171;			/// Boltzmann's constant
 	double me=m_e*10e2; 		/// GeV to MeV
 	double alpha = 0.007297353; /// fine-structure constant
 
-	double T9mev = T9*kB;
-	double Tnumev = Tnu*kB;
-
-	//double z9 = T9mev/me;
 	double z9 = T9*kB/me;
-	//double znu = Tnumev/me;
-	double znu = Tnumev/me;
+	double znu = Tnu*kB/me;
 	double q = dM/me;
 	double xi = paramrelic->xinu1;
 	double b = paramrelic->fierz;
 
-	double integral=0.;
-	int n=1000;
-	int i;
+	double integral=0;
+	int i, n=1000;
 	double x, dI, beta, eta, F, zmax, norm;
-
-	// TODO use xi
-	//double max1=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
-	//double max2=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
-	//double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
-	//double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
-
-	/*
-	zmax = max(fabs(n*z9),fabs(znu*(n+xi)+0.9999999*q));
-	zmax = max(n*z9,znu*(n+xi)+q);
-	norm = (double)n/(zmax-1.);
-	*/
 
 	if(type== 1 || type == 4)
 		zmax = max(n*z9,fabs(znu*(n+xi))+0.999999*q);		/// TODO why does it need 0.9999999? Fails if exactly q
@@ -97,38 +79,40 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 		zmax = max(n*z9,fabs(znu*(n-xi))-0.999999*q);
 
 	norm = n/(zmax-1.);
-	//double zmax = max(fabs(10*z9), fabs(10*znu)+q);
-	//double zmax = q;
+
 	for(i=1;i<=n;i++)
 	{
-		x = 1.+i/norm;				/// electron relativistic energy
-		beta = sqrt(x*x-1.);		/// TODO needs factor of m_e?, check
+		x = 1+i/norm;				/// electron reduced relativistic energy
+		beta = sqrt(x*x-1);			/// TODO needs factor of m_e?, check
 		eta = 2*pi*alpha/beta;		/// p and e are on the same side of the reverse reaction
 		//printf("x=%f type=%d zmax=%f q=%f\n", x, type, zmax, q);
 		switch(type) {
 			case 1:								/// n --> peu
 				F = eta/(1-exp(-eta)); 			/// p and e- are on the same side of the forward reaction
-				dI = F*(x+b)*pow(x-q,2.)*beta   /// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
-					  /(1.+exp(-x/z9)) 					
-					  /(1.+exp((x-q)/znu-xi));
+				dI = (x+b)*pow(x-q,2)*beta*eta /// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
+					  /(1-exp(-eta))
+					  /(1+exp(-x/z9)) 					
+					  /(1+exp((x-q)/znu-xi));
 				break;
 
 			case 2: 							/// ne+ <--> pu
-				dI = (x-b)*pow(x+q,2.)*beta		/// p and e+ are on opposite sides of the same reaction
+				dI = (x-b)*pow(x+q,2)*beta		/// p and e+ are on opposite sides of the same reaction
 					  /(1+exp(x/z9)) 			/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
 					  /(1+exp(-(x+q)/znu-xi));
 				break;
 
 			case 3:								/// nu --> pe-
 				F = eta/(1-exp(-eta)); 			/// p and e- are on the same side of the forward reaction
-				dI = F*(x-b)*pow(x+q,2.)*beta	/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
+				dI = (x-b)*pow(x+q,2)*beta*eta	/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
+					  /(1-exp(-eta))
 					  /(1+exp(-x/z9))
 					  /(1+exp((x+q)/znu+xi));
 				break;
 
 			case 4:								/// pe- --> nu
 				F = -eta/(1-exp(eta)); 			/// p and e- are on the same side of the reverse reaction
-				dI = F*(x+b)*pow(x-q,2.)*beta	/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
+				dI = (x+b)*pow(x-q,2)*beta*eta	/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
+					  /(exp(eta)-1)
 					  /(1+exp(x/z9))
 					  /(1+exp(-(x-q)/znu+xi)); 
 				break;
@@ -137,9 +121,8 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 				exit(1);
 		}
 
-		if (i<n) {
+		if (i<n)
 			integral += dI;
-		}
 		else
 			integral += dI/2;
 	}
