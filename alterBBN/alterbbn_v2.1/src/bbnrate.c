@@ -92,18 +92,28 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	//double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
 
 	zmax = max(fabs(n*z9),fabs(znu*(n+xi)+0.9999999*q));
-	zmax = max(n*z9,znu*(n+xi)+0.9999999*q);
+	zmax = max(n*z9,znu*(n+xi)+q);
 	norm = (double)n/(zmax-1.);
+
+	if(type== 1 || type == 4)
+		zmax = max(n*z9,znu*(n+xi)+0.999999*q);
+	else
+		zmax = max(n*z9,znu*(n-xi)-0.999999*q);
+
+	norm = n/(zmax-1.);
 	//double zmax = max(fabs(10*z9), fabs(10*znu)+q);
 	//double zmax = q;
 	for(i=1;i<=n;i++)
 	{
-		x=1.+(double)i/norm;
+		//zmax = max(n*z9,znu*(n+xi)+q);
+		//norm = (double)n/(zmax-1.);
+		x = 1.+i/norm;
 		//printf("x=%f type=%d zmax=%f q=%f\n", x, type, zmax, q);
 
 		//if(x>1.)
 		//{
 			beta = sqrt(x*x-1.);				/// TODO needs factor of m_e, check
+			eta = 2*pi*alpha/beta;			/// p and e are on the same side of the reverse reaction
 #if USE_BETA_SWITCH
 			if (type == 1 || type ==3)  {
 				eta = 2*pi*alpha/beta;			/// p and e are on the same side of the forward reaction
@@ -161,7 +171,7 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 			}
 			else
 				integral += dI/2;
-		}
+		//}
 		//else
 		//	exit(1);
 	}
