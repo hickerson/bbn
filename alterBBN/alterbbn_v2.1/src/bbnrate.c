@@ -194,7 +194,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
         //double T9mev=T9*0.086171;
         //double Tnumev=Tnu*0.086171;
         double kB=0.086171;			/// Boltzmann's constant
-		double me=m_e*10e3; 		/// GeV to MeV
+		double me=m_e*10e2; 		/// GeV to MeV
 		double T9mev = T9*kB;
 		double Tnumev = Tnu*kB;
 		double z9 = T9*kB/me;
