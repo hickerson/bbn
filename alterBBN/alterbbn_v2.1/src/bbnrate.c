@@ -101,8 +101,8 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 		x=1.+(double)i/norm;
 		//printf("x=%f type=%d zmax=%f q=%f\n", x, type, zmax, q);
 
-		if(x>1.)
-		{
+		//if(x>1.)
+		//{
 			beta = sqrt(x*x-1.);				/// TODO needs factor of m_e, check
 #if USE_BETA_SWITCH
 			if (type == 1 || type ==3)  {
@@ -162,8 +162,8 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 			else
 				integral += dI/2;
 		}
-		else
-			exit(1);
+		//else
+		//	exit(1);
 	}
 
 	return integral/norm;
