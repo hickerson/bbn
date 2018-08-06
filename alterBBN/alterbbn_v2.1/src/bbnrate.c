@@ -81,9 +81,9 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 #endif
 
 	double integral=0.;
-	int n=10000;
+	int n=1000;
 	int i;
-	double x, dI, beta, eta, F;
+	double x, dI, beta, eta, F, zmax, norm;
 
 	// TODO use xi
 	//double max1=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
@@ -91,13 +91,14 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	//double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
 	//double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
 
-	double z9max = max(fabs(n*z9),fabs(znu*(n+xi)+2*q));
-	//double z9max = max(fabs(10*z9), fabs(10*znu)+q);
-	//double z9max = q;
+	zmax = max(fabs(n*z9),fabs(znu*(n+xi)+1.0001*q));
+	norm=(double)n/(zmax-1.);
+	//double zmax = max(fabs(10*z9), fabs(10*znu)+q);
+	//double zmax = q;
 	for(i=1;i<=n;i++)
 	{
-		x=1.+(double)i/(double)n*(z9max-1.);
-		//printf("x=%f type=%d z9max=%f q=%f\n", x, type, z9max, q);
+		x=1.+(double)i/norm;
+		//printf("x=%f type=%d zmax=%f q=%f\n", x, type, zmax, q);
 
 		if(x>1.)
 		{
@@ -163,7 +164,7 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 
 	}
 
-	integral*=(z9max-1.)/(double)n;
+	integral/=norm;
 	return integral;
 }
 
