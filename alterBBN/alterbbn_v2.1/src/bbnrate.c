@@ -65,20 +65,14 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 
 	double T9mev = T9*kB;
 	double Tnumev = Tnu*kB;
-#define USE_BETA_SWITCH 0
-#if USE_BETA_SWITCH
-	double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
-	double znu = ((type == 1 || type == 3)? Tnumev/me : -Tnumev/me);
-	double q = ((type == 1 || type == 4)? dM/me : -dM/me);
-	double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);  /// TODO needs check for max
-	double b = ((type == 1 || type == 4)? paramrelic->fierz : -paramrelic->fierz);
-#else
-	double z9 = T9mev/me;
+
+	//double z9 = T9mev/me;
+	double z9 = T9*kB/me;
+	//double znu = Tnumev/me;
 	double znu = Tnumev/me;
 	double q = dM/me;
 	double xi = paramrelic->xinu1;
 	double b = paramrelic->fierz;
-#endif
 
 	double integral=0.;
 	int n=1000;
@@ -91,14 +85,16 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	//double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
 	//double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
 
+	/*
 	zmax = max(fabs(n*z9),fabs(znu*(n+xi)+0.9999999*q));
 	zmax = max(n*z9,znu*(n+xi)+q);
 	norm = (double)n/(zmax-1.);
+	*/
 
 	if(type== 1 || type == 4)
-		zmax = max(n*z9,znu*(n+xi)+0.999999*q);		/// TODO why does it need 0.9999999? Fails if exactly q
+		zmax = max(n*z9,fabs(znu*(n+xi))+0.999999*q);		/// TODO why does it need 0.9999999? Fails if exactly q
 	else
-		zmax = max(n*z9,znu*(n-xi)-0.999999*q);
+		zmax = max(n*z9,fabs(znu*(n-xi))-0.999999*q);
 
 	norm = n/(zmax-1.);
 	//double zmax = max(fabs(10*z9), fabs(10*znu)+q);
