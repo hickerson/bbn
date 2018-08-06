@@ -91,8 +91,9 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	//double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
 	//double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
 
-	zmax = max(fabs(n*z9),fabs(znu*(n+xi)+1.0001*q));
-	norm=(double)n/(zmax-1.);
+	zmax = max(fabs(n*z9),fabs(znu*(n+xi)+0.9999999*q));
+	zmax = max(n*z9,znu*(n+xi)+0.9999999*q);
+	norm = (double)n/(zmax-1.);
 	//double zmax = max(fabs(10*z9), fabs(10*znu)+q);
 	//double zmax = q;
 	for(i=1;i<=n;i++)
@@ -161,11 +162,11 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 			else
 				integral += dI/2;
 		}
-
+		else
+			exit(1);
 	}
 
-	integral/=norm;
-	return integral;
+	return integral/norm;
 }
 
 
