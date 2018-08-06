@@ -59,9 +59,9 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
 	double dM = 1.29333217;     /// dM=mn-mp
-	//double kB=0.086171;			/// Boltzmann's constant
-	double me=m_e; 		/// GeV to MeV
-	//double me=m_e; 		/// GeV to MeV
+	double kB=0.0861733;		/// Boltzmann's constant
+	//double me=0.511; 	
+	double me=m_e*10e2; 			/// GeV to MeV
 	//double alpha = 0.007297353; /// fine-structure constant
 
 	double z9 = T9*kB/me;
@@ -75,7 +75,7 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 	double integral=0;
 	double x, dI, beta, eta, zmax, norm;
 
-	//printf("m_e=%f n=%d\n", m_e, d);
+	//printf("m_e=%f n=%d\n", m_e, n);
 
 
 	if(type== 1 || type == 4)
@@ -156,6 +156,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 	if (0)
     //if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.))) 
 		/* No neutrino degeneracy */
+	
     {
         int ie;
         double z=5.929862032115561/T9;
