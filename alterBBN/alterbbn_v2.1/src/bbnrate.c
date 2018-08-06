@@ -61,13 +61,20 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 		double dM = 1.29333217;     /// q=mn-mp
         double kB=0.086171;			/// Boltzmann's constant
 		double me=m_e*10e2; 		/// GeV to MeV
+		double alpha = 0.007297353; /// fine-structure constant
+
 		double T9mev = T9*kB;
 		double Tnumev = Tnu*kB;
 		double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
 		double znu = ((type == 1 || type == 3)? Tnumev/me : -Tnumev/me);
 		double q = ((type == 1 || type == 4)? dM/me : -dM/me);
-		double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);
+		double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);  /// TODO needs check for max
 		double b = ((type == 1 || type == 4)? paramrelic->fierz : -paramrelic->fierz);
+
+		double dI;
+		double beta;
+		double eta;
+		double F;
 
 
 		if(type == 1 || type == 3) {
@@ -105,18 +112,25 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 
             if(x>1.)
             {
-				double dI;
-				dI = (x+b)*pow(x-q,2.)*sqrt(x*x-1.)     	/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
+				beta = sqrt(x*x-1.);	/// TODO needs factor of me check
+				if (type == 1)  {
+					eta = 2*pi*alpha/beta;	/// use only when p and e are on same side of reaction
+					F = eta/(1 - exp(-eta));
+				} else {
+					F = 1;
+				}
+
+				dI = F*(x+b)*pow(x-q,2.)*beta     		/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
 					/(1.+exp(-x/z9)) 					
 					/(1.+exp((x-q)/znu-xi));
 					/*
-				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)			/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
+				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)		/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
 					/(1+exp(x/z9))
 					/(1+exp(-(x+q)/znu-xi));
-				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)			/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
+				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)		/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
 					/(1+exp(-x/z9))
 					/(1+exp((x+q)/znu+xi));
-				dI =(x+b)*pow(x-q,2.)*sqrt(x*x-1)			/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
+				dI =(x+b)*pow(x-q,2.)*sqrt(x*x-1)		/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
 					/(1+exp(x/z9))
 					/(1+exp(-(x-q)/znu+xi));
 					*/
