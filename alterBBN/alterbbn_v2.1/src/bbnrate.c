@@ -65,8 +65,8 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 
 	double T9mev = T9*kB;
 	double Tnumev = Tnu*kB;
-#define USE_BETA_SWITCH 1
-#define USE_BETA_SWITCH
+#define USE_BETA_SWITCH 0
+#if USE_BETA_SWITCH
 	double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
 	double znu = ((type == 1 || type == 3)? Tnumev/me : -Tnumev/me);
 	double q = ((type == 1 || type == 4)? dM/me : -dM/me);
@@ -81,7 +81,7 @@ double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, erro
 #endif
 
 	double integral=0.;
-	int n=100;
+	int n=10000;
 	int i;
 	double x, dI, beta, eta, F;
 
