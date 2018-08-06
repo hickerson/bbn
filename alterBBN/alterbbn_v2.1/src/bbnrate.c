@@ -148,9 +148,9 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 	double xi = paramrelic->xinu1;            /// neutrino chemical potential
 
 	
-    //if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.)))
-        /* No neutrino degeneracy */
 	if (0)
+    //if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.))) 
+		/* No neutrino degeneracy */
     {
         int ie;
         double z=5.929862032115561/T9;
@@ -179,24 +179,20 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
     else
         /* Degeneracy amongst the electron neutrinos */
     {
-		//double rate_pn_enu(type, T9, Tnu, paramrelic, paramerror);
 		double I0 = rate_pn_enu(1, 0, 0, paramrelic, paramerror);
-		//printf("np T = 0 integral is %f\n", I0);
 
-        //double T9mev=T9*0.086171;
-        //double Tnumev=Tnu*0.086171;
-        double kB=0.086171;			/// Boltzmann's constant
-		double me=m_e*10e2; 		/// GeV to MeV
-		double T9mev = T9*kB;
-		double Tnumev = Tnu*kB;
-		double z9 = T9*kB/me;
-		double znu = Tnu*kB/me;
-		double q = 1.29333217/me;   /// q=(mn-mp)/me
+        //double kB=0.086171;			/// Boltzmann's constant
+		//double me=m_e*10e2; 		/// GeV to MeV
+		//double T9mev = T9*kB;
+		//double Tnumev = Tnu*kB;
+		//double z9 = T9*kB/me;
+		//double znu = Tnu*kB/me;
+		//double q = 1.29333217/me;   /// q=(mn-mp)/me
 
-        double int1= rate_pn_enu(1,T9,Tnu,paramrelic,paramerror);
-        double int2= rate_pn_enu(2,T9,Tnu,paramrelic,paramerror);
-        double int3= rate_pn_enu(3,T9,Tnu,paramrelic,paramerror);
-        double int4= rate_pn_enu(4,T9,Tnu,paramrelic,paramerror);
+        double int1 = rate_pn_enu(1,T9,Tnu,paramrelic,paramerror);
+        double int2 = rate_pn_enu(2,T9,Tnu,paramrelic,paramerror);
+        double int3 = rate_pn_enu(3,T9,Tnu,paramrelic,paramerror);
+        double int4 = rate_pn_enu(4,T9,Tnu,paramrelic,paramerror);
 
 	#if 0
 		double int1=0.;
