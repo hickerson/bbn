@@ -58,95 +58,87 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
-		double dM = 1.29333217;     /// q=mn-mp
-        double kB=0.086171;			/// Boltzmann's constant
-		double me=m_e*10e2; 		/// GeV to MeV
-		double alpha = 0.007297353; /// fine-structure constant
+	double dM = 1.29333217;     /// q=mn-mp
+	double kB=0.086171;			/// Boltzmann's constant
+	double me=m_e*10e2; 		/// GeV to MeV
+	double alpha = 0.007297353; /// fine-structure constant
 
-		double T9mev = T9*kB;
-		double Tnumev = Tnu*kB;
-		double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
-		double znu = ((type == 1 || type == 3)? Tnumev/me : -Tnumev/me);
-		double q = ((type == 1 || type == 4)? dM/me : -dM/me);
-		double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);  /// TODO needs check for max
-		double b = ((type == 1 || type == 4)? paramrelic->fierz : -paramrelic->fierz);
+	double T9mev = T9*kB;
+	double Tnumev = Tnu*kB;
+	double z9 = ((type == 1 || type == 3)? T9mev/me : -T9mev/me);
+	double znu = ((type == 1 || type == 3)? Tnumev/me : -Tnumev/me);
+	double q = ((type == 1 || type == 4)? dM/me : -dM/me);
+	double xi = ((type == 1 || type == 2)? paramrelic->xinu1 : -paramrelic->xinu1);  /// TODO needs check for max
+	double b = ((type == 1 || type == 4)? paramrelic->fierz : -paramrelic->fierz);
 
-		double dI;
-		double beta;
-		double eta;
-		double F;
+	if(type == 1 || type == 3) {
+		 z9 = T9mev/me;
+		 znu = Tnumev/me;
+	}
+	if(type == 1 || type == 4) {
+		 q = dM/me;
+	} else {
+		 q = -dM/me;
+	}
 
+	double integral=0.;
+	int n=100;
+	int i;
+	double x, dI, beta, eta, F;
 
-		if(type == 1 || type == 3) {
-			 z9 = T9mev/me;
-			 znu = Tnumev/me;
-		}
-		if(type == 1 || type == 4) {
-			 q = dM/me;
-		} else {
-			 q = -dM/me;
-		}
+	// TODO use xi
+	//double max1=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
+	//double max2=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
+	//double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
+	//double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
 
-        double integral=0.;
-        int n=1000;
-        double x;
-        int i;
+	double z9max = max(fabs(n*z9),fabs(znu*(n+xi)+2*q));
+	//double z9max = max(fabs(10*z9), fabs(10*znu)+q);
+	//double z9max = q;
+	for(i=1;i<=n;i++)
+	{
+		x=1.+(double)i/(double)n*(z9max-1.);
+		//printf("x=%f type=%d z9max=%f q=%f\n", x, type, z9max, q);
 
-
-		// TODO use xi
-        //double max1=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
-        //double max2=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
-        //double max3=max(n*T9mev/me,fabs((Tnumev/me)*(n-paramrelic->xinu1)-q));
-        //double max4=max(n*T9mev/me,fabs((Tnumev/me)*(n+paramrelic->xinu1)+q));
-
-        //double z9max = max(fabs(n*z9),fabs(znu*(n+xi)+q));
-        double z9max = fabs(n*z9) + fabs(3*q);
-        for(i=1;i<=n;i++)
-        {
-			if(i<n) {
-            	x=1.+(double)i/(double)n*(z9max-1.);
-				//printf("x=%f type=%d z9max=%f q=%f\n", x, type, z9max, q);
+		if(x>1.)
+		{
+			beta = sqrt(x*x-1.);				/// TODO needs factor of m_e, check
+			if (type == 1 || type ==3)  {
+				eta = 2*pi*alpha/beta;			/// use only when p and e are on same side of reaction
+				F = eta/(1-exp(-eta));
+			}
+			else if (type == 4) {
+				eta = -2*pi*alpha/beta;			/// use only when p and e are on same side of reaction
+				F = eta/(1-exp(-eta));
 			}
 			else
-				x=z9max;
+				F = 1;
 
-            if(x>1.)
-            {
-				beta = sqrt(x*x-1.);	/// TODO needs factor of me check
-				if (type == 1)  {
-					eta = 2*pi*alpha/beta;	/// use only when p and e are on same side of reaction
-					F = eta/(1 - exp(-eta));
-				} else {
-					F = 1;
-				}
+			dI = F*(x+b)*pow(x-q,2.)*beta   	/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
+				/(1.+exp(-x/z9)) 					
+				/(1.+exp((x-q)/znu-xi)); /*
+			dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)	/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
+				/(1+exp(x/z9))
+				/(1+exp(-(x+q)/znu-xi));
+			dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)	/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
+				/(1+exp(-x/z9))
+				/(1+exp((x+q)/znu+xi));
+			dI =(x+b)*pow(x-q,2.)*sqrt(x*x-1)	/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
+				/(1+exp(x/z9))
+				/(1+exp(-(x-q)/znu+xi)); */
 
-				dI = F*(x+b)*pow(x-q,2.)*beta     		/// x+b, x-q, -x/z9, +(x-q)/znu, -xi -> +--+-
-					/(1.+exp(-x/z9)) 					
-					/(1.+exp((x-q)/znu-xi));
-					/*
-				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)		/// x-b, x+q, +x/z9, -(x+q)/znu, -xi -> -++--
-					/(1+exp(x/z9))
-					/(1+exp(-(x+q)/znu-xi));
-				dI =(x-b)*pow(x+q,2.)*sqrt(x*x-1)		/// x-b, x+q, -x/z9, +(x+q)/znu, +xi -> -+-++ 
-					/(1+exp(-x/z9))
-					/(1+exp((x+q)/znu+xi));
-				dI =(x+b)*pow(x-q,2.)*sqrt(x*x-1)		/// x+b, x-q, +x/z9, -(x-q)/znu, +xi -> +-+-+
-					/(1+exp(x/z9))
-					/(1+exp(-(x-q)/znu+xi));
-					*/
-
-				if (i<n) {
-					integral += dI;
-					//printf("x=%f dI=%f\n",x, dI);
-				}
-				else
-					integral += dI/2;
+			if (i<n) {
+				integral += dI;
+				//printf("x=%f dI=%f\n",x, dI);
 			}
+			else
+				integral += dI/2;
+		}
 
-        }
+	}
 
-        integral*=(z9max-1.)/(double)n;
-		return integral;
+	integral*=(z9max-1.)/(double)n;
+	return integral;
 }
 
 
@@ -215,8 +207,13 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 		double znu = Tnu*kB/me;
 		double q = 1.29333217/me;   /// q=(mn-mp)/me
 
+        double int1= rate_pn_enu(1,T9,Tnu,paramrelic,paramerror);
+        double int2= rate_pn_enu(2,T9,Tnu,paramrelic,paramerror);
+        double int3= rate_pn_enu(3,T9,Tnu,paramrelic,paramerror);
+        double int4= rate_pn_enu(4,T9,Tnu,paramrelic,paramerror);
 
-        double int1=0.;
+	#if 0
+		double int1=0.;
         double int2=0.;
         double int3=0.;
         double int4=0.;
@@ -314,6 +311,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
                 (1.+exp(me*max4/T9mev))/(1.+exp(-(max4-q)*me/Tnumev+
 				paramrelic->xinu1));
         int4*=(max4-1.)/(double)n;
+#endif
 
         f[1]=(int1+int2)/I0/tau;
         r[1]=(int3+int4)/I0/tau;
