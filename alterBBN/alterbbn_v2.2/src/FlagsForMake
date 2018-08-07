@@ -1,0 +1,6 @@
+CC = gcc
+CFLAGS = -O3 -pipe -fomit-frame-pointer
+CFLAGS_MP = -fopenmp
+MAKE = make
+AR = ar
+ARFLAGS = rcsU
