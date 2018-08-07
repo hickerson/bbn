@@ -58,23 +58,14 @@ void rate_weak(double f[], struct relicparam* paramrelic, struct errorparam* par
 
 double rate_pn_enu(int type, double T9, double Tnu, relicparam* paramrelic, errorparam* paramerror)
 {
-	double dM = 1.29333217;     /// dM=mn-mp
-	//double me=m_e*1e3; 			/// GeV to MeV
-	//double alpha = 0.007297353; /// fine-structure constant
-
-	double z9 = T9*kB/me;
-	double znu = Tnu*kB/me;
-	double q = dM/me;
+	double z9 = T9*k_B/m_e;
+	double znu = Tnu*k_B/m_e;
+	double q = 1.29333217e-3/m_e;     /// q=(mn-mp)/me
 	double xi = paramrelic->xinu1;
 	double b = paramrelic->fierz;
-	int i, n=paramrelic->beta_samples;
-	//if (n != 100) exit(1);
-
 	double integral=0;
 	double x, dI, beta, eta, zmax, norm;
-
-	//printf("m_e=%f n=%d\n", m_e, n);
-
+	int i, n=paramrelic->beta_samples;
 
 	if(type== 1 || type == 4)
 		zmax = max(n*z9,fabs(znu*(n+xi))+q*(1-1e-6));		/// epsilon needed to avoid nan pole at zmax=q
@@ -146,16 +137,14 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 {
     double ferr,rerr;
     ferr=rerr=0.;
-	double tau = paramrelic->life_neutron;    /// measured neutron lifetime at T=0 in s 
+	double tau = paramerror->life_neutron;    /// measured neutron lifetime at T=0 in s 
 	double b = paramrelic->fierz;             /// beta-decay Fierz interference term 
 	double xi = paramrelic->xinu1;            /// neutrino chemical potential
+	int n = paramrelic->beta_samples;
 
 	
-	if (0)
-    //if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.))) 
-		/* No neutrino degeneracy */
-	
-    {
+    if((!paramrelic->wimp)&&((xi==0.)||(Tnu==0.))||(n > 100)) 
+    {	// use extrapolation for beta decay
         int ie;
         double z=5.929862032115561/T9;
 
@@ -169,20 +158,22 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 
         f[1]=1.;
         for(ie=1;ie<=13;ie++) f[1]+=fcoeffs[ie-1]/pow(z,ie);
-        f[1]*=exp(-0.33979/z)/paramerror->life_neutron; /* n->p */
+        //f[1]*=exp(-0.33979/z)/paramerror->life_neutron; /* n->p */
+        f[1]*=exp(-0.33979/z)/tau; /* n->p */
 
         if(z<5.10998997931)
         {
             r[1]=-0.62173;
             for(ie=1;ie<=10;ie++) r[1]+=rcoeffs[ie-1]/pow(z,ie);
-            r[1]*=exp(-2.8602*z)/paramerror->life_neutron; /* p->n */
+            //r[1]*=exp(-2.8602*z)/paramerror->life_neutron; /* p->n */
+            r[1]*=exp(-2.8602*z)/tau; /* p->n */
         }
         else r[1]=0.; /* weak freeze-out */
 
     }
-    else /* Degeneracy amongst the electron neutrinos */
+    else 	// explicitly compute beta decay
     {
-		double I0 = rate_pn_enu(1, 0, 0, paramrelic, paramerror);
+		double I0 = rate_pn_enu(1,0,0,paramrelic, paramerror);
         double int1 = rate_pn_enu(1,T9,Tnu,paramrelic,paramerror);
         double int2 = rate_pn_enu(2,T9,Tnu,paramrelic,paramerror);
         double int3 = rate_pn_enu(3,T9,Tnu,paramrelic,paramerror);
