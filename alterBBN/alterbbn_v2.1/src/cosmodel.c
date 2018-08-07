@@ -423,6 +423,7 @@ void Init_neutron_decay(double tau, double tau_err, double fierz, double m_chi, 
 	paramrelic->neuteq_coupled=0;
 	paramrelic->fierz=fierz;			// no fierz interface in the standard model 
 	paramrelic->B_chi=B_chi;			// default is no branching to dark matter m_p < m_chi < m_n
+	paramrelic->beta_samples=1000;		// if we are gonna simulate beta decay, we're gonna simulate it.
 }
 
 

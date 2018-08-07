@@ -11,7 +11,7 @@ int main(int argc,char** argv)
 	double eta,H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
 	double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
     double Nnu,dNnu;
-	double tau,tau_err,fierz,m_chi,B_chi;
+	double tau=0,tau_err=0,fierz=0,m_chi=0,B_chi=0;
 
     if(argc<3 || argc==5 || argc>6)
   	{ 

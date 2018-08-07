@@ -24,7 +24,6 @@
 #define Gn    		6.67428e-8  /* in cm^3.g^-1.s^-2 */
 #define K_to_GeV    8.617330637338339e-05 /* conversion factor T(10**9 K) * K_to_GeV = T(GeV) */
 #define m_e    		510.9989461e-6 /* electron mass in GeV */
-//#define me     		0.51099894613 /* electron mass in MeV */
 #define M_u         1.660538921e-24 /* unit atomic mass M_u in g */
 #define g_to_GeV    5.60958884538932e+23 /* conversion factor M(g) * g_to_GeV = M(GeV) */
 #define kg_to_GeV   5.60958884538932e+26 /* conversion factor M(kg) * kg_to_GeV = M(GeV) */
@@ -36,7 +35,6 @@
 #define Mplanck     1.2209102930946623e+19 /* in GeV, more precise definition than before */
 #define DMpn        0.0012934 /* mass difference between neutron and proton in GeV */
 #define zeta        1.6103162253325862 /* 3*k_B/(2*c^2*Mu) in GeV^-1 */
-//#define kB			0.08617330			// Boltzmann's constant in MeV/GK
 #define k_B			8.617330e-5		// Boltzmann's constant in GeV/GK
 #define alpha  		0.007297353 // fine-structure constant
 

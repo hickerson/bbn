@@ -143,7 +143,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 	int n = paramrelic->beta_samples;
 
 	
-    if((!paramrelic->wimp)&&((xi==0.)||(Tnu==0.))||(n > 100)) 
+    if((!paramrelic->wimp)&&((xi==0.)||(Tnu==0.)) && n <= 100)
     {	// use extrapolation for beta decay
         int ie;
         double z=5.929862032115561/T9;
