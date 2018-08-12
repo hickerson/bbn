@@ -76,7 +76,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 	
     //if((!paramrelic->wimp)&&((paramrelic->xinu1==0.)||(Tnu==0.)))
         /* No neutrino degeneracy */
-	if (xi!=0)
+	if (0)
     {
         int ie;
         double z=5.929862032115561/T9;
@@ -120,7 +120,7 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
         double int2=0.;
         double int3=0.;
         double int4=0.;
-        int n=1000;
+        int n=50;
         double x;
         int je;
 
@@ -215,8 +215,9 @@ void rate_pn(double f[], double r[], double T9, double Tnu, relicparam* paramrel
 				paramrelic->xinu1));
         int4*=(max4-1.)/(double)n;
 
-        f[1]=int1+int2;
-        r[1]=int3+int4;
+	double norm = 170;
+        f[1]=(int1+int2)/norm;
+        r[1]=(int3+int4)/norm;
     }
 
 

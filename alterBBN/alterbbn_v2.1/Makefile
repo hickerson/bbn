@@ -7,10 +7,10 @@ YEAR = 2018
 # Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
 CFLAGS= -O3 -pipe -fomit-frame-pointer
-CFLAGS_MP= -fopenmp
+#CFLAGS_MP= -fopenmp
 
 #CC = clang
-#CFLAGS= -O3 -pipe -fomit-frame-pointer -fopenmp
+#CFLAGS= -O3 -pipe -fomit-frame-pointer
 #CFLAGS_MP= -fopenmp
 
 #CC = icc
@@ -20,8 +20,8 @@ CFLAGS_MP= -fopenmp
 MAKE = make
 MAKE_MP = -j$(nproc)
 
-AR = ar
-ARFLAGS = rcsU
+#AR = ar
+#ARFLAGS = rcsU
 #ARFLAGS = rcs
 
 
