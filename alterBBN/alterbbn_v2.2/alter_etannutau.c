@@ -10,37 +10,29 @@ int main(int argc,char** argv)
 	double ratioH[NNUC+1],cov_ratioH[NNUC+1][NNUC+1];
 	double eta,H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
 	double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
-    double Nnu,dNnu;
-	double tau=0,tau_err=0,fierz=0,m_chi=0,B_chi=0;
+    double Nnu,dNnu,tau,tau_err;
 
-    if(argc<3 || argc==5 || argc>6)
+    if(argc<5)
   	{ 
-                printf(" This program needs at least 2 parameters:\n"
+                printf(" This program needs at least 4 parameters:\n"
+           	    "   eta    value of the baryon-to-photon ratio\n"
+                "   Nnu      number of SM neutrinos\n"
+                "   dNnu     number of extra neutrino species\n"
                 "   tau      neutron lifetime\n"
-                "   tau_err  neutron lifetime uncertainty\n"
-                "   fierz    neutron Fierz interference term (optional)\n"
-				"   m_chi	 must satify m_P < m_chi < m_n\n"
-                "   B_chi    dark matter aprotonic decay branching ratio\n");
+                "   tau_err  neutron lifetime uncertainty (optional, needed for error calculation)\n");
       		exit(1); 
   	} 
-	else
+	else 
   	{
-                sscanf(argv[1],"%lf",&tau);
-                sscanf(argv[2],"%lf",&tau_err);
-				if(argc > 3) {
-                	sscanf(argv[3],"%lf",&fierz);
-				}
-				if(argc > 4) {
-                	sscanf(argv[4],"%lf",&m_chi);
-                	sscanf(argv[5],"%lf",&B_chi);
-				}
-                //if(argc>=5) sscanf(argv[5],"%lf",&tau_err); else tau_err=1.0;
+				sscanf(argv[1],"%lf",&eta);
+                sscanf(argv[2],"%lf",&Nnu);
+                sscanf(argv[3],"%lf",&dNnu);
+                sscanf(argv[4],"%lf",&tau);
+                if(argc>=5) sscanf(argv[5],"%lf",&tau_err); else tau_err=1.0;
   	}
 	
-
 	Init_cosmomodel(&paramrelic);	
-    //Init_cosmomodel_param(eta,Nnu,dNnu,tau,tau_err,0.,0.,0.,&paramrelic);
-	Init_neutron_decay(tau, tau_err, fierz, m_chi, B_chi, &paramrelic);
+    Init_cosmomodel_param(eta,Nnu,dNnu,tau,tau_err,0.,0.,0.,&paramrelic);
 	
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 	paramrelic.err=2;

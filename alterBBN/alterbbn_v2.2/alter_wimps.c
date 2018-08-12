@@ -1,46 +1,93 @@
 #include "src/include.h"
 
-/*--------------------------------------------------------*/
-/* Calculation of the observables in the Standard Model   */
-/*--------------------------------------------------------*/
+/*-------------------------------------------------------- */
+/* Calculation of the abundance of the elements from BBN   */
+/*-------------------------------------------------------- */
 
 int main(int argc,char** argv)
-{ 
-	struct relicparam paramrelic;
-	double ratioH[NNUC+1],cov_ratioH[NNUC+1][NNUC+1];
-	double eta,H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
-	double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
-    double Nnu,dNnu;
-	double tau=0,tau_err=0,fierz=0,m_chi=0,B_chi=0;
+{
+        struct relicparam paramrelic;
+        double ratioH[NNUC+1],cov_ratioH[NNUC+1][NNUC+1];
+        double H2_H,He3_H,Yp,Li7_H,Li6_H,Be7_H;
+        double sigma_H2_H,sigma_He3_H,sigma_Yp,sigma_Li7_H,sigma_Li6_H,sigma_Be7_H;
+        double m_chi, gchi;
+        int type_wimp, SMC_wimp, fermion, selfConjugate, EM_coupled, neut_coupled, neuteq_coupled;
 
-    if(argc<3 || argc==5 || argc>6)
-  	{ 
-                printf(" This program needs at least 2 parameters:\n"
-                "   tau      neutron lifetime\n"
-                "   tau_err  neutron lifetime uncertainty\n"
-                "   fierz    neutron Fierz interference term (optional)\n"
-				"   m_chi	 must satify m_P < m_chi < m_n\n"
-                "   B_chi    dark matter aprotonic decay branching ratio\n");
-      		exit(1); 
-  	} 
-	else
-  	{
-                sscanf(argv[1],"%lf",&tau);
-                sscanf(argv[2],"%lf",&tau_err);
-				if(argc > 3) {
-                	sscanf(argv[3],"%lf",&fierz);
-				}
-				if(argc > 4) {
-                	sscanf(argv[4],"%lf",&m_chi);
-                	sscanf(argv[5],"%lf",&B_chi);
-				}
-                //if(argc>=5) sscanf(argv[5],"%lf",&tau_err); else tau_err=1.0;
-  	}
-	
+        if(argc<4)
+        {
+                printf(" This program needs 3 parameters:\n"
+                       "   type_wimp   type of WIMP\n"
+                       "                   1 - real scalar\n"
+                       "                   2 - complex scalar\n"
+                       "                   3 - Majorana fermion\n"
+                       "                   4 - Dirac fermion\n"
+                       "   SMC_wimp    SM coupling of light WIMP\n"
+                       "                   1 - coupled to SM neutrinos\n"
+                       "                   2 - electromagnetically coupled\n"
+                       "                   3 - coupled to SM and equivalent neutrinos\n"
+                       "   m_chi       mass of light WIMP (in MeV)\n");
+                exit(1);
+        }
+        else
+        {
+                sscanf(argv[1],"%d",&type_wimp);
+                sscanf(argv[2],"%d",&SMC_wimp);
+                sscanf(argv[3],"%lf",&m_chi);
+        }
 
-	Init_cosmomodel(&paramrelic);	
-    //Init_cosmomodel_param(eta,Nnu,dNnu,tau,tau_err,0.,0.,0.,&paramrelic);
-	Init_neutron_decay(tau, tau_err, fierz, m_chi, B_chi, &paramrelic);
+        if (type_wimp == 1) // Real scalar
+        {
+            gchi = 1.;
+            fermion = 0;           // Boson
+            selfConjugate = 1;  // True
+        }
+        else if (type_wimp == 2) // Complex scalar
+        {
+            gchi = 2.;
+            fermion = 0;
+            selfConjugate = 0;
+        }
+        else if (type_wimp == 3) // Majorana fermion
+        {
+            gchi = 2.;
+            fermion = 1;           // Fermion
+            selfConjugate = 1;
+        }
+        else if (type_wimp == 4) // Dirac fermion
+        {
+            gchi = 4.;
+            fermion = 1;
+            selfConjugate = 0;
+        }
+        else
+        {
+            printf("\t [ERROR] Incorrect input value for parameter 'type_wimp'.");
+            exit(1);
+        }
+
+        if (SMC_wimp == 1) {
+            EM_coupled = 0;
+            neut_coupled = 1;
+            neuteq_coupled = 0;
+        }
+        else if (SMC_wimp == 2) {
+            EM_coupled = 1;
+            neut_coupled = 0;
+            neuteq_coupled = 0;
+        }
+        else if (SMC_wimp == 3) {
+            EM_coupled = 0;
+            neut_coupled = 0;
+            neuteq_coupled = 1;
+        }
+        else
+        {
+            printf("\t [ERROR] Incorrect input value for parameter 'SMC_wimp'.");
+            exit(1);
+        }
+
+	Init_cosmomodel(&paramrelic);
+	Init_wimp(m_chi,EM_coupled,neut_coupled,neuteq_coupled,fermion,selfConjugate,gchi,&paramrelic);
 	
 	printf("\t Yp\t\t H2/H\t\t He3/H\t\t Li7/H\t\t Li6/H\t\t Be7/H\n");
 	paramrelic.err=2;

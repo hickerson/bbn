@@ -1,4 +1,4 @@
-AlterBBN Version 2.1 (1 Aug  2018)
+AlterBBN Version 2.0 (29 June  2018)
 -------------------------------------
 By Alexandre Arbey (alexandre.arbey@ens-lyon.fr), Jeremy Auffinger (jeremy.auffinger@ens-lyon.fr), Kevin Hickerson (kevinh@caltech.edu) and Espen Jenssen (EspenJenssen@hotmail.com)
 
@@ -35,7 +35,6 @@ Installation and Compilation
 - alter_reheating.c: calculation in a model with modified expansion rate and reheating
 - alter_standmod.c: calculation in a model with modified expansion rate and entropy content
 - alter_wimps.c: calculation in a model where WIMPs can alter the nuclear rates
-- alter_neutron.c: calculation in a models that require precise alteration of neutron to proton beta rates
 
 
 Included Files
@@ -54,7 +53,6 @@ alter_neutrinos.c: calculation in a scenario with a different number of neutrino
 alter_phi.c: calculation in scenario with a decaying scalar field
 alter_standmod.c: calculation in a model with modified expansion rate and entropy content
 alter_wimps.c: calculation in a model where WIMPs can alter the nuclear rates
-alter_neutron.c: calculation in a models that require precise alteration of neutron to proton beta rates
 
 - Headers in src
 include.h: definitions and prototypes
@@ -68,13 +66,6 @@ README
 
 History
 -------
-v2.1 - 08/07/2018 -     Upgraded proton to neutron beta calculations.
-			Added a new executable for altering neutron beta rates, alter_neutron
-			Repaired np beta code to correctly normalize to neutron lifetime
-			Added Fermi functions to np beta rates
-			Added Fierz interference term to np beta rates
-			Allowed scaling of samples used to compute np beta rates
-
 v2.0 - 06/29/2018 -     Extended nuclear network.
 			Several cases of WIMPs added.
 			Automatic error and correlation calculation added.
